@@ -1,19 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { DefaultPage } from '../../../src/features/user-admin/DefaultPage';
+import { List } from '../../../src/features/user-admin/List';
 
-describe('user-admin/DefaultPage', () => {
+describe('user-admin/List', () => {
   it('renders node with correct class name', () => {
     const props = {
       userAdmin: {},
       actions: {},
     };
     const renderedComponent = shallow(
-      <DefaultPage {...props} />
+      <List {...props} />
     );
 
     expect(
-      renderedComponent.find('.user-admin-default-page').length
+      renderedComponent.find('.user-admin-list').length
     ).toBe(1);
   });
 });

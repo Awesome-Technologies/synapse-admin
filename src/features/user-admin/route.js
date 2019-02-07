@@ -2,7 +2,7 @@
 // Learn more from: http://rekit.js.org/docs/routing.html
 
 import {
-  DefaultPage,
+  List,
 } from './';
 import { Layout } from '../common';
 
@@ -11,6 +11,6 @@ export default {
   name: 'User admin',
   component: Layout,
   childRoutes: [
-    { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
+    { path: 'list', name: 'List', component: List, isIndex: true },
   ],
 };
