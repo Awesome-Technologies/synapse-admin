@@ -4,10 +4,12 @@
 import {
   DefaultPage,
 } from './';
+import { Layout } from '../common';
 
 export default {
   path: 'user-admin',
   name: 'User admin',
+  component: Layout,
   childRoutes: [
     { path: 'default-page', name: 'Default page', component: DefaultPage, isIndex: true },
   ],
