@@ -1,0 +1,31 @@
+@import '../../styles/mixins';
+
+.home-login {
+  text-align: center;
+  .app {
+    text-align: center;
+  }
+
+  .app-logo {
+    animation: app-logo-spin infinite 10s linear;
+    height: 80px;
+  }
+
+  .app-header {
+    background-color: #EEE;
+    height: 150px;
+    padding: 20px;
+    color: black;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .app-title {
+    font-size: 1.5em;
+  }
+
+  .app-login {
+    display: inline-block;
+    padding: 16px;
+  }
+}
