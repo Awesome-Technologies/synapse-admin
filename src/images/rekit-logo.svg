@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="507px" height="508px" viewBox="0 0 507 508" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#40C1C5" offset="0%"></stop>
+            <stop stop-color="#79D8DD" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#A46E46" offset="0%"></stop>
+            <stop stop-color="#CA8F6B" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#F08036" offset="0%"></stop>
+            <stop stop-color="#FAA881" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-4">
+            <stop stop-color="#FBC233" offset="0%"></stop>
+            <stop stop-color="#FEDB67" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(253.321158, 254.321158) rotate(45.000000) translate(-253.321158, -254.321158) translate(2.321158, 2.821158)">
+            <path d="M340.717172,467.819581 C380.254364,429.329041 441.615845,371.356861 441.615845,315.632062 C441.615845,259.907264 396.44197,214.733389 340.717172,214.733389 C284.992373,214.733389 239.818498,259.907264 239.818498,315.632062 C239.818498,371.356861 301.773607,429.329041 340.717172,467.819581 Z" id="Oval" fill="url(#linearGradient-1)" transform="translate(340.717172, 341.276485) scale(1, -1) rotate(45.000000) translate(-340.717172, -341.276485) "></path>
+            <path d="M160.1003,466.687889 C199.285347,428.540172 260.1003,371.084332 260.1003,315.855857 C260.1003,260.627382 215.328775,215.855857 160.1003,215.855857 C104.871825,215.855857 60.1003,260.627382 60.1003,315.855857 C60.1003,371.084332 121.503594,428.540172 160.1003,466.687889 Z" id="Oval" fill="url(#linearGradient-2)" transform="translate(160.100300, 341.271873) scale(-1, -1) rotate(45.000000) translate(-160.100300, -341.271873) "></path>
+            <path d="M340.171573,285.417818 C379.35662,247.270101 440.171573,189.814261 440.171573,134.585786 C440.171573,79.3573115 395.400048,34.5857864 340.171573,34.5857864 C284.943098,34.5857864 240.171573,79.3573115 240.171573,134.585786 C240.171573,189.814261 301.574866,247.270101 340.171573,285.417818 Z" id="Oval" fill="url(#linearGradient-3)" transform="translate(340.171573, 160.001802) rotate(45.000000) translate(-340.171573, -160.001802) "></path>
+            <path d="M159.707107,286.124924 C198.892154,247.977208 259.707107,190.521368 259.707107,135.292893 C259.707107,80.0644182 214.935582,35.2928932 159.707107,35.2928932 C104.478632,35.2928932 59.7071068,80.0644182 59.7071068,135.292893 C59.7071068,190.521368 121.1104,247.977208 159.707107,286.124924 Z" id="Oval" fill="url(#linearGradient-4)" transform="translate(159.707107, 160.708909) scale(-1, 1) rotate(45.000000) translate(-159.707107, -160.708909) "></path>
+        </g>
+    </g>
+</svg>
