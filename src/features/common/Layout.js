@@ -80,6 +80,10 @@ class Layout extends Component {
                     component={Link} to="/user-admin">
             <ListItemText primary="Users" />
           </ListItem>
+          <ListItem button key="Rooms" selected={pathname === "/room-admin"}
+                    component={Link} to="/room-admin">
+            <ListItemText primary="Rooms" />
+          </ListItem>
         </List>
       </div>
     );
