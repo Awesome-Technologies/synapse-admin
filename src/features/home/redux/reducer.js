@@ -1,6 +1,8 @@
 import initialState from './initialState';
+import { reducer as loginReducer } from './login';
 
 const reducers = [
+  loginReducer,
 ];
 
 export default function reducer(state = initialState, action) {
