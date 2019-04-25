@@ -17,6 +17,7 @@ export function fetchUsers(args = {}) {
     // e.g.: handleSubmit() { this.props.actions.submitForm(data).then(()=> {}).catch(() => {}); }
     const promise = new Promise((resolve, reject) => {
       const mtx = getState().common.mtx;
+      if (!mtx) return;
       const doRequest = mtx._http.authedRequest(undefined, "GET", "/admin/users/" + mtx.credentials.userId)
       doRequest.then(
         (res) => {

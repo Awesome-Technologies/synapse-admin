@@ -8,9 +8,11 @@
 
 import initialState from './initialState';
 import { reducer as fetchUsersReducer } from './fetchUsers';
+import { reducer as fetchProfileReducer } from './fetchProfile';
 
 const reducers = [
   fetchUsersReducer,
+  fetchProfileReducer,
 ];
 
 export default function reducer(state = initialState, action) {
