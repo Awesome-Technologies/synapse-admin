@@ -6,9 +6,11 @@
 
 // NOTE: initialState constant is necessary so that Rekit could auto add initial state when creating async actions.
 const initialState = {
+  roomList: [],
   fetchPublicRoomsPending: false,
   fetchPublicRoomsError: null,
-  roomList: [],
+  createRoomPending: false,
+  createRoomError: null,
 };
 
 export default initialState;

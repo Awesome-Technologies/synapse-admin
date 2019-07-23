@@ -8,9 +8,11 @@
 
 import initialState from './initialState';
 import { reducer as fetchPublicRoomsReducer } from './fetchPublicRooms';
+import { reducer as createRoomReducer } from './createRoom';
 
 const reducers = [
   fetchPublicRoomsReducer,
+  createRoomReducer,
 ];
 
 export default function reducer(state = initialState, action) {
