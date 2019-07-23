@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.2.1",
     "ajv": "^6.10.2",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.1",
