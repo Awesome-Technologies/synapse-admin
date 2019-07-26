@@ -38,11 +38,8 @@ export class Login extends Component {
     this.setState({ submitted: true });
     const { homeserver, username, password } = this.state;
     const { login } = this.props.actions;
-    const { history } = this.props;
     if (homeserver && username && password) {
-      login(homeserver, username, password).then(
-        history.push("/user-admin/list")
-      );
+      login(homeserver, username, password);
     }
   }
 
@@ -52,7 +49,7 @@ export class Login extends Component {
     const { homeserver, username, password, submitted } = this.state;
     return (
       <div className="home-login">
-        {mtx && mtx.clientRunning &&
+        {mtx && mtx.clientRunning && mtx.credentials.userId && !loginPending &&
           <Redirect to="/user-admin/list" />
         }
         <header className="app-header">
