@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { ListItem } from '.';
 import * as actions from './redux/actions';
 
 export class List extends Component {
@@ -28,19 +29,15 @@ export class List extends Component {
         <Table className="user-list">
           <TableHead>
             <TableRow>
+              <TableCell>Avatar</TableCell>
+              <TableCell>Display Name</TableCell>
               <TableCell>Username</TableCell>
               <TableCell>Guest</TableCell>
               <TableCell>Admin</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {userList.map(item => (
-              <TableRow key={item.name}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.is_guest ? 'X' : ''}</TableCell>
-                <TableCell>{item.admin ? 'X' : ''}</TableCell>
-              </TableRow>
-            ))}
+            {userList.map(item => (<ListItem key={item.name} name={item.name} is_guest={item.is_guest} is_admin={item.admin} />))}
           </TableBody>
         </Table>
       </div>
