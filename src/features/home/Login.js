@@ -50,7 +50,7 @@ export class Login extends Component {
     return (
       <div className="home-login">
         {mtx && mtx.clientRunning && mtx.credentials.userId && !loginPending &&
-          <Redirect to="/user-admin/list" />
+          <Redirect to="/user-admin" />
         }
         <header className="app-header">
           <img src={matrixLogo} className="app-logo" alt="logo" />
