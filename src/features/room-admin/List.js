@@ -28,11 +28,21 @@ export class List extends Component {
         <Table className="room-list">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell><TableCell>Room-ID</TableCell><TableCell>Members</TableCell>
+              <TableCell>Alias</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Topic</TableCell>
+              <TableCell>Room-ID</TableCell>
+              <TableCell>Members</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {roomList.map(item => (<TableRow key={item.room_id}><TableCell>{item.name}</TableCell><TableCell>{item.room_id}</TableCell><TableCell>{item.num_joined_members}</TableCell></TableRow>))}
+            {roomList.map(item => (<TableRow key={item.room_id}>
+              <TableCell>{item.canonical_alias}</TableCell>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.topic}</TableCell>
+              <TableCell>{item.room_id}</TableCell>
+              <TableCell>{item.num_joined_members}</TableCell>
+            </TableRow>))}
           </TableBody>
         </Table>
       </div>
