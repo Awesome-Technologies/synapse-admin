@@ -60,6 +60,47 @@ export const UserList = props => (
   </List>
 );
 
+function generateRandomUser() {
+  const homeserver = localStorage.getItem("home_server");
+  const user_id =
+    "@" +
+    Array(8)
+      .fill("0123456789abcdefghijklmnopqrstuvwxyz")
+      .map(
+        x =>
+          x[
+            Math.floor(
+              (crypto.getRandomValues(new Uint32Array(1))[0] /
+                (0xffffffff + 1)) *
+                x.length
+            )
+          ]
+      )
+      .join("") +
+    ":" +
+    homeserver;
+
+  const password = Array(20)
+    .fill(
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$"
+    )
+    .map(
+      x =>
+        x[
+          Math.floor(
+            (crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1)) *
+              x.length
+          )
+        ]
+    )
+    .join("");
+
+  return {
+    id: user_id,
+    password: password,
+  };
+}
+
 // https://matrix.org/docs/spec/appendices#user-identifiers
 const validateUser = regex(
   /^@[a-z0-9._=\-/]+:.*/,
@@ -67,7 +108,7 @@ const validateUser = regex(
 );
 
 export const UserCreate = props => (
-  <Create {...props}>
+  <Create record={generateRandomUser()} {...props}>
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" />
