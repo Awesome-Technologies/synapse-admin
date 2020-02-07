@@ -3,7 +3,9 @@ import { Admin, Resource, resolveBrowserLocale } from "react-admin";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
+import { UserList, UserCreate, UserEdit } from "./components/users";
 import LoginPage from "./components/LoginPage";
+import UserIcon from "@material-ui/icons/Group";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
 
@@ -24,7 +26,13 @@ const App = () => (
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
   >
-    <Resource name="users" />
+    <Resource
+      name="users"
+      list={UserList}
+      create={UserCreate}
+      edit={UserEdit}
+      icon={UserIcon}
+    />
   </Admin>
 );
 
