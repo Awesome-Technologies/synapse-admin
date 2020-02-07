@@ -29,5 +29,14 @@ export default {
         password: "Password",
       },
     },
+    rooms: {
+      name: "Room |||| Rooms",
+      fields: {
+        room_id: "Room-ID",
+        name: "Name",
+        canonical_alias: "Alias",
+        joined_members: "Members",
+      },
+    },
   },
 };
