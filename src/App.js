@@ -2,7 +2,7 @@ import React from "react";
 import { Admin, Resource, resolveBrowserLocale } from "react-admin";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import authProvider from "./synapse/authProvider";
-import dataProvider from "./dataProvider";
+import dataProvider from "./synapse/dataProvider";
 import LoginPage from "./components/LoginPage";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
@@ -24,7 +24,7 @@ const App = () => (
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
   >
-    <Resource name="data" />
+    <Resource name="users" />
   </Admin>
 );
 
