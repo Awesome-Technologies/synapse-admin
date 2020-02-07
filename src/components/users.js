@@ -13,6 +13,8 @@ import {
   TextField,
   TextInput,
   ReferenceField,
+  SaveButton,
+  Toolbar,
   regex,
 } from "react-admin";
 
@@ -101,6 +103,34 @@ function generateRandomUser() {
   };
 }
 
+// redirect to the related Author show page
+const redirect = (basePath, id, data) => {
+  return {
+    pathname: "/showpdf",
+    state: {
+      id: data.id,
+      displayname: data.displayname,
+      password: data.password,
+    },
+  };
+};
+
+const UserCreateToolbar = props => (
+  <Toolbar {...props}>
+    <SaveButton
+      label="synapseadmin.action.save_and_show"
+      redirect={redirect}
+      submitOnEnter={true}
+    />
+    <SaveButton
+      label="synapseadmin.action.save_only"
+      redirect="show"
+      submitOnEnter={false}
+      variant="text"
+    />
+  </Toolbar>
+);
+
 // https://matrix.org/docs/spec/appendices#user-identifiers
 const validateUser = regex(
   /^@[a-z0-9._=\-/]+:.*/,
@@ -109,7 +139,7 @@ const validateUser = regex(
 
 export const UserCreate = props => (
   <Create record={generateRandomUser()} {...props}>
-    <SimpleForm>
+    <SimpleForm toolbar={<UserCreateToolbar />}>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />
@@ -120,7 +150,7 @@ export const UserCreate = props => (
 
 export const UserEdit = props => (
   <Edit {...props}>
-    <SimpleForm>
+    <SimpleForm toolbar={<UserCreateToolbar />}>
       <TextInput source="id" disabled />
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />

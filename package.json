@@ -17,7 +17,10 @@
     "prettier": "^1.19.1"
   },
   "dependencies": {
+    "@progress/kendo-drawing": "^1.6.0",
+    "@progress/kendo-react-pdf": "^3.10.1",
     "prop-types": "^15.7.2",
+    "qrcode.react": "^1.0.0",
     "ra-language-german": "^2.1.2",
     "react": "^16.12.0",
     "react-admin": "^3.1.3",

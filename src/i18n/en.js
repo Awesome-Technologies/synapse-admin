@@ -7,6 +7,11 @@ export default {
       homeserver: "Homeserver",
       welcome: "Welcome to Synapse-admin",
     },
+    action: {
+      save_and_show: "Create QR code",
+      save_only: "Save",
+      download_pdf: "Download PDF",
+    },
     users: {
       invalid_user_id:
         "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",

@@ -10,6 +10,8 @@ import UserIcon from "@material-ui/icons/Group";
 import { ViewListIcon as RoomIcon } from "@material-ui/icons/ViewList";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
+import ShowUserPdf from "./components/ShowUserPdf";
+import { Route } from "react-router-dom";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
@@ -27,6 +29,9 @@ const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
+    customRoutes={[
+      <Route key="showpdf" path="/showpdf" component={ShowUserPdf} />,
+    ]}
   >
     <Resource
       name="users"
