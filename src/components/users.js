@@ -124,7 +124,7 @@ const UserCreateToolbar = props => (
     />
     <SaveButton
       label="synapseadmin.action.save_only"
-      redirect="show"
+      redirect="list"
       submitOnEnter={false}
       variant="text"
     />
