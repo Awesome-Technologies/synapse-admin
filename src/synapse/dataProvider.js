@@ -207,13 +207,14 @@ const dataProvider = {
     const res = resourceMap[resource];
     const homeserver_url = "https://" + homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
-        method: "DELETE",
-        body: JSON.stringify(params.data, filterNullValues),
-      })
-    ).then(responses => ({
-      data: responses.map(({ json }) => json),
-    }));
+      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`, {
+          method: "DELETE",
+          body: JSON.stringify(params.data, filterNullValues),
+        },
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      })))
+    );
   },
 };
 
