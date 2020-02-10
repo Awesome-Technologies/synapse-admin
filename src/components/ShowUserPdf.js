@@ -5,22 +5,16 @@ import { PDFExport } from "@progress/kendo-react-pdf";
 import QRCode from "qrcode.react";
 
 function xor(a, b) {
-  var res = "",
-    i = a.length,
-    j = b.length;
-  while (i-- > 0 && j-- > 0)
-    res = (parseInt(a.charAt(i)) ^ parseInt(b.charAt(j))).toString() + res;
+  var res = "";
+  for (var i = 0; i < a.length; i++) {
+    res += String.fromCharCode(a.charCodeAt(i) ^ b.charCodeAt(i % b.length));
+  }
   return res;
 }
 
 function calculateQrString(serverUrl, username, password) {
-  var magicString = "wo9k5tep252qxsa5yde7366kugy6c01w7oeeya9hrmpf0t7ii7";
-
+  const magicString = "wo9k5tep252qxsa5yde7366kugy6c01w7oeeya9hrmpf0t7ii7";
   var urlString = "user=" + username + "&password=" + password;
-
-  while (urlString.length > magicString.length) {
-    magicString += magicString;
-  }
 
   urlString = xor(urlString, magicString); // xor with magic string
   urlString = btoa(urlString); // to base64
@@ -86,7 +80,11 @@ const ShowUserPdf = props => {
   var qrCode = "";
   var displayname = "";
 
-  if (props.location.state) {
+  if (
+    props.location.state &&
+    props.location.state.id &&
+    props.location.state.password
+  ) {
     const { id, password } = props.location.state;
 
     const username = id.substring(1, id.indexOf(":"));
