@@ -142,11 +142,11 @@ const dataProvider = {
 
     const res = resourceMap[resource];
     const homeserver_url = "https://" + homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.id}`, {
+    return jsonClient(`${homeserver_url}/${params.data.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
     }).then(({ json }) => ({
-      data: json,
+      data: res.map(json),
     }));
   },
 
@@ -174,14 +174,11 @@ const dataProvider = {
 
     const res = resourceMap[resource];
     const homeserver_url = "https://" + homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.id}`, {
+    return jsonClient(`${homeserver_url}/${params.data.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
     }).then(({ json }) => ({
-      data: {
-        ...params.data,
-        id: json.id,
-      },
+      data: res.map(json),
     }));
   },
 
@@ -207,13 +204,15 @@ const dataProvider = {
     const res = resourceMap[resource];
     const homeserver_url = "https://" + homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
-        method: "DELETE",
-        body: JSON.stringify(params.data, filterNullValues),
-      })
-    ).then(responses => ({
-      data: responses.map(({ json }) => json),
-    }));
+      params.ids.map(id =>
+        jsonClient(`${homeserver_url}/${id}`, {
+          method: "DELETE",
+          body: JSON.stringify(params.data, filterNullValues),
+        }).then(responses => ({
+          data: responses.map(({ json }) => json),
+        }))
+      )
+    );
   },
 };
 
