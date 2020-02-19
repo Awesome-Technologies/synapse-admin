@@ -33,7 +33,7 @@
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
     "fix": "yarn fix:code && yarn fix:other",
-    "prettier": "prettier \"**/*.{json,md,scss,yaml,yml}\"",
+    "prettier": "prettier \"**/*.{js,jsx,json,md,scss,yaml,yml}\"",
     "test:code": "react-scripts test",
     "test:lint": "eslint --ignore-path .gitignore --ext .js,.jsx .",
     "test:style": "yarn prettier --list-different",
