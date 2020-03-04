@@ -1,5 +1,20 @@
 import { fetchUtils } from "react-admin";
 
+const ensureHttpsForUrl = url => {
+  if (/^https:\/\//i.test(url)) {
+    return url;
+  }
+  const domain = url.replace(/http.?:\/\//g, "");
+  return "https://" + domain;
+};
+
+const stripTrailingSlash = str => {
+  if (!str) {
+    return;
+  }
+  return str.endsWith("/") ? str.slice(0, -1) : str;
+};
+
 const authProvider = {
   // called when the user attempts to log in
   login: ({ homeserver, username, password }) => {
@@ -13,16 +28,17 @@ const authProvider = {
       }),
     };
 
-    // add 'https://' to homeserver url if its missing
-    let newUrl = window.decodeURIComponent(homeserver);
-    newUrl = newUrl.trim().replace(/\s/g, "");
-    if (!/^https?:\/\//i.test(newUrl)) {
-      homeserver = `https://${newUrl}`;
-    }
+    const url = window.decodeURIComponent(homeserver);
+    const trimmed_url = url.trim().replace(/\s/g, "");
+    const login_api_url =
+      ensureHttpsForUrl(trimmed_url) + "/_matrix/client/r0/login";
 
-    const url = homeserver + "/_matrix/client/r0/login";
-    return fetchUtils.fetchJson(url, options).then(({ json }) => {
-      localStorage.setItem("home_server", json.home_server);
+    return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
+      const normalized_base_url = stripTrailingSlash(
+        json.well_known["m.homeserver"].base_url
+      );
+      localStorage.setItem("base_url", normalized_base_url);
+      localStorage.setItem("home_server_url", json.home_server);
       localStorage.setItem("user_id", json.user_id);
       localStorage.setItem("access_token", json.access_token);
       localStorage.setItem("device_id", json.device_id);

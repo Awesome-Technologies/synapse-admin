@@ -70,7 +70,7 @@ const LoginPage = ({ theme }) => {
   var locale = useLocale();
   const setLocale = useSetLocale();
   const translate = useTranslate();
-  const homeserver = localStorage.getItem("home_server");
+  const homeserver = localStorage.getItem("base_url");
 
   const renderInput = ({
     meta: { touched, error } = {},

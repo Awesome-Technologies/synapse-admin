@@ -63,11 +63,12 @@ const dataProvider = {
       user_id: user_id,
       guests: guests,
     };
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     const url = `${homeserver_url}?${stringify(query)}`;
 
     return jsonClient(url).then(({ json }) => ({
@@ -78,11 +79,12 @@ const dataProvider = {
 
   getOne: (resource, params) => {
     console.log("getOne " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return jsonClient(`${homeserver_url}/${params.id}`).then(({ json }) => ({
       data: res.map(json),
     }));
@@ -90,11 +92,12 @@ const dataProvider = {
 
   getMany: (resource, params) => {
     console.log("getMany " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return Promise.all(
       params.ids.map(id => jsonClient(`${homeserver_url}/${id}`))
     ).then(responses => ({
@@ -116,11 +119,12 @@ const dataProvider = {
       }),
     };
 
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     const url = `${homeserver_url}?${stringify(query)}`;
 
     return jsonClient(url).then(({ headers, json }) => ({
@@ -137,11 +141,12 @@ const dataProvider = {
 
   update: (resource, params) => {
     console.log("update " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return jsonClient(`${homeserver_url}/${params.data.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
@@ -152,11 +157,12 @@ const dataProvider = {
 
   updateMany: (resource, params) => {
     console.log("updateMany " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return Promise.all(
       params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
         method: "PUT",
@@ -169,11 +175,12 @@ const dataProvider = {
 
   create: (resource, params) => {
     console.log("create " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return jsonClient(`${homeserver_url}/${params.data.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
@@ -184,11 +191,12 @@ const dataProvider = {
 
   delete: (resource, params) => {
     console.log("delete " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return jsonClient(`${homeserver_url}/${params.id}`, {
       method: "DELETE",
     }).then(({ json }) => ({
@@ -198,11 +206,12 @@ const dataProvider = {
 
   deleteMany: (resource, params) => {
     console.log("deleteMany " + resource);
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = "https://" + homeserver + res.path;
+
+    const homeserver_url = homeserver + res.path;
     return Promise.all(
       params.ids.map(id =>
         jsonClient(`${homeserver_url}/${id}`, {
