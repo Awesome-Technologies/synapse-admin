@@ -25,8 +25,8 @@ const resourceMap = {
       deactivated: !!u.deactivated,
     }),
     data: "users",
-    total: (json, perPage) => {
-      return parseInt(json.next_token, 10) + perPage;
+    total: (json, from, perPage) => {
+      return json.next_token ? parseInt(json.next_token, 10) + perPage : from + json.users.length;
     },
   },
   rooms: {
@@ -55,13 +55,15 @@ function filterNullValues(key, value) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, guests } = params.filter;
+    const { user_id, guests, deactivated } = params.filter;
     const { page, perPage } = params.pagination;
+    const from = (page - 1) * perPage;
     const query = {
-      from: (page - 1) * perPage,
+      from: from,
       limit: perPage,
       user_id: user_id,
       guests: guests,
+      deactivated: deactivated,
     };
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -73,7 +75,7 @@ const dataProvider = {
 
     return jsonClient(url).then(({ json }) => ({
       data: json[res.data].map(res.map),
-      total: res.total(json, perPage),
+      total: res.total(json, from, perPage),
     }));
   },
 
