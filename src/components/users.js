@@ -14,6 +14,9 @@ import {
   TextInput,
   ReferenceField,
   regex,
+  SelectInput,
+  ArrayInput,
+  SimpleFormIterator,
 } from "react-admin";
 
 const UserFilter = props => (
@@ -81,7 +84,17 @@ export const UserEdit = props => (
   <Edit {...props}>
     <SimpleForm>
       <TextInput source="id" disabled />
+      <TextInput source="avatar_url" disabled />
       <TextInput source="displayname" />
+      <ArrayInput source="threepids">
+        <SimpleFormIterator>
+          <SelectInput source="medium" choices={[
+            { id: 'email', name: 'resources.users.email' },
+            { id: 'msisdn', name: 'resources.users.msisdn' },
+          ]} />
+          <TextInput source="address" />
+        </SimpleFormIterator>
+      </ArrayInput>
       <PasswordInput source="password" autoComplete="new-password" />
       <BooleanInput source="admin" />
       <BooleanInput source="deactivated" />
