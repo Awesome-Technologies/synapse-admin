@@ -23,7 +23,12 @@ import {
   ReferenceField,
   SelectInput,
   regex,
+  Pagination,
 } from "react-admin";
+
+const UserPagination = props => (
+  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+);
 
 const UserFilter = props => (
   <Filter {...props}>
@@ -42,6 +47,7 @@ export const UserList = props => (
     filters={<UserFilter />}
     filterDefaultValues={{ guests: true, deactivated: false }}
     bulkActionButtons={false}
+    pagination={<UserPagination />}
   >
     <Datagrid rowClick="edit">
       <ReferenceField
