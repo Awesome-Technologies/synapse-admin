@@ -1,13 +1,29 @@
 import React from "react";
-import { Datagrid, List, TextField } from "react-admin";
+import {
+  Datagrid,
+  List,
+  TextField,
+  TextInput,
+  Filter
+} from "react-admin";
+
+const RoomFilter = (props) => (
+    <Filter {...props}>
+        <TextInput source="search_term" alwaysOn />
+    </Filter>
+);
 
 export const RoomList = props => (
-  <List {...props}>
+  <List
+    {...props}
+    sort={{ field: "alphabetical", order: "DESC" }}
+    filters={<RoomFilter />}
+  >
     <Datagrid>
-      <TextField source="room_id" />
-      <TextField source="name" />
-      <TextField source="canonical_alias" />
-      <TextField source="joined_members" />
+      <TextField source="room_id" sortable={false} />
+      <TextField source="name" sortBy="alphabetical" />
+      <TextField source="canonical_alias" sortable={false} />
+      <TextField source="joined_members" sortBy="size" />
     </Datagrid>
   </List>
 );

@@ -36,6 +36,7 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Members",
+        search_term: "Search",
       },
     },
   },
