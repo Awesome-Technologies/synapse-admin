@@ -3,13 +3,13 @@ import {
   Datagrid,
   List,
   TextField,
-  TextInput,
+  SearchInput,
   Filter
 } from "react-admin";
 
 const RoomFilter = (props) => (
     <Filter {...props}>
-        <TextInput source="search_term" alwaysOn />
+        <SearchInput source="search_term" alwaysOn />
     </Filter>
 );
 
