@@ -42,6 +42,14 @@ const resourceMap = {
       return json.total_rooms;
     },
   },
+  connections: {
+    path: "/_synapse/admin/v1/whois",
+    map: c => ({
+      ...c,
+      id: c.user_id,
+    }),
+    data: "connections",
+  },
 };
 
 function filterNullValues(key, value) {

@@ -38,5 +38,13 @@ export default {
         joined_members: "Members",
       },
     },
+    connections: {
+      name: "Connections",
+      fields: {
+        last_seen: "Date",
+        ip: "IP address",
+        user_agent: "User agent",
+      },
+    },
   },
 };

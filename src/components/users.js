@@ -14,6 +14,7 @@ import {
   TextInput,
   ReferenceField,
   regex,
+  ShowButton,
 } from "react-admin";
 
 const UserFilter = props => (
@@ -56,6 +57,7 @@ export const UserList = props => (
       <BooleanField source="is_guest" sortable={false} />
       <BooleanField source="admin" sortable={false} />
       <BooleanField source="deactivated" sortable={false} />
+      <ShowButton basePath="connections" data="id" />
     </Datagrid>
   </List>
 );

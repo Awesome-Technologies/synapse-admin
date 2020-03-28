@@ -5,6 +5,7 @@ import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
 import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList } from "./components/rooms";
+import { ConnectionsShow } from "./components/connections";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
 import { ViewListIcon as RoomIcon } from "@material-ui/icons/ViewList";
@@ -36,6 +37,7 @@ const App = () => (
       icon={UserIcon}
     />
     <Resource name="rooms" list={RoomList} icon={RoomIcon} />
+    <Resource name="connections" show={ConnectionsShow} />
   </Admin>
 );
 
