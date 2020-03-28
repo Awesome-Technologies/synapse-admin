@@ -14,19 +14,7 @@ import {
   TextInput,
   ReferenceField,
   regex,
-  CreateButton,
-  ExportButton,
-  TopToolbar,
 } from "react-admin";
-
-const ListActions = () => (
-    <TopToolbar>
-        <CreateButton />
-        <ExportButton
-            maxResults={"1500"}
-        />
-    </TopToolbar>
-);
 
 const UserFilter = props => (
   <Filter {...props}>
@@ -45,7 +33,6 @@ export const UserList = props => (
     filters={<UserFilter />}
     filterDefaultValues={{ guests: true, deactivated: false }}
     bulkActionButtons={false}
-    actions={<ListActions />}
   >
     <Datagrid rowClick="edit">
       <ReferenceField
