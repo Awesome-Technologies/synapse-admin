@@ -1,7 +1,7 @@
 import React from "react";
 import { Datagrid, List, TextField, SearchInput, Filter } from "react-admin";
 
-const RoomFilter = (props) => (
+const RoomFilter = props => (
   <Filter {...props}>
     <SearchInput source="search_term" alwaysOn />
   </Filter>
