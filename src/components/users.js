@@ -1,4 +1,6 @@
 import React from "react";
+import PhoneIcon from "@material-ui/icons/Phone";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
 import {
   Datagrid,
   Create,
@@ -14,7 +16,10 @@ import {
   TextInput,
   ReferenceField,
   regex,
-  ShowButton,
+  TabbedForm,
+  FormTab,
+  ArrayField,
+  DateField,
 } from "react-admin";
 
 const UserFilter = props => (
@@ -57,7 +62,6 @@ export const UserList = props => (
       <BooleanField source="is_guest" sortable={false} />
       <BooleanField source="admin" sortable={false} />
       <BooleanField source="deactivated" sortable={false} />
-      <ShowButton basePath="connections" data="id" />
     </Datagrid>
   </List>
 );
@@ -81,12 +85,44 @@ export const UserCreate = props => (
 
 export const UserEdit = props => (
   <Edit {...props}>
-    <SimpleForm>
-      <TextInput source="id" disabled />
-      <TextInput source="displayname" />
-      <PasswordInput source="password" autoComplete="new-password" />
-      <BooleanInput source="admin" />
-      <BooleanInput source="deactivated" />
-    </SimpleForm>
+    <TabbedForm>
+      <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
+        <TextInput source="id" disabled />
+        <TextInput source="displayname" />
+        <PasswordInput source="password" autoComplete="new-password" />
+        <BooleanInput source="admin" />
+        <BooleanInput source="deactivated" />
+      </FormTab>
+      <FormTab label="resources.connections.name" icon={<PhoneIcon />}>
+        <ReferenceField reference="connections" source="id" addLabel={false}>
+          <ArrayField
+            source="devices[].sessions[0].connections"
+            label="resources.connections.name"
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="ip" sortable={false} />
+              <DateField
+                source="last_seen"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <TextField
+                source="user_agent"
+                sortable={false}
+                style={{ width: "100%" }}
+              />
+            </Datagrid>
+          </ArrayField>
+        </ReferenceField>
+      </FormTab>
+    </TabbedForm>
   </Edit>
 );

@@ -15,6 +15,7 @@ export default {
   resources: {
     users: {
       name: "Benutzer",
+      backtolist: "Zurück zur Liste",
       fields: {
         avatar: "Avatar",
         id: "Benutzer-ID",
