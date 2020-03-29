@@ -6,6 +6,7 @@ export default {
     auth: {
       homeserver: "Homeserver",
       welcome: "Welcome to Synapse-admin",
+      force_server: "Force homeserver address",
     },
     users: {
       invalid_user_id:

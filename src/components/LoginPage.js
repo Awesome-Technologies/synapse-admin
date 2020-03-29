@@ -6,6 +6,7 @@ import {
   useLocale,
   useSetLocale,
   useTranslate,
+  BooleanInput,
 } from "react-admin";
 import { Field, Form } from "react-final-form";
 import {
@@ -71,6 +72,7 @@ const LoginPage = ({ theme }) => {
   const setLocale = useSetLocale();
   const translate = useTranslate();
   const homeserver = localStorage.getItem("base_url");
+  const force_server = localStorage.getItem("force_server");
 
   const renderInput = ({
     meta: { touched, error } = {},
@@ -117,7 +119,7 @@ const LoginPage = ({ theme }) => {
 
   return (
     <Form
-      initialValues={{ homeserver: homeserver }}
+      initialValues={{ homeserver: homeserver, force_server: force_server }}
       onSubmit={handleSubmit}
       validate={validate}
       render={({ handleSubmit }) => (
@@ -152,6 +154,14 @@ const LoginPage = ({ theme }) => {
                     name="homeserver"
                     component={renderInput}
                     label={translate("synapseadmin.auth.homeserver")}
+                    disabled={loading}
+                  />
+                </div>
+                  <div className={classes.input}>
+                  <BooleanInput
+                    autoFocus
+                    name="force_server"
+                    label={translate("synapseadmin.auth.force_server")}
                     disabled={loading}
                   />
                 </div>

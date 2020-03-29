@@ -15,9 +15,17 @@ const stripTrailingSlash = str => {
   return str.endsWith("/") ? str.slice(0, -1) : str;
 };
 
+const getBaseUrl = (login_base_url, json_base_url, force_server) => {
+  if (force_server) {
+    return ensureHttpsForUrl(login_base_url);
+  } else {
+    return json_base_url;
+  }
+}
+
 const authProvider = {
   // called when the user attempts to log in
-  login: ({ homeserver, username, password }) => {
+  login: ({ homeserver, force_server, username, password }) => {
     console.log("login ");
     const options = {
       method: "POST",
@@ -34,11 +42,15 @@ const authProvider = {
       ensureHttpsForUrl(trimmed_url) + "/_matrix/client/r0/login";
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
-      const normalized_base_url = stripTrailingSlash(
-        json.well_known["m.homeserver"].base_url
-      );
+      const normalized_base_url = stripTrailingSlash(getBaseUrl(
+        trimmed_url,
+        json.well_known["m.homeserver"].base_url,
+        force_server
+      ));
+
       localStorage.setItem("base_url", normalized_base_url);
       localStorage.setItem("home_server_url", json.home_server);
+      localStorage.setItem("force_server", force_server);
       localStorage.setItem("user_id", json.user_id);
       localStorage.setItem("access_token", json.access_token);
       localStorage.setItem("device_id", json.device_id);
