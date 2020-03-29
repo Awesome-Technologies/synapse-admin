@@ -14,10 +14,12 @@ import {
   TextInput,
   ReferenceField,
   regex,
+  SearchInput,
 } from "react-admin";
 
 const UserFilter = props => (
   <Filter {...props}>
+    <SearchInput source="user_id" alwaysOn />
     <BooleanInput source="guests" alwaysOn />
     <BooleanInput
       label="resources.users.fields.show_deactivated"
