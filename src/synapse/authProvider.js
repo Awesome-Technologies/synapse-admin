@@ -21,7 +21,7 @@ const getBaseUrl = (login_base_url, json_base_url, force_server) => {
   } else {
     return json_base_url;
   }
-}
+};
 
 const authProvider = {
   // called when the user attempts to log in
