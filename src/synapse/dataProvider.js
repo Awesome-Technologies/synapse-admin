@@ -58,7 +58,7 @@ const dataProvider = {
     const { user_id, guests, deactivated, search_term } = params.filter;
     const { page, perPage } = params.pagination;
     var { field, order } = params.sort;
-    if ( order === "DESC") {
+    if (order === "DESC") {
       order = "b";
     } else {
       order = "f";
