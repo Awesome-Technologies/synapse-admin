@@ -39,12 +39,13 @@ const ListActions = ({
   ...rest
 }) => (
   <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-      {filters && cloneElement(filters, {
-          resource,
-          showFilter,
-          displayedFilters,
-          filterValues,
-          context: 'button',
+    {filters &&
+      cloneElement(filters, {
+        resource,
+        showFilter,
+        displayedFilters,
+        filterValues,
+        context: "button",
       })}
     <CreateButton basePath={basePath} />
     <ExportButton
