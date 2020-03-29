@@ -14,14 +14,12 @@ import {
   TextInput,
   ReferenceField,
   regex,
-  Pagination
+  Pagination,
 } from "react-admin";
 
 const UserPagination = props => (
-  <Pagination
-    {...props}
-    rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]}
-  />);
+  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+);
 
 const UserFilter = props => (
   <Filter {...props}>
