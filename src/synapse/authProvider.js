@@ -42,11 +42,13 @@ const authProvider = {
       ensureHttpsForUrl(trimmed_url) + "/_matrix/client/r0/login";
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
-      const normalized_base_url = stripTrailingSlash(getBaseUrl(
-        trimmed_url,
-        json.well_known["m.homeserver"].base_url,
-        force_server
-      ));
+      const normalized_base_url = stripTrailingSlash(
+        getBaseUrl(
+          trimmed_url,
+          json.well_known["m.homeserver"].base_url,
+          force_server
+        )
+      );
 
       localStorage.setItem("base_url", normalized_base_url);
       localStorage.setItem("home_server_url", json.home_server);

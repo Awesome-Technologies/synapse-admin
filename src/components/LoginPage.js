@@ -157,7 +157,7 @@ const LoginPage = ({ theme }) => {
                     disabled={loading}
                   />
                 </div>
-                  <div className={classes.input}>
+                <div className={classes.input}>
                   <BooleanInput
                     autoFocus
                     name="force_server"
