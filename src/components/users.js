@@ -74,12 +74,15 @@ export const UserCreate = props => (
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" />
-          <ArrayInput source="threepids">
+        <ArrayInput source="threepids">
           <SimpleFormIterator>
-            <SelectInput source="medium" choices={[
-              { id: 'email', name: 'resources.users.email' },
-              { id: 'msisdn', name: 'resources.users.msisdn' },
-            ]} />
+            <SelectInput
+              source="medium"
+              choices={[
+                { id: "email", name: "resources.users.email" },
+                { id: "msisdn", name: "resources.users.msisdn" },
+              ]}
+            />
             <TextInput source="address" />
           </SimpleFormIterator>
         </ArrayInput>
@@ -97,10 +100,13 @@ export const UserEdit = props => (
       <TextInput source="displayname" />
       <ArrayInput source="threepids">
         <SimpleFormIterator>
-          <SelectInput source="medium" choices={[
-            { id: 'email', name: 'resources.users.email' },
-            { id: 'msisdn', name: 'resources.users.msisdn' },
-          ]} />
+          <SelectInput
+            source="medium"
+            choices={[
+              { id: "email", name: "resources.users.email" },
+              { id: "msisdn", name: "resources.users.msisdn" },
+            ]}
+          />
           <TextInput source="address" />
         </SimpleFormIterator>
       </ArrayInput>
