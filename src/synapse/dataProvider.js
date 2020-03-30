@@ -26,7 +26,9 @@ const resourceMap = {
     }),
     data: "users",
     total: (json, from, perPage) => {
-      return json.next_token ? parseInt(json.next_token, 10) + perPage : from + json.users.length;
+      return json.next_token
+        ? parseInt(json.next_token, 10) + perPage
+        : from + json.users.length;
     },
   },
   rooms: {
