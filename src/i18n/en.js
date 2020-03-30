@@ -15,6 +15,8 @@ export default {
   resources: {
     users: {
       name: "User |||| Users",
+      email: "Email",
+      msisdn: "Phone",
       fields: {
         avatar: "Avatar",
         id: "User-ID",
@@ -27,6 +29,10 @@ export default {
         user_id: "Search user",
         displayname: "Displayname",
         password: "Password",
+        avatar_url: "Avatar URL",
+        medium: "Medium",
+        threepids: "3PIDs",
+        address: "Address",
       },
     },
     rooms: {

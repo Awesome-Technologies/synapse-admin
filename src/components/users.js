@@ -1,11 +1,13 @@
 import React from "react";
 import {
+  ArrayInput,
   Datagrid,
   Create,
   Edit,
   List,
   Filter,
   SimpleForm,
+  SimpleFormIterator,
   BooleanField,
   BooleanInput,
   ImageField,
@@ -13,6 +15,7 @@ import {
   TextField,
   TextInput,
   ReferenceField,
+  SelectInput,
   regex,
 } from "react-admin";
 
@@ -73,6 +76,18 @@ export const UserCreate = props => (
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />
       <BooleanInput source="admin" />
+      <ArrayInput source="threepids">
+        <SimpleFormIterator>
+          <SelectInput
+            source="medium"
+            choices={[
+              { id: "email", name: "resources.users.email" },
+              { id: "msisdn", name: "resources.users.msisdn" },
+            ]}
+          />
+          <TextInput source="address" />
+        </SimpleFormIterator>
+      </ArrayInput>
     </SimpleForm>
   </Create>
 );
@@ -85,6 +100,18 @@ export const UserEdit = props => (
       <PasswordInput source="password" autoComplete="new-password" />
       <BooleanInput source="admin" />
       <BooleanInput source="deactivated" />
+      <ArrayInput source="threepids">
+        <SimpleFormIterator>
+          <SelectInput
+            source="medium"
+            choices={[
+              { id: "email", name: "resources.users.email" },
+              { id: "msisdn", name: "resources.users.msisdn" },
+            ]}
+          />
+          <TextInput source="address" />
+        </SimpleFormIterator>
+      </ArrayInput>
     </SimpleForm>
   </Edit>
 );
