@@ -84,7 +84,10 @@ export const UserEdit = props => (
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />
       <BooleanInput source="admin" />
-      <BooleanInput source="deactivated" />
+      <BooleanInput
+        source="deactivated"
+        helperText="resources.users.helper.deactivated"
+      />
     </SimpleForm>
   </Edit>
 );

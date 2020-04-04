@@ -28,6 +28,9 @@ export default {
         displayname: "Displayname",
         password: "Password",
       },
+      helper: {
+        deactivated: "Deactivated users cannot be reactivated",
+      },
     },
     rooms: {
       name: "Room |||| Rooms",

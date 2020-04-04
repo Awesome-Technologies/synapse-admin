@@ -28,6 +28,10 @@ export default {
         displayname: "Anzeigename",
         password: "Passwort",
       },
+      helper: {
+        deactivated:
+          "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
+      },
     },
     rooms: {
       name: "Raum |||| Räume",
