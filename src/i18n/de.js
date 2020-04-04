@@ -14,7 +14,10 @@ export default {
   },
   resources: {
     users: {
+      backtolist: "Zurück zur Liste",
       name: "Benutzer",
+      email: "E-Mail",
+      msisdn: "Telefon",
       fields: {
         avatar: "Avatar",
         id: "Benutzer-ID",
@@ -27,6 +30,10 @@ export default {
         user_id: "Suche Benutzer",
         displayname: "Anzeigename",
         password: "Passwort",
+        avatar_url: "Avatar URL",
+        medium: "Medium",
+        threepids: "3PIDs",
+        address: "Adresse",
       },
       helper: {
         deactivated:
@@ -40,6 +47,14 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
+      },
+    },
+    connections: {
+      name: "Verbindungen",
+      fields: {
+        last_seen: "Datum",
+        ip: "IP-Adresse",
+        user_agent: "User Agent",
       },
     },
   },

@@ -1,11 +1,19 @@
 import React from "react";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
+import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
+  ArrayInput,
+  ArrayField,
   Datagrid,
+  DateField,
   Create,
   Edit,
   List,
   Filter,
   SimpleForm,
+  SimpleFormIterator,
+  TabbedForm,
+  FormTab,
   BooleanField,
   BooleanInput,
   ImageField,
@@ -13,6 +21,7 @@ import {
   TextField,
   TextInput,
   ReferenceField,
+  SelectInput,
   regex,
 } from "react-admin";
 
@@ -73,21 +82,80 @@ export const UserCreate = props => (
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />
       <BooleanInput source="admin" />
+      <ArrayInput source="threepids">
+        <SimpleFormIterator>
+          <SelectInput
+            source="medium"
+            choices={[
+              { id: "email", name: "resources.users.email" },
+              { id: "msisdn", name: "resources.users.msisdn" },
+            ]}
+          />
+          <TextInput source="address" />
+        </SimpleFormIterator>
+      </ArrayInput>
     </SimpleForm>
   </Create>
 );
 
 export const UserEdit = props => (
   <Edit {...props}>
-    <SimpleForm>
-      <TextInput source="id" disabled />
-      <TextInput source="displayname" />
-      <PasswordInput source="password" autoComplete="new-password" />
-      <BooleanInput source="admin" />
-      <BooleanInput
-        source="deactivated"
-        helperText="resources.users.helper.deactivated"
-      />
-    </SimpleForm>
+    <TabbedForm>
+      <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
+        <TextInput source="id" disabled />
+        <TextInput source="displayname" />
+        <PasswordInput source="password" autoComplete="new-password" />
+        <BooleanInput source="admin" />
+        <BooleanInput
+          source="deactivated"
+          helperText="resources.users.helper.deactivated"
+        />
+        <ArrayInput source="threepids">
+          <SimpleFormIterator>
+            <SelectInput
+              source="medium"
+              choices={[
+                { id: "email", name: "resources.users.email" },
+                { id: "msisdn", name: "resources.users.msisdn" },
+              ]}
+            />
+            <TextInput source="address" />
+          </SimpleFormIterator>
+        </ArrayInput>
+      </FormTab>
+      <FormTab
+        label="resources.connections.name"
+        icon={<SettingsInputComponentIcon />}
+      >
+        <ReferenceField reference="connections" source="id" addLabel={false}>
+          <ArrayField
+            source="devices[].sessions[0].connections"
+            label="resources.connections.name"
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="ip" sortable={false} />
+              <DateField
+                source="last_seen"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <TextField
+                source="user_agent"
+                sortable={false}
+                style={{ width: "100%" }}
+              />
+            </Datagrid>
+          </ArrayField>
+        </ReferenceField>
+      </FormTab>
+    </TabbedForm>
   </Edit>
 );

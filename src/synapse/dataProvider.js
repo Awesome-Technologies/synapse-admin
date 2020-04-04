@@ -26,7 +26,9 @@ const resourceMap = {
     }),
     data: "users",
     total: (json, from, perPage) => {
-      return json.next_token ? parseInt(json.next_token, 10) + perPage : from + json.users.length;
+      return json.next_token
+        ? parseInt(json.next_token, 10) + perPage
+        : from + json.users.length;
     },
   },
   rooms: {
@@ -41,6 +43,14 @@ const resourceMap = {
     total: json => {
       return json.total_rooms;
     },
+  },
+  connections: {
+    path: "/_synapse/admin/v1/whois",
+    map: c => ({
+      ...c,
+      id: c.user_id,
+    }),
+    data: "connections",
   },
 };
 
