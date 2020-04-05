@@ -32,7 +32,6 @@ export const UserList = props => (
     {...props}
     filters={<UserFilter />}
     filterDefaultValues={{ guests: true, deactivated: false }}
-    bulkActionButtons={false}
   >
     <Datagrid rowClick="edit">
       <ReferenceField
