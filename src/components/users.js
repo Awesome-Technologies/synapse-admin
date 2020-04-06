@@ -23,6 +23,7 @@ import {
   ReferenceField,
   SelectInput,
   regex,
+  Pagination,
   CreateButton,
   ExportButton,
   TopToolbar,
@@ -66,6 +67,9 @@ const ListActions = ({
       maxResults={maxResults}
     />
   </TopToolbar>
+
+const UserPagination = props => (
+  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const UserFilter = props => (
@@ -86,6 +90,7 @@ export const UserList = props => (
     filterDefaultValues={{ guests: true, deactivated: false }}
     bulkActionButtons={false}
     actions={<ListActions maxResults={10000} />}
+    pagination={<UserPagination />}
   >
     <Datagrid rowClick="edit">
       <ReferenceField
@@ -150,7 +155,10 @@ export const UserEdit = props => (
         <TextInput source="displayname" />
         <PasswordInput source="password" autoComplete="new-password" />
         <BooleanInput source="admin" />
-        <BooleanInput source="deactivated" />
+        <BooleanInput
+          source="deactivated"
+          helperText="resources.users.helper.deactivate"
+        />
         <ArrayInput source="threepids">
           <SimpleFormIterator>
             <SelectInput
