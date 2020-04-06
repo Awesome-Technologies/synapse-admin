@@ -67,6 +67,7 @@ const ListActions = ({
       maxResults={maxResults}
     />
   </TopToolbar>
+);
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
