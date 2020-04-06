@@ -7,20 +7,17 @@ const RoomFilter = props => (
   </Filter>
 );
 
-export const RoomList = props => (
-  <List
-    {...props}
-    sort={{ field: "alphabetical", order: "DESC" }}
-    filters={<RoomFilter />}
-  >
-
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 export const RoomList = props => (
-  <List {...props} pagination={<RoomPagination />}>
-
+  <List
+    {...props}
+    sort={{ field: "alphabetical", order: "DESC" }}
+    filters={<RoomFilter />}
+    pagination={<RoomPagination />}
+  >
     <Datagrid>
       <TextField source="room_id" sortable={false} />
       <TextField source="name" sortBy="alphabetical" />
