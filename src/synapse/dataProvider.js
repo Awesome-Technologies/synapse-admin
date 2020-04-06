@@ -55,15 +55,24 @@ function filterNullValues(key, value) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, guests, deactivated, search_term } = params.filter;
+    var { user_id, guests, deactivated, search_term } = params.filter;
     const { page, perPage } = params.pagination;
     var { field, order } = params.sort;
+    const from = (page - 1) * perPage;
+
+    if (search_term) {
+      search_term = encodeURI(search_term);
+    }
+    if (user_id) {
+      user_id = encodeURI(user_id);
+    }
+
     if (order === "DESC") {
       order = "b";
     } else {
       order = "f";
     }
-    const from = (page - 1) * perPage;
+
     const query = {
       from: from,
       limit: perPage,
@@ -71,7 +80,7 @@ const dataProvider = {
       guests: guests,
       deactivated: deactivated,
       order_by: field,
-      search_term: encodeURI(search_term),
+      search_term: search_term,
       dir: order,
     };
     const homeserver = localStorage.getItem("base_url");
