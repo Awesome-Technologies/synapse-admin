@@ -36,8 +36,7 @@ export default {
         address: "Adresse",
       },
       helper: {
-        deactivate:
-          "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
+        deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
       },
     },
     rooms: {
