@@ -71,7 +71,7 @@ const dataProvider = {
       guests: guests,
       deactivated: deactivated,
       order_by: field,
-      search_term: search_term,
+      search_term: encodeURI(search_term),
       dir: order,
     };
     const homeserver = localStorage.getItem("base_url");
