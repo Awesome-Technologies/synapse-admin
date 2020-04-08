@@ -1,8 +1,14 @@
-import React from "react";
-import { Datagrid, List, TextField } from "react-admin";
+import React, { Fragment } from "react";
+import { Datagrid, List, TextField, BulkDeleteButton } from "react-admin";
+
+const RoomBulkActionButtons = props => (
+  <Fragment>
+    <BulkDeleteButton {...props} label="resources.rooms.action.purge" />
+  </Fragment>
+);
 
 export const RoomList = props => (
-  <List {...props}>
+  <List {...props} bulkActionButtons={<RoomBulkActionButtons />}>
     <Datagrid>
       <TextField source="room_id" />
       <TextField source="name" />

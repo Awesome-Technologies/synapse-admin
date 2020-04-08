@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   Datagrid,
   Create,
@@ -14,6 +14,11 @@ import {
   TextInput,
   ReferenceField,
   regex,
+  Toolbar,
+  SaveButton,
+  DeleteButton,
+  ListButton,
+  BulkDeleteButton,
 } from "react-admin";
 
 const UserFilter = props => (
@@ -27,11 +32,34 @@ const UserFilter = props => (
   </Filter>
 );
 
+const UserEditToolbar = props => (
+  <Toolbar {...props} >
+    <SaveButton submitOnEnter={true} />
+    <DeleteButton
+      label="resources.users.action.deactivate"
+      submitOnEnter={false}
+      variant="flat"
+    />
+    <ListButton
+      label="resources.users.action.backtolist"
+      submitOnEnter={false}
+      variant="flat"
+    />
+  </Toolbar>
+);
+
+const UserBulkActionButtons = props => (
+  <Fragment>
+    <BulkDeleteButton {...props} label="resources.users.action.deactivate" />
+  </Fragment>
+);
+
 export const UserList = props => (
   <List
     {...props}
     filters={<UserFilter />}
     filterDefaultValues={{ guests: true, deactivated: false }}
+    bulkActionButtons={<UserBulkActionButtons />}
   >
     <Datagrid rowClick="edit">
       <ReferenceField
@@ -78,7 +106,7 @@ export const UserCreate = props => (
 
 export const UserEdit = props => (
   <Edit {...props}>
-    <SimpleForm>
+    <SimpleForm toolbar={<UserEditToolbar />}>
       <TextInput source="id" disabled />
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />

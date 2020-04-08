@@ -28,6 +28,10 @@ export default {
         displayname: "Anzeigename",
         password: "Passwort",
       },
+      action: {
+        deactivate: "Deaktiviere Benutzer",
+        backtolist: "Zurück zur Liste",
+      },
     },
     rooms: {
       name: "Raum |||| Räume",
@@ -36,6 +40,9 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
+      },
+      action: {
+        purge: "Säubere Raum",
       },
     },
   },
