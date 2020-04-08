@@ -47,7 +47,7 @@ const UserFilter = props => (
 );
 
 const UserEditToolbar = props => (
-  <Toolbar {...props} >
+  <Toolbar {...props}>
     <SaveButton submitOnEnter={true} />
     <DeleteButton
       label="resources.users.action.deactivate"
@@ -133,7 +133,7 @@ export const UserCreate = props => (
 
 export const UserEdit = props => (
   <Edit {...props}>
-    <TabbedForm toolbar={<UserEditToolbar>
+    <TabbedForm toolbar={<UserEditToolbar />}>
       <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
         <TextInput source="id" disabled />
         <TextInput source="displayname" />

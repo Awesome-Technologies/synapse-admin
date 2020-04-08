@@ -1,5 +1,11 @@
 import React, { Fragment } from "react";
-import { Datagrid, List, TextField, BulkDeleteButton, Pagination } from "react-admin";
+import {
+  Datagrid,
+  List,
+  TextField,
+  BulkDeleteButton,
+  Pagination,
+} from "react-admin";
 
 const RoomBulkActionButtons = props => (
   <Fragment>
