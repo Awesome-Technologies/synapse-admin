@@ -26,7 +26,9 @@ const resourceMap = {
     }),
     data: "users",
     total: (json, from, perPage) => {
-      return json.next_token ? parseInt(json.next_token, 10) + perPage : from + json.users.length;
+      return json.next_token
+        ? parseInt(json.next_token, 10) + perPage
+        : from + json.users.length;
     },
     delete_path: "/_synapse/admin/v1/deactivate",
   },
@@ -43,6 +45,14 @@ const resourceMap = {
       return json.total_rooms;
     },
     delete_path: "/_synapse/admin/v1/purge_room",
+  },
+  connections: {
+    path: "/_synapse/admin/v1/whois",
+    map: c => ({
+      ...c,
+      id: c.user_id,
+    }),
+    data: "connections",
   },
 };
 
@@ -133,13 +143,7 @@ const dataProvider = {
 
     return jsonClient(url).then(({ headers, json }) => ({
       data: json,
-      total: parseInt(
-        headers
-          .get("content-range")
-          .split("/")
-          .pop(),
-        10
-      ),
+      total: parseInt(headers.get("content-range").split("/").pop(), 10),
     }));
   },
 

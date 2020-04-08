@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Datagrid, List, TextField, BulkDeleteButton } from "react-admin";
+import { Datagrid, List, TextField, BulkDeleteButton, Pagination } from "react-admin";
 
 const RoomBulkActionButtons = props => (
   <Fragment>
@@ -7,8 +7,16 @@ const RoomBulkActionButtons = props => (
   </Fragment>
 );
 
+const RoomPagination = props => (
+  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+);
+
 export const RoomList = props => (
-  <List {...props} bulkActionButtons={<RoomBulkActionButtons />}>
+  <List
+    {...props}
+    pagination={<RoomPagination />}
+    bulkActionButtons={<RoomBulkActionButtons />}
+  >
     <Datagrid>
       <TextField source="room_id" />
       <TextField source="name" />
