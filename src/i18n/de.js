@@ -37,6 +37,10 @@ export default {
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
+        erase: "DSGVO konformes Löschen der Benutzerdaten",
+      },
+      action: {
+        erase: "Lösche Benutzerdaten",
       },
     },
     rooms: {

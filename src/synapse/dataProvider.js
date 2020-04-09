@@ -30,6 +30,11 @@ const resourceMap = {
         ? parseInt(json.next_token, 10) + perPage
         : from + json.users.length;
     },
+    delete: id => ({
+      endpoint: `/_synapse/admin/v1/deactivate/${id}`,
+      body: { erase: true },
+      method: "POST",
+    }),
   },
   rooms: {
     path: "/_synapse/admin/v1/rooms",
@@ -202,12 +207,24 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.id}`, {
-      method: "DELETE",
-    }).then(({ json }) => ({
-      data: json,
-    }));
+    if ("delete" in res) {
+      const del = res["delete"](params.id);
+      const homeserver_url = homeserver + del.endpoint;
+      return jsonClient(homeserver_url, {
+        method: del.method,
+        body: JSON.stringify(del.body),
+      }).then(({ json }) => ({
+        data: json,
+      }));
+    } else {
+      const homeserver_url = homeserver + res.path;
+      return jsonClient(`${homeserver_url}/${params.id}`, {
+        method: "DELETE",
+        body: JSON.stringify(params.data, filterNullValues),
+      }).then(({ json }) => ({
+        data: json,
+      }));
+    }
   },
 
   deleteMany: (resource, params) => {
@@ -217,17 +234,32 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return Promise.all(
-      params.ids.map(id =>
-        jsonClient(`${homeserver_url}/${id}`, {
-          method: "DELETE",
-          body: JSON.stringify(params.data, filterNullValues),
-        }).then(responses => ({
-          data: responses.map(({ json }) => json),
-        }))
-      )
-    );
+    if ("delete" in res) {
+      return Promise.all(
+        params.ids.map(id => {
+          const del = res["delete"](id);
+          const homeserver_url = homeserver + del.endpoint;
+          return jsonClient(homeserver_url, {
+            method: del.method,
+            body: JSON.stringify(del.body),
+          });
+        })
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      }));
+    } else {
+      const homeserver_url = homeserver + res.path;
+      return Promise.all(
+        params.ids.map(id =>
+          jsonClient(`${homeserver_url}/${id}`, {
+            method: "DELETE",
+            body: JSON.stringify(params.data, filterNullValues),
+          })
+        )
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      }));
+    }
   },
 };
 

@@ -37,6 +37,10 @@ export default {
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
+        erase: "Mark the user as GDPR-erased",
+      },
+      action: {
+        erase: "Erase user data",
       },
     },
     rooms: {
