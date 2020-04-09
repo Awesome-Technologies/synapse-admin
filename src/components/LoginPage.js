@@ -72,7 +72,7 @@ const LoginPage = ({ theme }) => {
   const setLocale = useSetLocale();
   const translate = useTranslate();
   const homeserver = localStorage.getItem("base_url");
-  const force_server = localStorage.getItem("force_server");
+  const force_server = localStorage.getItem("force_server") === "true";
 
   const renderInput = ({
     meta: { touched, error } = {},

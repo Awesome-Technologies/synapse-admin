@@ -15,11 +15,11 @@ const stripTrailingSlash = str => {
   return str.endsWith("/") ? str.slice(0, -1) : str;
 };
 
-const getBaseUrl = (login_base_url, json_base_url, force_server) => {
-  if (force_server) {
-    return ensureHttpsForUrl(login_base_url);
+const getBaseUrl = (login_url, json, force_server) => {
+  if (force_server || typeof json.well_known === "undefined") {
+    return ensureHttpsForUrl(login_url);
   } else {
-    return json_base_url;
+    return json.well_known["m.homeserver"].base_url;
   }
 };
 
@@ -43,11 +43,7 @@ const authProvider = {
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
       const normalized_base_url = stripTrailingSlash(
-        getBaseUrl(
-          trimmed_url,
-          json.well_known["m.homeserver"].base_url,
-          force_server
-        )
+        getBaseUrl(trimmed_url, json, force_server)
       );
 
       localStorage.setItem("base_url", normalized_base_url);
