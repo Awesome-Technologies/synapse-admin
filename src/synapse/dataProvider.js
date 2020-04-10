@@ -30,7 +30,12 @@ const resourceMap = {
         ? parseInt(json.next_token, 10) + perPage
         : from + json.users.length;
     },
-    delete_path: "/_synapse/admin/v1/deactivate",
+    delete_path: id => {
+      return "/_synapse/admin/v1/deactivate/" + id;
+    },
+    delete_body: () => {
+      return JSON.stringify({ erase: true });
+    },
   },
   rooms: {
     path: "/_synapse/admin/v1/rooms",
@@ -44,7 +49,12 @@ const resourceMap = {
     total: json => {
       return json.total_rooms;
     },
-    delete_path: "/_synapse/admin/v1/purge_room",
+    delete_path: () => {
+      return "/_synapse/admin/v1/purge_room";
+    },
+    delete_body: id => {
+      return JSON.stringify({ room_id: `${id}` });
+    },
   },
   connections: {
     path: "/_synapse/admin/v1/whois",
@@ -203,22 +213,17 @@ const dataProvider = {
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = homeserver + res.delete_path;
+    const homeserver_url = homeserver + res.path;
 
-    var request_url;
-    var request_body;
-    if (res.data === "users") {
-      request_url = `${homeserver_url}/${params.id}`;
-      request_body = { erase: true };
-    } else if (res.data === "rooms") {
-      request_url = `${homeserver_url}`;
-      request_body = { room_id: `${params.id}` };
-    }
-
-    return jsonClient(request_url, {
-      method: "POST",
-      body: JSON.stringify(request_body),
-    }).then(({ json }) => ({
+    return jsonClient(
+      res.delete_path(params.id)
+        ? `${homeserver}` + res.delete_path(params.id)
+        : `${homeserver_url}/${params.id}`,
+      {
+        method: res.delete_path(params.id) ? "POST" : "DELETE",
+        body: res.delete_body(params.id),
+      }
+    ).then(({ json }) => ({
       data: json,
     }));
   },
@@ -229,31 +234,23 @@ const dataProvider = {
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
-    const homeserver_url = homeserver + res.delete_path;
+    const homeserver_url = homeserver + res.path;
 
-    if (res.data === "users") {
-      return Promise.all(
-        params.ids.map(id =>
-          jsonClient(`${homeserver_url}/${id}`, {
-            method: "POST",
-            body: JSON.stringify({ erase: true }),
-          }).then(json => ({
-            data: json,
-          }))
-        )
-      );
-    } else if (res.data === "rooms") {
-      return Promise.all(
-        params.ids.map(id =>
-          jsonClient(`${homeserver_url}`, {
-            method: "POST",
-            body: JSON.stringify({ room_id: `${id}` }),
-          }).then(json => ({
-            data: json,
-          }))
-        )
-      );
-    }
+    return Promise.all(
+      params.ids.map(id =>
+        jsonClient(
+          res.delete_path(id)
+            ? `${homeserver}` + res.delete_path(id)
+            : `${homeserver_url}/${id}`,
+          {
+            method: res.delete_path(id) ? "POST" : "DELETE",
+            body: res.delete_body(id),
+          }
+        ).then(json => ({
+          data: json,
+        }))
+      )
+    );
   },
 };
 
