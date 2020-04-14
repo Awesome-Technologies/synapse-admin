@@ -8,8 +8,8 @@ export default {
       welcome: "Willkommen bei Synapse-admin",
     },
     action: {
-      save_and_show: "QR Code erzeugen",
-      save_only: "Speichern",
+      save_and_show: "Speichern und QR Code erzeugen",
+      save_only: "Nur speichern",
       download_pdf: "PDF speichern",
     },
     users: {
@@ -44,4 +44,15 @@ export default {
       },
     },
   },
+  ra: {
+    ...germanMessages.ra,
+    input: {
+      ...germanMessages.ra.input,
+      password: {
+        ...germanMessages.ra.input.password,
+        toggle_hidden: "Anzeigen",
+        toggle_visible: "Verstecken",
+      }
+    }
+  }
 };

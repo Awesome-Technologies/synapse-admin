@@ -17,6 +17,7 @@ import {
   Toolbar,
   regex,
 } from "react-admin";
+import SaveQrButton from "./SaveQrButton";
 
 const UserFilter = props => (
   <Filter {...props}>
@@ -117,7 +118,7 @@ const redirect = (basePath, id, data) => {
 
 const UserCreateToolbar = props => (
   <Toolbar {...props}>
-    <SaveButton
+    <SaveQrButton
       label="synapseadmin.action.save_and_show"
       redirect={redirect}
       submitOnEnter={true}

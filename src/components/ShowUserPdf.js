@@ -47,7 +47,6 @@ const ShowUserPdf = props => {
       marginTop: 15,
     },
     logo: {
-      height: 90,
       width: 90,
       marginTop: 20,
       marginRight: 32,
