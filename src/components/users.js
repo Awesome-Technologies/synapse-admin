@@ -21,10 +21,14 @@ import {
   TextField,
   TextInput,
   ReferenceField,
+  Toolbar,
+  TopToolbar,
   SelectInput,
   regex,
   Pagination,
 } from "react-admin";
+import { ImportButton } from "react-admin-import-csv";
+import { CreateButton, ExportButton } from "ra-ui-materialui";
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -41,6 +45,31 @@ const UserFilter = props => (
   </Filter>
 );
 
+const ListActions = props => {
+  const {
+    className,
+    basePath,
+    total,
+    resource,
+    currentSort,
+    filterValues,
+    exporter
+  } = props;
+  return (
+    <TopToolbar className={className}>
+      <CreateButton basePath={basePath} />
+      <ImportButton {...props} />
+      <ExportButton
+        disabled={total === 0}
+        resource={resource}
+        sort={currentSort}
+        filter={filterValues}
+        exporter={exporter}
+      />
+    </TopToolbar>
+  );
+};
+
 export const UserList = props => (
   <List
     {...props}
@@ -48,6 +77,7 @@ export const UserList = props => (
     filterDefaultValues={{ guests: true, deactivated: false }}
     bulkActionButtons={false}
     pagination={<UserPagination />}
+    actions={<ListActions />}
   >
     <Datagrid rowClick="edit">
       <ReferenceField
