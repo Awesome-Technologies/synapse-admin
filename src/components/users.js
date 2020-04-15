@@ -12,6 +12,7 @@ import {
   PasswordInput,
   TextField,
   TextInput,
+  SearchInput,
   ReferenceField,
   SaveButton,
   Toolbar,
@@ -21,6 +22,7 @@ import SaveQrButton from "./SaveQrButton";
 
 const UserFilter = props => (
   <Filter {...props}>
+    <SearchInput source="q" alwaysOn />
     <BooleanInput source="guests" alwaysOn />
     <BooleanInput
       label="resources.users.fields.show_deactivated"

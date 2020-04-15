@@ -70,6 +70,25 @@ const dataProvider = {
     const homeserver_url = "https://" + homeserver + res.path;
     const url = `${homeserver_url}?${stringify(query)}`;
 
+    // searching for users is not implemented in admin api
+    if (params.filter.q) {
+      console.log("searching");
+      const search_query = { limit: perPage, search_term: params.filter.q };
+      const search_url =
+        homeserver + `/_matrix/client/r0/user_directory/search`;
+      return jsonClient(search_url, {
+        method: "POST",
+        body: JSON.stringify(search_query),
+      }).then(({ json }) => ({
+        data: json["results"].map(u => ({
+          ...u,
+          id: u.user_id,
+          name: u.user_id,
+        })),
+        total: json.limited ? perPage * 2 : json.results.length,
+      }));
+    }
+
     return jsonClient(url).then(({ json }) => ({
       data: json[res.data].map(res.map),
       total: res.total(json, perPage),
