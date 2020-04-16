@@ -76,6 +76,8 @@ const validateAlias = fieldval => {
 }
 
 const removeLeadingWhitespace = fieldVal => fieldVal === undefined ? undefined : fieldVal.trimStart();
+const replaceAllWhitespace = fieldVal => fieldVal === undefined ? undefined : fieldVal.replace(/\s/, "_");
+const removeLeadingSigil = fieldVal => fieldVal === undefined ? undefined : fieldVal.startsWith("#") ? fieldVal.substr(1) : fieldVal;
 
 const validateHasAliasIfPublic = formdata => {
   let errors = {};
@@ -94,7 +96,8 @@ export const RoomCreate = props => (
                  parse={removeLeadingWhitespace}
                  validate={validateDisplayName}/>
       <TextInput source="alias"
-                 parse={removeLeadingWhitespace}
+                 parse={fv => replaceAllWhitespace(removeLeadingSigil(fv)) }
+                 format={fv => fv === "" ? "" : "#" + fv}
                  validate={validateAlias}/>
       <BooleanInput source="public"
                     label="synapseadmin.rooms.make_public"/>
