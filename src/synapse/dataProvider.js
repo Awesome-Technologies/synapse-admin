@@ -83,8 +83,10 @@ const roomCreationProvider = {
     const newParams = { ...params.data,
       public: undefined,
       room_name: undefined,
+      alias: undefined,
 
       name: params.data.room_name,
+      room_alias_name: params.data.alias,
       visibility: params.data.public ? "public" : "private",
     }
 
