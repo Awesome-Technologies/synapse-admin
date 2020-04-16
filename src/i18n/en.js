@@ -16,6 +16,12 @@ export default {
       invalid_user_id:
         "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",
     },
+    rooms: {
+      room_name: "Room Name",
+      make_public: "Make room public",
+      room_name_required:
+        "Must be provided",
+    }
   },
   resources: {
     users: {

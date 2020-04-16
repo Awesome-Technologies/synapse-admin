@@ -16,6 +16,12 @@ export default {
       invalid_user_id:
         "Muss eine vollständige Matrix Benutzer-ID sein, z.B. @benutzer_id:homeserver",
     },
+    rooms: {
+      room_name: "Raumname",
+      make_public: "Öffentlicher Raum",
+      room_name_required:
+        "Muss angegeben werden",
+    }
   },
   resources: {
     users: {

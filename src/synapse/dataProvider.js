@@ -67,6 +67,36 @@ function filterNullValues(key, value) {
   return value;
 }
 
+const roomCreationMap = {
+  path: "/_matrix/client/r0/createRoom",
+  map: r => ({
+    room_id: r.room_id
+  })
+};
+
+const roomCreationProvider = {
+  create: (resource, params) => {
+    const homeserver = localStorage.getItem("home_server");
+
+    const homeserver_url = "https://" + homeserver + roomCreationMap.path;
+
+    const newParams = { ...params.data,
+      public: undefined,
+      room_name: undefined,
+
+      name: params.data.room_name,
+      visibility: params.data.public ? "public" : "private",
+    }
+
+    return jsonClient(homeserver_url, {
+      method: "POST",
+      body: JSON.stringify(newParams, filterNullValues),
+    }).then(({ json }) => ({
+      data: roomCreationMap.map(json),
+    }));
+  }
+};
+
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
@@ -211,6 +241,16 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const homeserver_url = homeserver + res.path;
+
+    /* Special handling for rooms, as creating a room
+       is a POST request rather than put, and goes through
+       the client-server API rather than the admin API. */
+    if (resource === "rooms") {
+      console.log("want to create a room!");
+      console.log(params);
+      return roomCreationProvider.create(resource, params);
+    }
+
     return jsonClient(`${homeserver_url}/${params.data.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
