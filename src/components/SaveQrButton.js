@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { SaveButton, useCreate, useRedirect, useNotify } from "react-admin";
 
 const SaveQrButton = props => {
-  const [create] = useCreate('users');
+  const [create] = useCreate("users");
   const redirectTo = useRedirect();
   const notify = useNotify();
   const { basePath } = props;
@@ -15,10 +15,13 @@ const SaveQrButton = props => {
         },
         {
           onSuccess: ({ data: newRecord }) => {
-            notify('ra.notification.created', 'info', {
+            notify("ra.notification.created", "info", {
               smart_count: 1,
             });
-            redirectTo(redirect, basePath, newRecord.id, { password: values.password, ...newRecord });
+            redirectTo(redirect, basePath, newRecord.id, {
+              password: values.password,
+              ...newRecord,
+            });
           },
         }
       );
