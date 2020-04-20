@@ -39,7 +39,7 @@ const UserPagination = props => (
 
 const UserFilter = props => (
   <Filter {...props}>
-    <SearchInput source="q" alwaysOn />
+    <SearchInput source="user_id" alwaysOn />
     <BooleanInput source="guests" alwaysOn />
     <BooleanInput
       label="resources.users.fields.show_deactivated"
@@ -71,24 +71,9 @@ export const UserList = props => (
     pagination={<UserPagination />}
   >
     <Datagrid rowClick="edit">
-      <ReferenceField
-        source="Avatar"
-        reference="users"
-        link={false}
-        sortable={false}
-      >
-        <ImageField source="avatar_url" title="displayname" />
-      </ReferenceField>
-      <TextField source="id" />
-      {/* Hack since the users endpoint does not give displaynames in the list*/}
-      <ReferenceField
-        source="name"
-        reference="users"
-        link={false}
-        sortable={false}
-      >
-        <TextField source="displayname" />
-      </ReferenceField>
+      <ImageField source="avatar_url" title="displayname" />
+      <TextField source="id" sortable={false} />
+      <TextField source="displayname" />
       <BooleanField source="is_guest" sortable={false} />
       <BooleanField source="admin" sortable={false} />
       <BooleanField source="deactivated" sortable={false} />
