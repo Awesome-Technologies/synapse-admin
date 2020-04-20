@@ -60,5 +60,21 @@ export default {
         user_agent: "User Agent",
       },
     },
+    servernotices: {
+      name: "Serverbenachrichtigungen",
+      send: "Servernachricht versenden",
+      fields: {
+        body: "Nachricht",
+      },
+      action: {
+        send: "Sende Nachricht",
+        send_success: "Nachricht erfolgreich versendet.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
+      },
+      helper: {
+        send:
+          'Sendet eine Serverbenachrichtigung an die ausgewählten Nutzer. Hierfür muss das Feature "Server Notices" auf dem Server aktiviert sein.',
+      },
+    },
   },
 };

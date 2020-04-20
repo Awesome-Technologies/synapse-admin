@@ -57,6 +57,24 @@ const resourceMap = {
     }),
     data: "connections",
   },
+  servernotices: {
+    map: s => ({
+      ...s,
+      id: s.user_id,
+    }),
+    data: "servernotices",
+    update: (id, params) => ({
+      endpoint: `/_synapse/admin/v1/send_server_notice`,
+      body: {
+        user_id: `${id}`,
+        content: {
+          msgtype: "m.text",
+          body: `${params.body}`,
+        },
+      },
+      method: "POST",
+    }),
+  },
 };
 
 function filterNullValues(key, value) {
@@ -146,7 +164,13 @@ const dataProvider = {
 
     return jsonClient(url).then(({ headers, json }) => ({
       data: json,
-      total: parseInt(headers.get("content-range").split("/").pop(), 10),
+      total: parseInt(
+        headers
+          .get("content-range")
+          .split("/")
+          .pop(),
+        10
+      ),
     }));
   },
 
@@ -157,13 +181,24 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.data.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
-    }).then(({ json }) => ({
-      data: res.map(json),
-    }));
+    if ("update" in res) {
+      const upd = res["update"](params.data.id, params.data);
+      const homeserver_url = homeserver + upd.endpoint;
+      return jsonClient(homeserver_url, {
+        method: upd.method,
+        body: JSON.stringify(upd.body),
+      }).then(({ json }) => ({
+        data: json,
+      }));
+    } else {
+      const homeserver_url = homeserver + res.path;
+      return jsonClient(`${homeserver_url}/${params.data.id}`, {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      }).then(({ json }) => ({
+        data: res.map(json),
+      }));
+    }
   },
 
   updateMany: (resource, params) => {
@@ -173,15 +208,30 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return Promise.all(
-      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
-        method: "PUT",
-        body: JSON.stringify(params.data, filterNullValues),
-      })
-    ).then(responses => ({
-      data: responses.map(({ json }) => json),
-    }));
+    if ("update" in res) {
+      return Promise.all(
+        params.ids.map(id => {
+          const upd = res["update"](id, params.data);
+          const homeserver_url = homeserver + upd.endpoint;
+          return jsonClient(homeserver_url, {
+            method: upd.method,
+            body: JSON.stringify(upd.body),
+          });
+        })
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      }));
+    } else {
+      const homeserver_url = homeserver + res.path;
+      return Promise.all(
+        params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
+          method: "PUT",
+          body: JSON.stringify(params.data, filterNullValues),
+        })
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      }));
+    }
   },
 
   create: (resource, params) => {
