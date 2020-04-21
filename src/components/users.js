@@ -135,8 +135,17 @@ export const UserCreate = props => (
   </Create>
 );
 
+const UserTitle = ({ record }) => {
+  const translate = useTranslate();
+  return (
+    <span>
+      {translate("resources.users.name")}{" "}
+      {record ? `"${record.displayname}"` : ""}
+    </span>
+  );
+};
 export const UserEdit = props => (
-  <Edit {...props}>
+  <Edit {...props} title={<UserTitle />}>
     <TabbedForm toolbar={<UserEditToolbar />}>
       <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
         <TextInput source="id" disabled />
