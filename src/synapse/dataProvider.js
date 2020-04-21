@@ -45,9 +45,17 @@ const resourceMap = {
       members: r.joined_members,
     }),
     data: "rooms",
-    total: json => {
-      return json.total_rooms;
-    },
+    total: json => json.total_rooms,
+    create: params => ({
+      method: "POST",
+      endpoint: "/_matrix/client/r0/createRoom",
+      body: {
+        name: params.data.name,
+        room_alias_name: params.data.canonical_alias,
+        visibility: params.data.public ? "public" : "private",
+      },
+      map: r => ({ id: r.room_id }),
+    }),
   },
   connections: {
     path: "/_synapse/admin/v1/whois",
@@ -66,38 +74,6 @@ function filterNullValues(key, value) {
   }
   return value;
 }
-
-const roomCreationMap = {
-  path: "/_matrix/client/r0/createRoom",
-  map: r => ({
-    room_id: r.room_id
-  })
-};
-
-const roomCreationProvider = {
-  create: (resource, params) => {
-    const homeserver = localStorage.getItem("home_server_url");
-
-    const homeserver_url = "https://" + homeserver + roomCreationMap.path;
-
-    const newParams = { ...params.data,
-      public: undefined,
-      room_name: undefined,
-      alias: undefined,
-
-      name: params.data.room_name,
-      room_alias_name: params.data.alias,
-      visibility: params.data.public ? "public" : "private",
-    }
-
-    return jsonClient(homeserver_url, {
-      method: "POST",
-      body: JSON.stringify(newParams, filterNullValues),
-    }).then(({ json }) => ({
-      data: roomCreationMap.map(json),
-    }));
-  }
-};
 
 const dataProvider = {
   getList: (resource, params) => {
@@ -242,23 +218,24 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-
-    /* Special handling for rooms, as creating a room
-       is a POST request rather than put, and goes through
-       the client-server API rather than the admin API. */
-    if (resource === "rooms") {
-      console.log("want to create a room!");
-      console.log(params);
-      return roomCreationProvider.create(resource, params);
+    if ("create" in res) {
+      const create = res["create"](params);
+      const homeserver_url = homeserver + create.endpoint;
+      return jsonClient(homeserver_url, {
+        method: create.method,
+        body: JSON.stringify(create.body, filterNullValues),
+      }).then(({ json }) => ({
+        data: create.map(json),
+      }));
+    } else {
+      const homeserver_url = homeserver + res.path;
+      return jsonClient(`${homeserver_url}/${params.data.id}`, {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      }).then(({ json }) => ({
+        data: res.map(json),
+      }));
     }
-
-    return jsonClient(`${homeserver_url}/${params.data.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
-    }).then(({ json }) => ({
-      data: res.map(json),
-    }));
   },
 
   delete: (resource, params) => {

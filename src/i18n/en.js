@@ -19,15 +19,12 @@ export default {
     rooms: {
       room_name: "Room Name",
       make_public: "Make room public",
-      room_name_required:
-        "Must be provided",
-      alias_required_if_public:
-        "Must be provided for a public room",
-      alias:
-        "Alias",
+      room_name_required: "Must be provided",
+      alias_required_if_public: "Must be provided for a public room",
+      alias: "Alias",
       alias_too_long:
-        "Must not exceed 255 bytes including the domain of the homeserver."
-    }
+        "Must not exceed 255 bytes including the domain of the homeserver.",
+    },
   },
   resources: {
     users: {

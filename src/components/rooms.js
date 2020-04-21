@@ -25,15 +25,12 @@ export const RoomList = props => (
   </List>
 );
 
-function generateRoomRecord() {
-  return {
-    room_name: "",
-    public: true,
-    alias: "",
-  }
-}
-
-const validateDisplayName = fieldval => fieldval === undefined ? "synapseadmin.rooms.room_name_required" : fieldval.length === 0 ? "synapseadmin.rooms.room_name_required" : undefined;
+const validateDisplayName = fieldval =>
+  fieldval === undefined
+    ? "synapseadmin.rooms.room_name_required"
+    : fieldval.length === 0
+    ? "synapseadmin.rooms.room_name_required"
+    : undefined;
 
 function approximateAliasLength(alias, homeserver) {
   /* TODO maybe handle punycode in homeserver URL */
@@ -47,8 +44,7 @@ function approximateAliasLength(alias, homeserver) {
   // heuristic.
   try {
     te = new TextEncoder();
-  }
-  catch (err) {
+  } catch (err) {
     if (err instanceof ReferenceError) {
       te = undefined;
     }
@@ -56,12 +52,7 @@ function approximateAliasLength(alias, homeserver) {
 
   const aliasLength = te === undefined ? alias.length : te.encode(alias).length;
 
-  return (
-    "#".length +
-      aliasLength +
-      ":".length +
-      homeserver.length
-  );
+  return "#".length + aliasLength + ":".length + homeserver.length;
 }
 
 const validateAlias = fieldval => {
@@ -73,34 +64,47 @@ const validateAlias = fieldval => {
   if (approximateAliasLength(fieldval, homeserver) > 255) {
     return "synapseadmin.rooms.alias_too_long";
   }
-}
+};
 
-const removeLeadingWhitespace = fieldVal => fieldVal === undefined ? undefined : fieldVal.trimStart();
-const replaceAllWhitespace = fieldVal => fieldVal === undefined ? undefined : fieldVal.replace(/\s/, "_");
-const removeLeadingSigil = fieldVal => fieldVal === undefined ? undefined : fieldVal.startsWith("#") ? fieldVal.substr(1) : fieldVal;
+const removeLeadingWhitespace = fieldVal =>
+  fieldVal === undefined ? undefined : fieldVal.trimStart();
+const replaceAllWhitespace = fieldVal =>
+  fieldVal === undefined ? undefined : fieldVal.replace(/\s/, "_");
+const removeLeadingSigil = fieldVal =>
+  fieldVal === undefined
+    ? undefined
+    : fieldVal.startsWith("#")
+    ? fieldVal.substr(1)
+    : fieldVal;
 
 const validateHasAliasIfPublic = formdata => {
   let errors = {};
   if (formdata.public) {
-    if (formdata.alias === undefined || formdata.alias.trim().length === 0) {
-      errors.alias = "synapseadmin.rooms.alias_required_if_public"
+    if (
+      formdata.canonical_alias === undefined ||
+      formdata.canonical_alias.trim().length === 0
+    ) {
+      errors.canonical_alias = "synapseadmin.rooms.alias_required_if_public";
     }
   }
   return errors;
-}
+};
 
 export const RoomCreate = props => (
-  <Create record={generateRoomRecord()} {...props}>
+  <Create {...props}>
     <SimpleForm validate={validateHasAliasIfPublic}>
-      <TextInput source="room_name"
-                 parse={removeLeadingWhitespace}
-                 validate={validateDisplayName}/>
-      <TextInput source="alias"
-                 parse={fv => replaceAllWhitespace(removeLeadingSigil(fv)) }
-                 format={fv => fv === "" ? "" : "#" + fv}
-                 validate={validateAlias}/>
-      <BooleanInput source="public"
-                    label="synapseadmin.rooms.make_public"/>
+      <TextInput
+        source="name"
+        parse={removeLeadingWhitespace}
+        validate={validateDisplayName}
+      />
+      <TextInput
+        source="canonical_alias"
+        parse={fv => replaceAllWhitespace(removeLeadingSigil(fv))}
+        validate={validateAlias}
+        placeholder="#"
+      />
+      <BooleanInput source="public" label="synapseadmin.rooms.make_public" />
     </SimpleForm>
   </Create>
 );
