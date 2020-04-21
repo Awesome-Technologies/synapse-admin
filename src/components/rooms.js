@@ -68,7 +68,7 @@ const validateAlias = fieldval => {
   if (fieldval === undefined) {
     return undefined;
   }
-  const homeserver = localStorage.getItem("home_server");
+  const homeserver = localStorage.getItem("home_server_url");
 
   if (approximateAliasLength(fieldval, homeserver) > 255) {
     return "synapseadmin.rooms.alias_too_long";

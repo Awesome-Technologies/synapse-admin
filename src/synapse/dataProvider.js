@@ -76,7 +76,7 @@ const roomCreationMap = {
 
 const roomCreationProvider = {
   create: (resource, params) => {
-    const homeserver = localStorage.getItem("home_server");
+    const homeserver = localStorage.getItem("home_server_url");
 
     const homeserver_url = "https://" + homeserver + roomCreationMap.path;
 

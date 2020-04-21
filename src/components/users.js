@@ -97,7 +97,7 @@ export const UserList = props => (
 );
 
 function generateRandomUser() {
-  const homeserver = localStorage.getItem("home_server");
+  const homeserver = localStorage.getItem("home_server_url");
   const user_id =
     "@" +
     Array(8)
