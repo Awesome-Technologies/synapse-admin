@@ -17,6 +17,7 @@ export default {
         "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",
     },
     rooms: {
+      details: "Room Details",
       room_name: "Room Name",
       make_public: "Make room public",
       room_name_required: "Must be provided",

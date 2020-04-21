@@ -37,8 +37,6 @@ const resourceMap = {
     map: r => ({
       ...r,
       id: r.room_id,
-      alias: r.canonical_alias,
-      members: r.joined_members,
     }),
     data: "rooms",
     total: json => json.total_rooms,

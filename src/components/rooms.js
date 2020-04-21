@@ -1,14 +1,22 @@
 import React from "react";
 import {
+  BooleanField,
   BooleanInput,
   Create,
   Datagrid,
   List,
   Pagination,
+  ReferenceArrayField,
+  Show,
   SimpleForm,
+  Tab,
+  TabbedShowLayout,
   TextField,
   TextInput,
+  useTranslate,
 } from "react-admin";
+import ViewListIcon from "@material-ui/icons/ViewList";
+import UserIcon from "@material-ui/icons/Group";
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -16,7 +24,7 @@ const RoomPagination = props => (
 
 export const RoomList = props => (
   <List {...props} pagination={<RoomPagination />}>
-    <Datagrid>
+    <Datagrid rowClick="show">
       <TextField source="room_id" />
       <TextField source="name" />
       <TextField source="canonical_alias" />
@@ -107,4 +115,34 @@ export const RoomCreate = props => (
       <BooleanInput source="public" label="synapseadmin.rooms.make_public" />
     </SimpleForm>
   </Create>
+);
+
+const RoomTitle = ({ record }) => {
+  const translate = useTranslate();
+  return (
+    <span>
+      {translate("resources.rooms.name", 1)} {record ? `"${record.name}"` : ""}
+    </span>
+  );
+};
+export const RoomShow = props => (
+  <Show {...props} title={<RoomTitle />}>
+    <TabbedShowLayout>
+      <Tab label="synapseadmin.rooms.details" icon={<ViewListIcon />}>
+        <TextField source="id" disabled />
+        <TextField source="name" />
+        <TextField source="canonical_alias" />
+        <TextField source="join_rules" />
+        <TextField source="guest_access" />
+      </Tab>
+      <Tab label="resources.rooms.fields.joined_members" icon={<UserIcon />}>
+        <ReferenceArrayField reference="users" source="members">
+          <Datagrid>
+            <TextField source="id" />
+            <TextField source="displayname" />
+          </Datagrid>
+        </ReferenceArrayField>
+      </Tab>
+    </TabbedShowLayout>
+  </Show>
 );
