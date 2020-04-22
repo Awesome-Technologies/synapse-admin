@@ -64,7 +64,7 @@ export default {
       name: "Server Notices",
       send: "Send server notices",
       fields: {
-        body: "Nachricht",
+        body: "Message",
       },
       action: {
         send: "Send note",

@@ -1,8 +1,7 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import MessageIcon from "@material-ui/icons/Message";
-import IconCancel from "@material-ui/icons/Cancel";
+import ServerNoticesButton from "./ServerNotices";
 import {
   ArrayInput,
   ArrayField,
@@ -31,107 +30,11 @@ import {
   regex,
   useTranslate,
   Pagination,
-  Button,
-  useNotify,
-  useUnselectAll,
-  required,
-  fetchStart,
-  fetchEnd,
 } from "react-admin";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import dataProvider from "../synapse/dataProvider.js";
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
-
-const ServernoticesButton = ({ record, selectedIds, method = "single" }) => {
-  const [open, setOpen] = useState(false);
-  const notify = useNotify();
-  const unselectAll = useUnselectAll();
-  const translate = useTranslate();
-  const handleDialogOpen = () => setOpen(true);
-  const handleDialogClose = () => setOpen(false);
-  const handleConfirm = values => {
-    fetchStart();
-
-    if (method === "multi") {
-      console.log(method);
-      dataProvider
-        .updateMany("servernotices", { ids: selectedIds, data: values })
-        .then(({ response }) => {
-          notify("resources.servernotices.action.send_success");
-          unselectAll("users");
-        })
-        .catch(error => {
-          notify("resources.servernotices.action.send_failure", "error");
-        })
-        .finally(() => {
-          fetchEnd();
-        });
-    } else {
-      dataProvider
-        .update("servernotices", { data: { ...values, ...{ id: record.id } } })
-        .then(({ response }) => {
-          notify("resources.servernotices.action.send_success");
-        })
-        .catch(error => {
-          notify("resources.servernotices.action.send_failure", "error");
-        })
-        .finally(() => {
-          fetchEnd();
-        });
-    }
-    handleDialogClose();
-  };
-
-  const ServernoticesToolbar = props => (
-    <Toolbar {...props}>
-      <SaveButton
-        label="resources.servernotices.action.send"
-        submitOnEnter={false}
-      />
-      <Button label="ra.action.cancel" onClick={handleDialogClose}>
-        <IconCancel />
-      </Button>
-    </Toolbar>
-  );
-
-  return (
-    <Fragment>
-      <Button label="resources.servernotices.send" onClick={handleDialogOpen}>
-        <MessageIcon />
-      </Button>
-      <Dialog fullWidth open={open} onClose={handleDialogClose}>
-        <DialogTitle>
-          {translate("resources.servernotices.action.send")}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {translate("resources.servernotices.helper.send")}
-          </DialogContentText>
-          <SimpleForm
-            toolbar={<ServernoticesToolbar />}
-            submitOnEnter={false}
-            redirect={false}
-            save={handleConfirm}
-          >
-            <TextInput
-              source="body"
-              label="resources.servernotices.fields.body"
-              multiline
-              resettable
-              validate={required()}
-            />
-          </SimpleForm>
-        </DialogContent>
-      </Dialog>
-    </Fragment>
-  );
-};
 
 const UserFilter = props => (
   <Filter {...props}>
@@ -148,7 +51,7 @@ const UserBulkActionButtons = props => {
   const translate = useTranslate();
   return (
     <Fragment>
-      <ServernoticesButton {...props} method="multi" />
+      <ServerNoticesButton {...props} />
       <BulkDeleteButton
         {...props}
         label="resources.users.action.erase"
@@ -207,7 +110,7 @@ const UserEditToolbar = props => {
         label="resources.users.action.erase"
         title={translate("resources.users.helper.erase")}
       />
-      <ServernoticesButton {...props} method="single" />
+      <ServerNoticesButton {...props} />
     </Toolbar>
   );
 };

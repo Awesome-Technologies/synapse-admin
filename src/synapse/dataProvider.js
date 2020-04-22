@@ -58,13 +58,9 @@ const resourceMap = {
     data: "connections",
   },
   servernotices: {
-    map: s => ({
-      ...s,
-      id: s.user_id,
-    }),
     data: "servernotices",
-    update: (id, params) => ({
-      endpoint: `/_synapse/admin/v1/send_server_notice`,
+    sendMessage: (id, params) => ({
+      endpoint: "/_synapse/admin/v1/send_server_notice",
       body: {
         user_id: `${id}`,
         content: {
@@ -181,24 +177,13 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    if ("update" in res) {
-      const upd = res["update"](params.data.id, params.data);
-      const homeserver_url = homeserver + upd.endpoint;
-      return jsonClient(homeserver_url, {
-        method: upd.method,
-        body: JSON.stringify(upd.body),
-      }).then(({ json }) => ({
-        data: json,
-      }));
-    } else {
-      const homeserver_url = homeserver + res.path;
-      return jsonClient(`${homeserver_url}/${params.data.id}`, {
-        method: "PUT",
-        body: JSON.stringify(params.data, filterNullValues),
-      }).then(({ json }) => ({
-        data: res.map(json),
-      }));
-    }
+    const homeserver_url = homeserver + res.path;
+    return jsonClient(`${homeserver_url}/${params.data.id}`, {
+      method: "PUT",
+      body: JSON.stringify(params.data, filterNullValues),
+    }).then(({ json }) => ({
+      data: res.map(json),
+    }));
   },
 
   updateMany: (resource, params) => {
@@ -208,30 +193,15 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    if ("update" in res) {
-      return Promise.all(
-        params.ids.map(id => {
-          const upd = res["update"](id, params.data);
-          const homeserver_url = homeserver + upd.endpoint;
-          return jsonClient(homeserver_url, {
-            method: upd.method,
-            body: JSON.stringify(upd.body),
-          });
-        })
-      ).then(responses => ({
-        data: responses.map(({ json }) => json),
-      }));
-    } else {
-      const homeserver_url = homeserver + res.path;
-      return Promise.all(
-        params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
-          method: "PUT",
-          body: JSON.stringify(params.data, filterNullValues),
-        })
-      ).then(responses => ({
-        data: responses.map(({ json }) => json),
-      }));
-    }
+    const homeserver_url = homeserver + res.path;
+    return Promise.all(
+      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      })
+    ).then(responses => ({
+      data: responses.map(({ json }) => json),
+    }));
   },
 
   create: (resource, params) => {
@@ -310,6 +280,44 @@ const dataProvider = {
         data: responses.map(({ json }) => json),
       }));
     }
+  },
+
+  sendMessage: (resource, params) => {
+    console.log("sendMessage " + resource);
+    const homeserver = localStorage.getItem("base_url");
+    if (!homeserver || !(resource in resourceMap)) return Promise.reject();
+
+    const res = resourceMap[resource];
+
+    const sendmsg = res["sendMessage"](params.id, params.data);
+    const homeserver_url = homeserver + sendmsg.endpoint;
+    return jsonClient(homeserver_url, {
+      method: sendmsg.method,
+      body: JSON.stringify(sendmsg.body),
+    }).then(({ json }) => ({
+      data: json,
+    }));
+  },
+
+  sendMessageMany: (resource, params) => {
+    console.log("sendMessageMany " + resource);
+    const homeserver = localStorage.getItem("base_url");
+    if (!homeserver || !(resource in resourceMap)) return Promise.reject();
+
+    const res = resourceMap[resource];
+
+    return Promise.all(
+      params.ids.map(id => {
+        const sendmsg = res["sendMessage"](id, params.data);
+        const homeserver_url = homeserver + sendmsg.endpoint;
+        return jsonClient(homeserver_url, {
+          method: sendmsg.method,
+          body: JSON.stringify(sendmsg.body),
+        });
+      })
+    ).then(responses => ({
+      data: responses.map(({ json }) => json),
+    }));
   },
 };
 
