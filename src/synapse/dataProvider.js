@@ -62,6 +62,20 @@ const resourceMap = {
     }),
     data: "connections",
   },
+  servernotices: {
+    map: n => ({ id: n.event_id }),
+    create: data => ({
+      endpoint: "/_synapse/admin/v1/send_server_notice",
+      body: {
+        user_id: data.id,
+        content: {
+          msgtype: "m.text",
+          body: data.body,
+        },
+      },
+      method: "POST",
+    }),
+  },
 };
 
 function filterNullValues(key, value) {

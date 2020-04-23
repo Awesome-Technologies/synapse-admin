@@ -63,5 +63,21 @@ export default {
         user_agent: "User agent",
       },
     },
+    servernotices: {
+      name: "Server Notices",
+      send: "Send server notices",
+      fields: {
+        body: "Message",
+      },
+      action: {
+        send: "Send note",
+        send_success: "Server notice successfully sent.",
+        send_failure: "An error has occurred.",
+      },
+      helper: {
+        send:
+          'Sends a server notice to the selected users. The feature "Server Notices" has to be activated at the server.',
+      },
+    },
   },
 };
