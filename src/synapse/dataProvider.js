@@ -30,6 +30,11 @@ const resourceMap = {
         ? parseInt(json.next_token, 10) + perPage
         : from + json.users.length;
     },
+    create: data => ({
+      endpoint: `/_synapse/admin/v2/users/${data.id}`,
+      body: data,
+      method: "PUT",
+    }),
     delete: id => ({
       endpoint: `/_synapse/admin/v1/deactivate/${id}`,
       body: { erase: true },
@@ -190,11 +195,13 @@ const dataProvider = {
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
+    if (!("create" in res)) return Promise.reject();
 
-    const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${params.data.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
+    const create = res["create"](params.data);
+    const endpoint_url = homeserver + create.endpoint;
+    return jsonClient(endpoint_url, {
+      method: create.method,
+      body: JSON.stringify(create.body, filterNullValues),
     }).then(({ json }) => ({
       data: res.map(json),
     }));
