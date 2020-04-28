@@ -1,15 +1,17 @@
 import React from "react";
 import {
-  BooleanField,
+  AutocompleteArrayInput,
   BooleanInput,
   Create,
   Datagrid,
+  FormTab,
   List,
   Pagination,
   ReferenceArrayField,
+  ReferenceArrayInput,
   Show,
-  SimpleForm,
   Tab,
+  TabbedForm,
   TabbedShowLayout,
   TextField,
   TextInput,
@@ -100,20 +102,37 @@ const validateHasAliasIfPublic = formdata => {
 
 export const RoomCreate = props => (
   <Create {...props}>
-    <SimpleForm validate={validateHasAliasIfPublic}>
-      <TextInput
-        source="name"
-        parse={removeLeadingWhitespace}
-        validate={validateDisplayName}
-      />
-      <TextInput
-        source="canonical_alias"
-        parse={fv => replaceAllWhitespace(removeLeadingSigil(fv))}
-        validate={validateAlias}
-        placeholder="#"
-      />
-      <BooleanInput source="public" label="synapseadmin.rooms.make_public" />
-    </SimpleForm>
+    <TabbedForm validate={validateHasAliasIfPublic}>
+      <FormTab label="synapseadmin.rooms.details" icon={<ViewListIcon />}>
+        <TextInput
+          source="name"
+          parse={removeLeadingWhitespace}
+          validate={validateDisplayName}
+        />
+        <TextInput
+          source="canonical_alias"
+          parse={fv => replaceAllWhitespace(removeLeadingSigil(fv))}
+          validate={validateAlias}
+          placeholder="#"
+        />
+        <BooleanInput source="public" label="synapseadmin.rooms.make_public" />
+      </FormTab>
+      <FormTab
+        label="resources.rooms.fields.invite_members"
+        icon={<UserIcon />}
+      >
+        <ReferenceArrayInput
+          reference="users"
+          source="invitees"
+          filterToQuery={searchText => ({ user_id: searchText })}
+        >
+          <AutocompleteArrayInput
+            optionText="displayname"
+            suggestionText="displayname"
+          />
+        </ReferenceArrayInput>
+      </FormTab>
+    </TabbedForm>
   </Create>
 );
 

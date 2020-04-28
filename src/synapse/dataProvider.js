@@ -23,6 +23,7 @@ const resourceMap = {
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
+      displayname: u.display_name || u.displayname,
     }),
     data: "users",
     total: json => json.total,
@@ -40,16 +41,23 @@ const resourceMap = {
     }),
     data: "rooms",
     total: json => json.total_rooms,
-    create: params => ({
-      method: "POST",
-      endpoint: "/_matrix/client/r0/createRoom",
-      body: {
-        name: params.data.name,
-        room_alias_name: params.data.canonical_alias,
-        visibility: params.data.public ? "public" : "private",
-      },
-      map: r => ({ id: r.room_id }),
-    }),
+    create: params => {
+      let invitees = params.data.invitees;
+      return {
+        method: "POST",
+        endpoint: "/_matrix/client/r0/createRoom",
+        body: {
+          name: params.data.name,
+          room_alias_name: params.data.canonical_alias,
+          visibility: params.data.public ? "public" : "private",
+          invite:
+            Array.isArray(invitees) && invitees.length > 0
+              ? invitees
+              : undefined,
+        },
+        map: r => ({ id: r.room_id }),
+      };
+    },
   },
   connections: {
     path: "/_synapse/admin/v1/whois",

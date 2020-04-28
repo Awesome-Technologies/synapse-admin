@@ -65,6 +65,8 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
+        invite_members: "Mitglieder einladen",
+        invitees: "Einladungen",
       },
     },
     connections: {
