@@ -1,13 +1,5 @@
 import { fetchUtils } from "react-admin";
 
-const ensureHttpsForUrl = url => {
-  if (/^https:\/\//i.test(url)) {
-    return url;
-  }
-  const domain = url.replace(/http.?:\/\//g, "");
-  return "https://" + domain;
-};
-
 const stripTrailingSlash = str => {
   if (!str) {
     return;
@@ -17,7 +9,7 @@ const stripTrailingSlash = str => {
 
 const authProvider = {
   // called when the user attempts to log in
-  login: ({ homeserver, username, password }) => {
+  login: ({ base_url, username, password }) => {
     console.log("login ");
     const options = {
       method: "POST",
@@ -28,10 +20,8 @@ const authProvider = {
       }),
     };
 
-    const url = window.decodeURIComponent(homeserver);
-    const trimmed_url = url.trim().replace(/\s/g, "");
-    const login_api_url =
-      ensureHttpsForUrl(trimmed_url) + "/_matrix/client/r0/login";
+    const decoded_base_url = window.decodeURIComponent(base_url);
+    const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
       const normalized_base_url = stripTrailingSlash(

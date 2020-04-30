@@ -90,6 +90,14 @@ const LoginPage = ({ theme }) => {
     const errors = {};
     if (!values.homeserver) {
       errors.homeserver = translate("ra.validation.required");
+    } else {
+      if (!values.homeserver.match(/^(http|https):\/\//)) {
+        errors.homeserver = translate("synapseadmin.auth.protocol_error");
+      } else if (
+        !values.homeserver.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+$/)
+      ) {
+        errors.homeserver = translate("synapseadmin.auth.url_error");
+      }
     }
     if (!values.username) {
       errors.username = translate("ra.validation.required");

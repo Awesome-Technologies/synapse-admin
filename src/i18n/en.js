@@ -6,6 +6,8 @@ export default {
     auth: {
       homeserver: "Homeserver",
       welcome: "Welcome to Synapse-admin",
+      protocol_error: "URL has to start with 'http://' or 'https://'",
+      url_error: "Not a valid Matrix server URL",
     },
     users: {
       invalid_user_id:
