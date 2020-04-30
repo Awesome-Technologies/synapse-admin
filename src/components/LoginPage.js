@@ -6,8 +6,10 @@ import {
   useLocale,
   useSetLocale,
   useTranslate,
+  PasswordInput,
+  TextInput,
 } from "react-admin";
-import { Field, Form } from "react-final-form";
+import { Form } from "react-final-form";
 import {
   Avatar,
   Button,
@@ -155,29 +157,32 @@ const LoginPage = ({ theme }) => {
                   </Select>
                 </div>
                 <div className={classes.input}>
-                  <Field
-                    autoFocus
+                  <TextInput
                     name="homeserver"
                     component={renderInput}
                     label={translate("synapseadmin.auth.homeserver")}
                     disabled={loading}
+                    fullWidth
                   />
                 </div>
                 <div className={classes.input}>
-                  <Field
+                  <TextInput
+                    autoFocus
                     name="username"
                     component={renderInput}
                     label={translate("ra.auth.username")}
                     disabled={loading}
+                    fullWidth
                   />
                 </div>
                 <div className={classes.input}>
-                  <Field
+                  <PasswordInput
                     name="password"
                     component={renderInput}
                     label={translate("ra.auth.password")}
                     type="password"
                     disabled={loading}
+                    fullWidth
                   />
                 </div>
               </div>
