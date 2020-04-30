@@ -4,8 +4,9 @@ export default {
   ...germanMessages,
   synapseadmin: {
     auth: {
-      homeserver: "Heimserver",
+      base_url: "Heimserver URL",
       welcome: "Willkommen bei Synapse-admin",
+      username_error: "Bitte vollständigen Nutzernamen angeben: '@user:domain'",
       protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
       url_error: "Keine gültige Matrix Server URL",
     },
