@@ -63,4 +63,23 @@ export default {
       },
     },
   },
+  ra: {
+    ...germanMessages.ra,
+    auth: {
+      ...germanMessages.ra.auth,
+      auth_check_error: "Anmeldung fehlgeschlagen",
+    },
+    input: {
+      ...germanMessages.ra.input,
+      password: {
+        ...germanMessages.ra.input.password,
+        toggle_hidden: "Anzeigen",
+        toggle_visible: "Verstecken",
+      },
+    },
+    notification: {
+      ...germanMessages.ra.notifiaction,
+      logged_out: "Abgemeldet",
+    },
+  },
 };
