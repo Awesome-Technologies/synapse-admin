@@ -32,6 +32,7 @@ import {
   Pagination,
 } from "react-admin";
 import SaveQrButton from "./SaveQrButton";
+import { ServerNoticeButton } from "./ServerNotices";
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -82,7 +83,7 @@ export const UserList = props => (
 );
 
 function generateRandomUser() {
-  const homeserver = localStorage.getItem("home_server_url");
+  const homeserver = localStorage.getItem("home_server");
   const user_id =
     "@" +
     Array(8)
@@ -175,6 +176,7 @@ const UserEditToolbar = props => {
         label="resources.users.action.erase"
         title={translate("resources.users.helper.erase")}
       />
+      <ServerNoticeButton />
     </Toolbar>
   );
 };

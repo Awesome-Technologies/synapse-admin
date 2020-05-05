@@ -27,6 +27,11 @@ const resourceMap = {
     }),
     data: "users",
     total: json => json.total,
+    create: data => ({
+      endpoint: `/_synapse/admin/v2/users/${data.id}`,
+      body: data,
+      method: "PUT",
+    }),
     delete: id => ({
       endpoint: `/_synapse/admin/v1/deactivate/${id}`,
       body: { erase: true },
@@ -41,23 +46,19 @@ const resourceMap = {
     }),
     data: "rooms",
     total: json => json.total_rooms,
-    create: params => {
-      let invitees = params.data.invitees;
-      return {
-        method: "POST",
-        endpoint: "/_matrix/client/r0/createRoom",
-        body: {
-          name: params.data.name,
-          room_alias_name: params.data.canonical_alias,
-          visibility: params.data.public ? "public" : "private",
-          invite:
-            Array.isArray(invitees) && invitees.length > 0
-              ? invitees
-              : undefined,
-        },
-        map: r => ({ id: r.room_id }),
-      };
-    },
+    create: data => ({
+      endpoint: "/_matrix/client/r0/createRoom",
+      body: {
+        name: data.name,
+        room_alias_name: data.canonical_alias,
+        visibility: data.public ? "public" : "private",
+        invite:
+          Array.isArray(data.invitees) && data.invitees.length > 0
+            ? data.invitees
+            : undefined,
+      },
+      method: "POST",
+    })
   },
   connections: {
     path: "/_synapse/admin/v1/whois",
@@ -66,6 +67,20 @@ const resourceMap = {
       id: c.user_id,
     }),
     data: "connections",
+  },
+  servernotices: {
+    map: n => ({ id: n.event_id }),
+    create: data => ({
+      endpoint: "/_synapse/admin/v1/send_server_notice",
+      body: {
+        user_id: data.id,
+        content: {
+          msgtype: "m.text",
+          body: data.body,
+        },
+      },
+      method: "POST",
+    }),
   },
 };
 
@@ -200,25 +215,16 @@ const dataProvider = {
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
+    if (!("create" in res)) return Promise.reject();
 
-    if ("create" in res) {
-      const create = res["create"](params);
-      const endpoint_url = homeserver + create.endpoint;
-      return jsonClient(endpoint_url, {
-        method: create.method,
-        body: JSON.stringify(create.body, filterNullValues),
-      }).then(({ json }) => ({
-        data: create.map(json),
-      }));
-    } else {
-      const endpoint_url = homeserver + res.path;
-      return jsonClient(`${endpoint_url}/${params.data.id}`, {
-        method: "PUT",
-        body: JSON.stringify(params.data, filterNullValues),
-      }).then(({ json }) => ({
-        data: res.map(json),
-      }));
-    }
+    const create = res["create"](params.data);
+    const endpoint_url = homeserver + create.endpoint;
+    return jsonClient(endpoint_url, {
+      method: create.method,
+      body: JSON.stringify(create.body, filterNullValues),
+    }).then(({ json }) => ({
+      data: res.map(json),
+    }));
   },
 
   delete: (resource, params) => {

@@ -43,7 +43,7 @@ const validateDisplayName = fieldval =>
     : undefined;
 
 function approximateAliasLength(alias, homeserver) {
-  /* TODO maybe handle punycode in homeserver URL */
+  /* TODO maybe handle punycode in homeserver name */
 
   var te;
 
@@ -69,7 +69,7 @@ const validateAlias = fieldval => {
   if (fieldval === undefined) {
     return undefined;
   }
-  const homeserver = localStorage.getItem("home_server_url");
+  const homeserver = localStorage.getItem("home_server");
 
   if (approximateAliasLength(fieldval, homeserver) > 255) {
     return "synapseadmin.rooms.alias_too_long";

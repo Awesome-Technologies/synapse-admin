@@ -4,8 +4,11 @@ export default {
   ...germanMessages,
   synapseadmin: {
     auth: {
-      homeserver: "Heimserver",
+      base_url: "Heimserver URL",
       welcome: "Willkommen bei Synapse-admin",
+      username_error: "Bitte vollständigen Nutzernamen angeben: '@user:domain'",
+      protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
+      url_error: "Keine gültige Matrix Server URL",
     },
     action: {
       save_and_show: "Speichern und QR Code erzeugen",
@@ -76,6 +79,41 @@ export default {
         ip: "IP-Adresse",
         user_agent: "User Agent",
       },
+    },
+    servernotices: {
+      name: "Serverbenachrichtigungen",
+      send: "Servernachricht versenden",
+      fields: {
+        body: "Nachricht",
+      },
+      action: {
+        send: "Sende Nachricht",
+        send_success: "Nachricht erfolgreich versendet.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
+      },
+      helper: {
+        send:
+          'Sendet eine Serverbenachrichtigung an die ausgewählten Nutzer. Hierfür muss das Feature "Server Notices" auf dem Server aktiviert sein.',
+      },
+    },
+  },
+  ra: {
+    ...germanMessages.ra,
+    auth: {
+      ...germanMessages.ra.auth,
+      auth_check_error: "Anmeldung fehlgeschlagen",
+    },
+    input: {
+      ...germanMessages.ra.input,
+      password: {
+        ...germanMessages.ra.input.password,
+        toggle_hidden: "Anzeigen",
+        toggle_visible: "Verstecken",
+      },
+    },
+    notification: {
+      ...germanMessages.ra.notifiaction,
+      logged_out: "Abgemeldet",
     },
   },
   ra: {
