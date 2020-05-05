@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Heimserver URL",
       welcome: "Willkommen bei Synapse-admin",
+      server_version: "Synapse Version",
       username_error: "Bitte vollständigen Nutzernamen angeben: '@user:domain'",
       protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
       url_error: "Keine gültige Matrix Server URL",

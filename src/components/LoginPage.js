@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   fetchUtils,
   FormDataConsumer,
@@ -64,6 +64,12 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     padding: "0 1em 1em 1em",
+  },
+  serverVersion: {
+    color: "#9e9e9e",
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    marginBottom: "1em",
+    marginLeft: "0.5em",
   },
 }));
 
@@ -138,6 +144,7 @@ const LoginPage = ({ theme }) => {
 
   const UserData = ({ formData }) => {
     const form = useForm();
+    const [serverVersion, setServerVersion] = useState("");
 
     const handleUsernameChange = _ => {
       if (formData.base_url) return;
@@ -157,6 +164,30 @@ const LoginPage = ({ theme }) => {
           });
       }
     };
+
+    useEffect(
+      _ => {
+        if (
+          !formData.base_url ||
+          !formData.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+$/)
+        )
+          return;
+        const versionUrl = `${formData.base_url}/_synapse/admin/v1/server_version`;
+        fetchUtils
+          .fetchJson(versionUrl, { method: "GET" })
+          .then(({ json }) => {
+            setServerVersion(
+              `${translate("synapseadmin.auth.server_version")} ${
+                json["server_version"]
+              }`
+            );
+          })
+          .catch(_ => {
+            setServerVersion("");
+          });
+      },
+      [formData.base_url]
+    );
 
     return (
       <div>
@@ -190,6 +221,7 @@ const LoginPage = ({ theme }) => {
             fullWidth
           />
         </div>
+        <div className={classes.serverVersion}>{serverVersion}</div>
       </div>
     );
   };
