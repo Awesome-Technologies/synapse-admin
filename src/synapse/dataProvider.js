@@ -221,6 +221,29 @@ const dataProvider = {
     }));
   },
 
+  createMany: (resource, params) => {
+    console.log("createMany " + resource);
+    const homeserver = localStorage.getItem("base_url");
+    if (!homeserver || !(resource in resourceMap)) return Promise.reject();
+
+    const res = resourceMap[resource];
+    if (!("create" in res)) return Promise.reject();
+
+    return Promise.all(
+      params.ids.map(id => {
+        params.data.id = id;
+        const cre = res["create"](params.data);
+        const endpoint_url = homeserver + cre.endpoint;
+        return jsonClient(endpoint_url, {
+          method: cre.method,
+          body: JSON.stringify(cre.body, filterNullValues),
+        });
+      })
+    ).then(responses => ({
+      data: responses.map(({ json }) => json),
+    }));
+  },
+
   delete: (resource, params) => {
     console.log("delete " + resource);
     const homeserver = localStorage.getItem("base_url");

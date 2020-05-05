@@ -6,9 +6,10 @@ import {
   TextInput,
   Toolbar,
   required,
-  useCreate,
+  useMutation,
   useNotify,
   useTranslate,
+  useUnselectAll,
 } from "react-admin";
 import MessageIcon from "@material-ui/icons/Message";
 import IconCancel from "@material-ui/icons/Cancel";
@@ -59,26 +60,50 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const ServerNoticeButton = ({ record }) => {
+export const ServerNoticeButton = ({ record, selectedIds }) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [create, { loading }] = useCreate("servernotices");
+  const unselectAll = useUnselectAll();
+  const [create, { loading }] = useMutation();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
-    create(
-      { payload: { data: { id: record.id, ...values } } },
-      {
-        onSuccess: () => {
-          notify("resources.servernotices.action.send_success");
-          handleDialogClose();
+    if (record) {
+      create(
+        {
+          type: "create",
+          resource: "servernotices",
+          payload: { data: { id: record.id, ...values } },
         },
-        onFailure: () =>
-          notify("resources.servernotices.action.send_failure", "error"),
-      }
-    );
+        {
+          onSuccess: () => {
+            notify("resources.servernotices.action.send_success");
+            handleDialogClose();
+          },
+          onFailure: () =>
+            notify("resources.servernotices.action.send_failure", "error"),
+        }
+      );
+    } else {
+      create(
+        {
+          type: "createMany",
+          resource: "servernotices",
+          payload: { ids: selectedIds, data: values },
+        },
+        {
+          onSuccess: ({ data }) => {
+            notify("resources.servernotices.action.send_success");
+            unselectAll("users");
+            handleDialogClose();
+          },
+          onFailure: error =>
+            notify("resources.servernotices.action.send_failure", "error"),
+        }
+      );
+    }
   };
 
   return (

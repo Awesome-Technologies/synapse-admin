@@ -51,6 +51,7 @@ const UserBulkActionButtons = props => {
   const translate = useTranslate();
   return (
     <Fragment>
+      <ServerNoticeButton {...props} />
       <BulkDeleteButton
         {...props}
         label="resources.users.action.erase"
