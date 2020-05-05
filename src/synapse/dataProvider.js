@@ -26,8 +26,20 @@ const resourceMap = {
     }),
     data: "users",
     total: (json, from, perPage) => {
-      return json.next_token ? parseInt(json.next_token, 10) + perPage : from + json.users.length;
+      return json.next_token
+        ? parseInt(json.next_token, 10) + perPage
+        : from + json.users.length;
     },
+    create: data => ({
+      endpoint: `/_synapse/admin/v2/users/${data.id}`,
+      body: data,
+      method: "PUT",
+    }),
+    delete: id => ({
+      endpoint: `/_synapse/admin/v1/deactivate/${id}`,
+      body: { erase: true },
+      method: "POST",
+    }),
   },
   rooms: {
     path: "/_synapse/admin/v1/rooms",
@@ -41,6 +53,28 @@ const resourceMap = {
     total: json => {
       return json.total_rooms;
     },
+  },
+  connections: {
+    path: "/_synapse/admin/v1/whois",
+    map: c => ({
+      ...c,
+      id: c.user_id,
+    }),
+    data: "connections",
+  },
+  servernotices: {
+    map: n => ({ id: n.event_id }),
+    create: data => ({
+      endpoint: "/_synapse/admin/v1/send_server_notice",
+      body: {
+        user_id: data.id,
+        content: {
+          msgtype: "m.text",
+          body: data.body,
+        },
+      },
+      method: "POST",
+    }),
   },
 };
 
@@ -70,8 +104,8 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    const url = `${homeserver_url}?${stringify(query)}`;
+    const endpoint_url = homeserver + res.path;
+    const url = `${endpoint_url}?${stringify(query)}`;
 
     return jsonClient(url).then(({ json }) => ({
       data: json[res.data].map(res.map),
@@ -86,8 +120,8 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.id}`).then(({ json }) => ({
+    const endpoint_url = homeserver + res.path;
+    return jsonClient(`${endpoint_url}/${params.id}`).then(({ json }) => ({
       data: res.map(json),
     }));
   },
@@ -99,9 +133,9 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
+    const endpoint_url = homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`))
+      params.ids.map(id => jsonClient(`${endpoint_url}/${id}`))
     ).then(responses => ({
       data: responses.map(({ json }) => res.map(json)),
     }));
@@ -126,18 +160,12 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    const url = `${homeserver_url}?${stringify(query)}`;
+    const endpoint_url = homeserver + res.path;
+    const url = `${endpoint_url}?${stringify(query)}`;
 
     return jsonClient(url).then(({ headers, json }) => ({
       data: json,
-      total: parseInt(
-        headers
-          .get("content-range")
-          .split("/")
-          .pop(),
-        10
-      ),
+      total: parseInt(headers.get("content-range").split("/").pop(), 10),
     }));
   },
 
@@ -148,8 +176,8 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.data.id}`, {
+    const endpoint_url = homeserver + res.path;
+    return jsonClient(`${endpoint_url}/${params.data.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
     }).then(({ json }) => ({
@@ -164,9 +192,9 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
+    const endpoint_url = homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${homeserver_url}/${id}`), {
+      params.ids.map(id => jsonClient(`${endpoint_url}/${id}`), {
         method: "PUT",
         body: JSON.stringify(params.data, filterNullValues),
       })
@@ -181,11 +209,13 @@ const dataProvider = {
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
+    if (!("create" in res)) return Promise.reject();
 
-    const homeserver_url = homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.data.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
+    const create = res["create"](params.data);
+    const endpoint_url = homeserver + create.endpoint;
+    return jsonClient(endpoint_url, {
+      method: create.method,
+      body: JSON.stringify(create.body, filterNullValues),
     }).then(({ json }) => ({
       data: res.map(json),
     }));
@@ -198,12 +228,24 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return jsonClient(`${homeserver_url}/${params.id}`, {
-      method: "DELETE",
-    }).then(({ json }) => ({
-      data: json,
-    }));
+    if ("delete" in res) {
+      const del = res["delete"](params.id);
+      const endpoint_url = homeserver + del.endpoint;
+      return jsonClient(endpoint_url, {
+        method: del.method,
+        body: JSON.stringify(del.body),
+      }).then(({ json }) => ({
+        data: json,
+      }));
+    } else {
+      const endpoint_url = homeserver + res.path;
+      return jsonClient(`${endpoint_url}/${params.id}`, {
+        method: "DELETE",
+        body: JSON.stringify(params.data, filterNullValues),
+      }).then(({ json }) => ({
+        data: json,
+      }));
+    }
   },
 
   deleteMany: (resource, params) => {
@@ -213,17 +255,32 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
-    const homeserver_url = homeserver + res.path;
-    return Promise.all(
-      params.ids.map(id =>
-        jsonClient(`${homeserver_url}/${id}`, {
-          method: "DELETE",
-          body: JSON.stringify(params.data, filterNullValues),
-        }).then(responses => ({
-          data: responses.map(({ json }) => json),
-        }))
-      )
-    );
+    if ("delete" in res) {
+      return Promise.all(
+        params.ids.map(id => {
+          const del = res["delete"](id);
+          const endpoint_url = homeserver + del.endpoint;
+          return jsonClient(endpoint_url, {
+            method: del.method,
+            body: JSON.stringify(del.body),
+          });
+        })
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      }));
+    } else {
+      const endpoint_url = homeserver + res.path;
+      return Promise.all(
+        params.ids.map(id =>
+          jsonClient(`${endpoint_url}/${id}`, {
+            method: "DELETE",
+            body: JSON.stringify(params.data, filterNullValues),
+          })
+        )
+      ).then(responses => ({
+        data: responses.map(({ json }) => json),
+      }));
+    }
   },
 };
 
