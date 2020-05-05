@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import {
-  fetchUtils,
-  FormDataConsumer,
   Notification,
   useLogin,
   useNotify,
   useLocale,
   useSetLocale,
   useTranslate,
-  PasswordInput,
-  TextInput,
 } from "react-admin";
-import { Form, useForm } from "react-final-form";
+import { Field, Form } from "react-final-form";
 import {
   Avatar,
   Button,
@@ -38,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     backgroundSize: "cover",
   },
   card: {
-    minWidth: "30em",
+    minWidth: 300,
     marginTop: "6em",
   },
   avatar: {
@@ -74,7 +70,7 @@ const LoginPage = ({ theme }) => {
   var locale = useLocale();
   const setLocale = useSetLocale();
   const translate = useTranslate();
-  const base_url = localStorage.getItem("base_url");
+  const homeserver = localStorage.getItem("base_url");
 
   const renderInput = ({
     meta: { touched, error } = {},
@@ -92,20 +88,14 @@ const LoginPage = ({ theme }) => {
 
   const validate = values => {
     const errors = {};
+    if (!values.homeserver) {
+      errors.homeserver = translate("ra.validation.required");
+    }
     if (!values.username) {
       errors.username = translate("ra.validation.required");
     }
     if (!values.password) {
       errors.password = translate("ra.validation.required");
-    }
-    if (!values.base_url) {
-      errors.base_url = translate("ra.validation.required");
-    } else {
-      if (!values.base_url.match(/^(http|https):\/\//)) {
-        errors.base_url = translate("synapseadmin.auth.protocol_error");
-      } else if (!values.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+$/)) {
-        errors.base_url = translate("synapseadmin.auth.url_error");
-      }
     }
     return errors;
   };
@@ -125,75 +115,9 @@ const LoginPage = ({ theme }) => {
     });
   };
 
-  const extractHomeServer = username => {
-    const usernameRegex = /@[a-zA-Z0-9._=\-/]+:([a-zA-Z0-9\-.]+\.[a-zA-Z]+)/;
-    if (!username) return null;
-    const res = username.match(usernameRegex);
-    if (res) return res[1];
-    return null;
-  };
-
-  const UserData = ({ formData }) => {
-    const form = useForm();
-
-    const handleUsernameChange = _ => {
-      if (formData.base_url) return;
-      // check if username is a full qualified userId then set base_url accordially
-      const home_server = extractHomeServer(formData.username);
-      const wellKnownUrl = `https://${home_server}/.well-known/matrix/client`;
-      if (home_server) {
-        // fetch .well-known entry to get base_url
-        fetchUtils
-          .fetchJson(wellKnownUrl, { method: "GET" })
-          .then(({ json }) => {
-            form.change("base_url", json["m.homeserver"].base_url);
-          })
-          .catch(_ => {
-            // if there is no .well-known entry, try the home server name
-            form.change("base_url", `https://${home_server}`);
-          });
-      }
-    };
-
-    return (
-      <div>
-        <div className={classes.input}>
-          <TextInput
-            autoFocus
-            name="username"
-            component={renderInput}
-            label={translate("ra.auth.username")}
-            disabled={loading}
-            onBlur={handleUsernameChange}
-            fullWidth
-          />
-        </div>
-        <div className={classes.input}>
-          <PasswordInput
-            name="password"
-            component={renderInput}
-            label={translate("ra.auth.password")}
-            type="password"
-            disabled={loading}
-            fullWidth
-          />
-        </div>
-        <div className={classes.input}>
-          <TextInput
-            name="base_url"
-            component={renderInput}
-            label={translate("synapseadmin.auth.base_url")}
-            disabled={loading}
-            fullWidth
-          />
-        </div>
-      </div>
-    );
-  };
-
   return (
     <Form
-      initialValues={{ base_url: base_url }}
+      initialValues={{ homeserver: homeserver }}
       onSubmit={handleSubmit}
       validate={validate}
       render={({ handleSubmit }) => (
@@ -222,9 +146,32 @@ const LoginPage = ({ theme }) => {
                     <MenuItem value="en">English</MenuItem>
                   </Select>
                 </div>
-                <FormDataConsumer>
-                  {formDataProps => <UserData {...formDataProps} />}
-                </FormDataConsumer>
+                <div className={classes.input}>
+                  <Field
+                    autoFocus
+                    name="homeserver"
+                    component={renderInput}
+                    label={translate("synapseadmin.auth.homeserver")}
+                    disabled={loading}
+                  />
+                </div>
+                <div className={classes.input}>
+                  <Field
+                    name="username"
+                    component={renderInput}
+                    label={translate("ra.auth.username")}
+                    disabled={loading}
+                  />
+                </div>
+                <div className={classes.input}>
+                  <Field
+                    name="password"
+                    component={renderInput}
+                    label={translate("ra.auth.password")}
+                    type="password"
+                    disabled={loading}
+                  />
+                </div>
               </div>
               <CardActions className={classes.actions}>
                 <Button

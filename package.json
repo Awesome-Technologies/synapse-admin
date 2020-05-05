@@ -4,29 +4,28 @@
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
-  "homepage": ".",
   "repository": {
     "type": "git",
     "url": "https://github.com/Awesome-Technologies/synapse-admin"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^10.0.2",
-    "@testing-library/user-event": "^10.0.1",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^8.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^2.0.0"
+    "prettier": "^1.19.1"
   },
   "dependencies": {
     "prop-types": "^15.7.2",
     "ra-language-german": "^2.1.2",
-    "react": "^16.13.1",
-    "react-admin": "^3.4.0",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react": "^16.12.0",
+    "react-admin": "^3.1.3",
+    "react-dom": "^16.12.0",
+    "react-scripts": "^3.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

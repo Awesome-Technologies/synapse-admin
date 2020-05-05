@@ -1,12 +1,8 @@
 import React from "react";
-import { Datagrid, List, TextField, Pagination } from "react-admin";
-
-const RoomPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
-);
+import { Datagrid, List, TextField } from "react-admin";
 
 export const RoomList = props => (
-  <List {...props} pagination={<RoomPagination />}>
+  <List {...props}>
     <Datagrid>
       <TextField source="room_id" />
       <TextField source="name" />

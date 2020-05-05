@@ -1,8 +1,23 @@
 import { fetchUtils } from "react-admin";
 
+const ensureHttpsForUrl = url => {
+  if (/^https:\/\//i.test(url)) {
+    return url;
+  }
+  const domain = url.replace(/http.?:\/\//g, "");
+  return "https://" + domain;
+};
+
+const stripTrailingSlash = str => {
+  if (!str) {
+    return;
+  }
+  return str.endsWith("/") ? str.slice(0, -1) : str;
+};
+
 const authProvider = {
   // called when the user attempts to log in
-  login: ({ base_url, username, password }) => {
+  login: ({ homeserver, username, password }) => {
     console.log("login ");
     const options = {
       method: "POST",
@@ -13,16 +28,17 @@ const authProvider = {
       }),
     };
 
-    // use the base_url from login instead of the well_known entry from the
-    // server, since the admin might want to access the admin API via some
-    // private address
-    localStorage.setItem("base_url", base_url);
-
-    const decoded_base_url = window.decodeURIComponent(base_url);
-    const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
+    const url = window.decodeURIComponent(homeserver);
+    const trimmed_url = url.trim().replace(/\s/g, "");
+    const login_api_url =
+      ensureHttpsForUrl(trimmed_url) + "/_matrix/client/r0/login";
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
-      localStorage.setItem("home_server", json.home_server);
+      const normalized_base_url = stripTrailingSlash(
+        json.well_known["m.homeserver"].base_url
+      );
+      localStorage.setItem("base_url", normalized_base_url);
+      localStorage.setItem("home_server_url", json.home_server);
       localStorage.setItem("user_id", json.user_id);
       localStorage.setItem("access_token", json.access_token);
       localStorage.setItem("device_id", json.device_id);

@@ -4,11 +4,8 @@ export default {
   ...englishMessages,
   synapseadmin: {
     auth: {
-      base_url: "Homeserver URL",
+      homeserver: "Homeserver",
       welcome: "Welcome to Synapse-admin",
-      username_error: "Please enter fully qualified user ID: '@user:domain'",
-      protocol_error: "URL has to start with 'http://' or 'https://'",
-      url_error: "Not a valid Matrix server URL",
     },
     users: {
       invalid_user_id:
@@ -17,10 +14,7 @@ export default {
   },
   resources: {
     users: {
-      backtolist: "Back to list",
       name: "User |||| Users",
-      email: "Email",
-      msisdn: "Phone",
       fields: {
         avatar: "Avatar",
         id: "User-ID",
@@ -33,17 +27,6 @@ export default {
         user_id: "Search user",
         displayname: "Displayname",
         password: "Password",
-        avatar_url: "Avatar URL",
-        medium: "Medium",
-        threepids: "3PIDs",
-        address: "Address",
-      },
-      helper: {
-        deactivate: "Deactivated users cannot be reactivated",
-        erase: "Mark the user as GDPR-erased",
-      },
-      action: {
-        erase: "Erase user data",
       },
     },
     rooms: {
@@ -53,14 +36,6 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Members",
-      },
-    },
-    connections: {
-      name: "Connections",
-      fields: {
-        last_seen: "Date",
-        ip: "IP address",
-        user_agent: "User agent",
       },
     },
   },
