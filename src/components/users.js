@@ -30,7 +30,7 @@ import {
   useTranslate,
   Pagination,
 } from "react-admin";
-import { ServerNoticeButton } from "./ServerNotices";
+import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -51,6 +51,7 @@ const UserBulkActionButtons = props => {
   const translate = useTranslate();
   return (
     <Fragment>
+      <ServerNoticeBulkButton {...props} />
       <BulkDeleteButton
         {...props}
         label="resources.users.action.erase"
