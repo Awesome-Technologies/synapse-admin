@@ -6,6 +6,7 @@ import {
   TextInput,
   Toolbar,
   required,
+  useCreate,
   useMutation,
   useNotify,
   useTranslate,
@@ -60,50 +61,72 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const ServerNoticeButton = ({ record, selectedIds }) => {
+export const ServerNoticeButton = ({ record }) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const unselectAll = useUnselectAll();
-  const [create, { loading }] = useMutation();
+  const [create, { loading }] = useCreate("servernotices");
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
-    if (record) {
-      create(
-        {
-          type: "create",
-          resource: "servernotices",
-          payload: { data: { id: record.id, ...values } },
+    create(
+      { payload: { data: { id: record.id, ...values } } },
+      {
+        onSuccess: () => {
+          notify("resources.servernotices.action.send_success");
+          handleDialogClose();
         },
-        {
-          onSuccess: () => {
-            notify("resources.servernotices.action.send_success");
-            handleDialogClose();
-          },
-          onFailure: () =>
-            notify("resources.servernotices.action.send_failure", "error"),
-        }
-      );
-    } else {
-      create(
-        {
-          type: "createMany",
-          resource: "servernotices",
-          payload: { ids: selectedIds, data: values },
+        onFailure: () =>
+          notify("resources.servernotices.action.send_failure", "error"),
+      }
+    );
+  };
+
+  return (
+    <Fragment>
+      <Button
+        label="resources.servernotices.send"
+        onClick={handleDialogOpen}
+        disabled={loading}
+      >
+        <MessageIcon />
+      </Button>
+      <ServerNoticeDialog
+        open={open}
+        onClose={handleDialogClose}
+        onSend={handleSend}
+      />
+    </Fragment>
+  );
+};
+
+export const ServerNoticeBulkButton = ({ selectedIds }) => {
+  const [open, setOpen] = useState(false);
+  const notify = useNotify();
+  const unselectAll = useUnselectAll();
+  const [createMany, { loading }] = useMutation();
+
+  const handleDialogOpen = () => setOpen(true);
+  const handleDialogClose = () => setOpen(false);
+
+  const handleSend = values => {
+    createMany(
+      {
+        type: "createMany",
+        resource: "servernotices",
+        payload: { ids: selectedIds, data: values },
+      },
+      {
+        onSuccess: ({ data }) => {
+          notify("resources.servernotices.action.send_success");
+          unselectAll("users");
+          handleDialogClose();
         },
-        {
-          onSuccess: ({ data }) => {
-            notify("resources.servernotices.action.send_success");
-            unselectAll("users");
-            handleDialogClose();
-          },
-          onFailure: error =>
-            notify("resources.servernotices.action.send_failure", "error"),
-        }
-      );
-    }
+        onFailure: error =>
+          notify("resources.servernotices.action.send_failure", "error"),
+      }
+    );
   };
 
   return (
