@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   main: {
     display: "flex",
     flexDirection: "column",
-    minHeight: "100vh",
+    minHeight: "calc(100vh - 1em)",
     alignItems: "center",
     justifyContent: "flex-start",
     background: "url(./images/floating-cogs.svg)",
@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     minWidth: "30em",
     marginTop: "6em",
+    marginBottom: "6em",
   },
   avatar: {
     margin: "1em",

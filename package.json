@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
@@ -29,8 +29,8 @@
     "react-scripts": "^3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
+    "build": "REACT_APP_VERSION=$(git describe --tags) react-scripts build",
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
     "fix": "yarn fix:code && yarn fix:other",
