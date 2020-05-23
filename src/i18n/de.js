@@ -53,6 +53,12 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
+        joined_local_members: "lokale Mitglieder",
+        state_events: "Ereignisse",
+        version: "Version",
+        is_encrypted: "Verschlüsselt",
+        federatable: "Fö­de­riert",
+        public: "Öffentlich",
       },
     },
     connections: {
