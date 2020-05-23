@@ -54,6 +54,13 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
       },
+      helper: {
+        purge:
+          "Alle lokalen Benutzer müssen den Raum verlassen haben, bevor er entfernt werden kann.",
+      },
+      action: {
+        purge: "Säubere Raum",
+      },
     },
     connections: {
       name: "Verbindungen",

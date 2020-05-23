@@ -1,12 +1,36 @@
-import React from "react";
-import { Datagrid, List, TextField, Pagination } from "react-admin";
+import React, { Fragment } from "react";
+import {
+  Datagrid,
+  List,
+  TextField,
+  Pagination,
+  BulkDeleteButton,
+  useTranslate,
+} from "react-admin";
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
+const RoomBulkActionButtons = props => {
+  const translate = useTranslate();
+  return (
+    <Fragment>
+      <BulkDeleteButton
+        {...props}
+        label="resources.rooms.action.purge"
+        title={translate("resources.rooms.helper.purge")}
+      />
+    </Fragment>
+  );
+};
+
 export const RoomList = props => (
-  <List {...props} pagination={<RoomPagination />}>
+  <List
+    {...props}
+    pagination={<RoomPagination />}
+    bulkActionButtons={<RoomBulkActionButtons />}
+  >
     <Datagrid>
       <TextField source="room_id" />
       <TextField source="name" />
