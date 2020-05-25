@@ -73,6 +73,18 @@ export default {
 
         invitees: "Invitations",
       },
+      enums: {
+        join_rules: {
+          public: "Public",
+          knock: "Knock",
+          invite: "Invite",
+          private: "Private",
+        },
+        guest_access: {
+          can_join: "Guests can join",
+          forbidden: "Guests can not join"
+        },
+      },
     },
     connections: {
       name: "Connections",

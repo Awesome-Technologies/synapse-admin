@@ -71,6 +71,21 @@ export default {
         joined_members: "Mitglieder",
         invite_members: "Mitglieder einladen",
         invitees: "Einladungen",
+        guest_access: "Gastzugang",
+        join_rules: "Zugang zum Raum",
+        members: "Mitglieder",
+      },
+      enums: {
+        join_rules: {
+          public: "Öffentlich",
+          knock: "Auf Anfrage",
+          invite: "Nur auf Einladung",
+          private: "Privat",
+        },
+        guest_access: {
+          can_join: "Gäste können beitreten",
+          forbidden: "Gäste können nicht beitreten"
+        },
       },
     },
     connections: {

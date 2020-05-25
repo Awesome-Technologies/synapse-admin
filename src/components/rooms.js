@@ -9,6 +9,7 @@ import {
   Pagination,
   ReferenceArrayField,
   ReferenceArrayInput,
+  SelectField,
   Show,
   Tab,
   TabbedForm,
@@ -145,6 +146,7 @@ const RoomTitle = ({ record }) => {
     </span>
   );
 };
+
 export const RoomShow = props => (
   <Show {...props} title={<RoomTitle />}>
     <TabbedShowLayout>
@@ -152,14 +154,29 @@ export const RoomShow = props => (
         <TextField source="id" disabled />
         <TextField source="name" />
         <TextField source="canonical_alias" />
-        <TextField source="join_rules" />
-        <TextField source="guest_access" />
+        <SelectField
+            source="join_rules"
+            choices={[
+              { id: 'public', name: 'resources.rooms.enums.join_rules.public' },
+              { id: 'knock', name: 'resources.rooms.enums.join_rules.knock' },
+              { id: 'invite', name: 'resources.rooms.enums.join_rules.invite' },
+              { id: 'private', name: 'resources.rooms.enums.join_rules.private' },
+            ]}
+          />
+          <SelectField
+              source="guest_access"
+              choices={[
+                { id: 'can_join', name: 'resources.rooms.enums.guest_access.can_join' },
+                { id: 'forbidden', name: 'resources.rooms.enums.guest_access.forbidden' },
+              ]}
+            />
       </Tab>
       <Tab label="resources.rooms.fields.joined_members" icon={<UserIcon />}>
         <ReferenceArrayField reference="users" source="members">
           <Datagrid>
             <TextField source="id" />
             <TextField source="displayname" />
+            <TextField source="power_level" />
           </Datagrid>
         </ReferenceArrayField>
       </Tab>
