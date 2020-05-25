@@ -1,4 +1,4 @@
-import React, { cloneElement } from "react";
+import React, { cloneElement, Fragment } from "react";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
@@ -10,6 +10,7 @@ import {
   Edit,
   List,
   Filter,
+  Toolbar,
   SimpleForm,
   SimpleFormIterator,
   TabbedForm,
@@ -22,13 +23,18 @@ import {
   TextInput,
   ReferenceField,
   SelectInput,
+  BulkDeleteButton,
+  DeleteButton,
+  SaveButton,
   regex,
+  useTranslate,
   Pagination,
   CreateButton,
   ExportButton,
   TopToolbar,
   sanitizeListRestProps,
 } from "react-admin";
+import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 
 const ListActions = ({
   currentSort,
@@ -84,13 +90,27 @@ const UserFilter = props => (
   </Filter>
 );
 
+const UserBulkActionButtons = props => {
+  const translate = useTranslate();
+  return (
+    <Fragment>
+      <ServerNoticeBulkButton {...props} />
+      <BulkDeleteButton
+        {...props}
+        label="resources.users.action.erase"
+        title={translate("resources.users.helper.erase")}
+      />
+    </Fragment>
+  );
+};
+
 export const UserList = props => (
   <List
     {...props}
     filters={<UserFilter />}
     filterDefaultValues={{ guests: true, deactivated: false }}
-    bulkActionButtons={false}
     actions={<ListActions maxResults={10000} />}
+    bulkActionButtons={<UserBulkActionButtons />}
     pagination={<UserPagination />}
   >
     <Datagrid rowClick="edit">
@@ -125,6 +145,20 @@ const validateUser = regex(
   "synapseadmin.users.invalid_user_id"
 );
 
+const UserEditToolbar = props => {
+  const translate = useTranslate();
+  return (
+    <Toolbar {...props}>
+      <SaveButton submitOnEnter={true} />
+      <DeleteButton
+        label="resources.users.action.erase"
+        title={translate("resources.users.helper.erase")}
+      />
+      <ServerNoticeButton />
+    </Toolbar>
+  );
+};
+
 export const UserCreate = props => (
   <Create {...props}>
     <SimpleForm>
@@ -148,9 +182,18 @@ export const UserCreate = props => (
   </Create>
 );
 
+const UserTitle = ({ record }) => {
+  const translate = useTranslate();
+  return (
+    <span>
+      {translate("resources.users.name")}{" "}
+      {record ? `"${record.displayname}"` : ""}
+    </span>
+  );
+};
 export const UserEdit = props => (
-  <Edit {...props}>
-    <TabbedForm>
+  <Edit {...props} title={<UserTitle />}>
+    <TabbedForm toolbar={<UserEditToolbar />}>
       <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
         <TextInput source="id" disabled />
         <TextInput source="displayname" />
