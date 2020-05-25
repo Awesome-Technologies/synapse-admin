@@ -116,6 +116,7 @@ export const RoomCreate = props => (
           placeholder="#"
         />
         <BooleanInput source="public" label="synapseadmin.rooms.make_public" />
+        <BooleanInput source="encrypt" initialValue={true} label="synapseadmin.rooms.encrypt" />
       </FormTab>
       <FormTab
         label="resources.rooms.fields.invite_members"

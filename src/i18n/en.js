@@ -23,6 +23,7 @@ export default {
       details: "Room Details",
       room_name: "Room Name",
       make_public: "Make room public",
+      encrypt: "Encrypt room",
       room_name_required: "Must be provided",
       alias_required_if_public: "Must be provided for a public room",
       alias: "Alias",

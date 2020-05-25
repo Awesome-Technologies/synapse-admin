@@ -56,6 +56,14 @@ const resourceMap = {
           Array.isArray(data.invitees) && data.invitees.length > 0
             ? data.invitees
             : undefined,
+        initial_state: data.encrypt ? [{
+                            type: 'm.room.encryption',
+                            state_key: '',
+                            content: {
+                                algorithm: 'm.megolm.v1.aes-sha2',
+                            }
+                          }] : undefined,
+        ,
       },
       method: "POST",
     })
