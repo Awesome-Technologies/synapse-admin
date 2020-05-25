@@ -63,7 +63,6 @@ const resourceMap = {
                                 algorithm: 'm.megolm.v1.aes-sha2',
                             }
                           }] : undefined,
-        ,
       },
       method: "POST",
     })
