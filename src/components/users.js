@@ -78,7 +78,7 @@ export const UserList = props => (
       >
         <ImageField source="avatar_url" title="displayname" />
       </ReferenceField>
-      <TextField source="id" />
+      <TextField source="id" sortable={false} />
       {/* Hack since the users endpoint does not give displaynames in the list*/}
       <ReferenceField
         source="name"
