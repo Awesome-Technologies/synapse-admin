@@ -20,6 +20,7 @@ import {
 import { useTranslate } from "ra-core";
 import Container from "@material-ui/core/Container/Container";
 import { generateRandomUser } from "./users";
+import ShowUserPdf from "./ShowUserPdf";
 
 const LOGGING = true;
 
@@ -59,6 +60,8 @@ const FilePicker = props => {
 
   const [progress, setProgress] = useState(null);
 
+  const [pdfRecords, setPdfRecords] = useState(null);
+
   const [importResults, setImportResults] = useState(null);
   const [skippedRecords, setSkippedRecords] = useState(null);
 
@@ -66,17 +69,23 @@ const FilePicker = props => {
   const [passwordMode, setPasswordMode] = useState(true);
   const [useridMode, setUseridMode] = useState("ignore");
 
+  const [showingPdf, setShowingPdf] = useState(false);
+
   const translate = useTranslate();
   const notify = useNotify();
 
   const dataProvider = useDataProvider();
 
   const onFileChange = async e => {
-    if (progress !== null) return;
-
+    if (progress !== null) {
+      return;
+    }
+    if (LOGGING) console.log("onFileChange was called");
     setValues(null);
     setError(null);
     setStats(null);
+    setPdfRecords(null);
+
     setImportResults(null);
     const file = e.target.files ? e.target.files[0] : null;
     /* Let's refuse some unreasonably big files instead of freezing
@@ -126,6 +135,11 @@ const FilePicker = props => {
     });
 
     if (eF.length !== 0) {
+      if (LOGGING) {
+        console.log(meta.fields);
+        console.log(eF);
+        console.log(oF);
+      }
       setError(
         translate("import_users.error.required_field", { field: eF[0] })
       );
@@ -226,6 +240,9 @@ const FilePicker = props => {
       setProgress,
       setError
     );
+
+    setPdfRecords(results.recordsForPdf);
+
     setImportResults(results);
     // offer CSV download of skipped or errored records
     // (so that the user doesn't have to filter out successful
@@ -251,6 +268,8 @@ const FilePicker = props => {
     let skippedRecords = [];
     let erroredRecords = [];
     let succeededRecords = [];
+    let recordsForPdf = [];
+
     let changeStats = {
       toAdmin: 0,
       toGuest: 0,
@@ -365,6 +384,14 @@ const FilePicker = props => {
                 await dataProvider.create("users", { data: recordData });
               }
               succeededRecords.push(recordData);
+
+              if (recordData.password !== undefined) {
+                recordsForPdf.push({
+                  id: recordData.id,
+                  password: recordData.password,
+                  displayname: recordData.displayname,
+                });
+              }
             }
           );
         };
@@ -389,6 +416,7 @@ const FilePicker = props => {
       erroredRecords,
       succeededRecords,
       totalRecordCount: entriesCount,
+      recordsForPdf,
       changeStats,
       wasDryRun: dryRun,
     };
@@ -618,6 +646,10 @@ const FilePicker = props => {
               <br />,
             ]
           : ""}
+        {translate(
+          "import_users.cards.results.for_print",
+          importResults.recordsForPdf.length
+        )}
         <br />
         {importResults.wasDryRun && [
           translate("import_users.cards.results.simulated_only"),
@@ -655,20 +687,43 @@ const FilePicker = props => {
       </CardActions>
     );
 
-  let allCards = [];
-  if (uploadCard) allCards.push(uploadCard);
-  if (errorCards) allCards.push(errorCards);
-  if (conflictCards) allCards.push(conflictCards);
-  if (statsCards) allCards.push(...statsCards);
-  if (startImportCard) allCards.push(startImportCard);
-  if (resultsCard) allCards.push(resultsCard);
+  let pdfDisplay =
+    pdfRecords && showingPdf && pdfRecords.length ? (
+      <ShowUserPdf records={pdfRecords} />
+    ) : null;
 
-  let cardContainer = <Card>{allCards}</Card>;
+  let pdfActions = pdfRecords ? (
+    <CardActions>
+      <Button
+        size="large"
+        onClick={e => {
+          setShowingPdf(true);
+        }}
+      >
+        {translate("import_users.goToPdf")}
+      </Button>
+    </CardActions>
+  ) : null;
 
-  return [
-    <Title defaultTitle={translate("import_users.title")} />,
-    cardContainer,
-  ];
+  if (pdfRecords && showingPdf) {
+    return <Card>{pdfDisplay}</Card>;
+  } else {
+    let allCards = [];
+    if (uploadCard) allCards.push(uploadCard);
+    if (errorCards) allCards.push(errorCards);
+    if (conflictCards) allCards.push(conflictCards);
+    if (statsCards) allCards.push(...statsCards);
+    if (startImportCard) allCards.push(startImportCard);
+    if (resultsCard) allCards.push(resultsCard);
+    if (pdfActions) allCards.push(pdfActions);
+
+    let cardContainer = <Card>{allCards}</Card>;
+
+    return [
+      <Title defaultTitle={translate("import_users.title")} />,
+      cardContainer,
+    ];
+  }
 };
 
 export const ImportFeature = FilePicker;

@@ -12,10 +12,12 @@ import {
   ArrayInput,
   ArrayField,
   Button,
+  CreateButton,
   Datagrid,
   DateField,
   Create,
   Edit,
+  ExportButton,
   List,
   Filter,
   Toolbar,
@@ -37,11 +39,8 @@ import {
   DeleteButton,
   SaveButton,
   regex,
-  useRedirect,
   useTranslate,
   Pagination,
-  CreateButton,
-  ExportButton,
   TopToolbar,
   sanitizeListRestProps,
   NumberField,
@@ -50,6 +49,13 @@ import SaveQrButton from "./SaveQrButton";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+
+const redirect = (basePath, id, data) => {
+  return {
+    pathname: "/importcsv",
+  };
+};
 
 const useStyles = makeStyles({
   small: {
@@ -81,7 +87,6 @@ const UserListActions = ({
   total,
   ...rest
 }) => {
-  const redirectTo = useRedirect();
   return (
     <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
       {filters &&
@@ -101,6 +106,10 @@ const UserListActions = ({
         exporter={exporter}
         maxResults={maxResults}
       />
+      {/* Add your custom actions */}
+      <Button component={Link} to={redirect} label="CSV Import">
+        <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
+      </Button>
     </TopToolbar>
   );
 };
@@ -178,7 +187,7 @@ export const UserList = props => {
 };
 
 // redirect to the related Author show page
-const redirect = (basePath, id, data) => {
+const redirectToPdf = (basePath, id, data) => {
   return {
     pathname: "/showpdf",
     state: {
@@ -193,7 +202,7 @@ const UserCreateToolbar = props => (
   <Toolbar {...props}>
     <SaveQrButton
       label="synapseadmin.action.save_and_show"
-      redirect={redirect}
+      redirect={redirectToPdf}
       submitOnEnter={true}
     />
     <SaveButton

@@ -25,9 +25,6 @@ const mxcUrlToHttp = mxcUrl => {
   return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
 };
 
-const powerLevelToRole = powerLevel =>
-  powerLevel < 100 ? (powerLevel < 50 ? "user" : "mod") : "admin";
-
 const POWER_LEVELS = {
   admin: 100,
   mod: 50,

@@ -40,6 +40,7 @@ const App = () => (
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
     customRoutes={[
+      <Route key="csvImport" path="/importcsv" component={ImportFeature} />,
       <Route key="showpdf" path="/showpdf" component={ShowUserPdf} />,
     ]}
   >

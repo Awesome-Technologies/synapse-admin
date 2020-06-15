@@ -104,6 +104,8 @@ export default {
         with_error:
           "%{smart_count} Eintrag mit Fehlern ||| %{smart_count} Einträge mit Fehlern",
         simulated_only: "Import-Vorgang war nur simuliert",
+        for_print:
+          "%{smart_count} Eintrag zum Drucken verfügbar |||| %{smart_count} Einträge zum Drucken verfügbar",
       },
     },
   },

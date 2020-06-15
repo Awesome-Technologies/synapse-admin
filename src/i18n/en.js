@@ -104,6 +104,8 @@ export default {
         with_error:
           "%{smart_count} entry with errors ||| %{smart_count} entries with errors",
         simulated_only: "Run was only simulated",
+        for_print:
+          "%{smart_count} entry available for printing |||| %{smart_count} entries available for printing",
       },
     },
   },
