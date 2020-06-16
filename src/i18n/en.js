@@ -37,7 +37,7 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Address",
-        creation_ts: "Creation timestamp",
+        creation_ts_ms: "Creation timestamp",
         consent_version: "Consent version",
       },
       helper: {
