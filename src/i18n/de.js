@@ -38,6 +38,8 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Adresse",
+        creation_ts: "Zeitpunkt der Erstellung",
+        consent_version: "Zugestimmte Bedingungen",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",

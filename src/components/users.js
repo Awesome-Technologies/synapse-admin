@@ -159,6 +159,19 @@ export const UserEdit = props => (
           source="deactivated"
           helperText="resources.users.helper.deactivate"
         />
+        <DateField
+          source="creation_ts"
+          showTime
+          options={{
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }}
+        />
+        <TextField source="consent_version" />
         <ArrayInput source="threepids">
           <SimpleFormIterator>
             <SelectInput

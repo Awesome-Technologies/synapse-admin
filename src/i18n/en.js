@@ -37,6 +37,8 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Address",
+        creation_ts: "Creation timestamp",
+        consent_version: "Consent version",
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
