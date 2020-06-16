@@ -176,7 +176,12 @@ export const UserEdit = props => (
         label="resources.connections.name"
         icon={<SettingsInputComponentIcon />}
       >
-        <ReferenceField reference="connections" source="id" addLabel={false}>
+        <ReferenceField
+          reference="connections"
+          source="id"
+          addLabel={false}
+          link={false}
+        >
           <ArrayField
             source="devices[].sessions[0].connections"
             label="resources.connections.name"
