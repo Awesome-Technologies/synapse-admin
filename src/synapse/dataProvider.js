@@ -24,7 +24,7 @@ const resourceMap = {
       admin: !!u.admin,
       deactivated: !!u.deactivated,
       // need timestamp in milliseconds
-      creation_ts: u.creation_ts * 1000,
+      creation_ts_ms: u.creation_ts * 1000,
     }),
     data: "users",
     total: (json, from, perPage) => {

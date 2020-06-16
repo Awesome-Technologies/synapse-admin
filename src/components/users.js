@@ -160,7 +160,7 @@ export const UserEdit = props => (
           helperText="resources.users.helper.deactivate"
         />
         <DateField
-          source="creation_ts"
+          source="creation_ts_ms"
           showTime
           options={{
             year: "numeric",
