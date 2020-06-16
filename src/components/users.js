@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
+import ContactMailIcon from "@material-ui/icons/ContactMail";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
   ArrayInput,
@@ -159,6 +160,12 @@ export const UserEdit = props => (
           source="deactivated"
           helperText="resources.users.helper.deactivate"
         />
+      </FormTab>
+      <FormTab
+        label="resources.users.threepid"
+        icon={<ContactMailIcon />}
+        path="threepid"
+      >
         <ArrayInput source="threepids">
           <SimpleFormIterator>
             <SelectInput
@@ -175,6 +182,7 @@ export const UserEdit = props => (
       <FormTab
         label="resources.connections.name"
         icon={<SettingsInputComponentIcon />}
+        path="connections"
       >
         <ReferenceField reference="connections" source="id" addLabel={false}>
           <ArrayField
