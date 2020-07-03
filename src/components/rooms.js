@@ -1,7 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
   BooleanField,
   Datagrid,
+  Filter,
   List,
   Pagination,
   SelectField,
@@ -12,7 +14,7 @@ import {
   useTranslate,
 } from "react-admin";
 import get from "lodash/get";
-import { Tooltip, Typography } from "@material-ui/core";
+import { Tooltip, Typography, Chip } from "@material-ui/core";
 import HttpsIcon from "@material-ui/icons/Https";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import PageviewIcon from "@material-ui/icons/Pageview";
@@ -49,36 +51,11 @@ const EncryptionField = ({ source, record = {}, emptyText }) => {
   );
 };
 
-export const RoomList = props => (
-  <List
-    {...props}
-    pagination={<RoomPagination />}
-    sort={{ field: "name", order: "ASC" }}
-  >
-    <Datagrid rowClick="show">
-      <EncryptionField
-        source="is_encrypted"
-        sortBy="encryption"
-        label={<HttpsIcon />}
-      />
-      <TextField source="room_id" sortable={false} />
-      <TextField source="name" />
-      <TextField source="canonical_alias" />
-      <TextField source="joined_members" />
-      <TextField source="joined_local_members" />
-      <TextField source="state_events" />
-      <TextField source="version" />
-      <BooleanField source="federatable" />
-      <BooleanField source="public" />
-    </Datagrid>
-  </List>
-);
-
 const RoomTitle = ({ record }) => {
   const translate = useTranslate();
-  var name = ""
+  var name = "";
   if (record) {
-    name = record.name !== "" ? record.name : record.id
+    name = record.name !== "" ? record.name : record.id;
   }
 
   return (
@@ -173,3 +150,75 @@ export const RoomShow = props => {
     </Show>
   );
 };
+const RoomFilter = ({ ...props }) => {
+  const translate = useTranslate();
+  return (
+    <Filter {...props}>
+      <Chip
+        label={translate("resources.rooms.fields.joined_local_members")}
+        source="joined_local_members"
+        defaultValue={false}
+        style={{ marginBottom: 8 }}
+      />
+      <Chip
+        label={translate("resources.rooms.fields.state_events")}
+        source="state_events"
+        defaultValue={false}
+        style={{ marginBottom: 8 }}
+      />
+      <Chip
+        label={translate("resources.rooms.fields.version")}
+        source="version"
+        defaultValue={false}
+        style={{ marginBottom: 8 }}
+      />
+      <Chip
+        label={translate("resources.rooms.fields.federatable")}
+        source="federatable"
+        defaultValue={false}
+        style={{ marginBottom: 8 }}
+      />
+    </Filter>
+  );
+};
+
+const FilterableRoomList = ({ ...props }) => {
+  const filter = props.roomFilters;
+  const localMembersFilter =
+    filter && filter.joined_local_members ? true : false;
+  const stateEventsFilter = filter && filter.state_events ? true : false;
+  const versionFilter = filter && filter.version ? true : false;
+  const federateableFilter = filter && filter.federatable ? true : false;
+
+  return (
+    <List
+      {...props}
+      pagination={<RoomPagination />}
+      sort={{ field: "name", order: "ASC" }}
+      filters={<RoomFilter />}
+    >
+      <Datagrid rowClick="show">
+        <EncryptionField
+          source="is_encrypted"
+          sortBy="encryption"
+          label={<HttpsIcon />}
+        />
+        <TextField source="name" />
+        <TextField source="joined_members" />
+        {localMembersFilter && <TextField source="joined_local_members" />}
+        {stateEventsFilter && <TextField source="state_events" />}
+        {versionFilter && <TextField source="version" />}
+        {federateableFilter && <BooleanField source="federatable" />}
+        <BooleanField source="public" />
+      </Datagrid>
+    </List>
+  );
+};
+
+function mapStateToProps(state) {
+  return {
+    roomFilters: state.admin.resources.rooms.list.params.displayedFilters,
+  };
+}
+
+export const RoomList = connect(mapStateToProps)(FilterableRoomList);
