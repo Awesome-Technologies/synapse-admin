@@ -37,6 +37,8 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Address",
+        creation_ts_ms: "Creation timestamp",
+        consent_version: "Consent version",
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
@@ -57,6 +59,7 @@ export default {
         state_events: "State events",
         version: "Version",
         encryption: "Encryption",
+        is_encrypted: "Encrypted",
         federatable: "Federatable",
         public: "Public",
         creator: "Creator",

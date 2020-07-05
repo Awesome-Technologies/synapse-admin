@@ -38,6 +38,8 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Adresse",
+        creation_ts_ms: "Zeitpunkt der Erstellung",
+        consent_version: "Zugestimmte Geschäftsbedingungen",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
@@ -58,6 +60,7 @@ export default {
         state_events: "Ereignisse",
         version: "Version",
         encryption: "Verschlüsselung",
+        is_encrypted: "Verschlüsselt",
         federatable: "Fö­de­riert",
         public: "Öffentlich",
         creator: "Ersteller",

@@ -78,7 +78,7 @@ export const UserList = props => (
       >
         <ImageField source="avatar_url" title="displayname" />
       </ReferenceField>
-      <TextField source="id" />
+      <TextField source="id" sortable={false} />
       {/* Hack since the users endpoint does not give displaynames in the list*/}
       <ReferenceField
         source="name"
@@ -159,6 +159,19 @@ export const UserEdit = props => (
           source="deactivated"
           helperText="resources.users.helper.deactivate"
         />
+        <DateField
+          source="creation_ts_ms"
+          showTime
+          options={{
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }}
+        />
+        <TextField source="consent_version" />
         <ArrayInput source="threepids">
           <SimpleFormIterator>
             <SelectInput
@@ -176,7 +189,12 @@ export const UserEdit = props => (
         label="resources.connections.name"
         icon={<SettingsInputComponentIcon />}
       >
-        <ReferenceField reference="connections" source="id" addLabel={false}>
+        <ReferenceField
+          reference="connections"
+          source="id"
+          addLabel={false}
+          link={false}
+        >
           <ArrayField
             source="devices[].sessions[0].connections"
             label="resources.connections.name"
