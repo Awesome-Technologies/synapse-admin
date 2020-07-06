@@ -72,6 +72,22 @@ export default {
         user_agent: "User agent",
       },
     },
+    devices: {
+      name: "Device |||| Devices",
+      fields: {
+        device_id: "Device-ID",
+        display_name: "Displayname",
+        last_seen_ts: "Timestamp",
+        last_seen_ip: "IP address",
+      },
+      action: {
+        remove_title: "Remove %{name} #%{id}",
+        remove_content:
+          "Are you sure you want to remove this %{name}? %{display_name}: %{displayname}",
+        remove_success: "Device successfully removed.",
+        remove_failure: "An error has occurred.",
+      },
+    },
     servernotices: {
       name: "Server Notices",
       send: "Send server notices",

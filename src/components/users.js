@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
+import DevicesIcon from "@material-ui/icons/Devices";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
   ArrayInput,
@@ -32,6 +33,7 @@ import {
   Pagination,
 } from "react-admin";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
+import { RemoveDeviceButton } from "./devices";
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -148,89 +150,129 @@ const UserTitle = ({ record }) => {
     </span>
   );
 };
-export const UserEdit = props => (
-  <Edit {...props} title={<UserTitle />}>
-    <TabbedForm toolbar={<UserEditToolbar />}>
-      <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
-        <TextInput source="id" disabled />
-        <TextInput source="displayname" />
-        <PasswordInput source="password" autoComplete="new-password" />
-        <BooleanInput source="admin" />
-        <BooleanInput
-          source="deactivated"
-          helperText="resources.users.helper.deactivate"
-        />
-        <DateField
-          source="creation_ts_ms"
-          showTime
-          options={{
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }}
-        />
-        <TextField source="consent_version" />
-      </FormTab>
-      <FormTab
-        label="resources.users.threepid"
-        icon={<ContactMailIcon />}
-        path="threepid"
-      >
-        <ArrayInput source="threepids">
-          <SimpleFormIterator>
-            <SelectInput
-              source="medium"
-              choices={[
-                { id: "email", name: "resources.users.email" },
-                { id: "msisdn", name: "resources.users.msisdn" },
-              ]}
-            />
-            <TextInput source="address" />
-          </SimpleFormIterator>
-        </ArrayInput>
-      </FormTab>
-      <FormTab
-        label="resources.connections.name"
-        icon={<SettingsInputComponentIcon />}
-        path="connections"
-      >
-        <ReferenceField
-          reference="connections"
-          source="id"
-          addLabel={false}
-          link={false}
+export const UserEdit = props => {
+  const translate = useTranslate();
+  return (
+    <Edit {...props} title={<UserTitle />}>
+      <TabbedForm toolbar={<UserEditToolbar />}>
+        <FormTab
+          label={translate("resources.users.name", { smart_count: 1 })}
+          icon={<PersonPinIcon />}
         >
-          <ArrayField
-            source="devices[].sessions[0].connections"
-            label="resources.connections.name"
+          <TextInput source="id" disabled />
+          <TextInput source="displayname" />
+          <PasswordInput source="password" autoComplete="new-password" />
+          <BooleanInput source="admin" />
+          <BooleanInput
+            source="deactivated"
+            helperText="resources.users.helper.deactivate"
+          />
+          <DateField
+            source="creation_ts_ms"
+            showTime
+            options={{
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            }}
+          />
+          <TextField source="consent_version" />
+        </FormTab>
+        <FormTab
+          label="resources.users.threepid"
+          icon={<ContactMailIcon />}
+          path="threepid"
+        >
+          <ArrayInput source="threepids">
+            <SimpleFormIterator>
+              <SelectInput
+                source="medium"
+                choices={[
+                  { id: "email", name: "resources.users.email" },
+                  { id: "msisdn", name: "resources.users.msisdn" },
+                ]}
+              />
+              <TextInput source="address" />
+            </SimpleFormIterator>
+          </ArrayInput>
+        </FormTab>
+        <FormTab
+          label={translate("resources.devices.name", { smart_count: 2 })}
+          icon={<DevicesIcon />}
+          path="devices"
+        >
+          <ReferenceField
+            reference="devices"
+            source="id"
+            addLabel={false}
+            link={false}
           >
-            <Datagrid style={{ width: "100%" }}>
-              <TextField source="ip" sortable={false} />
-              <DateField
-                source="last_seen"
-                showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
-                sortable={false}
-              />
-              <TextField
-                source="user_agent"
-                sortable={false}
-                style={{ width: "100%" }}
-              />
-            </Datagrid>
-          </ArrayField>
-        </ReferenceField>
-      </FormTab>
-    </TabbedForm>
-  </Edit>
-);
+            <ArrayField source="devices" label="resources.devices.name">
+              <Datagrid style={{ width: "100%" }}>
+                <TextField source="device_id" sortable={false} />
+                <TextField source="display_name" sortable={false} />
+                <TextField source="last_seen_ip" sortable={false} />
+                <DateField
+                  source="last_seen_ts"
+                  showTime
+                  options={{
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  }}
+                  sortable={false}
+                />
+                <RemoveDeviceButton />
+              </Datagrid>
+            </ArrayField>
+          </ReferenceField>
+        </FormTab>
+        <FormTab
+          label="resources.connections.name"
+          icon={<SettingsInputComponentIcon />}
+          path="connections"
+        >
+          <ReferenceField
+            reference="connections"
+            source="id"
+            addLabel={false}
+            link={false}
+          >
+            <ArrayField
+              source="devices[].sessions[0].connections"
+              label="resources.connections.name"
+            >
+              <Datagrid style={{ width: "100%" }}>
+                <TextField source="ip" sortable={false} />
+                <DateField
+                  source="last_seen"
+                  showTime
+                  options={{
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  }}
+                  sortable={false}
+                />
+                <TextField
+                  source="user_agent"
+                  sortable={false}
+                  style={{ width: "100%" }}
+                />
+              </Datagrid>
+            </ArrayField>
+          </ReferenceField>
+        </FormTab>
+      </TabbedForm>
+    </Edit>
+  );
+};

@@ -32,6 +32,9 @@ const resourceMap = {
         ? parseInt(json.next_token, 10) + perPage
         : from + json.users.length;
     },
+    getMany: id => ({
+      endpoint: `/_synapse/admin/v2/users/${id}`,
+    }),
     create: data => ({
       endpoint: `/_synapse/admin/v2/users/${data.id}`,
       body: data,
@@ -59,13 +62,26 @@ const resourceMap = {
       return json.total_rooms;
     },
   },
+  devices: {
+    path: "/_synapse/admin/v2/users",
+    map: d => ({
+      ...d,
+      id: d.devices[0].user_id,
+    }),
+    data: "devices",
+    getMany: id => ({
+      endpoint: `/_synapse/admin/v2/users/${id}/devices`,
+    }),
+  },
   connections: {
-    path: "/_synapse/admin/v1/whois",
     map: c => ({
       ...c,
       id: c.user_id,
     }),
     data: "connections",
+    getMany: id => ({
+      endpoint: `/_synapse/admin/v1/whois/${id}`,
+    }),
   },
   servernotices: {
     map: n => ({ id: n.event_id }),
@@ -148,10 +164,14 @@ const dataProvider = {
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
+    if (!("getMany" in res)) return Promise.reject();
 
-    const endpoint_url = homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${endpoint_url}/${id}`))
+      params.ids.map(id => {
+        const getMany = res["getMany"](id);
+        const endpoint_url = homeserver + getMany.endpoint;
+        return jsonClient(endpoint_url);
+      })
     ).then(responses => ({
       data: responses.map(({ json }) => res.map(json)),
     }));
@@ -320,6 +340,24 @@ const dataProvider = {
         data: responses.map(({ json }) => json),
       }));
     }
+  },
+
+  removeDevice: (resource, params) => {
+    console.log("removeDevice " + resource);
+    const homeserver = localStorage.getItem("base_url");
+    if (!homeserver || !(resource in resourceMap)) return Promise.reject();
+
+    const res = resourceMap[resource];
+    const endpoint_url = homeserver + res.path;
+
+    return jsonClient(
+      `${endpoint_url}/${params.user_id}/devices/${params.device_id}`,
+      {
+        method: "DELETE",
+      }
+    ).then(({ json }) => ({
+      data: json,
+    }));
   },
 };
 
