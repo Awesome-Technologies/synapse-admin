@@ -55,7 +55,7 @@ export const RoomList = props => (
     {...props}
     pagination={<RoomPagination />}
     sort={{ field: "name", order: "ASC" }}
-    filters={<RoomFilter />}>
+    filters={<RoomFilter />}
   >
     <Datagrid>
       <EncryptionField
