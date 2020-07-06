@@ -21,6 +21,7 @@ export default {
       name: "User |||| Users",
       email: "Email",
       msisdn: "Phone",
+      threepid: "Email / Phone",
       fields: {
         avatar: "Avatar",
         id: "User-ID",
