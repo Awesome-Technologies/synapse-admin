@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
+import ContactMailIcon from "@material-ui/icons/ContactMail";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
   ArrayInput,
@@ -78,7 +79,7 @@ export const UserList = props => (
       >
         <ImageField source="avatar_url" title="displayname" />
       </ReferenceField>
-      <TextField source="id" />
+      <TextField source="id" sortable={false} />
       {/* Hack since the users endpoint does not give displaynames in the list*/}
       <ReferenceField
         source="name"
@@ -159,6 +160,25 @@ export const UserEdit = props => (
           source="deactivated"
           helperText="resources.users.helper.deactivate"
         />
+        <DateField
+          source="creation_ts_ms"
+          showTime
+          options={{
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }}
+        />
+        <TextField source="consent_version" />
+      </FormTab>
+      <FormTab
+        label="resources.users.threepid"
+        icon={<ContactMailIcon />}
+        path="threepid"
+      >
         <ArrayInput source="threepids">
           <SimpleFormIterator>
             <SelectInput
@@ -175,8 +195,14 @@ export const UserEdit = props => (
       <FormTab
         label="resources.connections.name"
         icon={<SettingsInputComponentIcon />}
+        path="connections"
       >
-        <ReferenceField reference="connections" source="id" addLabel={false}>
+        <ReferenceField
+          reference="connections"
+          source="id"
+          addLabel={false}
+          link={false}
+        >
           <ArrayField
             source="devices[].sessions[0].connections"
             label="resources.connections.name"

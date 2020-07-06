@@ -23,6 +23,8 @@ const resourceMap = {
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
+      // need timestamp in milliseconds
+      creation_ts_ms: u.creation_ts * 1000,
     }),
     data: "users",
     total: (json, from, perPage) => {
@@ -48,6 +50,9 @@ const resourceMap = {
       id: r.room_id,
       alias: r.canonical_alias,
       members: r.joined_members,
+      is_encrypted: !!r.encryption,
+      federatable: !!r.federatable,
+      public: !!r.public,
     }),
     data: "rooms",
     total: json => {
@@ -91,11 +96,20 @@ function filterNullValues(key, value) {
   return value;
 }
 
+function getSearchOrder(order) {
+  if (order === "DESC") {
+    return "b";
+  } else {
+    return "f";
+  }
+}
+
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
     const { user_id, guests, deactivated } = params.filter;
     const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
     const from = (page - 1) * perPage;
     const query = {
       from: from,
@@ -103,6 +117,8 @@ const dataProvider = {
       user_id: user_id,
       guests: guests,
       deactivated: deactivated,
+      order_by: field,
+      dir: getSearchOrder(order),
     };
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();

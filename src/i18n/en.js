@@ -21,6 +21,7 @@ export default {
       name: "User |||| Users",
       email: "Email",
       msisdn: "Phone",
+      threepid: "Email / Phone",
       fields: {
         avatar: "Avatar",
         id: "User-ID",
@@ -37,6 +38,8 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Address",
+        creation_ts_ms: "Creation timestamp",
+        consent_version: "Consent version",
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
@@ -53,6 +56,12 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Members",
+        joined_local_members: "local members",
+        state_events: "State events",
+        version: "Version",
+        is_encrypted: "Encrypted",
+        federatable: "Federatable",
+        public: "Public",
       },
       helper: {
         purge:

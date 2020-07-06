@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Heimserver URL",
       welcome: "Willkommen bei Synapse-admin",
+      server_version: "Synapse Version",
       username_error: "Bitte vollständigen Nutzernamen angeben: '@user:domain'",
       protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
       url_error: "Keine gültige Matrix Server URL",
@@ -21,6 +22,7 @@ export default {
       name: "Benutzer",
       email: "E-Mail",
       msisdn: "Telefon",
+      threepid: "E-Mail / Telefon",
       fields: {
         avatar: "Avatar",
         id: "Benutzer-ID",
@@ -37,6 +39,8 @@ export default {
         medium: "Medium",
         threepids: "3PIDs",
         address: "Adresse",
+        creation_ts_ms: "Zeitpunkt der Erstellung",
+        consent_version: "Zugestimmte Geschäftsbedingungen",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
@@ -53,6 +57,12 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
+        joined_local_members: "lokale Mitglieder",
+        state_events: "Ereignisse",
+        version: "Version",
+        is_encrypted: "Verschlüsselt",
+        federatable: "Fö­de­riert",
+        public: "Öffentlich",
       },
       helper: {
         purge:
