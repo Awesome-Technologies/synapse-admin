@@ -15,6 +15,15 @@ export default {
       invalid_user_id:
         "Muss eine vollständige Matrix Benutzer-ID sein, z.B. @benutzer_id:homeserver",
     },
+    rooms: {
+      details: "Raumdetails",
+      tabs: {
+        basic: "Allgemein",
+        members: "Mitglieder",
+        detail: "Details",
+        permission: "Berechtigungen",
+      },
+    },
   },
   resources: {
     users: {
@@ -58,12 +67,36 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
-        joined_local_members: "lokale Mitglieder",
+        joined_local_members: "Lokale Mitglieder",
         state_events: "Ereignisse",
         version: "Version",
         is_encrypted: "Verschlüsselt",
-        federatable: "Fö­de­riert",
+        encryption: "Verschlüsselungs-Algorithmus",
+        federatable: "Fö­de­rierbar",
         public: "Öffentlich",
+        creator: "Ersteller",
+        join_rules: "Beitrittsregeln",
+        guest_access: "Gastzugriff",
+        history_visibility: "Historie-Sichtbarkeit",
+      },
+      enums: {
+        join_rules: {
+          public: "Öffentlich",
+          knock: "Auf Anfrage",
+          invite: "Nur auf Einladung",
+          private: "Privat",
+        },
+        guest_access: {
+          can_join: "Gäste können beitreten",
+          forbidden: "Gäste können nicht beitreten",
+        },
+        history_visibility: {
+          invited: "Ab Einladung",
+          joined: "Ab Beitritt",
+          shared: "Ab Setzen der Einstellung",
+          world_readable: "Jeder",
+        },
+        unencrypted: "Nicht verschlüsselt",
       },
     },
     connections: {

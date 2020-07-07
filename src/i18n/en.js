@@ -14,6 +14,14 @@ export default {
       invalid_user_id:
         "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",
     },
+    rooms: {
+      tabs: {
+        basic: "Basic",
+        members: "Members",
+        detail: "Details",
+        permission: "Permissions",
+      },
+    },
   },
   resources: {
     users: {
@@ -61,8 +69,32 @@ export default {
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",
+        encryption: "Encryption",
         federatable: "Federatable",
         public: "Public",
+        creator: "Creator",
+        join_rules: "Join rules",
+        guest_access: "Guest access",
+        history_visibility: "History visibility",
+      },
+      enums: {
+        join_rules: {
+          public: "Public",
+          knock: "Knock",
+          invite: "Invite",
+          private: "Private",
+        },
+        guest_access: {
+          can_join: "Guests can join",
+          forbidden: "Guests can not join",
+        },
+        history_visibility: {
+          invited: "Since invited",
+          joined: "Since joined",
+          shared: "Since shared",
+          world_readable: "Anyone",
+        },
+        unencrypted: "Unencrypted",
       },
     },
     connections: {
