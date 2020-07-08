@@ -36,6 +36,7 @@ export default {
         displayname: "Anzeigename",
         password: "Passwort",
         avatar_url: "Avatar URL",
+        avatar_src: "Avatar",
         medium: "Medium",
         threepids: "3PIDs",
         address: "Adresse",
