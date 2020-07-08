@@ -2,6 +2,7 @@ import React, { cloneElement, Fragment } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
+import DevicesIcon from "@material-ui/icons/Devices";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
   ArrayInput,
@@ -23,6 +24,7 @@ import {
   TextField,
   TextInput,
   ReferenceField,
+  ReferenceManyField,
   SelectInput,
   BulkDeleteButton,
   DeleteButton,
@@ -205,6 +207,7 @@ const UserTitle = ({ record }) => {
 };
 export const UserEdit = props => {
   const classes = useStyles();
+  const translate = useTranslate();
   return (
     <Edit {...props} title={<UserTitle />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
@@ -253,6 +256,36 @@ export const UserEdit = props => {
               <TextInput source="address" />
             </SimpleFormIterator>
           </ArrayInput>
+        </FormTab>
+        <FormTab
+          label={translate("resources.devices.name", { smart_count: 2 })}
+          icon={<DevicesIcon />}
+          path="devices"
+        >
+          <ReferenceManyField
+            reference="devices"
+            target="user_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="device_id" sortable={false} />
+              <TextField source="display_name" sortable={false} />
+              <TextField source="last_seen_ip" sortable={false} />
+              <DateField
+                source="last_seen_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+            </Datagrid>
+          </ReferenceManyField>
         </FormTab>
         <FormTab
           label="resources.connections.name"

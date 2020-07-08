@@ -105,6 +105,15 @@ export default {
         user_agent: "User agent",
       },
     },
+    devices: {
+      name: "Device |||| Devices",
+      fields: {
+        device_id: "Device-ID",
+        display_name: "Displayname",
+        last_seen_ts: "Timestamp",
+        last_seen_ip: "IP address",
+      },
+    },
     servernotices: {
       name: "Server Notices",
       send: "Send server notices",

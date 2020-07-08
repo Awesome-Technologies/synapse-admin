@@ -67,6 +67,16 @@ const resourceMap = {
       return json.total_rooms;
     },
   },
+  devices: {
+    map: d => ({
+      ...d,
+      id: d.device_id,
+    }),
+    data: "devices",
+    reference: id => ({
+      endpoint: `/_synapse/admin/v2/users/${id}/devices`,
+    }),
+  },
   connections: {
     path: "/_synapse/admin/v1/whois",
     map: c => ({
@@ -166,30 +176,18 @@ const dataProvider = {
   },
 
   getManyReference: (resource, params) => {
-    // FIXME
     console.log("getManyReference " + resource);
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-    const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify({
-        ...params.filter,
-        [params.target]: params.id,
-      }),
-    };
 
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
 
-    const endpoint_url = homeserver + res.path;
-    const url = `${endpoint_url}?${stringify(query)}`;
+    const ref = res["reference"](params.id);
+    const endpoint_url = homeserver + ref.endpoint;
 
-    return jsonClient(url).then(({ headers, json }) => ({
-      data: json,
-      total: parseInt(headers.get("content-range").split("/").pop(), 10),
+    return jsonClient(endpoint_url).then(({ headers, json }) => ({
+      data: json[res.data].map(res.map),
     }));
   },
 
