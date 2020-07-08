@@ -114,6 +114,14 @@ export default {
     },
     devices: {
       name: "Gerät |||| Geräte",
+      action: {
+        erase: {
+          title: "Entferne %{id}",
+          content: 'Möchten Sie das Gerät "%{name}" wirklich entfernen?',
+          success: "Gerät erfolgreich entfernt.",
+          failure: "Beim Entfernen ist ein Fehler aufgetreten.",
+        },
+      },
     },
     servernotices: {
       name: "Serverbenachrichtigungen",

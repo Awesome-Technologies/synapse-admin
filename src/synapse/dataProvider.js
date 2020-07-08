@@ -45,8 +45,8 @@ const resourceMap = {
       body: data,
       method: "PUT",
     }),
-    delete: id => ({
-      endpoint: `/_synapse/admin/v1/deactivate/${id}`,
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/deactivate/${params.id}`,
       body: { erase: true },
       method: "POST",
     }),
@@ -75,6 +75,9 @@ const resourceMap = {
     data: "devices",
     reference: id => ({
       endpoint: `/_synapse/admin/v2/users/${id}/devices`,
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v2/users/${params.user_id}/devices/${params.id}`,
     }),
   },
   connections: {
@@ -274,11 +277,11 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     if ("delete" in res) {
-      const del = res["delete"](params.id);
+      const del = res["delete"](params);
       const endpoint_url = homeserver + del.endpoint;
       return jsonClient(endpoint_url, {
-        method: del.method,
-        body: JSON.stringify(del.body),
+        method: "method" in del ? del.method : "DELETE",
+        body: "body" in del ? JSON.stringify(del.body) : null,
       }).then(({ json }) => ({
         data: json,
       }));
@@ -303,11 +306,11 @@ const dataProvider = {
     if ("delete" in res) {
       return Promise.all(
         params.ids.map(id => {
-          const del = res["delete"](id);
+          const del = res["delete"]({ ...params, id: id });
           const endpoint_url = homeserver + del.endpoint;
           return jsonClient(endpoint_url, {
-            method: del.method,
-            body: JSON.stringify(del.body),
+            method: "method" in del ? del.method : "DELETE",
+            body: "body" in del ? JSON.stringify(del.body) : null,
           });
         })
       ).then(responses => ({

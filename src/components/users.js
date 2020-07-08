@@ -38,6 +38,7 @@ import {
   sanitizeListRestProps,
 } from "react-admin";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
+import { DeviceRemoveButton } from "./devices";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -284,6 +285,7 @@ export const UserEdit = props => {
                 }}
                 sortable={false}
               />
+              <DeviceRemoveButton />
             </Datagrid>
           </ReferenceManyField>
         </FormTab>

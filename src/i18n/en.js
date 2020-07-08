@@ -112,6 +112,14 @@ export default {
     },
     devices: {
       name: "Device |||| Devices",
+      action: {
+        erase: {
+          title: "Removing %{id}",
+          content: 'Are you sure you want to remove the device "%{name}"?',
+          success: "Device successfully removed.",
+          failure: "An error has occurred.",
+        },
+      },
     },
     servernotices: {
       name: "Server Notices",
