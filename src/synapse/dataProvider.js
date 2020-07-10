@@ -14,22 +14,32 @@ const jsonClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
+const mxcUrlToHttp = mxcUrl => {
+  const homeserver = localStorage.getItem("base_url");
+  const re = /^mxc:\/\/([^/]+)\/(\w+)/;
+  var ret = re.exec(mxcUrl);
+  console.log("mxcClient " + ret);
+  if (ret == null) return null;
+  const serverName = ret[1];
+  const mediaId = ret[2];
+  return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
+};
+
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
     map: u => ({
       ...u,
       id: u.name,
+      avatar_src: mxcUrlToHttp(u.avatar_url),
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
+      // need timestamp in milliseconds
+      creation_ts_ms: u.creation_ts * 1000,
     }),
     data: "users",
-    total: (json, from, perPage) => {
-      return json.next_token
-        ? parseInt(json.next_token, 10) + perPage
-        : from + json.users.length;
-    },
+    total: json => json.total,
     create: data => ({
       endpoint: `/_synapse/admin/v2/users/${data.id}`,
       body: data,
@@ -48,6 +58,9 @@ const resourceMap = {
       id: r.room_id,
       alias: r.canonical_alias,
       members: r.joined_members,
+      is_encrypted: !!r.encryption,
+      federatable: !!r.federatable,
+      public: !!r.public,
     }),
     data: "rooms",
     total: json => {
@@ -86,11 +99,20 @@ function filterNullValues(key, value) {
   return value;
 }
 
+function getSearchOrder(order) {
+  if (order === "DESC") {
+    return "b";
+  } else {
+    return "f";
+  }
+}
+
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
     const { user_id, guests, deactivated } = params.filter;
     const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
     const from = (page - 1) * perPage;
     const query = {
       from: from,
@@ -98,6 +120,8 @@ const dataProvider = {
       user_id: user_id,
       guests: guests,
       deactivated: deactivated,
+      order_by: field,
+      dir: getSearchOrder(order),
     };
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
