@@ -118,6 +118,10 @@ const UserBulkActionButtons = props => {
   );
 };
 
+const AvatarField = ({ source, className, record = {} }) => (
+  <Avatar src={record[source]} className={className} />
+);
+
 export const UserList = props => {
   const classes = useStyles();
   return (
