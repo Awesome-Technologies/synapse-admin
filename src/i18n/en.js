@@ -35,7 +35,7 @@ export default {
         id: "User-ID",
         name: "Name",
         is_guest: "Guest",
-        admin: "Admin",
+        admin: "Server Administrator",
         deactivated: "Deactivated",
         guests: "Show guests",
         show_deactivated: "Show deactivated users",
