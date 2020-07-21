@@ -14,6 +14,14 @@ export default {
       invalid_user_id:
         "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",
     },
+    rooms: {
+      tabs: {
+        basic: "Basic",
+        members: "Members",
+        detail: "Details",
+        permission: "Permissions",
+      },
+    },
   },
   resources: {
     users: {
@@ -27,7 +35,7 @@ export default {
         id: "User-ID",
         name: "Name",
         is_guest: "Guest",
-        admin: "Admin",
+        admin: "Server Administrator",
         deactivated: "Deactivated",
         guests: "Show guests",
         show_deactivated: "Show deactivated users",
@@ -35,6 +43,7 @@ export default {
         displayname: "Displayname",
         password: "Password",
         avatar_url: "Avatar URL",
+        avatar_src: "Avatar",
         medium: "Medium",
         threepids: "3PIDs",
         address: "Address",
@@ -60,8 +69,32 @@ export default {
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",
+        encryption: "Encryption",
         federatable: "Federatable",
         public: "Public",
+        creator: "Creator",
+        join_rules: "Join rules",
+        guest_access: "Guest access",
+        history_visibility: "History visibility",
+      },
+      enums: {
+        join_rules: {
+          public: "Public",
+          knock: "Knock",
+          invite: "Invite",
+          private: "Private",
+        },
+        guest_access: {
+          can_join: "Guests can join",
+          forbidden: "Guests can not join",
+        },
+        history_visibility: {
+          invited: "Since invited",
+          joined: "Since joined",
+          shared: "Since shared",
+          world_readable: "Anyone",
+        },
+        unencrypted: "Unencrypted",
       },
       helper: {
         purge:
@@ -77,6 +110,15 @@ export default {
         last_seen: "Date",
         ip: "IP address",
         user_agent: "User agent",
+      },
+    },
+    devices: {
+      name: "Device |||| Devices",
+      fields: {
+        device_id: "Device-ID",
+        display_name: "Displayname",
+        last_seen_ts: "Timestamp",
+        last_seen_ip: "IP address",
       },
     },
     servernotices: {
