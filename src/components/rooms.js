@@ -6,8 +6,6 @@ import {
   Filter,
   List,
   Pagination,
-  BulkDeleteButton,
-  BooleanField,
   SelectField,
   Show,
   Tab,
@@ -26,19 +24,6 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
-
-const RoomBulkActionButtons = props => {
-  const translate = useTranslate();
-  return (
-    <Fragment>
-      <BulkDeleteButton
-        {...props}
-        label="resources.rooms.action.purge"
-        title={translate("resources.rooms.helper.purge")}
-      />
-    </Fragment>
-  );
-};
 
 const EncryptionField = ({ source, record = {}, emptyText }) => {
   const translate = useTranslate();
@@ -211,7 +196,6 @@ const FilterableRoomList = ({ ...props }) => {
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={<RoomFilter />}
-      bulkActionButtons={<RoomBulkActionButtons />}
     >
       <Datagrid rowClick="show">
         <EncryptionField

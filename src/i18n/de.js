@@ -98,13 +98,6 @@ export default {
         },
         unencrypted: "Nicht verschlüsselt",
       },
-      helper: {
-        purge:
-          "Alle lokalen Benutzer müssen den Raum verlassen haben, bevor er entfernt werden kann.",
-      },
-      action: {
-        purge: "Säubere Raum",
-      },
     },
     connections: {
       name: "Verbindungen",
