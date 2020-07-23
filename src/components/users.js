@@ -1,5 +1,7 @@
-import React, { Fragment } from "react";
+import React, { cloneElement, Fragment } from "react";
+import Avatar from "@material-ui/core/Avatar";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
+import ContactMailIcon from "@material-ui/icons/ContactMail";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
   ArrayInput,
@@ -17,7 +19,6 @@ import {
   FormTab,
   BooleanField,
   BooleanInput,
-  ImageField,
   PasswordInput,
   TextField,
   TextInput,
@@ -30,9 +31,65 @@ import {
   regex,
   useTranslate,
   Pagination,
+  CreateButton,
+  ExportButton,
+  TopToolbar,
+  sanitizeListRestProps,
 } from "react-admin";
 import SaveQrButton from "./SaveQrButton";
-import { ServerNoticeButton } from "./ServerNotices";
+import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  small: {
+    height: "40px",
+    width: "40px",
+  },
+  large: {
+    height: "120px",
+    width: "120px",
+    float: "right",
+  },
+});
+
+const UserListActions = ({
+  currentSort,
+  className,
+  resource,
+  filters,
+  displayedFilters,
+  exporter, // you can hide ExportButton if exporter = (null || false)
+  filterValues,
+  permanentFilter,
+  hasCreate, // you can hide CreateButton if hasCreate = false
+  basePath,
+  selectedIds,
+  onUnselectItems,
+  showFilter,
+  maxResults,
+  total,
+  ...rest
+}) => (
+  <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+    {filters &&
+      cloneElement(filters, {
+        resource,
+        showFilter,
+        displayedFilters,
+        filterValues,
+        context: "button",
+      })}
+    <CreateButton basePath={basePath} />
+    <ExportButton
+      disabled={total === 0}
+      resource={resource}
+      sort={currentSort}
+      filter={{ ...filterValues, ...permanentFilter }}
+      exporter={exporter}
+      maxResults={maxResults}
+    />
+  </TopToolbar>
+);
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -54,6 +111,7 @@ const UserBulkActionButtons = props => {
   const translate = useTranslate();
   return (
     <Fragment>
+      <ServerNoticeBulkButton {...props} />
       <BulkDeleteButton
         {...props}
         label="resources.users.action.erase"
@@ -63,24 +121,36 @@ const UserBulkActionButtons = props => {
   );
 };
 
-export const UserList = props => (
-  <List
-    {...props}
-    filters={<UserFilter />}
-    filterDefaultValues={{ guests: true, deactivated: false }}
-    bulkActionButtons={<UserBulkActionButtons />}
-    pagination={<UserPagination />}
-  >
-    <Datagrid rowClick="edit">
-      <ImageField source="avatar_url" title="displayname" />
-      <TextField source="id" sortable={false} />
-      <TextField source="displayname" />
-      <BooleanField source="is_guest" sortable={false} />
-      <BooleanField source="admin" sortable={false} />
-      <BooleanField source="deactivated" sortable={false} />
-    </Datagrid>
-  </List>
+const AvatarField = ({ source, className, record = {} }) => (
+  <Avatar src={record[source]} className={className} />
 );
+
+export const UserList = props => {
+  const classes = useStyles();
+  return (
+    <List
+      {...props}
+      filters={<UserFilter />}
+      filterDefaultValues={{ guests: true, deactivated: false }}
+      actions={<UserListActions maxResults={10000} />}
+      bulkActionButtons={<UserBulkActionButtons />}
+      pagination={<UserPagination />}
+    >
+      <Datagrid rowClick="edit">
+        <AvatarField
+          source="avatar_src"
+          sortable={false}
+          className={classes.small}
+        />
+        <TextField source="id" sortable={false} />
+        <TextField source="displayname" />
+        <BooleanField source="is_guest" sortable={false} />
+        <BooleanField source="admin" sortable={false} />
+        <BooleanField source="deactivated" sortable={false} />
+      </Datagrid>
+    </List>
+  );
+};
 
 function generateRandomUser() {
   const homeserver = localStorage.getItem("home_server");
@@ -208,69 +278,105 @@ const UserTitle = ({ record }) => {
   const translate = useTranslate();
   return (
     <span>
-      {translate("resources.users.name")}{" "}
+      {translate("resources.users.name", {
+        smart_count: 1,
+      })}{" "}
       {record ? `"${record.displayname}"` : ""}
     </span>
   );
 };
-export const UserEdit = props => (
-  <Edit {...props} title={<UserTitle />}>
-    <TabbedForm toolbar={<UserEditToolbar />}>
-      <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
-        <TextInput source="id" disabled />
-        <TextInput source="displayname" />
-        <PasswordInput source="password" autoComplete="new-password" />
-        <BooleanInput source="admin" />
-        <BooleanInput
-          source="deactivated"
-          helperText="resources.users.helper.deactivate"
-        />
-        <ArrayInput source="threepids">
-          <SimpleFormIterator>
-            <SelectInput
-              source="medium"
-              choices={[
-                { id: "email", name: "resources.users.email" },
-                { id: "msisdn", name: "resources.users.msisdn" },
-              ]}
-            />
-            <TextInput source="address" />
-          </SimpleFormIterator>
-        </ArrayInput>
-      </FormTab>
-      <FormTab
-        label="resources.connections.name"
-        icon={<SettingsInputComponentIcon />}
-      >
-        <ReferenceField reference="connections" source="id" addLabel={false}>
-          <ArrayField
-            source="devices[].sessions[0].connections"
-            label="resources.connections.name"
+
+export const UserEdit = props => {
+  const classes = useStyles();
+  return (
+    <Edit {...props} title={<UserTitle />}>
+      <TabbedForm toolbar={<UserEditToolbar />}>
+        <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
+          <AvatarField
+            source="avatar_src"
+            sortable={false}
+            className={classes.large}
+          />
+          <TextInput source="id" disabled />
+          <TextInput source="displayname" />
+          <PasswordInput source="password" autoComplete="new-password" />
+          <BooleanInput source="admin" />
+          <BooleanInput
+            source="deactivated"
+            helperText="resources.users.helper.deactivate"
+          />
+          <DateField
+            source="creation_ts_ms"
+            showTime
+            options={{
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            }}
+          />
+          <TextField source="consent_version" />
+        </FormTab>
+        <FormTab
+          label="resources.users.threepid"
+          icon={<ContactMailIcon />}
+          path="threepid"
+        >
+          <ArrayInput source="threepids">
+            <SimpleFormIterator>
+              <SelectInput
+                source="medium"
+                choices={[
+                  { id: "email", name: "resources.users.email" },
+                  { id: "msisdn", name: "resources.users.msisdn" },
+                ]}
+              />
+              <TextInput source="address" />
+            </SimpleFormIterator>
+          </ArrayInput>
+        </FormTab>
+        <FormTab
+          label="resources.connections.name"
+          icon={<SettingsInputComponentIcon />}
+          path="connections"
+        >
+          <ReferenceField
+            reference="connections"
+            source="id"
+            addLabel={false}
+            link={false}
           >
-            <Datagrid style={{ width: "100%" }}>
-              <TextField source="ip" sortable={false} />
-              <DateField
-                source="last_seen"
-                showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
-                sortable={false}
-              />
-              <TextField
-                source="user_agent"
-                sortable={false}
-                style={{ width: "100%" }}
-              />
-            </Datagrid>
-          </ArrayField>
-        </ReferenceField>
-      </FormTab>
-    </TabbedForm>
-  </Edit>
-);
+            <ArrayField
+              source="devices[].sessions[0].connections"
+              label="resources.connections.name"
+            >
+              <Datagrid style={{ width: "100%" }}>
+                <TextField source="ip" sortable={false} />
+                <DateField
+                  source="last_seen"
+                  showTime
+                  options={{
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  }}
+                  sortable={false}
+                />
+                <TextField
+                  source="user_agent"
+                  sortable={false}
+                  style={{ width: "100%" }}
+                />
+              </Datagrid>
+            </ArrayField>
+          </ReferenceField>
+        </FormTab>
+      </TabbedForm>
+    </Edit>
+  );
+};

@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Heimserver URL",
       welcome: "Willkommen bei Synapse-admin",
+      server_version: "Synapse Version",
       username_error: "Bitte vollständigen Nutzernamen angeben: '@user:domain'",
       protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
       url_error: "Keine gültige Matrix Server URL",
@@ -29,6 +30,12 @@ export default {
       alias: "Alias",
       alias_too_long:
         "Darf zusammen mit der Domain des Homeservers 255 bytes nicht überschreiten",
+      tabs: {
+        basic: "Allgemein",
+        members: "Mitglieder",
+        detail: "Details",
+        permission: "Berechtigungen",
+      },
     },
   },
   resources: {
@@ -37,6 +44,7 @@ export default {
       name: "Benutzer",
       email: "E-Mail",
       msisdn: "Telefon",
+      threepid: "E-Mail / Telefon",
       fields: {
         avatar: "Avatar",
         id: "Benutzer-ID",
@@ -50,9 +58,12 @@ export default {
         displayname: "Anzeigename",
         password: "Passwort",
         avatar_url: "Avatar URL",
+        avatar_src: "Avatar",
         medium: "Medium",
         threepids: "3PIDs",
         address: "Adresse",
+        creation_ts_ms: "Zeitpunkt der Erstellung",
+        consent_version: "Zugestimmte Geschäftsbedingungen",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
@@ -71,9 +82,17 @@ export default {
         joined_members: "Mitglieder",
         invite_members: "Mitglieder einladen",
         invitees: "Einladungen",
-        guest_access: "Gastzugang",
-        join_rules: "Zugang zum Raum",
-        members: "Mitglieder",
+        joined_local_members: "Lokale Mitglieder",
+        state_events: "Ereignisse",
+        version: "Version",
+        is_encrypted: "Verschlüsselt",
+        encryption: "Verschlüsselungs-Algorithmus",
+        federatable: "Fö­de­rierbar",
+        public: "Öffentlich",
+        creator: "Ersteller",
+        join_rules: "Beitrittsregeln",
+        guest_access: "Gastzugriff",
+        history_visibility: "Historie-Sichtbarkeit",
       },
       enums: {
         join_rules: {
@@ -84,8 +103,15 @@ export default {
         },
         guest_access: {
           can_join: "Gäste können beitreten",
-          forbidden: "Gäste können nicht beitreten"
+          forbidden: "Gäste können nicht beitreten",
         },
+        history_visibility: {
+          invited: "Ab Einladung",
+          joined: "Ab Beitritt",
+          shared: "Ab Setzen der Einstellung",
+          world_readable: "Jeder",
+        },
+        unencrypted: "Nicht verschlüsselt",
       },
     },
     connections: {
@@ -130,17 +156,6 @@ export default {
     notification: {
       ...germanMessages.ra.notifiaction,
       logged_out: "Abgemeldet",
-    },
-  },
-  ra: {
-    ...germanMessages.ra,
-    input: {
-      ...germanMessages.ra.input,
-      password: {
-        ...germanMessages.ra.input.password,
-        toggle_hidden: "Anzeigen",
-        toggle_visible: "Verstecken",
-      },
     },
   },
 };

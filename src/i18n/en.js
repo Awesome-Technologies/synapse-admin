@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Homeserver URL",
       welcome: "Welcome to Synapse-admin",
+      server_version: "Synapse version",
       username_error: "Please enter fully qualified user ID: '@user:domain'",
       protocol_error: "URL has to start with 'http://' or 'https://'",
       url_error: "Not a valid Matrix server URL",
@@ -29,6 +30,12 @@ export default {
       alias: "Alias",
       alias_too_long:
         "Must not exceed 255 bytes including the domain of the homeserver.",
+      tabs: {
+        basic: "Basic",
+        members: "Members",
+        detail: "Details",
+        permission: "Permissions",
+      },
     },
   },
   resources: {
@@ -37,6 +44,7 @@ export default {
       name: "User |||| Users",
       email: "Email",
       msisdn: "Phone",
+      threepid: "Email / Phone",
       fields: {
         avatar: "Avatar",
         id: "User-ID",
@@ -50,9 +58,12 @@ export default {
         displayname: "Displayname",
         password: "Password",
         avatar_url: "Avatar URL",
+        avatar_src: "Avatar",
         medium: "Medium",
         threepids: "3PIDs",
         address: "Address",
+        creation_ts_ms: "Creation timestamp",
+        consent_version: "Consent version",
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
@@ -70,8 +81,18 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Members",
         invite_members: "Invite Members",
-
         invitees: "Invitations",
+        joined_local_members: "local members",
+        state_events: "State events",
+        version: "Version",
+        is_encrypted: "Encrypted",
+        encryption: "Encryption",
+        federatable: "Federatable",
+        public: "Public",
+        creator: "Creator",
+        join_rules: "Join rules",
+        guest_access: "Guest access",
+        history_visibility: "History visibility",
       },
       enums: {
         join_rules: {
@@ -82,8 +103,15 @@ export default {
         },
         guest_access: {
           can_join: "Guests can join",
-          forbidden: "Guests can not join"
+          forbidden: "Guests can not join",
         },
+        history_visibility: {
+          invited: "Since invited",
+          joined: "Since joined",
+          shared: "Since shared",
+          world_readable: "Anyone",
+        },
+        unencrypted: "Unencrypted",
       },
     },
     connections: {

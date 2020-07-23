@@ -14,16 +14,30 @@ const jsonClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
+const mxcUrlToHttp = mxcUrl => {
+  const homeserver = localStorage.getItem("base_url");
+  const re = /^mxc:\/\/([^/]+)\/(\w+)/;
+  var ret = re.exec(mxcUrl);
+  console.log("mxcClient " + ret);
+  if (ret == null) return null;
+  const serverName = ret[1];
+  const mediaId = ret[2];
+  return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
+};
+
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
     map: u => ({
       ...u,
       id: u.name,
+      avatar_src: mxcUrlToHttp(u.avatar_url),
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
       displayname: u.display_name || u.displayname,
+      // need timestamp in milliseconds
+      creation_ts_ms: u.creation_ts * 1000,
     }),
     data: "users",
     total: json => json.total,
@@ -43,6 +57,11 @@ const resourceMap = {
     map: r => ({
       ...r,
       id: r.room_id,
+      alias: r.canonical_alias,
+      members: r.joined_members,
+      is_encrypted: !!r.encryption,
+      federatable: !!r.federatable,
+      public: !!r.public,
     }),
     data: "rooms",
     total: json => json.total_rooms,
@@ -56,16 +75,20 @@ const resourceMap = {
           Array.isArray(data.invitees) && data.invitees.length > 0
             ? data.invitees
             : undefined,
-        initial_state: data.encrypt ? [{
-                            type: 'm.room.encryption',
-                            state_key: '',
-                            content: {
-                                algorithm: 'm.megolm.v1.aes-sha2',
-                            }
-                          }] : undefined,
+        initial_state: data.encrypt
+          ? [
+              {
+                type: "m.room.encryption",
+                state_key: "",
+                content: {
+                  algorithm: "m.megolm.v1.aes-sha2",
+                },
+              },
+            ]
+          : undefined,
       },
       method: "POST",
-    })
+    }),
   },
   connections: {
     path: "/_synapse/admin/v1/whois",
@@ -99,11 +122,20 @@ function filterNullValues(key, value) {
   return value;
 }
 
+function getSearchOrder(order) {
+  if (order === "DESC") {
+    return "b";
+  } else {
+    return "f";
+  }
+}
+
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
     const { user_id, guests, deactivated } = params.filter;
     const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
     const from = (page - 1) * perPage;
     const query = {
       from: from,
@@ -111,6 +143,8 @@ const dataProvider = {
       user_id: user_id,
       guests: guests,
       deactivated: deactivated,
+      order_by: field,
+      dir: getSearchOrder(order),
     };
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -231,6 +265,29 @@ const dataProvider = {
       body: JSON.stringify(create.body, filterNullValues),
     }).then(({ json }) => ({
       data: res.map(json),
+    }));
+  },
+
+  createMany: (resource, params) => {
+    console.log("createMany " + resource);
+    const homeserver = localStorage.getItem("base_url");
+    if (!homeserver || !(resource in resourceMap)) return Promise.reject();
+
+    const res = resourceMap[resource];
+    if (!("create" in res)) return Promise.reject();
+
+    return Promise.all(
+      params.ids.map(id => {
+        params.data.id = id;
+        const cre = res["create"](params.data);
+        const endpoint_url = homeserver + cre.endpoint;
+        return jsonClient(endpoint_url, {
+          method: cre.method,
+          body: JSON.stringify(cre.body, filterNullValues),
+        });
+      })
+    ).then(responses => ({
+      data: responses.map(({ json }) => json),
     }));
   },
 
