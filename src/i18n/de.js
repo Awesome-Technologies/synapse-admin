@@ -51,6 +51,11 @@ export default {
         address: "Adresse",
         creation_ts_ms: "Zeitpunkt der Erstellung",
         consent_version: "Zugestimmte Geschäftsbedingungen",
+        // Devices:
+        device_id: "Geräte-ID",
+        display_name: "Gerätename",
+        last_seen_ts: "Zeitstempel",
+        last_seen_ip: "IP-Adresse",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
@@ -109,12 +114,6 @@ export default {
     },
     devices: {
       name: "Gerät |||| Geräte",
-      fields: {
-        device_id: "Geräte-ID",
-        display_name: "Anzeigename",
-        last_seen_ts: "Zeitstempel",
-        last_seen_ip: "IP-Adresse",
-      },
     },
     servernotices: {
       name: "Serverbenachrichtigungen",
