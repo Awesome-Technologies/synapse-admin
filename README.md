@@ -29,3 +29,8 @@ Steps for 2):
 ## Screenshots
 
 ![Screenshots](./screenshots.jpg)
+
+## Development
+
+- Use `yarn test` to run all style, lint and unit tests
+- Use `yarn fix` to fix the coding style
