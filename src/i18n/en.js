@@ -50,7 +50,7 @@ export default {
         id: "User-ID",
         name: "Name",
         is_guest: "Guest",
-        admin: "Admin",
+        admin: "Server Administrator",
         deactivated: "Deactivated",
         guests: "Show guests",
         show_deactivated: "Show deactivated users",
@@ -64,6 +64,11 @@ export default {
         address: "Address",
         creation_ts_ms: "Creation timestamp",
         consent_version: "Consent version",
+        // Devices:
+        device_id: "Device-ID",
+        display_name: "Device name",
+        last_seen_ts: "Timestamp",
+        last_seen_ip: "IP address",
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
@@ -120,6 +125,17 @@ export default {
         last_seen: "Date",
         ip: "IP address",
         user_agent: "User agent",
+      },
+    },
+    devices: {
+      name: "Device |||| Devices",
+      action: {
+        erase: {
+          title: "Removing %{id}",
+          content: 'Are you sure you want to remove the device "%{name}"?',
+          success: "Device successfully removed.",
+          failure: "An error has occurred.",
+        },
       },
     },
     servernotices: {

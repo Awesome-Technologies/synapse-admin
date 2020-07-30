@@ -50,7 +50,7 @@ export default {
         id: "Benutzer-ID",
         name: "Name",
         is_guest: "Gast",
-        admin: "Admin",
+        admin: "Server Administrator",
         deactivated: "Deaktiviert",
         guests: "Zeige Gäste",
         show_deactivated: "Zeige deaktivierte Benutzer",
@@ -64,6 +64,11 @@ export default {
         address: "Adresse",
         creation_ts_ms: "Zeitpunkt der Erstellung",
         consent_version: "Zugestimmte Geschäftsbedingungen",
+        // Devices:
+        device_id: "Geräte-ID",
+        display_name: "Gerätename",
+        last_seen_ts: "Zeitstempel",
+        last_seen_ip: "IP-Adresse",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
@@ -120,6 +125,17 @@ export default {
         last_seen: "Datum",
         ip: "IP-Adresse",
         user_agent: "User Agent",
+      },
+    },
+    devices: {
+      name: "Gerät |||| Geräte",
+      action: {
+        erase: {
+          title: "Entferne %{id}",
+          content: 'Möchten Sie das Gerät "%{name}" wirklich entfernen?',
+          success: "Gerät erfolgreich entfernt.",
+          failure: "Beim Entfernen ist ein Fehler aufgetreten.",
+        },
       },
     },
     servernotices: {
