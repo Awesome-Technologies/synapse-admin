@@ -32,6 +32,7 @@ const resourceMap = {
       ...u,
       id: u.name,
       avatar_src: mxcUrlToHttp(u.avatar_url),
+      avatar_url: u.avatar_url,
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
@@ -202,12 +203,38 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${params.data.id}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
-    }).then(({ json }) => ({
-      data: res.map(json),
-    }));
+
+    // In case there is a avatar_file object, save it in the media repository
+    // and update the avatar_url.
+    const f = params?.data?.avatar_file?.rawFile;
+    if (f instanceof File) {
+      const file_endpoint =
+        homeserver + "/_matrix/media/r0/upload?filename=" + f.name;
+      const headers = new Headers();
+      headers.append("Content-Type", f.type);
+      const options = {
+        method: "POST",
+        body: f,
+        headers: headers,
+      };
+      return jsonClient(file_endpoint, options).then(r => {
+        params.data.avatar_url = r.json.content_uri;
+
+        return jsonClient(`${endpoint_url}/${params.data.id}`, {
+          method: "PUT",
+          body: JSON.stringify(params.data, filterNullValues),
+        }).then(({ json }) => ({
+          data: res.map(json),
+        }));
+      });
+    } else {
+      return jsonClient(`${endpoint_url}/${params.data.id}`, {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      }).then(({ json }) => ({
+        data: res.map(json),
+      }));
+    }
   },
 
   updateMany: (resource, params) => {
