@@ -38,6 +38,7 @@ const App = () => (
     <Resource name="rooms" list={RoomList} show={RoomShow} icon={RoomIcon} />
     <Resource name="connections" />
     <Resource name="devices" />
+    <Resource name="room_members" />
     <Resource name="servernotices" />
   </Admin>
 );

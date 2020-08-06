@@ -88,6 +88,15 @@ const resourceMap = {
     }),
     data: "connections",
   },
+  room_members: {
+    map: m => ({
+      id: m,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
+    }),
+    data: "members",
+  },
   servernotices: {
     map: n => ({ id: n.event_id }),
     create: data => ({

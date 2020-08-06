@@ -6,6 +6,8 @@ import {
   Filter,
   List,
   Pagination,
+  ReferenceField,
+  ReferenceManyField,
   SelectField,
   Show,
   Tab,
@@ -18,6 +20,7 @@ import { Tooltip, Typography, Chip } from "@material-ui/core";
 import HttpsIcon from "@material-ui/icons/Https";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import PageviewIcon from "@material-ui/icons/Pageview";
+import UserIcon from "@material-ui/icons/Group";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 
@@ -90,6 +93,34 @@ export const RoomShow = props => {
             source="encryption"
             emptyText={translate("resources.rooms.enums.unencrypted")}
           />
+        </Tab>
+
+        <Tab label="synapseadmin.rooms.tabs.members" icon={<UserIcon />}>
+          <ReferenceManyField
+            reference="room_members"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid
+              style={{ width: "100%" }}
+              rowClick={(id, basePath, record) => "/users/" + id}
+            >
+              <TextField
+                source="id"
+                sortable={false}
+                label="resources.users.fields.id"
+              />
+              <ReferenceField
+                label="resources.users.fields.displayname"
+                source="id"
+                reference="users"
+                sortable={false}
+                link=""
+              >
+                <TextField source="displayname" sortable={false} />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
         </Tab>
 
         <Tab
