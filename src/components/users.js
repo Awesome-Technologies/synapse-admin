@@ -212,7 +212,10 @@ export const UserEdit = props => {
   return (
     <Edit {...props} title={<UserTitle />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
-        <FormTab label="resources.users.name" icon={<PersonPinIcon />}>
+        <FormTab
+          label={translate("resources.users.name", { smart_count: 1 })}
+          icon={<PersonPinIcon />}
+        >
           <AvatarField
             source="avatar_src"
             sortable={false}
