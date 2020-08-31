@@ -11,6 +11,8 @@ import {
   List,
   Pagination,
   ReferenceArrayInput,
+  ReferenceField,
+  ReferenceManyField,
   SelectField,
   Show,
   Tab,
@@ -199,6 +201,34 @@ export const RoomShow = props => {
             source="encryption"
             emptyText={translate("resources.rooms.enums.unencrypted")}
           />
+        </Tab>
+
+        <Tab label="synapseadmin.rooms.tabs.members" icon={<UserIcon />}>
+          <ReferenceManyField
+            reference="room_members"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid
+              style={{ width: "100%" }}
+              rowClick={(id, basePath, record) => "/users/" + id}
+            >
+              <TextField
+                source="id"
+                sortable={false}
+                label="resources.users.fields.id"
+              />
+              <ReferenceField
+                label="resources.users.fields.displayname"
+                source="id"
+                reference="users"
+                sortable={false}
+                link=""
+              >
+                <TextField source="displayname" sortable={false} />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
         </Tab>
 
         <Tab

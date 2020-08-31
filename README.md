@@ -4,7 +4,7 @@
 
 This project is built using [react-admin](https://marmelab.com/react-admin/).
 
-It needs at least Synapse v1.15.0 for all functions to work as expected!
+It needs at least Synapse v1.18.0 for all functions to work as expected!
 
 ## Step-By-Step install:
 
@@ -29,3 +29,8 @@ Steps for 2):
 ## Screenshots
 
 ![Screenshots](./screenshots.jpg)
+
+## Development
+
+- Use `yarn test` to run all style, lint and unit tests
+- Use `yarn fix` to fix the coding style

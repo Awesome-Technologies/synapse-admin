@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "AMP/2020.07",
+  "version": "AMP/2020.08",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
@@ -18,6 +18,7 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "jest-fetch-mock": "^3.0.3",
     "prettier": "^2.0.0"
   },
   "dependencies": {
