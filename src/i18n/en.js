@@ -70,6 +70,10 @@ export default {
         last_seen_ts: "Timestamp",
         last_seen_ip: "IP address",
       },
+      type: {
+        default: "Standard",
+        free: "Basic",
+      },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",
         erase: "Mark the user as GDPR-erased",

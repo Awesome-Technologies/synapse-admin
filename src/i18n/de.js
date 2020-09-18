@@ -64,11 +64,16 @@ export default {
         address: "Adresse",
         creation_ts_ms: "Zeitpunkt der Erstellung",
         consent_version: "Zugestimmte Geschäftsbedingungen",
+        user_type: "Kontotyp",
         // Devices:
         device_id: "Geräte-ID",
         display_name: "Gerätename",
         last_seen_ts: "Zeitstempel",
         last_seen_ip: "IP-Adresse",
+      },
+      type: {
+        default: "Standard",
+        free: "Basic",
       },
       helper: {
         deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",

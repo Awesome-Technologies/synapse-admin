@@ -26,6 +26,7 @@ import {
   SearchInput,
   ReferenceField,
   ReferenceManyField,
+  SelectField,
   SelectInput,
   BulkDeleteButton,
   DeleteButton,
@@ -149,6 +150,13 @@ export const UserList = props => {
         <TextField source="displayname" />
         <BooleanField source="is_guest" sortable={false} />
         <BooleanField source="admin" sortable={false} />
+        <SelectField
+          source="user_type"
+          choices={[
+            { id: null, name: "resources.users.type.default" },
+            { id: "free", name: "resources.users.type.free" },
+          ]}
+        />
         <BooleanField source="deactivated" sortable={false} />
       </Datagrid>
     </List>
@@ -261,6 +269,13 @@ export const UserCreate = props => (
       <TextInput source="displayname" />
       <PasswordInput source="password" autoComplete="new-password" />
       <BooleanInput source="admin" />
+      <SelectInput
+        source="user_type"
+        choices={[
+          { id: null, name: "resources.users.type.default" },
+          { id: "free", name: "resources.users.type.free" },
+        ]}
+      />
       <ArrayInput source="threepids">
         <SimpleFormIterator>
           <SelectInput
@@ -307,6 +322,14 @@ export const UserEdit = props => {
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
           <PasswordInput source="password" autoComplete="new-password" />
+          <SelectInput
+            source="user_type"
+            choices={[
+              { id: null, name: "resources.users.type.default" },
+              { id: "free", name: "resources.users.type.free" },
+            ]}
+            emptyText="resources.users.type.default"
+          />
           <BooleanInput source="admin" />
           <BooleanInput
             source="deactivated"
