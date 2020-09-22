@@ -29,6 +29,74 @@ export default {
       },
     },
   },
+  import_users: {
+    error: {
+      at_entry: "Bei Eintrag %{entry}: %{message}",
+      error: "Fehler",
+      required_field: "Pflichtfeld '%{field}' fehlt",
+      invalid_value:
+        "Ungültiger Wert in Zeile %{row}. Feld '%{field}' darf nur die Werte 'true' oder 'false' enthalten",
+      unreasonably_big: "Datei ist zu groß für den Import (%{size} Megabytes)",
+      already_in_progress: "Es läuft bereits ein Import",
+      id_exits: "ID %{id} existiert bereits",
+    },
+    title: "Benutzer aus CSV importieren",
+    goToPdf: "Gehe zum PDF",
+    cards: {
+      importstats: {
+        header: "Benutzer importieren",
+        users_total:
+          "%{smart_count} Benutzer in der CSV Datei |||| %{smart_count} Benutzer in der CSV Datei",
+        guest_count: "%{smart_count} Gast |||| %{smart_count} Gäste",
+        admin_count:
+          "%{smart_count} Server Administrator |||| %{smart_count} Server Administratoren",
+      },
+      conflicts: {
+        header: "Konfliktstrategie",
+        mode: {
+          stop: "Stoppe bei Fehlern",
+          skip: "Zeige Fehler und überspringe fehlerhafte Einträge",
+        },
+      },
+      ids: {
+        header: "IDs",
+        all_ids_present: "IDs in jedem Eintrag vorhanden",
+        count_ids_present:
+          "%{smart_count} Eintrag mit ID |||| %{smart_count} Einträge mit IDs",
+        mode: {
+          ignore: "Ignoriere IDs der CSV-Datei und erstelle neue",
+          update: "Aktualisiere existierende Benutzer",
+        },
+      },
+      passwords: {
+        header: "Passwörter",
+        all_passwords_present: "Passwörter in jedem Eintrag vorhanden",
+        count_passwords_present:
+          "%{smart_count} Eintrag mit Passwort |||| %{smart_count} Einträge mit Passwörtern",
+        use_passwords: "Verwende Passwörter aus der CSV Datei",
+      },
+      upload: {
+        header: "CSV Datei importieren",
+        explanation:
+          "Hier können Sie eine Datei mit kommagetrennten Daten hochladen, die verwendet werden um Benutzer anzulegen oder zu ändern. Die Datei muss mindestens die Felder 'id' und 'displayname' enthalten. Hier können Sie eine Beispieldatei herunterladen und anpassen: ",
+      },
+      startImport: {
+        simulate_only: "Nur simulieren",
+        run_import: "Importieren",
+      },
+      results: {
+        header: "Ergebnis",
+        total:
+          "%{smart_count} Eintrag insgesamt |||| %{smart_count} Einträge insgesamt",
+        successful: "%{smart_count} Einträge erfolgreich importiert",
+        skipped: "%{smart_count} Einträge übersprungen",
+        download_skipped: "Übersprungene Einträge herunterladen",
+        with_error:
+          "%{smart_count} Eintrag mit Fehlern ||| %{smart_count} Einträge mit Fehlern",
+        simulated_only: "Import-Vorgang war nur simuliert",
+      },
+    },
+  },
   resources: {
     users: {
       backtolist: "Zurück zur Liste",

@@ -8,6 +8,8 @@ import { RoomList, RoomShow } from "./components/rooms";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
 import { ViewListIcon as RoomIcon } from "@material-ui/icons/ViewList";
+import { ImportFeature } from "./components/ImportFeature";
+import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
 
@@ -27,6 +29,9 @@ const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
+    customRoutes={[
+      <Route key="userImport" path="/import_users" component={ImportFeature} />,
+    ]}
   >
     <Resource
       name="users"

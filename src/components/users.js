@@ -3,10 +3,12 @@ import Avatar from "@material-ui/core/Avatar";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import {
   ArrayInput,
   ArrayField,
+  Button,
   Datagrid,
   DateField,
   Create,
@@ -31,6 +33,7 @@ import {
   DeleteButton,
   SaveButton,
   regex,
+  useRedirect,
   useTranslate,
   Pagination,
   CreateButton,
@@ -41,6 +44,12 @@ import {
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { makeStyles } from "@material-ui/core/styles";
+
+const redirect = (basePath, id, data) => {
+  return {
+    pathname: "/importcsv",
+  };
+};
 
 const useStyles = makeStyles({
   small: {
@@ -71,27 +80,44 @@ const UserListActions = ({
   maxResults,
   total,
   ...rest
-}) => (
-  <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-    {filters &&
-      cloneElement(filters, {
-        resource,
-        showFilter,
-        displayedFilters,
-        filterValues,
-        context: "button",
-      })}
-    <CreateButton basePath={basePath} />
-    <ExportButton
-      disabled={total === 0}
-      resource={resource}
-      sort={currentSort}
-      filter={{ ...filterValues, ...permanentFilter }}
-      exporter={exporter}
-      maxResults={maxResults}
-    />
-  </TopToolbar>
-);
+}) => {
+  const redirectTo = useRedirect();
+  return (
+    <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
+      {filters &&
+        cloneElement(filters, {
+          resource,
+          showFilter,
+          displayedFilters,
+          filterValues,
+          context: "button",
+        })}
+      <CreateButton basePath={basePath} />
+      <ExportButton
+        disabled={total === 0}
+        resource={resource}
+        sort={currentSort}
+        filter={{ ...filterValues, ...permanentFilter }}
+        exporter={exporter}
+        maxResults={maxResults}
+      />
+      {/* Add your custom actions */}
+      <Button
+        onClick={() => {
+          redirectTo(redirect);
+        }}
+        label="CSV Import"
+      >
+        <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
+      </Button>
+    </TopToolbar>
+  );
+};
+
+UserListActions.defaultProps = {
+  selectedIds: [],
+  onUnselectItems: () => null,
+};
 
 const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -159,6 +185,47 @@ const validateUser = regex(
   /^@[a-z0-9._=\-/]+:.*/,
   "synapseadmin.users.invalid_user_id"
 );
+
+export function generateRandomUser() {
+  const homeserver = localStorage.getItem("home_server");
+  const user_id =
+    "@" +
+    Array(8)
+      .fill("0123456789abcdefghijklmnopqrstuvwxyz")
+      .map(
+        x =>
+          x[
+            Math.floor(
+              (crypto.getRandomValues(new Uint32Array(1))[0] /
+                (0xffffffff + 1)) *
+                x.length
+            )
+          ]
+      )
+      .join("") +
+    ":" +
+    homeserver;
+
+  const password = Array(20)
+    .fill(
+      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$"
+    )
+    .map(
+      x =>
+        x[
+          Math.floor(
+            (crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1)) *
+              x.length
+          )
+        ]
+    )
+    .join("");
+
+  return {
+    id: user_id,
+    password: password,
+  };
+}
 
 const UserEditToolbar = props => {
   const translate = useTranslate();
