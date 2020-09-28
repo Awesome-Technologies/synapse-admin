@@ -162,5 +162,10 @@ export default {
       ...germanMessages.ra.notifiaction,
       logged_out: "Abgemeldet",
     },
+    page: {
+      ...germanMessages.ra.page,
+      empty: "Keine Einträge vorhanden",
+      invite: "",
+    },
   },
 };
