@@ -66,6 +66,11 @@ const resourceMap = {
     total: json => {
       return json.total_rooms;
     },
+    delete: id => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/delete`,
+      body: { block: false },
+      method: "POST",
+    }),
   },
   devices: {
     map: d => ({
