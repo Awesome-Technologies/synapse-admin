@@ -23,6 +23,10 @@ export default {
         detail: "Details",
         permission: "Berechtigungen",
       },
+      delete: {
+        title: "Raum löschen",
+        message: "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
+      },
     },
   },
   resources: {

@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import {
   BooleanField,
+  BulkDeleteWithConfirmButton,
   Datagrid,
   Filter,
   List,
@@ -181,6 +182,13 @@ export const RoomShow = props => {
     </Show>
   );
 };
+
+const RoomBulkActionButtons = props => (
+    <Fragment>
+        <BulkDeleteWithConfirmButton {...props} />
+    </Fragment>
+);
+
 const RoomFilter = ({ ...props }) => {
   const translate = useTranslate();
   return (
@@ -220,6 +228,7 @@ const FilterableRoomList = ({ ...props }) => {
   const stateEventsFilter = filter && filter.state_events ? true : false;
   const versionFilter = filter && filter.version ? true : false;
   const federateableFilter = filter && filter.federatable ? true : false;
+  const translate = useTranslate();
 
   return (
     <List
@@ -227,6 +236,7 @@ const FilterableRoomList = ({ ...props }) => {
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={<RoomFilter />}
+      bulkActionButtons={<RoomBulkActionButtons confirmTitle={translate("synapseadmin.rooms.delete.title")} confirmContent={translate("synapseadmin.rooms.delete.message")}/>}
     >
       <Datagrid rowClick="show">
         <EncryptionField
