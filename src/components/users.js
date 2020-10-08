@@ -25,6 +25,7 @@ import {
   TextInput,
   ReferenceField,
   ReferenceManyField,
+  SearchInput,
   SelectInput,
   BulkDeleteButton,
   DeleteButton,
@@ -98,6 +99,7 @@ const UserPagination = props => (
 
 const UserFilter = props => (
   <Filter {...props}>
+    <SearchInput source="name" alwaysOn />
     <BooleanInput source="guests" alwaysOn />
     <BooleanInput
       label="resources.users.fields.show_deactivated"

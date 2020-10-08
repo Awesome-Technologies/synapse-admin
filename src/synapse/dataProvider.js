@@ -137,7 +137,7 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, guests, deactivated } = params.filter;
+    const { user_id, name, guests, deactivated } = params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -145,6 +145,7 @@ const dataProvider = {
       from: from,
       limit: perPage,
       user_id: user_id,
+      name: name,
       guests: guests,
       deactivated: deactivated,
       order_by: field,
