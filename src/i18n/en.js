@@ -73,6 +73,7 @@ export default {
       type: {
         default: "Standard",
         free: "Basic",
+        limited: "Limited",
       },
       helper: {
         deactivate: "Deactivated users cannot be reactivated",

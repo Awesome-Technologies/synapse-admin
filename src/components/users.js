@@ -155,6 +155,7 @@ export const UserList = props => {
           choices={[
             { id: null, name: "resources.users.type.default" },
             { id: "free", name: "resources.users.type.free" },
+            { id: "limited", name: "resources.users.type.limited" },
           ]}
         />
         <BooleanField source="deactivated" sortable={false} />
@@ -274,6 +275,7 @@ export const UserCreate = props => (
         choices={[
           { id: null, name: "resources.users.type.default" },
           { id: "free", name: "resources.users.type.free" },
+          { id: "limited", name: "resources.users.type.limited" },
         ]}
       />
       <ArrayInput source="threepids">
@@ -327,6 +329,7 @@ export const UserEdit = props => {
             choices={[
               { id: null, name: "resources.users.type.default" },
               { id: "free", name: "resources.users.type.free" },
+              { id: "limited", name: "resources.users.type.limited" },
             ]}
             emptyText="resources.users.type.default"
           />
