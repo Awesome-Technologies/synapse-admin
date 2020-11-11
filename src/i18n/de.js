@@ -25,9 +25,11 @@ export default {
       },
       delete: {
         title: "Raum löschen",
-        message: "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
+        message:
+          "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
       },
     },
+    reports: { tabs: { basic: "Allgemein", detail: "Details" } },
   },
   import_users: {
     error: {
@@ -174,6 +176,30 @@ export default {
           world_readable: "Jeder",
         },
         unencrypted: "Nicht verschlüsselt",
+      },
+    },
+    reports: {
+      name: "Ereignisbericht |||| Ereignisberichte",
+      fields: {
+        id: "ID",
+        received_ts: "Meldezeit",
+        user_id: "Meldender",
+        name: "Raumname",
+        score: "Wert",
+        reason: "Grund",
+        event_id: "Event-ID",
+        event_json: {
+          origin: "Ursprungsserver",
+          origin_server_ts: "Sendezeit",
+          type: "Eventtyp",
+          content: {
+            msgtype: "Inhaltstyp",
+            body: "Nachrichteninhalt",
+            format: "Nachrichtenformat",
+            formatted_body: "Formatierter Nachrichteninhalt",
+            algorithm: "Verschlüsselungsalgorithmus",
+          },
+        },
       },
     },
     connections: {

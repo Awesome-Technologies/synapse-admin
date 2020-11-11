@@ -5,9 +5,11 @@ import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
 import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomShow } from "./components/rooms";
+import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
-import { ViewListIcon as RoomIcon } from "@material-ui/icons/ViewList";
+import RoomIcon from "@material-ui/icons/ViewList";
+import ReportIcon from "@material-ui/icons/Warning";
 import { ImportFeature } from "./components/ImportFeature";
 import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
@@ -41,6 +43,12 @@ const App = () => (
       icon={UserIcon}
     />
     <Resource name="rooms" list={RoomList} show={RoomShow} icon={RoomIcon} />
+    <Resource
+      name="reports"
+      list={ReportList}
+      show={ReportShow}
+      icon={ReportIcon}
+    />
     <Resource name="connections" />
     <Resource name="devices" />
     <Resource name="room_members" />
