@@ -569,7 +569,7 @@ const FilePicker = props => {
       <CardHeader title={translate("import_users.cards.upload.header")} />
       <CardContent>
         {translate("import_users.cards.upload.explanation")}
-        <a href="/data/example.csv">example.csv</a>
+        <a href="./data/example.csv">example.csv</a>
         <br />
         <br />
         <input
