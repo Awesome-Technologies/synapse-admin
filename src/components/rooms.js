@@ -9,6 +9,7 @@ import {
   Pagination,
   ReferenceField,
   ReferenceManyField,
+  SearchInput,
   SelectField,
   Show,
   Tab,
@@ -184,15 +185,16 @@ export const RoomShow = props => {
 };
 
 const RoomBulkActionButtons = props => (
-    <Fragment>
-        <BulkDeleteWithConfirmButton {...props} />
-    </Fragment>
+  <Fragment>
+    <BulkDeleteWithConfirmButton {...props} />
+  </Fragment>
 );
 
 const RoomFilter = ({ ...props }) => {
   const translate = useTranslate();
   return (
     <Filter {...props}>
+      <SearchInput source="search_term" alwaysOn />
       <Chip
         label={translate("resources.rooms.fields.joined_local_members")}
         source="joined_local_members"
@@ -236,7 +238,12 @@ const FilterableRoomList = ({ ...props }) => {
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={<RoomFilter />}
-      bulkActionButtons={<RoomBulkActionButtons confirmTitle={translate("synapseadmin.rooms.delete.title")} confirmContent={translate("synapseadmin.rooms.delete.message")}/>}
+      bulkActionButtons={
+        <RoomBulkActionButtons
+          confirmTitle={translate("synapseadmin.rooms.delete.title")}
+          confirmContent={translate("synapseadmin.rooms.delete.message")}
+        />
+      }
     >
       <Datagrid rowClick="show">
         <EncryptionField
