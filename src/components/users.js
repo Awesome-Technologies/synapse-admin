@@ -47,7 +47,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const redirect = (basePath, id, data) => {
   return {
-    pathname: "/importcsv",
+    pathname: "/import_users",
   };
 };
 
