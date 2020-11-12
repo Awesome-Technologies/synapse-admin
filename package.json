@@ -22,13 +22,13 @@
     "prettier": "^2.0.0"
   },
   "dependencies": {
+    "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
     "ra-language-german": "^2.1.2",
-    "papaparse": "^5.2.0",
     "react": "^16.13.1",
-    "react-admin": "^3.7.0",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react-admin": "^3.10.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "^3.4.4"
   },
   "scripts": {
     "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
