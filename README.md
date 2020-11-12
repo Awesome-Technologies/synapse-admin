@@ -11,8 +11,8 @@ See also [Synapse version API](https://github.com/matrix-org/synapse/blob/develo
 
 After entering the URL on the login page of synapse-admin the server version appears below the input field.
 
-
 You need access to the following endpoints:
+
 - `/_matrix`
 - `/_synapse/admin`
 
