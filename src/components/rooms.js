@@ -1,10 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Route, Link } from "react-router-dom";
 import {
   AutocompleteArrayInput,
+  AutocompleteInput,
   BooleanInput,
   BooleanField,
+  Button,
   Create,
+  Edit,
   Datagrid,
   Filter,
   FormTab,
@@ -12,24 +16,39 @@ import {
   Pagination,
   ReferenceArrayInput,
   ReferenceField,
+  ReferenceInput,
   ReferenceManyField,
   SelectField,
   Show,
+  SimpleForm,
   Tab,
   TabbedForm,
   TabbedShowLayout,
   TextField,
   TextInput,
+  Toolbar,
+  useDataProvider,
+  useRefresh,
   useTranslate,
 } from "react-admin";
 import get from "lodash/get";
-import { Tooltip, Typography, Chip } from "@material-ui/core";
+import {
+  Tooltip,
+  Typography,
+  Chip,
+  Drawer,
+  styled,
+  withStyles,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import HttpsIcon from "@material-ui/icons/Https";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import PageviewIcon from "@material-ui/icons/Pageview";
 import UserIcon from "@material-ui/icons/Group";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import ContentSave from "@material-ui/icons/Save";
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -61,12 +80,13 @@ const EncryptionField = ({ source, record = {}, emptyText }) => {
   );
 };
 
-const validateDisplayName = fieldval =>
-  fieldval === undefined
+const validateDisplayName = fieldval => {
+  return fieldval == null
     ? "synapseadmin.rooms.room_name_required"
     : fieldval.length === 0
     ? "synapseadmin.rooms.room_name_required"
     : undefined;
+};
 
 function approximateAliasLength(alias, homeserver) {
   /* TODO maybe handle punycode in homeserver name */
@@ -141,6 +161,16 @@ export const RoomCreate = props => (
           validate={validateAlias}
           placeholder="#"
         />
+        <ReferenceInput
+          reference="users"
+          source="owner"
+          filterToQuery={searchText => ({ user_id: searchText })}
+        >
+          <AutocompleteInput
+            optionText="displayname"
+            suggestionText="displayname"
+          />
+        </ReferenceInput>
         <BooleanInput source="public" label="synapseadmin.rooms.make_public" />
         <BooleanInput
           source="encrypt"
@@ -173,6 +203,242 @@ const RoomTitle = ({ record }) => {
     <span>
       {translate("resources.rooms.name", 1)} {record ? `"${record.name}"` : ""}
     </span>
+  );
+};
+
+// Explicitely passing "to" prop
+// Toolbar adds all kinds of unsupported props to its children :(
+const StyledLink = styles => {
+  const Styled = styled(Link)(styles);
+  return ({ to, children }) => <Styled to={to}>{children}</Styled>;
+};
+
+const RoomMemberEditToolbar = ({ backLink, translate, onSave, ...props }) => {
+  const SaveLink = StyledLink({
+    textDecoration: "none",
+  });
+  const CancelLink = StyledLink({
+    textDecoration: "none",
+    marginLeft: "1em",
+  });
+  const SaveIcon = styled(ContentSave)({
+    width: "1rem",
+    marginRight: "0.25em",
+  });
+
+  return (
+    <Toolbar {...props}>
+      <SaveLink to={backLink}>
+        <Button onClick={onSave} variant="contained">
+          <React.Fragment>
+            <SaveIcon />
+            {translate("ra.action.save")}
+          </React.Fragment>
+        </Button>
+      </SaveLink>
+      <CancelLink to={backLink}>
+        <Button>
+          <React.Fragment>{translate("ra.action.cancel")}</React.Fragment>
+        </Button>
+      </CancelLink>
+    </Toolbar>
+  );
+};
+
+const RoomMemberIdField = ({ memberId, data = {} }) => {
+  const value = get(data[memberId], "id");
+
+  return (
+    <Typography component="span" variant="body2">
+      {value}
+    </Typography>
+  );
+};
+
+const RoomMemberRoleInput = ({ memberId, data = {}, translate, onChange }) => {
+  const roleValue = get(data[memberId], "role");
+  const [role, setRole] = React.useState(roleValue);
+
+  React.useEffect(() => {
+    onChange(roleValue);
+  }, [onChange, roleValue]);
+
+  return (
+    <React.Fragment>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={role}
+        onChange={event => {
+          setRole(event.target.value);
+          onChange(event.target.value);
+        }}
+      >
+        <MenuItem value={"user"}>
+          {translate("resources.users.roles.user")}
+        </MenuItem>
+        <MenuItem value={"mod"}>
+          {translate("resources.users.roles.mod")}
+        </MenuItem>
+        <MenuItem value={"admin"}>
+          {translate("resources.users.roles.admin")}
+        </MenuItem>
+      </Select>
+    </React.Fragment>
+  );
+};
+
+const RoomMemberEdit = ({ backLink, memberId, ...props }) => {
+  const translate = useTranslate();
+  const refresh = useRefresh();
+  const dataProvider = useDataProvider();
+
+  const [role, setRole] = React.useState();
+
+  const { id } = props;
+
+  return (
+    <Edit title=" " {...props}>
+      <SimpleForm
+        toolbar={
+          <RoomMemberEditToolbar
+            backLink={backLink}
+            translate={translate}
+            onSave={() => {
+              dataProvider
+                .update("rooms", {
+                  data: {
+                    id,
+                    member_roles: [{ member_id: memberId, role }],
+                  },
+                })
+                .then(() => {
+                  refresh();
+                });
+            }}
+          />
+        }
+      >
+        <ReferenceManyField
+          reference="room_members"
+          target="room_id"
+          label="resources.users.fields.id"
+        >
+          <RoomMemberIdField memberId={memberId} />
+        </ReferenceManyField>
+        <ReferenceManyField
+          reference="room_members"
+          target="room_id"
+          label="resources.users.fields.role"
+        >
+          <RoomMemberRoleInput
+            memberId={memberId}
+            translate={translate}
+            onChange={setRole}
+          />
+        </ReferenceManyField>
+      </SimpleForm>
+    </Edit>
+  );
+};
+
+const drawerStyles = {
+  paper: {
+    width: 300,
+  },
+};
+const StyledDrawer = withStyles(drawerStyles)(({ classes, ...props }) => (
+  <Drawer {...props} classes={classes} />
+));
+
+export const RoomEdit = props => {
+  const translate = useTranslate();
+
+  return (
+    <React.Fragment>
+      <Edit {...props} title={<RoomTitle />}>
+        <TabbedForm>
+          <FormTab label="synapseadmin.rooms.tabs.members" icon={<UserIcon />}>
+            <ReferenceArrayInput
+              reference="users"
+              source="invitees"
+              filterToQuery={searchText => ({ user_id: searchText })}
+            >
+              <AutocompleteArrayInput
+                optionText="displayname"
+                suggestionText="displayname"
+              />
+            </ReferenceArrayInput>
+
+            <ReferenceManyField
+              reference="room_members"
+              target="room_id"
+              addLabel={false}
+            >
+              <Datagrid
+                style={{ width: "100%" }}
+                rowClick={(id, basePath, record) =>
+                  `/rooms/${encodeURIComponent(
+                    record.parentId
+                  )}/${encodeURIComponent(id)}`
+                }
+              >
+                <TextField
+                  source="id"
+                  sortable={false}
+                  label="resources.users.fields.id"
+                />
+                <ReferenceField
+                  label="resources.users.fields.displayname"
+                  source="id"
+                  reference="users"
+                  sortable={false}
+                  link=""
+                >
+                  <TextField source="displayname" sortable={false} />
+                </ReferenceField>
+                <SelectField
+                  source="role"
+                  label="resources.users.fields.role"
+                  choices={[
+                    {
+                      id: "user",
+                      name: translate("resources.users.roles.user"),
+                    },
+                    { id: "mod", name: translate("resources.users.roles.mod") },
+                    {
+                      id: "admin",
+                      name: translate("resources.users.roles.admin"),
+                    },
+                  ]}
+                />
+              </Datagrid>
+            </ReferenceManyField>
+          </FormTab>
+        </TabbedForm>
+      </Edit>
+      <Route path="/rooms/:roomId/:memberId">
+        {({ match }) => {
+          const isMatch = !!match && !!match.params;
+
+          return (
+            <StyledDrawer open={isMatch} anchor="right">
+              {isMatch ? (
+                <RoomMemberEdit
+                  {...props}
+                  memberId={
+                    isMatch ? decodeURIComponent(match.params.memberId) : null
+                  }
+                  backLink={`/rooms/${match.params.roomId}`}
+                />
+              ) : (
+                <div />
+              )}
+            </StyledDrawer>
+          );
+        }}
+      </Route>
+    </React.Fragment>
   );
 };
 
@@ -227,6 +493,18 @@ export const RoomShow = props => {
               >
                 <TextField source="displayname" sortable={false} />
               </ReferenceField>
+              <SelectField
+                source="role"
+                label="resources.users.fields.role"
+                choices={[
+                  { id: "user", name: translate("resources.users.roles.user") },
+                  { id: "mod", name: translate("resources.users.roles.mod") },
+                  {
+                    id: "admin",
+                    name: translate("resources.users.roles.admin"),
+                  },
+                ]}
+              />
             </Datagrid>
           </ReferenceManyField>
         </Tab>

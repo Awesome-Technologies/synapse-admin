@@ -25,6 +25,16 @@ const mxcUrlToHttp = mxcUrl => {
   return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
 };
 
+const powerLevelToRole = powerLevel =>
+  powerLevel < 100 ? (powerLevel < 50 ? "user" : "mod") : "admin";
+
+const POWER_LEVELS = {
+  admin: 100,
+  mod: 50,
+  user: 0,
+};
+const roleToPowerLevel = role => POWER_LEVELS[role] || 0;
+
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
@@ -66,8 +76,9 @@ const resourceMap = {
     data: "rooms",
     total: json => json.total_rooms,
     create: data => ({
-      endpoint: "/_matrix/client/r0/createRoom",
+      endpoint: "/_synapse/admin/v1/rooms",
       body: {
+        owner: data.owner,
         name: data.name,
         room_alias_name: data.canonical_alias,
         visibility: data.public ? "public" : "private",
@@ -89,6 +100,20 @@ const resourceMap = {
       },
       method: "POST",
     }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/rooms/${params.id}/delete`,
+      body: { erase: true },
+      method: "POST",
+    }),
+    transformBeforeUpdate: data => {
+      return {
+        ...data,
+        member_roles: (data.member_roles || []).map(member => ({
+          member_id: member.member_id,
+          power_level: roleToPowerLevel(member.role),
+        })),
+      };
+    },
   },
   devices: {
     map: d => ({
@@ -113,10 +138,11 @@ const resourceMap = {
   },
   room_members: {
     map: m => ({
-      id: m,
+      role: powerLevelToRole(m.power_level),
+      id: m.user_id,
     }),
     reference: id => ({
-      endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
+      endpoint: `/_synapse/admin/v1/rooms/${id}/power_levels`,
     }),
     data: "members",
   },
@@ -183,7 +209,7 @@ const dataProvider = {
   },
 
   getOne: (resource, params) => {
-    console.log("getOne " + resource);
+    console.log("getOne " + resource, params);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
@@ -222,7 +248,10 @@ const dataProvider = {
     const endpoint_url = homeserver + ref.endpoint;
 
     return jsonClient(endpoint_url).then(({ headers, json }) => ({
-      data: json[res.data].map(res.map),
+      data: json[res.data].map(res.map).map(element => ({
+        ...element,
+        parentId: params.id,
+      })),
     }));
   },
 
@@ -233,10 +262,13 @@ const dataProvider = {
 
     const res = resourceMap[resource];
 
+    const transform = res.transformBeforeUpdate || (x => x);
+    const data = transform(params.data);
+
     const endpoint_url = homeserver + res.path;
     return jsonClient(`${endpoint_url}/${params.data.id}`, {
       method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
+      body: JSON.stringify(data, filterNullValues),
     }).then(({ json }) => ({
       data: res.map(json),
     }));

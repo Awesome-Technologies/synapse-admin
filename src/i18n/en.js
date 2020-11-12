@@ -69,6 +69,7 @@ export default {
         display_name: "Device name",
         last_seen_ts: "Timestamp",
         last_seen_ip: "IP address",
+        role: "Role",
       },
       type: {
         default: "Standard",
@@ -81,6 +82,11 @@ export default {
       },
       action: {
         erase: "Erase user data",
+      },
+      roles: {
+        user: "User",
+        mod: "Moderator",
+        admin: "Administrator",
       },
     },
     rooms: {
