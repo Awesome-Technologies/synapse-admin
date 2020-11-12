@@ -4,7 +4,7 @@
 
 This project is built using [react-admin](https://marmelab.com/react-admin/).
 
-It needs at least Synapse v1.18.0 for all functions to work as expected!
+It needs at least Synapse v1.23.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.
 See also [Synapse version API](https://github.com/matrix-org/synapse/blob/develop/docs/admin_api/version_api.rst).
