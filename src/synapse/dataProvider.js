@@ -14,29 +14,39 @@ const jsonClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
+const mxcUrlToHttp = mxcUrl => {
+  const homeserver = localStorage.getItem("base_url");
+  const re = /^mxc:\/\/([^/]+)\/(\w+)/;
+  var ret = re.exec(mxcUrl);
+  console.log("mxcClient " + ret);
+  if (ret == null) return null;
+  const serverName = ret[1];
+  const mediaId = ret[2];
+  return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
+};
+
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
     map: u => ({
       ...u,
       id: u.name,
+      avatar_src: mxcUrlToHttp(u.avatar_url),
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
+      // need timestamp in milliseconds
+      creation_ts_ms: u.creation_ts * 1000,
     }),
     data: "users",
-    total: (json, from, perPage) => {
-      return json.next_token
-        ? parseInt(json.next_token, 10) + perPage
-        : from + json.users.length;
-    },
+    total: json => json.total,
     create: data => ({
       endpoint: `/_synapse/admin/v2/users/${data.id}`,
       body: data,
       method: "PUT",
     }),
-    delete: id => ({
-      endpoint: `/_synapse/admin/v1/deactivate/${id}`,
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/deactivate/${params.id}`,
       body: { erase: true },
       method: "POST",
     }),
@@ -48,11 +58,33 @@ const resourceMap = {
       id: r.room_id,
       alias: r.canonical_alias,
       members: r.joined_members,
+      is_encrypted: !!r.encryption,
+      federatable: !!r.federatable,
+      public: !!r.public,
     }),
     data: "rooms",
     total: json => {
       return json.total_rooms;
     },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/rooms/${params.id}/delete`,
+      body: { block: false },
+      method: "POST",
+    }),
+  },
+  devices: {
+    map: d => ({
+      ...d,
+      id: d.device_id,
+    }),
+    data: "devices",
+    total: json => json.devices.length,
+    reference: id => ({
+      endpoint: `/_synapse/admin/v2/users/${id}/devices`,
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v2/users/${params.user_id}/devices/${params.id}`,
+    }),
   },
   connections: {
     path: "/_synapse/admin/v1/whois",
@@ -61,6 +93,16 @@ const resourceMap = {
       id: c.user_id,
     }),
     data: "connections",
+  },
+  room_members: {
+    map: m => ({
+      id: m,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
+    }),
+    data: "members",
+    total: json => json.members.length,
   },
   servernotices: {
     map: n => ({ id: n.event_id }),
@@ -86,18 +128,31 @@ function filterNullValues(key, value) {
   return value;
 }
 
+function getSearchOrder(order) {
+  if (order === "DESC") {
+    return "b";
+  } else {
+    return "f";
+  }
+}
+
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, guests, deactivated } = params.filter;
+    const { user_id, name, guests, deactivated, search_term } = params.filter;
     const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
     const from = (page - 1) * perPage;
     const query = {
       from: from,
       limit: perPage,
       user_id: user_id,
+      search_term: search_term,
+      name: name,
       guests: guests,
       deactivated: deactivated,
+      order_by: field,
+      dir: getSearchOrder(order),
     };
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -138,34 +193,26 @@ const dataProvider = {
       params.ids.map(id => jsonClient(`${endpoint_url}/${id}`))
     ).then(responses => ({
       data: responses.map(({ json }) => res.map(json)),
+      total: responses.length,
     }));
   },
 
   getManyReference: (resource, params) => {
-    // FIXME
     console.log("getManyReference " + resource);
     const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-    const query = {
-      sort: JSON.stringify([field, order]),
-      range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-      filter: JSON.stringify({
-        ...params.filter,
-        [params.target]: params.id,
-      }),
-    };
+    const from = (page - 1) * perPage;
 
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
 
     const res = resourceMap[resource];
 
-    const endpoint_url = homeserver + res.path;
-    const url = `${endpoint_url}?${stringify(query)}`;
+    const ref = res["reference"](params.id);
+    const endpoint_url = homeserver + ref.endpoint;
 
-    return jsonClient(url).then(({ headers, json }) => ({
-      data: json,
-      total: parseInt(headers.get("content-range").split("/").pop(), 10),
+    return jsonClient(endpoint_url).then(({ headers, json }) => ({
+      data: json[res.data].map(res.map),
+      total: res.total(json, from, perPage),
     }));
   },
 
@@ -221,6 +268,29 @@ const dataProvider = {
     }));
   },
 
+  createMany: (resource, params) => {
+    console.log("createMany " + resource);
+    const homeserver = localStorage.getItem("base_url");
+    if (!homeserver || !(resource in resourceMap)) return Promise.reject();
+
+    const res = resourceMap[resource];
+    if (!("create" in res)) return Promise.reject();
+
+    return Promise.all(
+      params.ids.map(id => {
+        params.data.id = id;
+        const cre = res["create"](params.data);
+        const endpoint_url = homeserver + cre.endpoint;
+        return jsonClient(endpoint_url, {
+          method: cre.method,
+          body: JSON.stringify(cre.body, filterNullValues),
+        });
+      })
+    ).then(responses => ({
+      data: responses.map(({ json }) => json),
+    }));
+  },
+
   delete: (resource, params) => {
     console.log("delete " + resource);
     const homeserver = localStorage.getItem("base_url");
@@ -229,11 +299,11 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     if ("delete" in res) {
-      const del = res["delete"](params.id);
+      const del = res["delete"](params);
       const endpoint_url = homeserver + del.endpoint;
       return jsonClient(endpoint_url, {
-        method: del.method,
-        body: JSON.stringify(del.body),
+        method: "method" in del ? del.method : "DELETE",
+        body: "body" in del ? JSON.stringify(del.body) : null,
       }).then(({ json }) => ({
         data: json,
       }));
@@ -258,11 +328,11 @@ const dataProvider = {
     if ("delete" in res) {
       return Promise.all(
         params.ids.map(id => {
-          const del = res["delete"](id);
+          const del = res["delete"]({ ...params, id: id });
           const endpoint_url = homeserver + del.endpoint;
           return jsonClient(endpoint_url, {
-            method: del.method,
-            body: JSON.stringify(del.body),
+            method: "method" in del ? del.method : "DELETE",
+            body: "body" in del ? JSON.stringify(del.body) : null,
           });
         })
       ).then(responses => ({

@@ -7,8 +7,10 @@ import {
   Toolbar,
   required,
   useCreate,
+  useMutation,
   useNotify,
   useTranslate,
+  useUnselectAll,
 } from "react-admin";
 import MessageIcon from "@material-ui/icons/Message";
 import IconCancel from "@material-ui/icons/Cancel";
@@ -76,6 +78,52 @@ export const ServerNoticeButton = ({ record }) => {
           handleDialogClose();
         },
         onFailure: () =>
+          notify("resources.servernotices.action.send_failure", "error"),
+      }
+    );
+  };
+
+  return (
+    <Fragment>
+      <Button
+        label="resources.servernotices.send"
+        onClick={handleDialogOpen}
+        disabled={loading}
+      >
+        <MessageIcon />
+      </Button>
+      <ServerNoticeDialog
+        open={open}
+        onClose={handleDialogClose}
+        onSend={handleSend}
+      />
+    </Fragment>
+  );
+};
+
+export const ServerNoticeBulkButton = ({ selectedIds }) => {
+  const [open, setOpen] = useState(false);
+  const notify = useNotify();
+  const unselectAll = useUnselectAll();
+  const [createMany, { loading }] = useMutation();
+
+  const handleDialogOpen = () => setOpen(true);
+  const handleDialogClose = () => setOpen(false);
+
+  const handleSend = values => {
+    createMany(
+      {
+        type: "createMany",
+        resource: "servernotices",
+        payload: { ids: selectedIds, data: values },
+      },
+      {
+        onSuccess: ({ data }) => {
+          notify("resources.servernotices.action.send_success");
+          unselectAll("users");
+          handleDialogClose();
+        },
+        onFailure: error =>
           notify("resources.servernotices.action.send_failure", "error"),
       }
     );
