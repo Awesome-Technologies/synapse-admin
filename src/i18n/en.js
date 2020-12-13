@@ -139,6 +139,7 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Members",
         joined_local_members: "local members",
+        joined_local_devices: "local devices",
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",

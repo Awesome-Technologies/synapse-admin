@@ -141,6 +141,7 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
         joined_local_members: "Lokale Mitglieder",
+        joined_local_devices: "Lokale Endgeräte",
         state_events: "Ereignisse",
         version: "Version",
         is_encrypted: "Verschlüsselt",
