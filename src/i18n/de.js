@@ -126,7 +126,8 @@ export default {
         consent_version: "Zugestimmte Geschäftsbedingungen",
       },
       helper: {
-        deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
+        deactivate:
+          "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
       },
       action: {
