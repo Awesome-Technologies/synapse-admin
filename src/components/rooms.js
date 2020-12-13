@@ -4,6 +4,7 @@ import {
   BooleanField,
   BulkDeleteWithConfirmButton,
   Datagrid,
+  DeleteButton,
   Filter,
   List,
   Pagination,
@@ -15,6 +16,7 @@ import {
   Tab,
   TabbedShowLayout,
   TextField,
+  TopToolbar,
   useTranslate,
 } from "react-admin";
 import get from "lodash/get";
@@ -70,10 +72,16 @@ const RoomTitle = ({ record }) => {
   );
 };
 
+const RoomShowActions = ({ basePath, data, resource }) => (
+  <TopToolbar>
+    <DeleteButton basePath={basePath} record={data} resource={resource} />
+  </TopToolbar>
+);
+
 export const RoomShow = props => {
   const translate = useTranslate();
   return (
-    <Show {...props} title={<RoomTitle />}>
+    <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
       <TabbedShowLayout>
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
           <TextField source="room_id" />
