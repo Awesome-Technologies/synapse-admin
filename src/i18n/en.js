@@ -124,7 +124,7 @@ export default {
         consent_version: "Consent version",
       },
       helper: {
-        deactivate: "Deactivated users cannot be reactivated",
+        deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
       },
       action: {
