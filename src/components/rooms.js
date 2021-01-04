@@ -72,11 +72,21 @@ const RoomTitle = ({ record }) => {
   );
 };
 
-const RoomShowActions = ({ basePath, data, resource }) => (
-  <TopToolbar>
-    <DeleteButton basePath={basePath} record={data} resource={resource} />
-  </TopToolbar>
-);
+const RoomShowActions = ({ basePath, data, resource }) => {
+  const translate = useTranslate();
+  return (
+    <TopToolbar>
+      <DeleteButton
+        basePath={basePath}
+        record={data}
+        resource={resource}
+        undoable={false}
+        confirmTitle={translate("synapseadmin.rooms.delete.title")}
+        confirmContent={translate("synapseadmin.rooms.delete.message")}
+      />
+    </TopToolbar>
+  );
+};
 
 export const RoomShow = props => {
   const translate = useTranslate();
