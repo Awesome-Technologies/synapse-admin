@@ -72,6 +72,15 @@ const resourceMap = {
       method: "POST",
     }),
   },
+  reports: {
+    path: "/_synapse/admin/v1/event_reports",
+    map: er => ({
+      ...er,
+      id: er.id,
+    }),
+    data: "event_reports",
+    total: json => json.total,
+  },
   devices: {
     map: d => ({
       ...d,

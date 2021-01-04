@@ -27,6 +27,7 @@ export default {
           "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
       },
     },
+    reports: { tabs: { basic: "Basic", detail: "Details" } },
   },
   import_users: {
     error: {
@@ -168,6 +169,30 @@ export default {
           world_readable: "Anyone",
         },
         unencrypted: "Unencrypted",
+      },
+    },
+    reports: {
+      name: "Reported event |||| Reported events",
+      fields: {
+        id: "ID",
+        received_ts: "report time",
+        user_id: "announcer",
+        name: "name of the room",
+        score: "score",
+        reason: "reason",
+        event_id: "event ID",
+        event_json: {
+          origin: "origin server",
+          origin_server_ts: "time of send",
+          type: "event typ",
+          content: {
+            msgtype: "content type",
+            body: "content",
+            format: "format",
+            formatted_body: "formatted content",
+            algorithm: "algorithm",
+          },
+        },
       },
     },
     connections: {
