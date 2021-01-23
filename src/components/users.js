@@ -5,6 +5,7 @@ import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
+import ViewListIcon from "@material-ui/icons/ViewList";
 import {
   ArrayInput,
   ArrayField,
@@ -312,6 +313,7 @@ export const UserEdit = props => {
           />
           <TextField source="consent_version" />
         </FormTab>
+
         <FormTab
           label="resources.users.threepid"
           icon={<ContactMailIcon />}
@@ -330,6 +332,7 @@ export const UserEdit = props => {
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
+
         <FormTab
           label={translate("resources.devices.name", { smart_count: 2 })}
           icon={<DevicesIcon />}
@@ -361,6 +364,7 @@ export const UserEdit = props => {
             </Datagrid>
           </ReferenceManyField>
         </FormTab>
+
         <FormTab
           label="resources.connections.name"
           icon={<SettingsInputComponentIcon />}
@@ -399,6 +403,38 @@ export const UserEdit = props => {
               </Datagrid>
             </ArrayField>
           </ReferenceField>
+        </FormTab>
+
+        <FormTab
+          label={translate("resources.rooms.name", { smart_count: 2 })}
+          icon={<ViewListIcon />}
+          path="rooms"
+        >
+          <ReferenceManyField
+            reference="joined_rooms"
+            target="user_id"
+            addLabel={false}
+          >
+            <Datagrid
+              style={{ width: "100%" }}
+              rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}
+            >
+              <TextField
+                source="id"
+                sortable={false}
+                label="resources.rooms.fields.room_id"
+              />
+              <ReferenceField
+                label="resources.rooms.fields.name"
+                source="id"
+                reference="rooms"
+                sortable={false}
+                link=""
+              >
+                <TextField source="name" sortable={false} />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
         </FormTab>
       </TabbedForm>
     </Edit>
