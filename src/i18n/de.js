@@ -223,6 +223,19 @@ export default {
         },
       },
     },
+    users_media: {
+      name: "Medien",
+      fields: {
+        media_id: "Medien ID",
+        media_length: "Größe",
+        media_type: "Typ",
+        upload_name: "Dateiname",
+        quarantined_by: "Zur Quarantäne hinzugefügt",
+        safe_from_quarantine: "Geschützt vor Quarantäne",
+        created_ts: "Erstellt",
+        last_access_ts: "Letzter Zugriff",
+      },
+    },
     servernotices: {
       name: "Serverbenachrichtigungen",
       send: "Servernachricht versenden",
