@@ -239,6 +239,13 @@ export default {
           'Sendet eine Serverbenachrichtigung an die ausgewählten Nutzer. Hierfür muss das Feature "Server Notices" auf dem Server aktiviert sein.',
       },
     },
+    user_media_statistics: {
+      name: "Dateien je Benutzer",
+      fields: {
+        media_count: "Anzahl der Dateien",
+        media_length: "Größe der Dateien",
+      },
+    },
   },
   ra: {
     ...germanMessages.ra,

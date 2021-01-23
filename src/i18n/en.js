@@ -236,5 +236,12 @@ export default {
           'Sends a server notice to the selected users. The feature "Server Notices" has to be activated at the server.',
       },
     },
+    user_media_statistics: {
+      name: "Users' media",
+      fields: {
+        media_count: "Media count",
+        media_length: "Media length",
+      },
+    },
   },
 };

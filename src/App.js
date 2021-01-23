@@ -8,6 +8,8 @@ import { RoomList, RoomShow } from "./components/rooms";
 import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
+import { UserMediaStatsList } from "./components/statistics";
 import RoomIcon from "@material-ui/icons/ViewList";
 import ReportIcon from "@material-ui/icons/Warning";
 import { ImportFeature } from "./components/ImportFeature";
@@ -43,6 +45,11 @@ const App = () => (
       icon={UserIcon}
     />
     <Resource name="rooms" list={RoomList} show={RoomShow} icon={RoomIcon} />
+    <Resource
+      name="user_media_statistics"
+      list={UserMediaStatsList}
+      icon={EqualizerIcon}
+    />
     <Resource
       name="reports"
       list={ReportList}
