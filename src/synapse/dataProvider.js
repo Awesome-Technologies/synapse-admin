@@ -87,7 +87,9 @@ const resourceMap = {
       id: d.device_id,
     }),
     data: "devices",
-    total: json => json.devices.length,
+    total: json => {
+      return json.total;
+    },
     reference: id => ({
       endpoint: `/_synapse/admin/v2/users/${id}/devices`,
     }),
@@ -111,7 +113,9 @@ const resourceMap = {
       endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
     }),
     data: "members",
-    total: json => json.members.length,
+    total: json => {
+      return json.total;
+    },
   },
   servernotices: {
     map: n => ({ id: n.event_id }),
