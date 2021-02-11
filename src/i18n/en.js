@@ -220,6 +220,19 @@ export default {
         },
       },
     },
+    users_media: {
+      name: "Media",
+      fields: {
+        media_id: "Media ID",
+        media_length: "Lenght",
+        media_type: "Type",
+        upload_name: "File name",
+        quarantined_by: "Quarantined by",
+        safe_from_quarantine: "Safe from quarantine",
+        created_ts: "Created",
+        last_access_ts: "Last access",
+      },
+    },
     pushers: {
       name: "Pusher |||| Pushers",
       fields: {
