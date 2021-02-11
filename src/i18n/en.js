@@ -231,6 +231,18 @@ export default {
         safe_from_quarantine: "Safe from quarantine",
         created_ts: "Created",
         last_access_ts: "Last access",
+    pushers: {
+      name: "Pusher |||| Pushers",
+      fields: {
+        app: "App",
+        app_display_name: "App display name",
+        app_id: "App ID",
+        device_display_name: "Device display name",
+        kind: "Kind",
+        lang: "Language",
+        profile_tag: "Profile tag",
+        pushkey: "Pushkey",
+        data: { url: "URL" },
       },
     },
     servernotices: {
