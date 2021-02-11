@@ -42,6 +42,8 @@ import {
   ExportButton,
   TopToolbar,
   sanitizeListRestProps,
+  ImageInput,
+  ImageField,
 } from "react-admin";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
@@ -295,6 +297,9 @@ export const UserEdit = props => {
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
           <PasswordInput source="password" autoComplete="new-password" />
+          <ImageInput source="avatar_file" label="Avatar" accept="image/*">
+            <ImageField source="avatar_src" title="Avatar" />
+          </ImageInput>
           <BooleanInput source="admin" />
           <BooleanInput
             source="deactivated"
