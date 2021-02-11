@@ -234,6 +234,8 @@ export default {
         safe_from_quarantine: "Geschützt vor Quarantäne",
         created_ts: "Erstellt",
         last_access_ts: "Letzter Zugriff",
+      },
+    },
     pushers: {
       name: "Pusher |||| Pushers",
       fields: {
