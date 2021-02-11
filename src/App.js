@@ -53,6 +53,7 @@ const App = () => (
     <Resource name="devices" />
     <Resource name="room_members" />
     <Resource name="joined_rooms" />
+    <Resource name="pushers" />
     <Resource name="servernotices" />
   </Admin>
 );
