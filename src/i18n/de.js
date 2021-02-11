@@ -223,6 +223,20 @@ export default {
         },
       },
     },
+    pushers: {
+      name: "Pusher |||| Pushers",
+      fields: {
+        app: "App",
+        app_display_name: "App-Anzeigename",
+        app_id: "App ID",
+        device_display_name: "Geräte-Anzeigename",
+        kind: "Art",
+        lang: "Sprache",
+        profile_tag: "Profil-Tag",
+        pushkey: "Pushkey",
+        data: { url: "URL" },
+      },
+    },
     servernotices: {
       name: "Serverbenachrichtigungen",
       send: "Servernachricht versenden",

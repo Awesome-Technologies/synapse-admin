@@ -117,6 +117,19 @@ const resourceMap = {
       return json.total;
     },
   },
+  pushers: {
+    map: p => ({
+      ...p,
+      id: p.pushkey,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/pushers`,
+    }),
+    data: "pushers",
+    total: json => {
+      return json.total;
+    },
+  },
   servernotices: {
     map: n => ({ id: n.event_id }),
     create: data => ({

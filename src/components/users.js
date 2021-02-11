@@ -5,6 +5,7 @@ import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
+import NotificationsIcon from "@material-ui/icons/Notifications";
 import {
   ArrayInput,
   ArrayField,
@@ -312,6 +313,7 @@ export const UserEdit = props => {
           />
           <TextField source="consent_version" />
         </FormTab>
+
         <FormTab
           label="resources.users.threepid"
           icon={<ContactMailIcon />}
@@ -330,6 +332,7 @@ export const UserEdit = props => {
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
+
         <FormTab
           label={translate("resources.devices.name", { smart_count: 2 })}
           icon={<DevicesIcon />}
@@ -361,6 +364,7 @@ export const UserEdit = props => {
             </Datagrid>
           </ReferenceManyField>
         </FormTab>
+
         <FormTab
           label="resources.connections.name"
           icon={<SettingsInputComponentIcon />}
@@ -399,6 +403,29 @@ export const UserEdit = props => {
               </Datagrid>
             </ArrayField>
           </ReferenceField>
+        </FormTab>
+
+        <FormTab
+          label={translate("resources.pushers.name", { smart_count: 2 })}
+          icon={<NotificationsIcon />}
+          path="pushers"
+        >
+          <ReferenceManyField
+            reference="pushers"
+            target="user_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="kind" sortable={false} />
+              <TextField source="app_display_name" sortable={false} />
+              <TextField source="app_id" sortable={false} />
+              <TextField source="data.url" sortable={false} />
+              <TextField source="device_display_name" sortable={false} />
+              <TextField source="lang" sortable={false} />
+              <TextField source="profile_tag" sortable={false} />
+              <TextField source="pushkey" sortable={false} />
+            </Datagrid>
+          </ReferenceManyField>
         </FormTab>
       </TabbedForm>
     </Edit>
