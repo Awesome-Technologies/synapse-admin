@@ -5,13 +5,17 @@ import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
 import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomCreate, RoomShow, RoomEdit } from "./components/rooms";
+import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
-import { ViewListIcon as RoomIcon } from "@material-ui/icons/ViewList";
+import EqualizerIcon from "@material-ui/icons/Equalizer";
+import { UserMediaStatsList } from "./components/statistics";
+import RoomIcon from "@material-ui/icons/ViewList";
+import ReportIcon from "@material-ui/icons/Warning";
+import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
 import ShowUserPdf from "./components/ShowUserPdf";
-import { Route } from "react-router-dom";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
@@ -48,9 +52,23 @@ const App = () => (
       edit={RoomEdit}
       icon={RoomIcon}
     />
+    <Resource
+      name="user_media_statistics"
+      list={UserMediaStatsList}
+      icon={EqualizerIcon}
+    />
+    <Resource
+      name="reports"
+      list={ReportList}
+      show={ReportShow}
+      icon={ReportIcon}
+    />
     <Resource name="connections" />
     <Resource name="devices" />
     <Resource name="room_members" />
+    <Resource name="users_media" />
+    <Resource name="joined_rooms" />
+    <Resource name="pushers" />
     <Resource name="servernotices" />
   </Admin>
 );

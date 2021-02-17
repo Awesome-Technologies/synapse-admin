@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { Route, Link } from "react-router-dom";
 import {
@@ -6,10 +6,12 @@ import {
   AutocompleteInput,
   BooleanInput,
   BooleanField,
+  BulkDeleteWithConfirmButton,
   Button,
   Create,
   Edit,
   Datagrid,
+  DeleteButton,
   Filter,
   FormTab,
   List,
@@ -18,6 +20,7 @@ import {
   ReferenceField,
   ReferenceInput,
   ReferenceManyField,
+  SearchInput,
   SelectField,
   Show,
   SimpleForm,
@@ -27,6 +30,7 @@ import {
   TextField,
   TextInput,
   Toolbar,
+  TopToolbar,
   useDataProvider,
   useRefresh,
   useTranslate,
@@ -442,10 +446,26 @@ export const RoomEdit = props => {
   );
 };
 
+const RoomShowActions = ({ basePath, data, resource }) => {
+  const translate = useTranslate();
+  return (
+    <TopToolbar>
+      <DeleteButton
+        basePath={basePath}
+        record={data}
+        resource={resource}
+        undoable={false}
+        confirmTitle={translate("synapseadmin.rooms.delete.title")}
+        confirmContent={translate("synapseadmin.rooms.delete.message")}
+      />
+    </TopToolbar>
+  );
+};
+
 export const RoomShow = props => {
   const translate = useTranslate();
   return (
-    <Show {...props} title={<RoomTitle />}>
+    <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
       <TabbedShowLayout>
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
           <TextField source="room_id" />
@@ -493,18 +513,6 @@ export const RoomShow = props => {
               >
                 <TextField source="displayname" sortable={false} />
               </ReferenceField>
-              <SelectField
-                source="role"
-                label="resources.users.fields.role"
-                choices={[
-                  { id: "user", name: translate("resources.users.roles.user") },
-                  { id: "mod", name: translate("resources.users.roles.mod") },
-                  {
-                    id: "admin",
-                    name: translate("resources.users.roles.admin"),
-                  },
-                ]}
-              />
             </Datagrid>
           </ReferenceManyField>
         </Tab>
@@ -567,10 +575,18 @@ export const RoomShow = props => {
     </Show>
   );
 };
+
+const RoomBulkActionButtons = props => (
+  <Fragment>
+    <BulkDeleteWithConfirmButton {...props} />
+  </Fragment>
+);
+
 const RoomFilter = ({ ...props }) => {
   const translate = useTranslate();
   return (
     <Filter {...props}>
+      <SearchInput source="search_term" alwaysOn />
       <Chip
         label={translate("resources.rooms.fields.joined_local_members")}
         source="joined_local_members"
@@ -606,6 +622,7 @@ const FilterableRoomList = ({ ...props }) => {
   const stateEventsFilter = filter && filter.state_events ? true : false;
   const versionFilter = filter && filter.version ? true : false;
   const federateableFilter = filter && filter.federatable ? true : false;
+  const translate = useTranslate();
 
   return (
     <List
@@ -613,6 +630,12 @@ const FilterableRoomList = ({ ...props }) => {
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={<RoomFilter />}
+      bulkActionButtons={
+        <RoomBulkActionButtons
+          confirmTitle={translate("synapseadmin.rooms.delete.title")}
+          confirmContent={translate("synapseadmin.rooms.delete.message")}
+        />
+      }
     >
       <Datagrid rowClick="show">
         <EncryptionField

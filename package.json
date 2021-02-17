@@ -25,13 +25,14 @@
     "@progress/kendo-drawing": "^1.6.0",
     "@progress/kendo-react-pdf": "^3.10.1",
     "babel-preset-jest": "^24.9.0",
+    "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
     "qrcode.react": "^1.0.0",
     "ra-language-german": "^2.1.2",
     "react": "^16.13.1",
-    "react-admin": "^3.7.0",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
+    "react-admin": "^3.10.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "^3.4.4"
   },
   "scripts": {
     "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",

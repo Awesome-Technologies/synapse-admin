@@ -1,0 +1,3 @@
+id,displayname,password,is_guest,admin,deactivated
+@testuser22:example.org,Jane Doe,secretpassword,false,true,false
+,John Doe,,false,false,false

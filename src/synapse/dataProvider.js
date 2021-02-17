@@ -100,11 +100,6 @@ const resourceMap = {
       },
       method: "POST",
     }),
-    delete: params => ({
-      endpoint: `/_synapse/admin/v1/rooms/${params.id}/delete`,
-      body: { erase: true },
-      method: "POST",
-    }),
     transformBeforeUpdate: data => {
       return {
         ...data,
@@ -114,6 +109,20 @@ const resourceMap = {
         })),
       };
     },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/rooms/${params.id}/delete`,
+      body: { block: false },
+      method: "POST",
+    }),
+  },
+  reports: {
+    path: "/_synapse/admin/v1/event_reports",
+    map: er => ({
+      ...er,
+      id: er.id,
+    }),
+    data: "event_reports",
+    total: json => json.total,
   },
   devices: {
     map: d => ({
@@ -121,6 +130,9 @@ const resourceMap = {
       id: d.device_id,
     }),
     data: "devices",
+    total: json => {
+      return json.total;
+    },
     reference: id => ({
       endpoint: `/_synapse/admin/v2/users/${id}/devices`,
     }),
@@ -138,13 +150,58 @@ const resourceMap = {
   },
   room_members: {
     map: m => ({
-      role: powerLevelToRole(m.power_level),
-      id: m.user_id,
+      id: m,
     }),
     reference: id => ({
-      endpoint: `/_synapse/admin/v1/rooms/${id}/power_levels`,
+      endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
     }),
     data: "members",
+    total: json => {
+      return json.total;
+    },
+  },
+  pushers: {
+    map: p => ({
+      ...p,
+      id: p.pushkey,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/pushers`,
+    }),
+    data: "pushers",
+    total: json => {
+      return json.total;
+    },
+  },
+  joined_rooms: {
+    map: jr => ({
+      id: jr,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/joined_rooms`,
+    }),
+    data: "joined_rooms",
+    total: json => {
+      return json.total;
+    },
+  },
+  users_media: {
+    map: um => ({
+      ...um,
+      id: um.media_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/media`,
+    }),
+    data: "media",
+    total: json => {
+      return json.total;
+    },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
+        "home_server"
+      )}/${params.id}`,
+    }),
   },
   servernotices: {
     map: n => ({ id: n.event_id }),
@@ -159,6 +216,17 @@ const resourceMap = {
       },
       method: "POST",
     }),
+  },
+  user_media_statistics: {
+    path: "/_synapse/admin/v1/statistics/users/media",
+    map: usms => ({
+      ...usms,
+      id: usms.user_id,
+    }),
+    data: "users",
+    total: json => {
+      return json.total;
+    },
   },
 };
 
@@ -181,7 +249,7 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, guests, deactivated } = params.filter;
+    const { user_id, name, guests, deactivated, search_term } = params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -189,6 +257,8 @@ const dataProvider = {
       from: from,
       limit: perPage,
       user_id: user_id,
+      search_term: search_term,
+      name: name,
       guests: guests,
       deactivated: deactivated,
       order_by: field,
@@ -233,11 +303,18 @@ const dataProvider = {
       params.ids.map(id => jsonClient(`${endpoint_url}/${id}`))
     ).then(responses => ({
       data: responses.map(({ json }) => res.map(json)),
+      total: responses.length,
     }));
   },
 
   getManyReference: (resource, params) => {
     console.log("getManyReference " + resource);
+    const { page, perPage } = params.pagination;
+    const from = (page - 1) * perPage;
+    const query = {
+      from: from,
+      limit: perPage,
+    };
 
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -245,13 +322,11 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const ref = res["reference"](params.id);
-    const endpoint_url = homeserver + ref.endpoint;
+    const endpoint_url = `${homeserver}${ref.endpoint}?${stringify(query)}`;
 
     return jsonClient(endpoint_url).then(({ headers, json }) => ({
-      data: json[res.data].map(res.map).map(element => ({
-        ...element,
-        parentId: params.id,
-      })),
+      data: json[res.data].map(res.map),
+      total: res.total(json, from, perPage),
     }));
   },
 
