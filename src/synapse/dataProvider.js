@@ -185,6 +185,22 @@ const resourceMap = {
       return json.total;
     },
   },
+  forward_extremities: {
+    map: fe => ({
+      ...fe,
+      id: fe.event_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/forward_extremities`,
+    }),
+    data: "results",
+    total: json => {
+      return json.count;
+    },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/rooms/${params.id}/forward_extremities`,
+    }),
+  },
 };
 
 function filterNullValues(key, value) {

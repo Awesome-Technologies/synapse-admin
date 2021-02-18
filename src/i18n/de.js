@@ -273,6 +273,15 @@ export default {
         media_length: "Größe der Dateien",
       },
     },
+    forward_extremities: {
+      name: "Vorderextremitäten",
+      fields: {
+        id: "Event-ID",
+        received_ts: "Zeitstempel",
+        depth: "Tiefe",
+        state_group: "Zustandsgruppe",
+      },
+    },
   },
   ra: {
     ...germanMessages.ra,

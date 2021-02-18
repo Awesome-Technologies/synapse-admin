@@ -4,9 +4,11 @@ import {
   BooleanField,
   BulkDeleteWithConfirmButton,
   Datagrid,
+  DateField,
   DeleteButton,
   Filter,
   List,
+  NumberField,
   Pagination,
   ReferenceField,
   ReferenceManyField,
@@ -21,6 +23,7 @@ import {
 } from "react-admin";
 import get from "lodash/get";
 import { Tooltip, Typography, Chip } from "@material-ui/core";
+import FastForwardIcon from "@material-ui/icons/FastForward";
 import HttpsIcon from "@material-ui/icons/Https";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import PageviewIcon from "@material-ui/icons/Pageview";
@@ -196,6 +199,36 @@ export const RoomShow = props => {
               },
             ]}
           />
+        </Tab>
+        <Tab
+          label="resources.forward_extremities.name"
+          icon={<FastForwardIcon />}
+          path="forward_extremities"
+        >
+          <ReferenceManyField
+            reference="forward_extremities"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="id" sortable={false} />
+              <DateField
+                source="received_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <NumberField source="depth" sortable={false} />
+              <TextField source="state_group" sortable={false} />
+            </Datagrid>
+          </ReferenceManyField>
         </Tab>
       </TabbedShowLayout>
     </Show>

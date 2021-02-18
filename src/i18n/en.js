@@ -270,5 +270,14 @@ export default {
         media_length: "Media length",
       },
     },
+    forward_extremities: {
+      name: "Forward Extremities",
+      fields: {
+        id: "Event ID",
+        received_ts: "Timestamp",
+        depth: "Depth",
+        state_group: "State group",
+      },
+    },
   },
 };
