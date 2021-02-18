@@ -140,7 +140,7 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Members",
         joined_local_members: "local members",
-        state_events: "State events",
+        state_events: "State events / Complexity",
         version: "Version",
         is_encrypted: "Encrypted",
         encryption: "Encryption",
@@ -268,6 +268,15 @@ export default {
       fields: {
         media_count: "Media count",
         media_length: "Media length",
+      },
+    },
+    room_state: {
+      name: "State events",
+      fields: {
+        type: "Type",
+        content: "Content",
+        origin_server_ts: "time of send",
+        sender: "Sender",
       },
     },
   },
