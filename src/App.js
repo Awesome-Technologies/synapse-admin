@@ -12,7 +12,9 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import { UserMediaStatsList } from "./components/statistics";
 import RoomIcon from "@material-ui/icons/ViewList";
 import ReportIcon from "@material-ui/icons/Warning";
+import FolderSharedIcon from "@material-ui/icons/FolderShared";
 import { ImportFeature } from "./components/ImportFeature";
+import { RoomDirectoryList } from "./components/RoomDirectory";
 import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
@@ -55,6 +57,11 @@ const App = () => (
       list={ReportList}
       show={ReportShow}
       icon={ReportIcon}
+    />
+    <Resource
+      name="room_directory"
+      list={RoomDirectoryList}
+      icon={FolderSharedIcon}
     />
     <Resource name="connections" />
     <Resource name="devices" />
