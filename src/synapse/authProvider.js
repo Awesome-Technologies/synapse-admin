@@ -31,9 +31,23 @@ const authProvider = {
   },
   // called when the user clicks on the logout button
   logout: () => {
-    console.log("logout ");
-    localStorage.removeItem("access_token");
-    return Promise.resolve();
+    console.log("logout");
+    
+    const logout_api_url = localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
+    const token = localStorage.getItem("access_token");
+    
+    const options = {
+      method: "POST",
+      user: {
+          authenticated: true,
+          token: `Bearer ${token}`,
+      }
+    }
+        
+    return fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("device_id");
+    });
   },
   // called when the API returns an error
   checkError: ({ status }) => {
