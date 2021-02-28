@@ -10,6 +10,7 @@ const authProvider = {
         type: "m.login.password",
         user: username,
         password: password,
+        initial_device_display_name: "Synapse Admin",
       }),
     };
 
