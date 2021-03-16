@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Homeserver URL",
       welcome: "Welcome to Synapse-admin",
+      server_version: "Synapse version",
       username_error: "Please enter fully qualified user ID: '@user:domain'",
       protocol_error: "URL has to start with 'http://' or 'https://'",
       url_error: "Not a valid Matrix server URL",
@@ -139,7 +140,7 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Members",
-        joined_local_members: "local members",
+        joined_local_members: "Local members",
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",

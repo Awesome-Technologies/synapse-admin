@@ -276,6 +276,10 @@ export default {
   },
   ra: {
     ...germanMessages.ra,
+    action: {
+      ...germanMessages.ra.action,
+      unselect: "Abwählen",
+    },
     auth: {
       ...germanMessages.ra.auth,
       auth_check_error: "Anmeldung fehlgeschlagen",
