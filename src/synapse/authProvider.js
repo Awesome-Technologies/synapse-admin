@@ -35,20 +35,23 @@ const authProvider = {
 
     const logout_api_url =
       localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
-    const token = localStorage.getItem("access_token");
+    const access_token = localStorage.getItem("access_token");
 
     const options = {
       method: "POST",
       user: {
         authenticated: true,
-        token: `Bearer ${token}`,
+        token: `Bearer ${access_token}`,
       },
     };
 
-    return fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("device_id");
-    });
+    if (typeof access_token === "string") {
+      fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("device_id");
+      });
+    }
+    return Promise.resolve();
   },
   // called when the API returns an error
   checkError: ({ status }) => {
@@ -62,7 +65,7 @@ const authProvider = {
   checkAuth: () => {
     const access_token = localStorage.getItem("access_token");
     console.log("checkAuth " + access_token);
-    return typeof access_token == "string"
+    return typeof access_token === "string"
       ? Promise.resolve()
       : Promise.reject();
   },
