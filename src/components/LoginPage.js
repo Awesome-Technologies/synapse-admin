@@ -78,6 +78,7 @@ const LoginPage = ({ theme }) => {
   const login = useLogin();
   const notify = useNotify();
   const [loading, setLoading] = useState(false);
+  const [supportPassAuth, setSupportPassAuth] = useState(true);
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   let locale = useLocale();
   const setLocale = useSetLocale();
@@ -231,17 +232,21 @@ const LoginPage = ({ theme }) => {
 
         // setSSOUrl
         const authMethodUrl = `${formData.base_url}/_matrix/client/r0/login`;
-        let supportSSO = false;
+        let supportPass = false, supportSSO = false;
         fetchUtils
           .fetchJson(authMethodUrl, { method: "GET" })
           .then(({ json }) => {
             json.flows.forEach(f => {
-              if (f.type === 'm.login.sso') {
-                setSSOBaseUrl(formData.base_url);
+              if (f.type === 'm.login.password') {
+                supportPass = true;
+              } else if (f.type === 'm.login.sso') {
                 supportSSO = true;
               }
             });
-            if (!supportSSO) {
+            setSupportPassAuth(supportPass);
+            if (supportSSO) {
+              setSSOBaseUrl(formData.base_url);
+            } else {
               setSSOBaseUrl("");
             }
           })
@@ -260,7 +265,7 @@ const LoginPage = ({ theme }) => {
             name="username"
             component={renderInput}
             label={translate("ra.auth.username")}
-            disabled={loading}
+            disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             fullWidth
           />
@@ -271,7 +276,7 @@ const LoginPage = ({ theme }) => {
             component={renderInput}
             label={translate("ra.auth.password")}
             type="password"
-            disabled={loading}
+            disabled={loading || !supportPassAuth}
             fullWidth
           />
         </div>
@@ -330,7 +335,7 @@ const LoginPage = ({ theme }) => {
                   variant="contained"
                   type="submit"
                   color="primary"
-                  disabled={loading}
+                  disabled={loading || !supportPassAuth}
                   className={classes.button}
                   fullWidth
                 >
