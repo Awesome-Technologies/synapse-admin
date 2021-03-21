@@ -267,10 +267,13 @@ const dataProvider = {
   getManyReference: (resource, params) => {
     console.log("getManyReference " + resource);
     const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
     const from = (page - 1) * perPage;
     const query = {
       from: from,
       limit: perPage,
+      order_by: field,
+      dir: getSearchOrder(order),
     };
 
     const homeserver = localStorage.getItem("base_url");
