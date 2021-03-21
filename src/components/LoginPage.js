@@ -344,7 +344,7 @@ const LoginPage = ({ theme }) => {
                 </Button>
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   onClick={handleSSO}
                   disabled={loading || ssoBaseUrl === ""}
                   className={classes.button}
