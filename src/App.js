@@ -22,7 +22,7 @@ import chineseMessages from "./i18n/zh";
 const messages = {
   de: germanMessages,
   en: englishMessages,
-  zh: chineseMessages
+  zh: chineseMessages,
 };
 const i18nProvider = polyglotI18nProvider(
   locale => (messages[locale] ? messages[locale] : messages.en),

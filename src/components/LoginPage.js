@@ -89,37 +89,36 @@ const LoginPage = ({ theme }) => {
   const ssoToken = localStorage.getItem("sso_ret_token");
 
   if (retToken) {
-    console.log('SSO token is', retToken[1]);
+    console.log("SSO token is", retToken[1]);
     localStorage.setItem("sso_ret_token", retToken[1]);
-    console.log('SSO token saved. Reloading the page to prevent loging again.');
+    console.log("SSO token saved. Reloading the page to prevent loging again.");
     window.location.href = window.location.origin; // prevent further requests
   } else if (ssoToken) {
-      const baseUrl = localStorage.getItem("sso_base_url");
-      localStorage.removeItem("sso_base_url");
-      localStorage.removeItem("sso_ret_token");
-      if (baseUrl) {
-        const auth = {
-          base_url: baseUrl,
-          username: null,
-          password: null,
-          loginToken: ssoToken,
-        };
-        console.log('Base URL is:', baseUrl);
-        console.log('SSO Token is:', ssoToken);
-        console.log('Let\'s try token login...');
-        login(auth)
-          .catch(error => {
-            alert(
-              typeof error === "string"
-                ? error
-                : typeof error === "undefined" || !error.message
-                ? "ra.auth.sign_in_error"
-                : error.message
-            );
-            console.error(error);
-        });
-      }
+    const baseUrl = localStorage.getItem("sso_base_url");
+    localStorage.removeItem("sso_base_url");
+    localStorage.removeItem("sso_ret_token");
+    if (baseUrl) {
+      const auth = {
+        base_url: baseUrl,
+        username: null,
+        password: null,
+        loginToken: ssoToken,
+      };
+      console.log("Base URL is:", baseUrl);
+      console.log("SSO Token is:", ssoToken);
+      console.log("Let's try token login...");
+      login(auth).catch(error => {
+        alert(
+          typeof error === "string"
+            ? error
+            : typeof error === "undefined" || !error.message
+            ? "ra.auth.sign_in_error"
+            : error.message
+        );
+        console.error(error);
+      });
     }
+  }
 
   const renderInput = ({
     meta: { touched, error } = {},
@@ -174,7 +173,9 @@ const LoginPage = ({ theme }) => {
 
   const handleSSO = () => {
     localStorage.setItem("sso_base_url", ssoBaseUrl);
-    const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(window.location.href)}`;
+    const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
+      window.location.href
+    )}`;
     window.location.href = ssoFullUrl;
   };
 
@@ -232,14 +233,15 @@ const LoginPage = ({ theme }) => {
 
         // setSSOUrl
         const authMethodUrl = `${formData.base_url}/_matrix/client/r0/login`;
-        let supportPass = false, supportSSO = false;
+        let supportPass = false,
+          supportSSO = false;
         fetchUtils
           .fetchJson(authMethodUrl, { method: "GET" })
           .then(({ json }) => {
             json.flows.forEach(f => {
-              if (f.type === 'm.login.password') {
+              if (f.type === "m.login.password") {
                 supportPass = true;
-              } else if (f.type === 'm.login.sso') {
+              } else if (f.type === "m.login.sso") {
                 supportSSO = true;
               }
             });

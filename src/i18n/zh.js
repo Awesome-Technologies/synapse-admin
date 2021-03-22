@@ -38,8 +38,7 @@ export default {
       required_field: "需要的值 '%{field}' 未被设置。",
       invalid_value:
         "第 %{row} 行出现无效值。 '%{field}' 只可以是 'true' 或 'false'。",
-      unreasonably_big:
-        "拒绝加载过大的文件： %{size} MB",
+      unreasonably_big: "拒绝加载过大的文件： %{size} MB",
       already_in_progress: "一个导入进程已经在运行中",
       id_exits: "ID %{id} 已经存在",
     },
@@ -88,8 +87,7 @@ export default {
       },
       results: {
         header: "导入结果",
-        total:
-          "共计 %{smart_count} 条记录 |||| 共计 %{smart_count} 条记录",
+        total: "共计 %{smart_count} 条记录 |||| 共计 %{smart_count} 条记录",
         successful: "%{smart_count} 条记录导入成功",
         skipped: "跳过 %{smart_count} 条记录",
         download_skipped: "下载跳过的记录",
