@@ -5,6 +5,9 @@ import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import PermMediaIcon from "@material-ui/icons/PermMedia";
+import ViewListIcon from "@material-ui/icons/ViewList";
 import {
   ArrayInput,
   ArrayField,
@@ -40,6 +43,7 @@ import {
   ExportButton,
   TopToolbar,
   sanitizeListRestProps,
+  NumberField,
 } from "react-admin";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
@@ -312,6 +316,7 @@ export const UserEdit = props => {
           />
           <TextField source="consent_version" />
         </FormTab>
+
         <FormTab
           label="resources.users.threepid"
           icon={<ContactMailIcon />}
@@ -330,6 +335,7 @@ export const UserEdit = props => {
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
+
         <FormTab
           label={translate("resources.devices.name", { smart_count: 2 })}
           icon={<DevicesIcon />}
@@ -361,6 +367,7 @@ export const UserEdit = props => {
             </Datagrid>
           </ReferenceManyField>
         </FormTab>
+
         <FormTab
           label="resources.connections.name"
           icon={<SettingsInputComponentIcon />}
@@ -399,6 +406,111 @@ export const UserEdit = props => {
               </Datagrid>
             </ArrayField>
           </ReferenceField>
+        </FormTab>
+
+        <FormTab
+          label={translate("resources.users_media.name", { smart_count: 2 })}
+          icon={<PermMediaIcon />}
+          path="media"
+        >
+          <ReferenceManyField
+            reference="users_media"
+            target="user_id"
+            addLabel={false}
+            pagination={<UserPagination />}
+            perPage={50}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <DateField
+                source="created_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <DateField
+                source="last_access_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <TextField source="media_id" sortable={false} />
+              <NumberField source="media_length" sortable={false} />
+              <TextField source="media_type" sortable={false} />
+              <TextField source="upload_name" sortable={false} />
+              <TextField source="quarantined_by" sortable={false} />
+              <BooleanField source="safe_from_quarantine" sortable={false} />
+              <DeleteButton undoable={false} redirect={false} />
+            </Datagrid>
+          </ReferenceManyField>
+        </FormTab>
+
+        <FormTab
+          label={translate("resources.rooms.name", { smart_count: 2 })}
+          icon={<ViewListIcon />}
+          path="rooms"
+        >
+          <ReferenceManyField
+            reference="joined_rooms"
+            target="user_id"
+            addLabel={false}
+          >
+            <Datagrid
+              style={{ width: "100%" }}
+              rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}
+            >
+              <TextField
+                source="id"
+                sortable={false}
+                label="resources.rooms.fields.room_id"
+              />
+              <ReferenceField
+                label="resources.rooms.fields.name"
+                source="id"
+                reference="rooms"
+                sortable={false}
+                link=""
+              >
+                <TextField source="name" sortable={false} />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
+        </FormTab>
+
+        <FormTab
+          label={translate("resources.pushers.name", { smart_count: 2 })}
+          icon={<NotificationsIcon />}
+          path="pushers"
+        >
+          <ReferenceManyField
+            reference="pushers"
+            target="user_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="kind" sortable={false} />
+              <TextField source="app_display_name" sortable={false} />
+              <TextField source="app_id" sortable={false} />
+              <TextField source="data.url" sortable={false} />
+              <TextField source="device_display_name" sortable={false} />
+              <TextField source="lang" sortable={false} />
+              <TextField source="profile_tag" sortable={false} />
+              <TextField source="pushkey" sortable={false} />
+            </Datagrid>
+          </ReferenceManyField>
         </FormTab>
       </TabbedForm>
     </Edit>
