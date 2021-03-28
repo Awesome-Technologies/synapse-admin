@@ -10,6 +10,7 @@ const authProvider = {
         type: "m.login.password",
         user: username,
         password: password,
+        initial_device_display_name: "Synapse Admin",
       }),
     };
 
@@ -30,8 +31,26 @@ const authProvider = {
   },
   // called when the user clicks on the logout button
   logout: () => {
-    console.log("logout ");
-    localStorage.removeItem("access_token");
+    console.log("logout");
+
+    const logout_api_url =
+      localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
+    const access_token = localStorage.getItem("access_token");
+
+    const options = {
+      method: "POST",
+      user: {
+        authenticated: true,
+        token: `Bearer ${access_token}`,
+      },
+    };
+
+    if (typeof access_token === "string") {
+      fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("device_id");
+      });
+    }
     return Promise.resolve();
   },
   // called when the API returns an error
@@ -46,7 +65,7 @@ const authProvider = {
   checkAuth: () => {
     const access_token = localStorage.getItem("access_token");
     console.log("checkAuth " + access_token);
-    return typeof access_token == "string"
+    return typeof access_token === "string"
       ? Promise.resolve()
       : Promise.reject();
   },

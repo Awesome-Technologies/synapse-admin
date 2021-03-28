@@ -29,6 +29,7 @@ const i18nProvider = polyglotI18nProvider(
 
 const App = () => (
   <Admin
+    disableTelemetry
     loginPage={LoginPage}
     authProvider={authProvider}
     dataProvider={dataProvider}
