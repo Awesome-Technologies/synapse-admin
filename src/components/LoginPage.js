@@ -92,7 +92,7 @@ const LoginPage = ({ theme }) => {
     console.log("SSO token is", retToken[1]);
     localStorage.setItem("sso_ret_token", retToken[1]);
     console.log("SSO token saved. Reloading the page to prevent loging again.");
-    window.location.href = window.location.href.replace(retToken[0], ""); // prevent further requests
+    window.location.href = window.location.href.replace(retToken[0], "#"); // prevent further requests
   } else if (ssoToken) {
     const baseUrl = localStorage.getItem("sso_base_url");
     localStorage.removeItem("sso_base_url");
