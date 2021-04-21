@@ -240,6 +240,23 @@ export default {
         last_access_ts: "Letzter Zugriff",
       },
     },
+    delete_media: {
+      name: "Medien",
+      fields: {
+        before_ts: "Letzter Zugriff vor",
+        size_gt: "Größer als (in Bytes)",
+        keep_profiles: "Behalte Profilbilder",
+      },
+      action: {
+        send: "Medien löschen",
+        send_success: "Anfrage erfolgreich versendet.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
+      },
+      helper: {
+        send:
+          "Diese API löscht die lokalen Medien von der Festplatte des eigenen Servers. Dies umfasst alle lokalen Miniaturbilder und Kopien von Medien. Diese API wirkt sich nicht auf Medien aus, die sich in externen Medien-Repositories befinden.",
+      },
+    },
     pushers: {
       name: "Pusher |||| Pushers",
       fields: {
@@ -297,6 +314,10 @@ export default {
   },
   ra: {
     ...germanMessages.ra,
+    action: {
+      ...germanMessages.ra.action,
+      unselect: "Abwählen",
+    },
     auth: {
       ...germanMessages.ra.auth,
       auth_check_error: "Anmeldung fehlgeschlagen",

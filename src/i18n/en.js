@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Homeserver URL",
       welcome: "Welcome to Synapse-admin",
+      server_version: "Synapse version",
       username_error: "Please enter fully qualified user ID: '@user:domain'",
       protocol_error: "URL has to start with 'http://' or 'https://'",
       url_error: "Not a valid Matrix server URL",
@@ -134,7 +135,7 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Members",
-        joined_local_members: "local members",
+        joined_local_members: "Local members",
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",
@@ -233,6 +234,23 @@ export default {
         safe_from_quarantine: "Safe from quarantine",
         created_ts: "Created",
         last_access_ts: "Last access",
+      },
+    },
+    delete_media: {
+      name: "Media",
+      fields: {
+        before_ts: "last access before",
+        size_gt: "Larger then (in bytes)",
+        keep_profiles: "Keep profile images",
+      },
+      action: {
+        send: "Delete media",
+        send_success: "Request successfully sent.",
+        send_failure: "An error has occurred.",
+      },
+      helper: {
+        send:
+          "This API deletes the local media from the disk of your own server. This includes any local thumbnails and copies of media downloaded. This API will not affect media that has been uploaded to external media repositories.",
       },
     },
     pushers: {
