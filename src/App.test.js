@@ -1,5 +1,5 @@
 import React from "react";
-import { TestContext } from "react-admin";
+import { TestContext } from "ra-test";
 import { shallow } from "enzyme";
 import App from "./App";
 
