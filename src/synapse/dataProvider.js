@@ -160,6 +160,16 @@ const resourceMap = {
       )}/${params.id}`,
     }),
   },
+  delete_media: {
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
+        "home_server"
+      )}/delete?before_ts=${params.before_ts}&size_gt=${
+        params.size_gt
+      }&keep_profiles=${params.keep_profiles}`,
+      method: "POST",
+    }),
+  },
   servernotices: {
     map: n => ({ id: n.event_id }),
     create: data => ({
