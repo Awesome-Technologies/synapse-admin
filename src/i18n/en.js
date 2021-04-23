@@ -6,6 +6,7 @@ export default {
     auth: {
       base_url: "Homeserver URL",
       welcome: "Welcome to Synapse-admin",
+      server_version: "Synapse version",
       username_error: "Please enter fully qualified user ID: '@user:domain'",
       protocol_error: "URL has to start with 'http://' or 'https://'",
       url_error: "Not a valid Matrix server URL",
@@ -27,6 +28,7 @@ export default {
           "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
       },
     },
+    reports: { tabs: { basic: "Basic", detail: "Details" } },
   },
   import_users: {
     error: {
@@ -124,7 +126,7 @@ export default {
         consent_version: "Consent version",
       },
       helper: {
-        deactivate: "Deactivated users cannot be reactivated",
+        deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
       },
       action: {
@@ -138,7 +140,7 @@ export default {
         name: "Name",
         canonical_alias: "Alias",
         joined_members: "Members",
-        joined_local_members: "local members",
+        joined_local_members: "Local members",
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",
@@ -170,6 +172,30 @@ export default {
         unencrypted: "Unencrypted",
       },
     },
+    reports: {
+      name: "Reported event |||| Reported events",
+      fields: {
+        id: "ID",
+        received_ts: "report time",
+        user_id: "announcer",
+        name: "name of the room",
+        score: "score",
+        reason: "reason",
+        event_id: "event ID",
+        event_json: {
+          origin: "origin server",
+          origin_server_ts: "time of send",
+          type: "event typ",
+          content: {
+            msgtype: "content type",
+            body: "content",
+            format: "format",
+            formatted_body: "formatted content",
+            algorithm: "algorithm",
+          },
+        },
+      },
+    },
     connections: {
       name: "Connections",
       fields: {
@@ -195,6 +221,50 @@ export default {
         },
       },
     },
+    users_media: {
+      name: "Media",
+      fields: {
+        media_id: "Media ID",
+        media_length: "Lenght",
+        media_type: "Type",
+        upload_name: "File name",
+        quarantined_by: "Quarantined by",
+        safe_from_quarantine: "Safe from quarantine",
+        created_ts: "Created",
+        last_access_ts: "Last access",
+      },
+    },
+    delete_media: {
+      name: "Media",
+      fields: {
+        before_ts: "last access before",
+        size_gt: "Larger then (in bytes)",
+        keep_profiles: "Keep profile images",
+      },
+      action: {
+        send: "Delete media",
+        send_success: "Request successfully sent.",
+        send_failure: "An error has occurred.",
+      },
+      helper: {
+        send:
+          "This API deletes the local media from the disk of your own server. This includes any local thumbnails and copies of media downloaded. This API will not affect media that has been uploaded to external media repositories.",
+      },
+    },
+    pushers: {
+      name: "Pusher |||| Pushers",
+      fields: {
+        app: "App",
+        app_display_name: "App display name",
+        app_id: "App ID",
+        device_display_name: "Device display name",
+        kind: "Kind",
+        lang: "Language",
+        profile_tag: "Profile tag",
+        pushkey: "Pushkey",
+        data: { url: "URL" },
+      },
+    },
     servernotices: {
       name: "Server Notices",
       send: "Send server notices",
@@ -209,6 +279,13 @@ export default {
       helper: {
         send:
           'Sends a server notice to the selected users. The feature "Server Notices" has to be activated at the server.',
+      },
+    },
+    user_media_statistics: {
+      name: "Users' media",
+      fields: {
+        media_count: "Media count",
+        media_length: "Media length",
       },
     },
   },

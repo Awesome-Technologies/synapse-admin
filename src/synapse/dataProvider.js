@@ -72,13 +72,24 @@ const resourceMap = {
       method: "POST",
     }),
   },
+  reports: {
+    path: "/_synapse/admin/v1/event_reports",
+    map: er => ({
+      ...er,
+      id: er.id,
+    }),
+    data: "event_reports",
+    total: json => json.total,
+  },
   devices: {
     map: d => ({
       ...d,
       id: d.device_id,
     }),
     data: "devices",
-    total: json => json.devices.length,
+    total: json => {
+      return json.total;
+    },
     reference: id => ({
       endpoint: `/_synapse/admin/v2/users/${id}/devices`,
     }),
@@ -102,7 +113,62 @@ const resourceMap = {
       endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
     }),
     data: "members",
-    total: json => json.members.length,
+    total: json => {
+      return json.total;
+    },
+  },
+  pushers: {
+    map: p => ({
+      ...p,
+      id: p.pushkey,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/pushers`,
+    }),
+    data: "pushers",
+    total: json => {
+      return json.total;
+    },
+  },
+  joined_rooms: {
+    map: jr => ({
+      id: jr,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/joined_rooms`,
+    }),
+    data: "joined_rooms",
+    total: json => {
+      return json.total;
+    },
+  },
+  users_media: {
+    map: um => ({
+      ...um,
+      id: um.media_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/users/${id}/media`,
+    }),
+    data: "media",
+    total: json => {
+      return json.total;
+    },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
+        "home_server"
+      )}/${params.id}`,
+    }),
+  },
+  delete_media: {
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
+        "home_server"
+      )}/delete?before_ts=${params.before_ts}&size_gt=${
+        params.size_gt
+      }&keep_profiles=${params.keep_profiles}`,
+      method: "POST",
+    }),
   },
   servernotices: {
     map: n => ({ id: n.event_id }),
@@ -117,6 +183,17 @@ const resourceMap = {
       },
       method: "POST",
     }),
+  },
+  user_media_statistics: {
+    path: "/_synapse/admin/v1/statistics/users/media",
+    map: usms => ({
+      ...usms,
+      id: usms.user_id,
+    }),
+    data: "users",
+    total: json => {
+      return json.total;
+    },
   },
 };
 
@@ -201,6 +278,10 @@ const dataProvider = {
     console.log("getManyReference " + resource);
     const { page, perPage } = params.pagination;
     const from = (page - 1) * perPage;
+    const query = {
+      from: from,
+      limit: perPage,
+    };
 
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -208,7 +289,7 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const ref = res["reference"](params.id);
-    const endpoint_url = homeserver + ref.endpoint;
+    const endpoint_url = `${homeserver}${ref.endpoint}?${stringify(query)}`;
 
     return jsonClient(endpoint_url).then(({ headers, json }) => ({
       data: json[res.data].map(res.map),

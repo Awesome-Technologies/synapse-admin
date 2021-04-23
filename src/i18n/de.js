@@ -29,6 +29,7 @@ export default {
           "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
       },
     },
+    reports: { tabs: { basic: "Allgemein", detail: "Details" } },
   },
   import_users: {
     error: {
@@ -126,7 +127,8 @@ export default {
         consent_version: "Zugestimmte Geschäftsbedingungen",
       },
       helper: {
-        deactivate: "Deaktivierte Nutzer können nicht wieder aktiviert werden.",
+        deactivate:
+          "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
       },
       action: {
@@ -172,6 +174,30 @@ export default {
         unencrypted: "Nicht verschlüsselt",
       },
     },
+    reports: {
+      name: "Ereignisbericht |||| Ereignisberichte",
+      fields: {
+        id: "ID",
+        received_ts: "Meldezeit",
+        user_id: "Meldender",
+        name: "Raumname",
+        score: "Wert",
+        reason: "Grund",
+        event_id: "Event-ID",
+        event_json: {
+          origin: "Ursprungsserver",
+          origin_server_ts: "Sendezeit",
+          type: "Eventtyp",
+          content: {
+            msgtype: "Inhaltstyp",
+            body: "Nachrichteninhalt",
+            format: "Nachrichtenformat",
+            formatted_body: "Formatierter Nachrichteninhalt",
+            algorithm: "Verschlüsselungsalgorithmus",
+          },
+        },
+      },
+    },
     connections: {
       name: "Verbindungen",
       fields: {
@@ -197,6 +223,50 @@ export default {
         },
       },
     },
+    users_media: {
+      name: "Medien",
+      fields: {
+        media_id: "Medien ID",
+        media_length: "Größe",
+        media_type: "Typ",
+        upload_name: "Dateiname",
+        quarantined_by: "Zur Quarantäne hinzugefügt",
+        safe_from_quarantine: "Geschützt vor Quarantäne",
+        created_ts: "Erstellt",
+        last_access_ts: "Letzter Zugriff",
+      },
+    },
+    delete_media: {
+      name: "Medien",
+      fields: {
+        before_ts: "Letzter Zugriff vor",
+        size_gt: "Größer als (in Bytes)",
+        keep_profiles: "Behalte Profilbilder",
+      },
+      action: {
+        send: "Medien löschen",
+        send_success: "Anfrage erfolgreich versendet.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
+      },
+      helper: {
+        send:
+          "Diese API löscht die lokalen Medien von der Festplatte des eigenen Servers. Dies umfasst alle lokalen Miniaturbilder und Kopien von Medien. Diese API wirkt sich nicht auf Medien aus, die sich in externen Medien-Repositories befinden.",
+      },
+    },
+    pushers: {
+      name: "Pusher |||| Pushers",
+      fields: {
+        app: "App",
+        app_display_name: "App-Anzeigename",
+        app_id: "App ID",
+        device_display_name: "Geräte-Anzeigename",
+        kind: "Art",
+        lang: "Sprache",
+        profile_tag: "Profil-Tag",
+        pushkey: "Pushkey",
+        data: { url: "URL" },
+      },
+    },
     servernotices: {
       name: "Serverbenachrichtigungen",
       send: "Servernachricht versenden",
@@ -213,9 +283,20 @@ export default {
           'Sendet eine Serverbenachrichtigung an die ausgewählten Nutzer. Hierfür muss das Feature "Server Notices" auf dem Server aktiviert sein.',
       },
     },
+    user_media_statistics: {
+      name: "Dateien je Benutzer",
+      fields: {
+        media_count: "Anzahl der Dateien",
+        media_length: "Größe der Dateien",
+      },
+    },
   },
   ra: {
     ...germanMessages.ra,
+    action: {
+      ...germanMessages.ra.action,
+      unselect: "Abwählen",
+    },
     auth: {
       ...germanMessages.ra.auth,
       auth_check_error: "Anmeldung fehlgeschlagen",

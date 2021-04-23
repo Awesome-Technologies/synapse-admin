@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "0.2.1",
+  "version": "0.7.0",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
@@ -19,14 +19,15 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
     "jest-fetch-mock": "^3.0.3",
-    "prettier": "^2.0.0"
+    "prettier": "^2.0.0",
+    "ra-test": "^3.14.0"
   },
   "dependencies": {
     "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
     "ra-language-german": "^2.1.2",
-    "react": "^16.13.1",
-    "react-admin": "^3.10.0",
+    "react": "^17.0.0",
+    "react-admin": "^3.14.0",
     "react-dom": "^16.14.0",
     "react-scripts": "^3.4.4"
   },
