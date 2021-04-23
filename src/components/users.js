@@ -164,6 +164,7 @@ export const UserList = props => {
       {...props}
       filters={<UserFilter />}
       filterDefaultValues={{ guests: true, deactivated: false }}
+      sort={{ field: "name", order: "ASC" }}
       actions={<UserListActions maxResults={10000} />}
       bulkActionButtons={<UserBulkActionButtons />}
       pagination={<UserPagination />}
@@ -171,14 +172,14 @@ export const UserList = props => {
       <Datagrid rowClick="edit">
         <AvatarField
           source="avatar_src"
-          sortable={false}
           className={classes.small}
+          sortBy="avatar_url"
         />
-        <TextField source="id" sortable={false} />
-        <TextField source="displayname" sortable={false} />
-        <BooleanField source="is_guest" sortable={false} />
-        <BooleanField source="admin" sortable={false} />
-        <BooleanField source="deactivated" sortable={false} />
+        <TextField source="id" sortBy="name" />
+        <TextField source="displayname" />
+        <BooleanField source="is_guest" />
+        <BooleanField source="admin" />
+        <BooleanField source="deactivated" />
       </Datagrid>
     </List>
   );
