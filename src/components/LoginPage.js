@@ -110,10 +110,6 @@ const LoginPage = ({ theme }) => {
     } else {
       if (!values.base_url.match(/^(http|https):\/\//)) {
         errors.base_url = translate("synapseadmin.auth.protocol_error");
-      } else if (
-        !values.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/)
-      ) {
-        errors.base_url = translate("synapseadmin.auth.url_error");
       }
     }
     return errors;
