@@ -167,42 +167,6 @@ export const RoomShow = props => {
           </ReferenceManyField>
         </Tab>
 
-        <Tab
-          label={translate("resources.room_state.name", { smart_count: 2 })}
-          icon={<EventIcon />}
-          path="state"
-        >
-          <ReferenceManyField
-            reference="room_state"
-            target="room_id"
-            addLabel={false}
-          >
-            <Datagrid style={{ width: "100%" }}>
-              <TextField source="type" sortable={false} />
-              <DateField
-                source="origin_server_ts"
-                showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
-                sortable={false}
-              />
-              <TextField source="content" sortable={false} />
-              <ReferenceField
-                source="sender"
-                reference="users"
-                sortable={false}
-              >
-                <TextField source="id" />
-              </ReferenceField>
-            </Datagrid>
-          </ReferenceManyField>
-        </Tab>
 
         <Tab
           label="synapseadmin.rooms.tabs.permission"
@@ -257,6 +221,43 @@ export const RoomShow = props => {
               },
             ]}
           />
+        </Tab>
+
+        <Tab
+          label={translate("resources.room_state.name", { smart_count: 2 })}
+          icon={<EventIcon />}
+          path="state"
+        >
+          <ReferenceManyField
+            reference="room_state"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="type" sortable={false} />
+              <DateField
+                source="origin_server_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <TextField source="content" sortable={false} />
+              <ReferenceField
+                source="sender"
+                reference="users"
+                sortable={false}
+              >
+                <TextField source="id" />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
         </Tab>
 
         <Tab
