@@ -10,6 +10,7 @@ const authProvider = {
         type: "m.login.password",
         user: username,
         password: password,
+        device_id: localStorage.getItem("device_id"),
         initial_device_display_name: "Synapse Admin",
       }),
     };
@@ -48,7 +49,6 @@ const authProvider = {
     if (typeof access_token === "string") {
       fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
         localStorage.removeItem("access_token");
-        localStorage.removeItem("device_id");
       });
     }
     return Promise.resolve();
