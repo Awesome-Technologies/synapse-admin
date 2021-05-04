@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import {
   BooleanField,
-  BulkDeleteWithConfirmButton,
+  BulkDeleteButton,
   Datagrid,
   DeleteButton,
   Filter,
@@ -27,6 +27,12 @@ import PageviewIcon from "@material-ui/icons/Pageview";
 import UserIcon from "@material-ui/icons/Group";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import {
+  RoomDirectoryBulkDeleteButton,
+  RoomDirectoryBulkSaveButton,
+  RoomDirectoryDeleteButton,
+  RoomDirectorySaveButton,
+} from "./RoomDirectory";
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -73,16 +79,26 @@ const RoomTitle = ({ record }) => {
 };
 
 const RoomShowActions = ({ basePath, data, resource }) => {
-  const translate = useTranslate();
+  var roomDirectoryStatus = "";
+  if (data) {
+    roomDirectoryStatus = data.public;
+  }
+
   return (
     <TopToolbar>
+      {roomDirectoryStatus === false && (
+        <RoomDirectorySaveButton record={data} />
+      )}
+      {roomDirectoryStatus === true && (
+        <RoomDirectoryDeleteButton record={data} />
+      )}
       <DeleteButton
         basePath={basePath}
         record={data}
         resource={resource}
-        undoable={false}
-        confirmTitle={translate("synapseadmin.rooms.delete.title")}
-        confirmContent={translate("synapseadmin.rooms.delete.message")}
+        mutationMode="pessimistic"
+        confirmTitle="resources.rooms.action.erase.title"
+        confirmContent="resources.rooms.action.erase.content"
       />
     </TopToolbar>
   );
@@ -205,7 +221,14 @@ export const RoomShow = props => {
 
 const RoomBulkActionButtons = props => (
   <Fragment>
-    <BulkDeleteWithConfirmButton {...props} />
+    <RoomDirectoryBulkSaveButton {...props} />
+    <RoomDirectoryBulkDeleteButton {...props} />
+    <BulkDeleteButton
+      {...props}
+      confirmTitle="resources.rooms.action.erase.title"
+      confirmContent="resources.rooms.action.erase.content"
+      undoable={false}
+    />
   </Fragment>
 );
 
@@ -249,7 +272,6 @@ const FilterableRoomList = ({ ...props }) => {
   const stateEventsFilter = filter && filter.state_events ? true : false;
   const versionFilter = filter && filter.version ? true : false;
   const federateableFilter = filter && filter.federatable ? true : false;
-  const translate = useTranslate();
 
   return (
     <List
@@ -257,12 +279,7 @@ const FilterableRoomList = ({ ...props }) => {
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={<RoomFilter />}
-      bulkActionButtons={
-        <RoomBulkActionButtons
-          confirmTitle={translate("synapseadmin.rooms.delete.title")}
-          confirmContent={translate("synapseadmin.rooms.delete.message")}
-        />
-      }
+      bulkActionButtons={<RoomBulkActionButtons />}
     >
       <Datagrid rowClick="show">
         <EncryptionField
