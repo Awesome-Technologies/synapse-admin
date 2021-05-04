@@ -349,6 +349,10 @@ const de = {
       empty: "Keine Einträge vorhanden",
       invite: "",
     },
+    navigation: {
+      ...germanMessages.ra.navigation,
+      skip_nav: "Zum Inhalt springen",
+    },
   },
 };
 export default de;
