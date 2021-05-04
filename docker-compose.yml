@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  synapse-admin:
+    container_name: synapse-admin
+    hostname: synapse-admin
+    image: awesometechnologies/synapse-admin:latest
+    # build:
+    # context: .
+
+    # to use the docker-compose as standalone without a local repo clone,
+    # replace the context definition with this:
+    # context: https://github.com/Awesome-Technologies/synapse-admin.git
+
+    # if you're building on an architecture other than amd64, make sure
+    # to define a maximum ram for node. otherwise the build will fail.
+    # args:
+    #   - NODE_OPTIONS="--max_old_space_size=1024"
+    ports:
+      - "8080:80"
+    restart: unless-stopped
