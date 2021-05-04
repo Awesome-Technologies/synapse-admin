@@ -111,7 +111,9 @@ const LoginPage = ({ theme }) => {
       if (!values.base_url.match(/^(http|https):\/\//)) {
         errors.base_url = translate("synapseadmin.auth.protocol_error");
       } else if (
-        !values.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/)
+        !values.base_url.match(
+          /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/
+        )
       ) {
         errors.base_url = translate("synapseadmin.auth.url_error");
       }
@@ -255,6 +257,7 @@ const LoginPage = ({ theme }) => {
                   >
                     <MenuItem value="de">Deutsch</MenuItem>
                     <MenuItem value="en">English</MenuItem>
+                    <MenuItem value="zh">简体中文</MenuItem>
                   </Select>
                 </div>
                 <FormDataConsumer>

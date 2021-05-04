@@ -2,7 +2,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import {
   BooleanField,
-  BulkDeleteWithConfirmButton,
+  BulkDeleteButton,
+  DateField,
   Datagrid,
   DateField,
   DeleteButton,
@@ -30,6 +31,13 @@ import PageviewIcon from "@material-ui/icons/Pageview";
 import UserIcon from "@material-ui/icons/Group";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import EventIcon from "@material-ui/icons/Event";
+import {
+  RoomDirectoryBulkDeleteButton,
+  RoomDirectoryBulkSaveButton,
+  RoomDirectoryDeleteButton,
+  RoomDirectorySaveButton,
+} from "./RoomDirectory";
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -76,16 +84,26 @@ const RoomTitle = ({ record }) => {
 };
 
 const RoomShowActions = ({ basePath, data, resource }) => {
-  const translate = useTranslate();
+  var roomDirectoryStatus = "";
+  if (data) {
+    roomDirectoryStatus = data.public;
+  }
+
   return (
     <TopToolbar>
+      {roomDirectoryStatus === false && (
+        <RoomDirectorySaveButton record={data} />
+      )}
+      {roomDirectoryStatus === true && (
+        <RoomDirectoryDeleteButton record={data} />
+      )}
       <DeleteButton
         basePath={basePath}
         record={data}
         resource={resource}
-        undoable={false}
-        confirmTitle={translate("synapseadmin.rooms.delete.title")}
-        confirmContent={translate("synapseadmin.rooms.delete.message")}
+        mutationMode="pessimistic"
+        confirmTitle="resources.rooms.action.erase.title"
+        confirmContent="resources.rooms.action.erase.content"
       />
     </TopToolbar>
   );
@@ -100,7 +118,9 @@ export const RoomShow = props => {
           <TextField source="room_id" />
           <TextField source="name" />
           <TextField source="canonical_alias" />
-          <TextField source="creator" />
+          <ReferenceField source="creator" reference="users">
+            <TextField source="id" />
+          </ReferenceField>
         </Tab>
 
         <Tab
@@ -110,6 +130,7 @@ export const RoomShow = props => {
         >
           <TextField source="joined_members" />
           <TextField source="joined_local_members" />
+          <TextField source="joined_local_devices" />
           <TextField source="state_events" />
           <TextField source="version" />
           <TextField
@@ -141,6 +162,43 @@ export const RoomShow = props => {
                 link=""
               >
                 <TextField source="displayname" sortable={false} />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
+        </Tab>
+
+        <Tab
+          label={translate("resources.room_state.name", { smart_count: 2 })}
+          icon={<EventIcon />}
+          path="state"
+        >
+          <ReferenceManyField
+            reference="room_state"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="type" sortable={false} />
+              <DateField
+                source="origin_server_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <TextField source="content" sortable={false} />
+              <ReferenceField
+                source="sender"
+                reference="users"
+                sortable={false}
+              >
+                <TextField source="id" />
               </ReferenceField>
             </Datagrid>
           </ReferenceManyField>
@@ -200,6 +258,7 @@ export const RoomShow = props => {
             ]}
           />
         </Tab>
+
         <Tab
           label="resources.forward_extremities.name"
           icon={<FastForwardIcon />}
@@ -237,7 +296,14 @@ export const RoomShow = props => {
 
 const RoomBulkActionButtons = props => (
   <Fragment>
-    <BulkDeleteWithConfirmButton {...props} />
+    <RoomDirectoryBulkSaveButton {...props} />
+    <RoomDirectoryBulkDeleteButton {...props} />
+    <BulkDeleteButton
+      {...props}
+      confirmTitle="resources.rooms.action.erase.title"
+      confirmContent="resources.rooms.action.erase.content"
+      undoable={false}
+    />
   </Fragment>
 );
 
@@ -281,7 +347,6 @@ const FilterableRoomList = ({ ...props }) => {
   const stateEventsFilter = filter && filter.state_events ? true : false;
   const versionFilter = filter && filter.version ? true : false;
   const federateableFilter = filter && filter.federatable ? true : false;
-  const translate = useTranslate();
 
   return (
     <List
@@ -289,12 +354,7 @@ const FilterableRoomList = ({ ...props }) => {
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={<RoomFilter />}
-      bulkActionButtons={
-        <RoomBulkActionButtons
-          confirmTitle={translate("synapseadmin.rooms.delete.title")}
-          confirmContent={translate("synapseadmin.rooms.delete.message")}
-        />
-      }
+      bulkActionButtons={<RoomBulkActionButtons />}
     >
       <Datagrid rowClick="show">
         <EncryptionField

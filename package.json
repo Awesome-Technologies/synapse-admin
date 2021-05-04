@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
@@ -11,24 +11,26 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^10.0.2",
-    "@testing-library/user-event": "^12.0.11",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^13.1.8",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest-fetch-mock": "^3.0.3",
-    "prettier": "^2.0.0"
+    "prettier": "^2.2.0",
+    "ra-test": "^3.15.0"
   },
   "dependencies": {
     "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
-    "ra-language-german": "^2.1.2",
-    "react": "^16.13.1",
-    "react-admin": "^3.10.0",
-    "react-dom": "^16.14.0",
-    "react-scripts": "^3.4.4"
+    "ra-language-chinese": "^2.0.10",
+    "ra-language-german": "^3.13.4",
+    "react": "^17.0.0",
+    "react-admin": "^3.15.0",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.0"
   },
   "scripts": {
     "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
