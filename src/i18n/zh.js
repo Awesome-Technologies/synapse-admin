@@ -1,6 +1,6 @@
 import chineseMessages from "ra-language-chinese";
 
-export default {
+const zh = {
   ...chineseMessages,
   synapseadmin: {
     auth: {
@@ -288,3 +288,4 @@ export default {
     },
   },
 };
+export default zh;

@@ -1,6 +1,6 @@
 import englishMessages from "ra-language-english";
 
-export default {
+const en = {
   ...englishMessages,
   synapseadmin: {
     auth: {
@@ -319,3 +319,4 @@ export default {
     },
   },
 };
+export default en;

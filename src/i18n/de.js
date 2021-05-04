@@ -1,6 +1,6 @@
 import germanMessages from "ra-language-german";
 
-export default {
+const de = {
   ...germanMessages,
   synapseadmin: {
     auth: {
@@ -351,3 +351,4 @@ export default {
     },
   },
 };
+export default de;
