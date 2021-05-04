@@ -18,6 +18,7 @@ const authProvider = {
     // use the base_url from login instead of the well_known entry from the
     // server, since the admin might want to access the admin API via some
     // private address
+    base_url = base_url.replace(/\/+$/g, "");
     localStorage.setItem("base_url", base_url);
 
     const decoded_base_url = window.decodeURIComponent(base_url);
