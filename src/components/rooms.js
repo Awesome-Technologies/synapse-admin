@@ -5,7 +5,6 @@ import {
   BulkDeleteButton,
   DateField,
   Datagrid,
-  DateField,
   DeleteButton,
   Filter,
   List,
@@ -166,7 +165,6 @@ export const RoomShow = props => {
             </Datagrid>
           </ReferenceManyField>
         </Tab>
-
 
         <Tab
           label="synapseadmin.rooms.tabs.permission"
