@@ -10,6 +10,7 @@ const authProvider = {
         type: "m.login.password",
         user: username,
         password: password,
+        device_id: localStorage.getItem("device_id"),
         initial_device_display_name: "Synapse Admin",
       }),
     };
@@ -17,6 +18,7 @@ const authProvider = {
     // use the base_url from login instead of the well_known entry from the
     // server, since the admin might want to access the admin API via some
     // private address
+    base_url = base_url.replace(/\/+$/g, "");
     localStorage.setItem("base_url", base_url);
 
     const decoded_base_url = window.decodeURIComponent(base_url);
@@ -48,7 +50,6 @@ const authProvider = {
     if (typeof access_token === "string") {
       fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
         localStorage.removeItem("access_token");
-        localStorage.removeItem("device_id");
       });
     }
     return Promise.resolve();
