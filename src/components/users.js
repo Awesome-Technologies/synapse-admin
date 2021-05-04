@@ -126,19 +126,17 @@ const UserFilter = props => (
   </Filter>
 );
 
-const UserBulkActionButtons = props => {
-  const translate = useTranslate();
-  return (
-    <Fragment>
-      <ServerNoticeBulkButton {...props} />
-      <BulkDeleteButton
-        {...props}
-        label="resources.users.action.erase"
-        title={translate("resources.users.helper.erase")}
-      />
-    </Fragment>
-  );
-};
+const UserBulkActionButtons = props => (
+  <Fragment>
+    <ServerNoticeBulkButton {...props} />
+    <BulkDeleteButton
+      {...props}
+      label="resources.users.action.erase"
+      confirmTitle="resources.users.helper.erase"
+      undoable={false}
+    />
+  </Fragment>
+);
 
 const AvatarField = ({ source, className, record = {} }) => (
   <Avatar src={record[source]} className={className} />
@@ -271,7 +269,10 @@ const UserEditToolbar = props => {
       />
       <DeleteButton
         label="resources.users.action.erase"
-        title={translate("resources.users.helper.erase")}
+        confirmTitle={translate("resources.users.helper.erase", {
+          smart_count: 1,
+        })}
+        mutationMode="pessimistic"
       />
       <ServerNoticeButton />
     </Toolbar>
@@ -504,7 +505,7 @@ export const UserEdit = props => {
               <TextField source="upload_name" sortable={false} />
               <TextField source="quarantined_by" sortable={false} />
               <BooleanField source="safe_from_quarantine" sortable={false} />
-              <DeleteButton undoable={false} redirect={false} />
+              <DeleteButton mutationMode="pessimistic" redirect={false} />
             </Datagrid>
           </ReferenceManyField>
         </FormTab>
