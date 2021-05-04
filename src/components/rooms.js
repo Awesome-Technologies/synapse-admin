@@ -107,6 +107,7 @@ export const RoomShow = props => {
         >
           <TextField source="joined_members" />
           <TextField source="joined_local_members" />
+          <TextField source="joined_local_devices" />
           <TextField source="state_events" />
           <TextField source="version" />
           <TextField
