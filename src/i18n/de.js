@@ -139,7 +139,7 @@ export default {
         joined_members: "Mitglieder",
         joined_local_members: "Lokale Mitglieder",
         joined_local_devices: "Lokale Endgeräte",
-        state_events: "Ereignisse",
+        state_events: "Zustandsereignisse / Komplexität",
         version: "Version",
         is_encrypted: "Verschlüsselt",
         encryption: "Verschlüsselungs-Algorithmus",
@@ -293,6 +293,15 @@ export default {
       fields: {
         media_count: "Anzahl der Dateien",
         media_length: "Größe der Dateien",
+      },
+    },
+    room_state: {
+      name: "Zustandsereignisse",
+      fields: {
+        type: "Typ",
+        content: "Inhalt",
+        origin_server_ts: "Sendezeit",
+        sender: "Absender",
       },
     },
     room_directory: {

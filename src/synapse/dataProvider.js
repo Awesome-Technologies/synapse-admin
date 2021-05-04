@@ -117,6 +117,19 @@ const resourceMap = {
       return json.total;
     },
   },
+  room_state: {
+    map: rs => ({
+      ...rs,
+      id: rs.event_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/state`,
+    }),
+    data: "state",
+    total: json => {
+      return json.state.length;
+    },
+  },
   pushers: {
     map: p => ({
       ...p,

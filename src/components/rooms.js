@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import {
   BooleanField,
   BulkDeleteButton,
+  DateField,
   Datagrid,
   DeleteButton,
   Filter,
@@ -27,6 +28,7 @@ import PageviewIcon from "@material-ui/icons/Pageview";
 import UserIcon from "@material-ui/icons/Group";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import EventIcon from "@material-ui/icons/Event";
 import {
   RoomDirectoryBulkDeleteButton,
   RoomDirectoryBulkSaveButton,
@@ -113,7 +115,9 @@ export const RoomShow = props => {
           <TextField source="room_id" />
           <TextField source="name" />
           <TextField source="canonical_alias" />
-          <TextField source="creator" />
+          <ReferenceField source="creator" reference="users">
+            <TextField source="id" />
+          </ReferenceField>
         </Tab>
 
         <Tab
@@ -213,6 +217,42 @@ export const RoomShow = props => {
               },
             ]}
           />
+        </Tab>
+        <Tab
+          label={translate("resources.room_state.name", { smart_count: 2 })}
+          icon={<EventIcon />}
+          path="state"
+        >
+          <ReferenceManyField
+            reference="room_state"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="type" sortable={false} />
+              <DateField
+                source="origin_server_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <TextField source="content" sortable={false} />
+              <ReferenceField
+                source="sender"
+                reference="users"
+                sortable={false}
+              >
+                <TextField source="id" />
+              </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
         </Tab>
       </TabbedShowLayout>
     </Show>
