@@ -305,8 +305,8 @@ const RoomFilter = ({ ...props }) => {
   );
 };
 
-const FilterableRoomList = ({ ...props }) => {
-  const filter = props.roomFilters;
+const FilterableRoomList = ({ roomFilters, dispatch, ...props }) => {
+  const filter = roomFilters;
   const localMembersFilter =
     filter && filter.joined_local_members ? true : false;
   const stateEventsFilter = filter && filter.state_events ? true : false;
