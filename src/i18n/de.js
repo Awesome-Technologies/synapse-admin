@@ -23,11 +23,6 @@ export default {
         detail: "Details",
         permission: "Berechtigungen",
       },
-      delete: {
-        title: "Raum löschen",
-        message:
-          "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
-      },
     },
     reports: { tabs: { basic: "Allgemein", detail: "Details" } },
   },
@@ -143,16 +138,19 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Mitglieder",
         joined_local_members: "Lokale Mitglieder",
-        state_events: "Ereignisse",
+        joined_local_devices: "Lokale Endgeräte",
+        state_events: "Zustandsereignisse / Komplexität",
         version: "Version",
         is_encrypted: "Verschlüsselt",
         encryption: "Verschlüsselungs-Algorithmus",
         federatable: "Fö­de­rierbar",
-        public: "Öffentlich",
+        public: "Sichtbar im Raumverzeichnis",
         creator: "Ersteller",
         join_rules: "Beitrittsregeln",
         guest_access: "Gastzugriff",
         history_visibility: "Historie-Sichtbarkeit",
+        topic: "Thema",
+        avatar: "Avatar",
       },
       enums: {
         join_rules: {
@@ -172,6 +170,13 @@ export default {
           world_readable: "Jeder",
         },
         unencrypted: "Nicht verschlüsselt",
+      },
+      action: {
+        erase: {
+          title: "Raum löschen",
+          content:
+            "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
+        },
       },
     },
     reports: {
@@ -288,6 +293,32 @@ export default {
       fields: {
         media_count: "Anzahl der Dateien",
         media_length: "Größe der Dateien",
+      },
+    },
+    room_state: {
+      name: "Zustandsereignisse",
+      fields: {
+        type: "Typ",
+        content: "Inhalt",
+        origin_server_ts: "Sendezeit",
+        sender: "Absender",
+      },
+    },
+    room_directory: {
+      name: "Raumverzeichnis",
+      fields: {
+        world_readable: "Gastbenutzer dürfen ohne Beitritt lesen",
+        guest_can_join: "Gastbenutzer dürfen beitreten",
+      },
+      action: {
+        title:
+          "Raum aus Verzeichnis löschen |||| %{smart_count} Räume aus Verzeichnis löschen",
+        content:
+          "Möchten Sie den Raum wirklich aus dem Raumverzeichnis löschen? |||| Möchten Sie die %{smart_count} Räume wirklich aus dem Raumverzeichnis löschen?",
+        erase: "Lösche aus Verzeichnis",
+        create: "Eintragen ins Verzeichnis",
+        send_success: "Raum erfolgreich eingetragen.",
+        send_failure: "Beim Entfernen ist ein Fehler aufgetreten.",
       },
     },
   },

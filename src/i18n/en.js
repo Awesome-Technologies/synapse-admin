@@ -22,11 +22,6 @@ export default {
         detail: "Details",
         permission: "Permissions",
       },
-      delete: {
-        title: "Delete room",
-        message:
-          "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
-      },
     },
     reports: { tabs: { basic: "Basic", detail: "Details" } },
   },
@@ -141,16 +136,19 @@ export default {
         canonical_alias: "Alias",
         joined_members: "Members",
         joined_local_members: "Local members",
-        state_events: "State events",
+        joined_local_devices: "Local devices",
+        state_events: "State events / Complexity",
         version: "Version",
         is_encrypted: "Encrypted",
         encryption: "Encryption",
         federatable: "Federatable",
-        public: "Public",
+        public: "Visible in room directory",
         creator: "Creator",
         join_rules: "Join rules",
         guest_access: "Guest access",
         history_visibility: "History visibility",
+        topic: "Topic",
+        avatar: "Avatar",
       },
       enums: {
         join_rules: {
@@ -170,6 +168,11 @@ export default {
           world_readable: "Anyone",
         },
         unencrypted: "Unencrypted",
+      },
+      erase: {
+        title: "Delete room",
+        content:
+          "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
       },
     },
     reports: {
@@ -286,6 +289,32 @@ export default {
       fields: {
         media_count: "Media count",
         media_length: "Media length",
+      },
+    },
+    room_state: {
+      name: "State events",
+      fields: {
+        type: "Type",
+        content: "Content",
+        origin_server_ts: "time of send",
+        sender: "Sender",
+      },
+    },
+    room_directory: {
+      name: "Room directory",
+      fields: {
+        world_readable: "guest users may view without joining",
+        guest_can_join: "guest users may join",
+      },
+      action: {
+        title:
+          "Delete room from directory |||| Delete %{smart_count} rooms from directory",
+        content:
+          "Are you sure you want to remove this room from directory? |||| Are you sure you want to remove these %{smart_count} rooms from directory",
+        erase: "Delete from room directory",
+        create: "Publish in room directory",
+        send_success: "Room successfully published.",
+        send_failure: "An error has occurred.",
       },
     },
   },
