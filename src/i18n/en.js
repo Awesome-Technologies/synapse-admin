@@ -172,7 +172,7 @@ export default {
         joined_members: "Members",
         invite_members: "Invite Members",
         invitees: "Invitations",
-        joined_local_members: "local members",
+        joined_local_members: "Local members",
         state_events: "State events",
         version: "Version",
         is_encrypted: "Encrypted",
