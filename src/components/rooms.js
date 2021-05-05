@@ -18,9 +18,11 @@ import {
   TabbedShowLayout,
   TextField,
   TopToolbar,
+  useRecordContext,
   useTranslate,
 } from "react-admin";
 import get from "lodash/get";
+import PropTypes from "prop-types";
 import { Tooltip, Typography, Chip } from "@material-ui/core";
 import HttpsIcon from "@material-ui/icons/Https";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
@@ -305,6 +307,20 @@ const RoomFilter = ({ ...props }) => {
   );
 };
 
+const RoomNameField = props => {
+  const { source } = props;
+  const record = useRecordContext(props);
+  return (
+    <span>{record[source] || record["canonical_alias"] || record["id"]}</span>
+  );
+};
+
+RoomNameField.propTypes = {
+  label: PropTypes.string,
+  record: PropTypes.object,
+  source: PropTypes.string.isRequired,
+};
+
 const FilterableRoomList = ({ roomFilters, dispatch, ...props }) => {
   const filter = roomFilters;
   const localMembersFilter =
@@ -327,7 +343,7 @@ const FilterableRoomList = ({ roomFilters, dispatch, ...props }) => {
           sortBy="encryption"
           label={<HttpsIcon />}
         />
-        <TextField source="name" />
+        <RoomNameField source="name" />
         <TextField source="joined_members" />
         {localMembersFilter && <TextField source="joined_local_members" />}
         {stateEventsFilter && <TextField source="state_events" />}
