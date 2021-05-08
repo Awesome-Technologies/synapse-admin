@@ -22,6 +22,7 @@ import {
   useTranslate,
 } from "react-admin";
 import get from "lodash/get";
+import { makeStyles } from "@material-ui/core/styles";
 import { Tooltip, Typography, Chip } from "@material-ui/core";
 import FastForwardIcon from "@material-ui/icons/FastForward";
 import HttpsIcon from "@material-ui/icons/Https";
@@ -37,6 +38,13 @@ import {
   RoomDirectoryDeleteButton,
   RoomDirectorySaveButton,
 } from "./RoomDirectory";
+
+const useStyles = makeStyles(theme => ({
+  helper_forward_extremities: {
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    margin: "0.5em",
+  },
+}));
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -109,6 +117,7 @@ const RoomShowActions = ({ basePath, data, resource }) => {
 };
 
 export const RoomShow = props => {
+  const classes = useStyles({ props });
   const translate = useTranslate();
   return (
     <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
@@ -263,6 +272,9 @@ export const RoomShow = props => {
           icon={<FastForwardIcon />}
           path="forward_extremities"
         >
+          <div className={classes.helper_forward_extremities}>
+            {translate("resources.rooms.enums.unencrypted")}
+          </div>
           <ReferenceManyField
             reference="forward_extremities"
             target="room_id"

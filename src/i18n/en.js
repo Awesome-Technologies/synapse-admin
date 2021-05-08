@@ -150,6 +150,10 @@ const en = {
         topic: "Topic",
         avatar: "Avatar",
       },
+      helper: {
+        forward_extremities:
+          "Forward extremities are the leaf events at the end of a Directed acyclic graph (DAG) in a room, aka events that have no children. The more exist in a room, the more state resolution that Synapse needs to perform (hint: it's an expensive operation). While Synapse has code to prevent too many of these existing at one time in a room, bugs can sometimes make them crop up again. If a room has >10 forward extremities, it's worth checking which room is the culprit and potentially removing them using the SQL queries mentioned in #1760.",
+      },
       enums: {
         join_rules: {
           public: "Public",
