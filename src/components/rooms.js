@@ -273,7 +273,7 @@ export const RoomShow = props => {
           path="forward_extremities"
         >
           <div className={classes.helper_forward_extremities}>
-            {translate("resources.rooms.enums.unencrypted")}
+            {translate("resources.rooms.helper.forward_extremities")}
           </div>
           <ReferenceManyField
             reference="forward_extremities"
