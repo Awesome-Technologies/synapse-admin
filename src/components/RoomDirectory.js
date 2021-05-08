@@ -171,7 +171,7 @@ const RoomDirectoryFilter = ({ ...props }) => {
   );
 };
 
-export const FilterableRoomDirectoryList = ({ ...props }) => {
+export const FilterableRoomDirectoryList = ({ dispatch, ...props }) => {
   const classes = useStyles();
   const translate = useTranslate();
   const filter = props.roomDirectoryFilters;
@@ -242,7 +242,7 @@ export const FilterableRoomDirectoryList = ({ ...props }) => {
 
 function mapStateToProps(state) {
   return {
-    roomDirectoryFilters:
+    roomdirectoryfilters:
       state.admin.resources.room_directory.list.params.displayedFilters,
   };
 }
