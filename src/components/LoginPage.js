@@ -82,6 +82,7 @@ const LoginPage = ({ theme }) => {
   const setLocale = useSetLocale();
   const translate = useTranslate();
   const base_url = localStorage.getItem("base_url");
+  const override_server = process.env.REACT_APP_SERVER;
 
   const renderInput = ({
     meta: { touched, error } = {},
@@ -149,7 +150,7 @@ const LoginPage = ({ theme }) => {
     const [serverVersion, setServerVersion] = useState("");
 
     const handleUsernameChange = _ => {
-      if (formData.base_url) return;
+      if (formData.base_url || override_server) return;
       // check if username is a full qualified userId then set base_url accordially
       const home_server = extractHomeServer(formData.username);
       const wellKnownUrl = `https://${home_server}/.well-known/matrix/client`;
@@ -201,6 +202,7 @@ const LoginPage = ({ theme }) => {
             label={translate("ra.auth.username")}
             disabled={loading}
             onBlur={handleUsernameChange}
+            resettable
             fullWidth
           />
         </div>
@@ -211,6 +213,7 @@ const LoginPage = ({ theme }) => {
             label={translate("ra.auth.password")}
             type="password"
             disabled={loading}
+            resettable
             fullWidth
           />
         </div>
@@ -219,7 +222,8 @@ const LoginPage = ({ theme }) => {
             name="base_url"
             component={renderInput}
             label={translate("synapseadmin.auth.base_url")}
-            disabled={loading}
+            disabled={override_server ? true : loading}
+            resettable
             fullWidth
           />
         </div>
@@ -230,7 +234,7 @@ const LoginPage = ({ theme }) => {
 
   return (
     <Form
-      initialValues={{ base_url: base_url }}
+      initialValues={{ base_url: override_server ? override_server : base_url }}
       onSubmit={handleSubmit}
       validate={validate}
       render={({ handleSubmit }) => (
