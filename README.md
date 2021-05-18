@@ -33,6 +33,11 @@ Steps for 1):
 - download dependencies: `yarn install`
 - start web server: `yarn start`
 
+You can fix the homeserver, so that the user can no longer define it himself.
+Either you define it at startup (e.g. `REACT_APP_SERVER=https://yourmatrixserver.example.com yarn start`)
+or by editing it in the [.env](.env) file. See also the
+[documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
+
 Steps for 2):
 
 - run the Docker container from the public docker registry: `docker run -p 8080:80 awesometechnologies/synapse-admin` or use the (docker-compose.yml)[docker-compose.yml]: `docker-compose up -d`

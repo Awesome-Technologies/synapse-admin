@@ -3,6 +3,9 @@ import { fetchUtils } from "react-admin";
 const authProvider = {
   // called when the user attempts to log in
   login: ({ base_url, username, password }) => {
+    // force homeserver for protection in case the form is manipulated
+    base_url = process.env.REACT_APP_SERVER || base_url;
+
     console.log("login ");
     const options = {
       method: "POST",
