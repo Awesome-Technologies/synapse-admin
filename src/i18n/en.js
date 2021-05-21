@@ -232,7 +232,7 @@ const en = {
       name: "Media",
       fields: {
         media_id: "Media ID",
-        media_length: "Lenght",
+        media_length: "File Size (in Bytes)",
         media_type: "Type",
         upload_name: "File name",
         quarantined_by: "Quarantined by",
