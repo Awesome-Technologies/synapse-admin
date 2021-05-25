@@ -4,7 +4,7 @@
 
 This project is built using [react-admin](https://marmelab.com/react-admin/).
 
-It needs at least Synapse v1.27.0 for all functions to work as expected!
+It needs at least Synapse v1.32.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.
 See also [Synapse version API](https://github.com/matrix-org/synapse/blob/develop/docs/admin_api/version_api.rst).
@@ -32,6 +32,11 @@ Steps for 1):
 - change into downloaded directory: `cd synapse-admin`
 - download dependencies: `yarn install`
 - start web server: `yarn start`
+
+You can fix the homeserver, so that the user can no longer define it himself.
+Either you define it at startup (e.g. `REACT_APP_SERVER=https://yourmatrixserver.example.com yarn start`)
+or by editing it in the [.env](.env) file. See also the
+[documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
 
 Steps for 2):
 

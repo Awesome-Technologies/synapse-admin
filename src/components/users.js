@@ -158,6 +158,7 @@ export const UserList = props => {
       {...props}
       filters={<UserFilter />}
       filterDefaultValues={{ guests: true, deactivated: false }}
+      sort={{ field: "name", order: "ASC" }}
       actions={<UserListActions maxResults={10000} />}
       bulkActionButtons={<UserBulkActionButtons />}
       pagination={<UserPagination />}
@@ -165,13 +166,13 @@ export const UserList = props => {
       <Datagrid rowClick="edit">
         <AvatarField
           source="avatar_src"
-          sortable={false}
           className={classes.small}
+          sortBy="avatar_url"
         />
-        <TextField source="id" sortable={false} />
+        <TextField source="id" sortBy="name" />
         <TextField source="displayname" />
-        <BooleanField source="is_guest" sortable={false} />
-        <BooleanField source="admin" sortable={false} />
+        <BooleanField source="is_guest" />
+        <BooleanField source="admin" />
         <SelectField
           source="user_type"
           choices={[
@@ -180,7 +181,7 @@ export const UserList = props => {
             { id: "limited", name: "resources.users.type.limited" },
           ]}
         />
-        <BooleanField source="deactivated" sortable={false} />
+        <BooleanField source="deactivated" />
       </Datagrid>
     </List>
   );
@@ -480,6 +481,7 @@ export const UserEdit = props => {
             addLabel={false}
             pagination={<UserPagination />}
             perPage={50}
+            sort={{ field: "created_ts", order: "DESC" }}
           >
             <Datagrid style={{ width: "100%" }}>
               <DateField
@@ -493,7 +495,6 @@ export const UserEdit = props => {
                   minute: "2-digit",
                   second: "2-digit",
                 }}
-                sortable={false}
               />
               <DateField
                 source="last_access_ts"
@@ -506,14 +507,13 @@ export const UserEdit = props => {
                   minute: "2-digit",
                   second: "2-digit",
                 }}
-                sortable={false}
               />
-              <TextField source="media_id" sortable={false} />
-              <NumberField source="media_length" sortable={false} />
-              <TextField source="media_type" sortable={false} />
-              <TextField source="upload_name" sortable={false} />
-              <TextField source="quarantined_by" sortable={false} />
-              <BooleanField source="safe_from_quarantine" sortable={false} />
+              <TextField source="media_id" />
+              <NumberField source="media_length" />
+              <TextField source="media_type" />
+              <TextField source="upload_name" />
+              <TextField source="quarantined_by" />
+              <BooleanField source="safe_from_quarantine" />
               <DeleteButton mutationMode="pessimistic" redirect={false} />
             </Datagrid>
           </ReferenceManyField>

@@ -6,6 +6,7 @@ import dataProvider from "./synapse/dataProvider";
 import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomCreate, RoomShow, RoomEdit } from "./components/rooms";
 import { ReportList, ReportShow } from "./components/EventReports";
+import ImportFeature from "./components/ImportFeature";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
@@ -81,6 +82,7 @@ const App = () => (
     <Resource name="joined_rooms" />
     <Resource name="pushers" />
     <Resource name="servernotices" />
+    <Resource name="forward_extremities" />
     <Resource name="room_state" />
   </Admin>
 );

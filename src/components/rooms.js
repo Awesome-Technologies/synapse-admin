@@ -16,6 +16,7 @@ import {
   Filter,
   FormTab,
   List,
+  NumberField,
   Pagination,
   ReferenceArrayInput,
   ReferenceField,
@@ -33,10 +34,13 @@ import {
   Toolbar,
   TopToolbar,
   useDataProvider,
+  useRecordContext,
   useRefresh,
   useTranslate,
 } from "react-admin";
 import get from "lodash/get";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Tooltip,
   Typography,
@@ -47,6 +51,7 @@ import {
   Select,
   MenuItem,
 } from "@material-ui/core";
+import FastForwardIcon from "@material-ui/icons/FastForward";
 import HttpsIcon from "@material-ui/icons/Https";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import PageviewIcon from "@material-ui/icons/Pageview";
@@ -61,6 +66,13 @@ import {
   RoomDirectoryDeleteButton,
   RoomDirectorySaveButton,
 } from "./RoomDirectory";
+
+const useStyles = makeStyles(theme => ({
+  helper_forward_extremities: {
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    margin: "0.5em",
+  },
+}));
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -481,6 +493,7 @@ const RoomShowActions = ({ basePath, data, resource }) => {
 };
 
 export const RoomShow = props => {
+  const classes = useStyles({ props });
   const translate = useTranslate();
   return (
     <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
@@ -592,6 +605,7 @@ export const RoomShow = props => {
             ]}
           />
         </Tab>
+
         <Tab
           label={translate("resources.room_state.name", { smart_count: 2 })}
           icon={<EventIcon />}
@@ -625,6 +639,40 @@ export const RoomShow = props => {
               >
                 <TextField source="id" />
               </ReferenceField>
+            </Datagrid>
+          </ReferenceManyField>
+        </Tab>
+
+        <Tab
+          label="resources.forward_extremities.name"
+          icon={<FastForwardIcon />}
+          path="forward_extremities"
+        >
+          <div className={classes.helper_forward_extremities}>
+            {translate("resources.rooms.helper.forward_extremities")}
+          </div>
+          <ReferenceManyField
+            reference="forward_extremities"
+            target="room_id"
+            addLabel={false}
+          >
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="id" sortable={false} />
+              <DateField
+                source="received_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+                sortable={false}
+              />
+              <NumberField source="depth" sortable={false} />
+              <TextField source="state_group" sortable={false} />
             </Datagrid>
           </ReferenceManyField>
         </Tab>
@@ -679,8 +727,22 @@ const RoomFilter = ({ ...props }) => {
   );
 };
 
-const FilterableRoomList = ({ ...props }) => {
-  const filter = props.roomFilters;
+const RoomNameField = props => {
+  const { source } = props;
+  const record = useRecordContext(props);
+  return (
+    <span>{record[source] || record["canonical_alias"] || record["id"]}</span>
+  );
+};
+
+RoomNameField.propTypes = {
+  label: PropTypes.string,
+  record: PropTypes.object,
+  source: PropTypes.string.isRequired,
+};
+
+const FilterableRoomList = ({ roomFilters, dispatch, ...props }) => {
+  const filter = roomFilters;
   const localMembersFilter =
     filter && filter.joined_local_members ? true : false;
   const stateEventsFilter = filter && filter.state_events ? true : false;
@@ -701,7 +763,7 @@ const FilterableRoomList = ({ ...props }) => {
           sortBy="encryption"
           label={<HttpsIcon />}
         />
-        <TextField source="name" />
+        <RoomNameField source="name" />
         <TextField source="joined_members" />
         {localMembersFilter && <TextField source="joined_local_members" />}
         {stateEventsFilter && <TextField source="state_events" />}
