@@ -10,16 +10,20 @@ import {
   SaveButton,
   SimpleForm,
   Toolbar,
+  useCreate,
   useDelete,
   useNotify,
+  useRefresh,
   useTranslate,
 } from "react-admin";
-import IconCancel from "@material-ui/icons/Cancel";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import IconCancel from "@material-ui/icons/Cancel";
+import LockIcon from "@material-ui/icons/Lock";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
 
 const useStyles = makeStyles(
   theme => ({
@@ -140,6 +144,67 @@ export const DeleteMediaButton = props => {
         onClose={handleDialogClose}
         onSend={handleSend}
       />
+    </Fragment>
+  );
+};
+
+export const ProtectMediaButton = props => {
+  const { record } = props;
+  const refresh = useRefresh();
+  const notify = useNotify();
+  const [create, { loading }] = useCreate("protect_media");
+  const [deleteOne] = useDelete("protect_media");
+
+  if (!record) return null;
+
+  const handleProtect = () => {
+    create(
+      { payload: { data: record } },
+      {
+        onSuccess: () => {
+          notify("resources.protect_media.action.send_success");
+          refresh();
+        },
+        onFailure: () =>
+          notify("resources.protect_media.action.send_failure", "error"),
+      }
+    );
+  };
+
+  const handleUnprotect = () => {
+    deleteOne(
+      { payload: { ...record } },
+      {
+        onSuccess: () => {
+          notify("resources.protect_media.action.send_success");
+          refresh();
+        },
+        onFailure: () =>
+          notify("resources.protect_media.action.send_failure", "error"),
+      }
+    );
+  };
+
+  return (
+    <Fragment>
+      {!record.safe_from_quarantine && !record.quarantined_by && (
+        <Button
+          label="resources.protect_media.action.create"
+          onClick={handleProtect}
+          disabled={loading}
+        >
+          <LockIcon />
+        </Button>
+      )}
+      {record.safe_from_quarantine && (
+        <Button
+          label="resources.protect_media.action.delete"
+          onClick={handleUnprotect}
+          disabled={loading}
+        >
+          <LockOpenIcon />
+        </Button>
+      )}
     </Fragment>
   );
 };

@@ -258,6 +258,14 @@ const en = {
           "This API deletes the local media from the disk of your own server. This includes any local thumbnails and copies of media downloaded. This API will not affect media that has been uploaded to external media repositories.",
       },
     },
+    protect_media: {
+      action: {
+        create: "Protect",
+        delete: "Unprotect",
+        send_success: "Successfully changed the protection status.",
+        send_failure: "An error has occurred.",
+      },
+    },
     pushers: {
       name: "Pusher |||| Pushers",
       fields: {

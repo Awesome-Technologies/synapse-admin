@@ -183,6 +183,17 @@ const resourceMap = {
       method: "POST",
     }),
   },
+  protect_media: {
+    map: pm => ({ id: pm.media_id }),
+    create: params => ({
+      endpoint: `/_synapse/admin/v1/media/protect/${params.media_id}`,
+      method: "POST",
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/unprotect/${params.media_id}`,
+      method: "POST",
+    }),
+  },
   servernotices: {
     map: n => ({ id: n.event_id }),
     create: data => ({
