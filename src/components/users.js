@@ -36,7 +36,6 @@ import {
   DeleteButton,
   SaveButton,
   regex,
-  useRedirect,
   useTranslate,
   Pagination,
   CreateButton,
@@ -45,12 +44,13 @@ import {
   sanitizeListRestProps,
   NumberField,
 } from "react-admin";
+import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { ProtectMediaButton } from "./media";
 import { makeStyles } from "@material-ui/core/styles";
 
-const redirect = (basePath, id, data) => {
+const redirect = () => {
   return {
     pathname: "/import_users",
   };
@@ -86,7 +86,6 @@ const UserListActions = ({
   total,
   ...rest
 }) => {
-  const redirectTo = useRedirect();
   return (
     <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
       {filters &&
@@ -107,12 +106,7 @@ const UserListActions = ({
         maxResults={maxResults}
       />
       {/* Add your custom actions */}
-      <Button
-        onClick={() => {
-          redirectTo(redirect);
-        }}
-        label="CSV Import"
-      >
+      <Button component={Link} to={redirect} label="CSV Import">
         <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
       </Button>
     </TopToolbar>
