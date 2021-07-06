@@ -258,8 +258,7 @@ const de = {
         send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
       },
       helper: {
-        send:
-          "Diese API löscht die lokalen Medien von der Festplatte des eigenen Servers. Dies umfasst alle lokalen Miniaturbilder und Kopien von Medien. Diese API wirkt sich nicht auf Medien aus, die sich in externen Medien-Repositories befinden.",
+        send: "Diese API löscht die lokalen Medien von der Festplatte des eigenen Servers. Dies umfasst alle lokalen Miniaturbilder und Kopien von Medien. Diese API wirkt sich nicht auf Medien aus, die sich in externen Medien-Repositories befinden.",
       },
     },
     pushers: {
@@ -288,8 +287,7 @@ const de = {
         send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
       },
       helper: {
-        send:
-          'Sendet eine Serverbenachrichtigung an die ausgewählten Nutzer. Hierfür muss das Feature "Server Notices" auf dem Server aktiviert sein.',
+        send: 'Sendet eine Serverbenachrichtigung an die ausgewählten Nutzer. Hierfür muss das Feature "Server Notices" auf dem Server aktiviert sein.',
       },
     },
     user_media_statistics: {
