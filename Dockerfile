@@ -1,5 +1,5 @@
 # Builder
-FROM node:current as builder
+FROM --platform=$BUILDPLATFORM node:current as builder
 
 WORKDIR /src
 
