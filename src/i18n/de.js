@@ -265,8 +265,9 @@ const de = {
     },
     protect_media: {
       action: {
-        create: "Schützen",
-        delete: "Schutz aufheben",
+        create: "Ungeschützt, Schutz erstellen",
+        delete: "Geschützt, Schutz aufheben",
+        none: "In Quarantäne",
         send_success: "Erfolgreich den Schutz-Status geändert.",
         send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
       },

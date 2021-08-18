@@ -466,8 +466,7 @@ export const UserEdit = props => {
               <TextField source="media_type" />
               <TextField source="upload_name" />
               <TextField source="quarantined_by" />
-              <BooleanField source="safe_from_quarantine" />
-              <ProtectMediaButton />
+              <ProtectMediaButton label="resources.users_media.fields.safe_from_quarantine" />
               <DeleteButton mutationMode="pessimistic" redirect={false} />
             </Datagrid>
           </ReferenceManyField>

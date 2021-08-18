@@ -261,8 +261,9 @@ const en = {
     },
     protect_media: {
       action: {
-        create: "Protect",
-        delete: "Unprotect",
+        create: "Unprotected, create protection",
+        delete: "Protected, remove protection",
+        none: "In quarantine",
         send_success: "Successfully changed the protection status.",
         send_failure: "An error has occurred.",
       },

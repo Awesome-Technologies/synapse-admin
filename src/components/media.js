@@ -2,7 +2,9 @@ import React, { Fragment, useState } from "react";
 import classnames from "classnames";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import { makeStyles } from "@material-ui/core/styles";
+import { Tooltip } from "@material-ui/core";
 import {
+  BooleanField,
   BooleanInput,
   Button,
   DateTimeInput,
@@ -16,6 +18,7 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
+import ClearIcon from "@material-ui/icons/Clear";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -150,6 +153,7 @@ export const DeleteMediaButton = props => {
 
 export const ProtectMediaButton = props => {
   const { record } = props;
+  const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
   const [create, { loading }] = useCreate("protect_media");
@@ -186,24 +190,54 @@ export const ProtectMediaButton = props => {
   };
 
   return (
+    /*
+    Wrapping Tooltip with <div>
+    https://github.com/marmelab/react-admin/issues/4349#issuecomment-578594735
+    */
     <Fragment>
-      {!record.safe_from_quarantine && !record.quarantined_by && (
-        <Button
-          label="resources.protect_media.action.create"
-          onClick={handleProtect}
-          disabled={loading}
+      {record.quarantined_by && (
+        <Tooltip
+          title={translate("resources.protect_media.action.none", {
+            _: "resources.protect_media.action.none",
+          })}
         >
-          <LockIcon />
-        </Button>
+          <div>
+            {/*
+            Button instead BooleanField for
+            consistent appearance and position in the column
+            */}
+            <Button disabled={true}>
+              <ClearIcon />
+            </Button>
+          </div>
+        </Tooltip>
       )}
       {record.safe_from_quarantine && (
-        <Button
-          label="resources.protect_media.action.delete"
-          onClick={handleUnprotect}
-          disabled={loading}
+        <Tooltip
+          title={translate("resources.protect_media.action.delete", {
+            _: "resources.protect_media.action.delete",
+          })}
+          arrow
         >
-          <LockOpenIcon />
-        </Button>
+          <div>
+            <Button onClick={handleUnprotect} disabled={loading}>
+              <LockIcon />
+            </Button>
+          </div>
+        </Tooltip>
+      )}
+      {!record.safe_from_quarantine && !record.quarantined_by && (
+        <Tooltip
+          title={translate("resources.protect_media.action.create", {
+            _: "resources.protect_media.action.create",
+          })}
+        >
+          <div>
+            <Button onClick={handleProtect} disabled={loading}>
+              <LockOpenIcon />
+            </Button>
+          </div>
+        </Tooltip>
       )}
     </Fragment>
   );
