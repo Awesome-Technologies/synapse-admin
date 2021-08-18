@@ -170,9 +170,9 @@ export const UserList = props => {
         />
         <TextField source="id" sortBy="name" />
         <TextField source="displayname" />
-        <BooleanField source="deactivated" />
-        <BooleanField source="admin" />
         <BooleanField source="is_guest" />
+        <BooleanField source="admin" />
+        <BooleanField source="deactivated" />
         <DateField
           source="creation_ts"
           label="resources.users.fields.creation_ts_ms"
