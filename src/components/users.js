@@ -1,6 +1,4 @@
 import React, { cloneElement, Fragment } from "react";
-import { connect } from "react-redux";
-import { Chip } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
@@ -124,38 +122,17 @@ const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const UserFilter = props => {
-  const translate = useTranslate();
-  return (
-    <Filter {...props}>
-      <SearchInput source="name" alwaysOn />
-      <BooleanInput source="guests" alwaysOn />
-      <BooleanInput
-        label="resources.users.fields.show_deactivated"
-        source="deactivated"
-        alwaysOn
-      />
-      <Chip
-        label={translate("resources.users.fields.admin")}
-        source="admin"
-        defaultValue={false}
-        style={{ marginBottom: 8 }}
-      />
-      <Chip
-        label={translate("resources.users.fields.is_guest")}
-        source="is_guest"
-        defaultValue={false}
-        style={{ marginBottom: 8 }}
-      />
-      <Chip
-        label={translate("resources.users.fields.creation_ts_ms")}
-        source="creation_ts"
-        defaultValue={false}
-        style={{ marginBottom: 8 }}
-      />
-    </Filter>
-  );
-};
+const UserFilter = props => (
+  <Filter {...props}>
+    <SearchInput source="name" alwaysOn />
+    <BooleanInput source="guests" alwaysOn />
+    <BooleanInput
+      label="resources.users.fields.show_deactivated"
+      source="deactivated"
+      alwaysOn
+    />
+  </Filter>
+);
 
 const UserBulkActionButtons = props => (
   <Fragment>
@@ -173,13 +150,8 @@ const AvatarField = ({ source, className, record = {} }) => (
   <Avatar src={record[source]} className={className} />
 );
 
-const FilterableUserList = ({ userFilters, dispatch, ...props }) => {
+export const UserList = props => {
   const classes = useStyles();
-  const filter = userFilters;
-  const adminFilter = filter && filter.admin ? true : false;
-  const isGuestFilter = filter && filter.is_guest ? true : false;
-  const creationTimeFilter = filter && filter.creation_ts ? true : false;
-
   return (
     <List
       {...props}
@@ -199,34 +171,25 @@ const FilterableUserList = ({ userFilters, dispatch, ...props }) => {
         <TextField source="id" sortBy="name" />
         <TextField source="displayname" />
         <BooleanField source="deactivated" />
-        {adminFilter && <BooleanField source="admin" />}
-        {isGuestFilter && <BooleanField source="is_guest" />}
-        {creationTimeFilter && (
-          <DateField
-            source="creation_ts"
-            label="resources.users.fields.creation_ts_ms"
-            showTime
-            options={{
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }}
-          />
-        )}
+        <BooleanField source="admin" />
+        <BooleanField source="is_guest" />
+        <DateField
+          source="creation_ts"
+          label="resources.users.fields.creation_ts_ms"
+          showTime
+          options={{
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }}
+        />
       </Datagrid>
     </List>
   );
 };
-function mapStateToProps(state) {
-  return {
-    userFilters: state.admin.resources.users.list.params.displayedFilters,
-  };
-}
-
-export const UserList = connect(mapStateToProps)(FilterableUserList);
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
 const validateUser = regex(
