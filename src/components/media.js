@@ -4,7 +4,6 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import { makeStyles } from "@material-ui/core/styles";
 import { Tooltip } from "@material-ui/core";
 import {
-  BooleanField,
   BooleanInput,
   Button,
   DateTimeInput,
