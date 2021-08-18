@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Chip } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
 import GetAppIcon from "@material-ui/icons/GetApp";
@@ -380,6 +381,23 @@ export const UserEdit = props => {
               <TextInput source="address" />
             </SimpleFormIterator>
           </ArrayInput>
+        </FormTab>
+
+        <FormTab
+          label="synapseadmin.users.tabs.sso"
+          icon={<AssignmentIndIcon />}
+          path="sso"
+        >
+          <ArrayField source="external_ids" label={false}>
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="auth_provider" sortable={false} />
+              <TextField
+                source="external_id"
+                label="resources.users.fields.id"
+                sortable={false}
+              />
+            </Datagrid>
+          </ArrayField>
         </FormTab>
 
         <FormTab
