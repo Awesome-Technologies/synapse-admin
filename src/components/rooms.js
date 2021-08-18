@@ -7,7 +7,6 @@ import {
   BulkDeleteButton,
   DateField,
   Datagrid,
-  DeleteButton,
   Filter,
   List,
   NumberField,
@@ -490,7 +489,7 @@ export const DeleteRoomButton = props => {
         onSuccess: () => {
           notify("resources.rooms.action.erase.send_success");
           handleDialogClose();
-          redirect('/rooms');
+          redirect("/rooms");
         },
         onFailure: () =>
           notify("resources.rooms.action.erase.send_failure", "error"),

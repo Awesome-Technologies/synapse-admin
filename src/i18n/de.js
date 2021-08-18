@@ -181,7 +181,7 @@ const de = {
           content:
             "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
           fields: {
-             block: "Raum für erneute Beitritte sperren",
+            block: "Raum für erneute Beitritte sperren",
           },
           send_success: "Der Raum wurde gelöscht",
           send_failure: "Der Raum konnte nicht gelöscht werden",
