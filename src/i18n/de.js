@@ -263,6 +263,15 @@ const de = {
         send: "Diese API löscht die lokalen Medien von der Festplatte des eigenen Servers. Dies umfasst alle lokalen Miniaturbilder und Kopien von Medien. Diese API wirkt sich nicht auf Medien aus, die sich in externen Medien-Repositories befinden.",
       },
     },
+    protect_media: {
+      action: {
+        create: "Ungeschützt, Schutz erstellen",
+        delete: "Geschützt, Schutz aufheben",
+        none: "In Quarantäne",
+        send_success: "Erfolgreich den Schutz-Status geändert.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
+      },
+    },
     pushers: {
       name: "Pusher |||| Pushers",
       fields: {

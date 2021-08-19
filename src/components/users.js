@@ -1,13 +1,13 @@
 import React, { cloneElement, Fragment } from "react";
 import Avatar from "@material-ui/core/Avatar";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
+import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import {
   ArrayInput,
@@ -48,6 +48,7 @@ import {
 import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
+import { ProtectMediaButton } from "./media";
 import { makeStyles } from "@material-ui/core/styles";
 
 const redirect = () => {
@@ -465,7 +466,7 @@ export const UserEdit = props => {
               <TextField source="media_type" />
               <TextField source="upload_name" />
               <TextField source="quarantined_by" />
-              <BooleanField source="safe_from_quarantine" />
+              <ProtectMediaButton label="resources.users_media.fields.safe_from_quarantine" />
               <DeleteButton mutationMode="pessimistic" redirect={false} />
             </Datagrid>
           </ReferenceManyField>
