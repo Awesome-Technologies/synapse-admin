@@ -17,6 +17,7 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
+import BlockIcon from "@material-ui/icons/Block";
 import ClearIcon from "@material-ui/icons/Clear";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import Dialog from "@material-ui/core/Dialog";
@@ -234,6 +235,89 @@ export const ProtectMediaButton = props => {
           <div>
             <Button onClick={handleProtect} disabled={loading}>
               <LockOpenIcon />
+            </Button>
+          </div>
+        </Tooltip>
+      )}
+    </Fragment>
+  );
+};
+
+export const QuarantineMediaButton = props => {
+  const { record } = props;
+  const translate = useTranslate();
+  const refresh = useRefresh();
+  const notify = useNotify();
+  const [create, { loading }] = useCreate("quarantine_media");
+  const [deleteOne] = useDelete("quarantine_media");
+
+  if (!record) return null;
+
+  const handleQuarantaine = () => {
+    create(
+      { payload: { data: record } },
+      {
+        onSuccess: () => {
+          notify("resources.quarantine_media.action.send_success");
+          refresh();
+        },
+        onFailure: () =>
+          notify("resources.quarantine_media.action.send_failure", "error"),
+      }
+    );
+  };
+
+  const handleRemoveQuarantaine = () => {
+    deleteOne(
+      { payload: { ...record } },
+      {
+        onSuccess: () => {
+          notify("resources.quarantine_media.action.send_success");
+          refresh();
+        },
+        onFailure: () =>
+          notify("resources.quarantine_media.action.send_failure", "error"),
+      }
+    );
+  };
+
+  return (
+    <Fragment>
+      {record.safe_from_quarantine && (
+        <Tooltip
+          title={translate("resources.quarantine_media.action.none", {
+            _: "resources.quarantine_media.action.none",
+          })}
+        >
+          <div>
+            <Button disabled={true}>
+              <ClearIcon />
+            </Button>
+          </div>
+        </Tooltip>
+      )}
+      {record.quarantined_by && (
+        <Tooltip
+          title={translate("resources.quarantine_media.action.delete", {
+            _: "resources.quarantine_media.action.delete",
+          })}
+        >
+          <div>
+            <Button onClick={handleRemoveQuarantaine} disabled={loading}>
+              <BlockIcon color="error" />
+            </Button>
+          </div>
+        </Tooltip>
+      )}
+      {!record.safe_from_quarantine && !record.quarantined_by && (
+        <Tooltip
+          title={translate("resources.quarantine_media.action.create", {
+            _: "resources.quarantine_media.action.create",
+          })}
+        >
+          <div>
+            <Button onClick={handleQuarantaine} disabled={loading}>
+              <BlockIcon />
             </Button>
           </div>
         </Tooltip>

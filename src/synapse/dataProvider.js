@@ -193,6 +193,21 @@ const resourceMap = {
       method: "POST",
     }),
   },
+  quarantine_media: {
+    map: qm => ({ id: qm.media_id }),
+    create: params => ({
+      endpoint: `/_synapse/admin/v1/media/quarantine/${localStorage.getItem(
+        "home_server"
+      )}/${params.media_id}`,
+      method: "POST",
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/unquarantine/${localStorage.getItem(
+        "home_server"
+      )}/${params.media_id}`,
+      method: "POST",
+    }),
+  },
   servernotices: {
     map: n => ({ id: n.event_id }),
     create: data => ({
