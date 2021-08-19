@@ -268,6 +268,16 @@ const en = {
         send_failure: "An error has occurred.",
       },
     },
+    quarantine_media: {
+      action: {
+        name: "Quarantine",
+        create: "Add to quarantine",
+        delete: "In quarantine, unquarantine",
+        none: "Protected from quarantine",
+        send_success: "Successfully changed the quarantine status.",
+        send_failure: "An error has occurred.",
+      },
+    },
     pushers: {
       name: "Pusher |||| Pushers",
       fields: {
