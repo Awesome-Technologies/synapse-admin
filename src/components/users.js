@@ -37,6 +37,7 @@ import {
   DeleteButton,
   SaveButton,
   regex,
+  required,
   useTranslate,
   Pagination,
   CreateButton,
@@ -263,8 +264,12 @@ export const UserCreate = props => (
       </ArrayInput>
       <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
         <SimpleFormIterator>
-          <TextInput source="auth_provider" />
-          <TextInput source="external_id" label="resources.users.fields.id" />
+          <TextInput source="auth_provider" validate={required()} />
+          <TextInput
+            source="external_id"
+            label="resources.users.fields.id"
+            validate={required()}
+          />
         </SimpleFormIterator>
       </ArrayInput>
     </SimpleForm>
@@ -346,10 +351,11 @@ export const UserEdit = props => {
         >
           <ArrayInput source="external_ids" label={false}>
             <SimpleFormIterator>
-              <TextInput source="auth_provider" />
+              <TextInput source="auth_provider" validate={required()} />
               <TextInput
                 source="external_id"
                 label="resources.users.fields.id"
+                validate={required()}
               />
             </SimpleFormIterator>
           </ArrayInput>
