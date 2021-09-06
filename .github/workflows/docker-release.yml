@@ -28,3 +28,25 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: awesometechnologies/synapse-admin:latest
+      - name: Calculate docker image tag
+        id: set-tag
+        run: |
+          case "${GITHUB_REF}" in
+              refs/heads/master|refs/heads/main)
+                  tag=latest
+                  ;;
+              refs/tags/*)
+                  tag=${GITHUB_REF#refs/tags/}
+                  ;;
+              *)
+                  tag=${GITHUB_SHA}
+                  ;;
+          esac
+          echo "::set-output name=tag::$tag"
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: "awesometechnologies/synapse-admin:${{ steps.set-tag.outputs.tag }}"
+          platforms: linux/amd64,linux/arm64
