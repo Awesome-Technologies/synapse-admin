@@ -2,9 +2,14 @@ name: Create docker image(s) and push to docker hub
 
 on:
   push:
-    branches: [ master ]
-    tags:
-      - '[0-9]+\.[0-9]+\.[0-9]+'
+    # Sequence of patterns matched against refs/heads
+    # prettier-ignore
+    branches:    
+      # Push events on master branch
+      - master
+    # Sequence of patterns matched against refs/tags
+    tags:        
+      - '[0-9]+\.[0-9]+\.[0-9]+'             # Push events to 0.X.X tag
 
 jobs:
   docker:
