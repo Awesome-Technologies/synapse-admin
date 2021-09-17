@@ -111,8 +111,8 @@ const RoomShowActions = ({ basePath, data, resource }) => {
         record={data}
         resource={resource}
         mutationMode="pessimistic"
-        confirmTitle="resources.rooms.action.erase.title"
-        confirmContent="resources.rooms.action.erase.content"
+        confirmTitle="resources.rooms.erase.title"
+        confirmContent="resources.rooms.erase.content"
       />
     </TopToolbar>
   );
@@ -313,8 +313,8 @@ const RoomBulkActionButtons = props => (
     <RoomDirectoryBulkDeleteButton {...props} />
     <BulkDeleteButton
       {...props}
-      confirmTitle="resources.rooms.action.erase.title"
-      confirmContent="resources.rooms.action.erase.content"
+      confirmTitle="resources.rooms.erase.title"
+      confirmContent="resources.rooms.erase.content"
       undoable={false}
     />
   </Fragment>
