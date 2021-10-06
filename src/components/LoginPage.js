@@ -91,8 +91,10 @@ const LoginPage = ({ theme }) => {
     const ssoToken = loginToken[1];
     console.log("SSO token is", ssoToken);
     // Prevent further requests
-    window.history.replaceState({}, '', 
-      window.location.href.replace(loginToken[0], '#').split('#')[0]
+    window.history.replaceState(
+      {},
+      "",
+      window.location.href.replace(loginToken[0], "#").split("#")[0]
     );
     const baseUrl = localStorage.getItem("sso_base_url");
     localStorage.removeItem("sso_base_url");
@@ -231,10 +233,11 @@ const LoginPage = ({ theme }) => {
           .catch(_ => {
             setServerVersion("");
           });
-          
+
         // Set SSO Url
         const authMethodUrl = `${formData.base_url}/_matrix/client/r0/login`;
-        let supportPass = false, supportSSO = false;
+        let supportPass = false,
+          supportSSO = false;
         fetchUtils
           .fetchJson(authMethodUrl, { method: "GET" })
           .then(({ json }) => {
