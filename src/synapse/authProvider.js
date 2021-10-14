@@ -7,30 +7,27 @@ const authProvider = {
     base_url = process.env.REACT_APP_SERVER || base_url;
 
     console.log("login ");
-    let options;
-    if (username && password) {
-      options = {
-        method: "POST",
-        body: JSON.stringify({
-          type: "m.login.password",
-          user: username,
-          password: password,
-          initial_device_display_name: "Synapse Admin",
-        }),
-      };
-    } else if (loginToken) {
-      options = {
-        method: "POST",
-        body: JSON.stringify({
-          type: "m.login.token",
-          token: loginToken,
-          initial_device_display_name: "Synapse Admin",
-        }),
-      };
-    } else {
-      // Invalid request
-      return Promise.reject();
-    }
+    const options = {
+      method: "POST",
+      body: JSON.stringify(
+        Object.assign(
+          {
+            device_id: localStorage.getItem("device_id"),
+            initial_device_display_name: "Synapse Admin",
+          },
+          loginToken
+            ? {
+                type: "m.login.token",
+                token: loginToken,
+              }
+            : {
+                type: "m.login.password",
+                user: username,
+                password: password,
+              }
+        )
+      ),
+    };
 
     // use the base_url from login instead of the well_known entry from the
     // server, since the admin might want to access the admin API via some
