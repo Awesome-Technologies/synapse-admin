@@ -6,6 +6,7 @@ const authProvider = {
     // force homeserver for protection in case the form is manipulated
     base_url = process.env.REACT_APP_SERVER || base_url;
 
+    console.log("login ");
     let options;
     if (username && password) {
       options = {
