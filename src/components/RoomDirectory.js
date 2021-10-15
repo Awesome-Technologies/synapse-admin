@@ -191,7 +191,7 @@ export const FilterableRoomDirectoryList = ({
       filters={<RoomDirectoryFilter />}
       perPage={100}
     >
-      <Datagrid>
+      <Datagrid rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}>
         <AvatarField
           source="avatar_src"
           sortable={false}
