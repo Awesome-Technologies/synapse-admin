@@ -353,6 +353,19 @@ const de = {
         send_failure: "Beim Entfernen ist ein Fehler aufgetreten.",
       },
     },
+    registration_tokens: {
+      name: "Registrierungstoken",
+      fields: {
+        token: "Token",
+        valid: "Gültige Token",
+        uses_allowed: "Anzahl",
+        pending: "Ausstehend",
+        completed: "Abgeschlossen",
+        expiry_time: "Ablaufzeit",
+        length: "Länge",
+      },
+      helper: { length: "Länge des Tokens, wenn kein Token vorgegeben wird." },
+    },
   },
   ra: {
     ...germanMessages.ra,
