@@ -144,7 +144,7 @@ const UserBulkActionButtons = props => (
       {...props}
       label="resources.users.action.erase"
       confirmTitle="resources.users.helper.erase"
-      undoable={false}
+      mutationMode="pessimistic"
     />
   </Fragment>
 );
