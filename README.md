@@ -5,6 +5,7 @@
 
 This project is built using [react-admin](https://marmelab.com/react-admin/).
 
+
 It needs at least Synapse v1.42.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.

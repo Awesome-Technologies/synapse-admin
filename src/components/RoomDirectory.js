@@ -59,7 +59,7 @@ export const RoomDirectoryBulkDeleteButton = props => (
   <BulkDeleteButton
     {...props}
     label="resources.room_directory.action.erase"
-    undoable={false}
+    mutationMode="pessimistic"
     confirmTitle="resources.room_directory.action.title"
     confirmContent="resources.room_directory.action.content"
     resource="room_directory"
@@ -191,7 +191,7 @@ export const FilterableRoomDirectoryList = ({
       filters={<RoomDirectoryFilter />}
       perPage={100}
     >
-      <Datagrid>
+      <Datagrid rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}>
         <AvatarField
           source="avatar_src"
           sortable={false}

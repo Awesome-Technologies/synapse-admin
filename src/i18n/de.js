@@ -12,8 +12,7 @@ const de = {
       url_error: "Keine gültige Matrix Server URL",
     },
     users: {
-      invalid_user_id:
-        "Muss eine vollständige Matrix Benutzer-ID sein, z.B. @benutzer_id:homeserver",
+      invalid_user_id: "Lokaler Anteil der Matrix Benutzer-ID ohne Homeserver.",
       tabs: { sso: "SSO" },
     },
     rooms: {
