@@ -36,6 +36,7 @@ import {
   BulkDeleteButton,
   DeleteButton,
   SaveButton,
+  maxLength,
   regex,
   required,
   useTranslate,
@@ -181,10 +182,16 @@ export const UserList = props => {
 };
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
-const validateUser = regex(
-  /^@[a-z0-9._=\-/]+:.*/,
-  "synapseadmin.users.invalid_user_id"
-);
+// here only local part of user_id
+// maxLength = 255 - "@" - ":" - localStorage.getItem("home_server").length
+// localStorage.getItem("home_server").length is not valid here
+const validateUser = [
+  required(),
+  maxLength(253),
+  regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id"),
+];
+
+const validateAddress = [required(), maxLength(255)];
 
 export function generateRandomUser() {
   const homeserver = localStorage.getItem("home_server");
@@ -248,8 +255,12 @@ export const UserCreate = props => (
   <Create {...props}>
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
-      <TextInput source="displayname" />
-      <PasswordInput source="password" autoComplete="new-password" />
+      <TextInput source="displayname" validate={maxLength(256)} />
+      <PasswordInput
+        source="password"
+        autoComplete="new-password"
+        validate={maxLength(512)}
+      />
       <BooleanInput source="admin" />
       <ArrayInput source="threepids">
         <SimpleFormIterator>
@@ -259,8 +270,9 @@ export const UserCreate = props => (
               { id: "email", name: "resources.users.email" },
               { id: "msisdn", name: "resources.users.msisdn" },
             ]}
+            validate={required()}
           />
-          <TextInput source="address" />
+          <TextInput source="address" validate={validateAddress} />
         </SimpleFormIterator>
       </ArrayInput>
       <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
