@@ -12,8 +12,7 @@ const en = {
       url_error: "Not a valid Matrix server URL",
     },
     users: {
-      invalid_user_id:
-        "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",
+      invalid_user_id: "Localpart of a Matrix user-id without homeserver.",
       tabs: { sso: "SSO" },
     },
     rooms: {
@@ -257,6 +256,25 @@ const en = {
       },
       helper: {
         send: "This API deletes the local media from the disk of your own server. This includes any local thumbnails and copies of media downloaded. This API will not affect media that has been uploaded to external media repositories.",
+      },
+    },
+    protect_media: {
+      action: {
+        create: "Unprotected, create protection",
+        delete: "Protected, remove protection",
+        none: "In quarantine",
+        send_success: "Successfully changed the protection status.",
+        send_failure: "An error has occurred.",
+      },
+    },
+    quarantine_media: {
+      action: {
+        name: "Quarantine",
+        create: "Add to quarantine",
+        delete: "In quarantine, unquarantine",
+        none: "Protected from quarantine",
+        send_success: "Successfully changed the quarantine status.",
+        send_failure: "An error has occurred.",
       },
     },
     pushers: {

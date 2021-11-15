@@ -12,8 +12,7 @@ const de = {
       url_error: "Keine gültige Matrix Server URL",
     },
     users: {
-      invalid_user_id:
-        "Muss eine vollständige Matrix Benutzer-ID sein, z.B. @benutzer_id:homeserver",
+      invalid_user_id: "Lokaler Anteil der Matrix Benutzer-ID ohne Homeserver.",
       tabs: { sso: "SSO" },
     },
     rooms: {
@@ -242,7 +241,7 @@ const de = {
         media_type: "Typ",
         upload_name: "Dateiname",
         quarantined_by: "Zur Quarantäne hinzugefügt",
-        safe_from_quarantine: "Geschützt vor Quarantäne",
+        safe_from_quarantine: "Schutz vor Quarantäne",
         created_ts: "Erstellt",
         last_access_ts: "Letzter Zugriff",
       },
@@ -261,6 +260,25 @@ const de = {
       },
       helper: {
         send: "Diese API löscht die lokalen Medien von der Festplatte des eigenen Servers. Dies umfasst alle lokalen Miniaturbilder und Kopien von Medien. Diese API wirkt sich nicht auf Medien aus, die sich in externen Medien-Repositories befinden.",
+      },
+    },
+    protect_media: {
+      action: {
+        create: "Ungeschützt, Schutz erstellen",
+        delete: "Geschützt, Schutz aufheben",
+        none: "In Quarantäne",
+        send_success: "Erfolgreich den Schutz-Status geändert.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
+      },
+    },
+    quarantine_media: {
+      action: {
+        name: "Quarantäne",
+        create: "Zur Quarantäne hinzufügen",
+        delete: "In Quarantäne, Quarantäne aufheben",
+        none: "Geschützt vor Quarantäne",
+        send_success: "Erfolgreich den Quarantäne-Status geändert.",
+        send_failure: "Beim Versenden ist ein Fehler aufgetreten.",
       },
     },
     pushers: {

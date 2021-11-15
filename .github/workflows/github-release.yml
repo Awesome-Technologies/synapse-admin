@@ -1,0 +1,31 @@
+name: Create release tarball and attach to tag
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: yarn install
+      - run: yarn build
+      - run: |
+          version=`git describe --dirty --tags || echo unknown`
+          mkdir -p dist
+          cp -r build synapse-admin-$version
+          tar chvzf dist/synapse-admin-$version.tar.gz synapse-admin-$version
+      - uses: softprops/action-gh-release@b7e450da2a4b4cb4bfbae528f788167786cfcedf
+        with:
+          files: dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

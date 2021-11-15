@@ -41,7 +41,9 @@ const resourceMap = {
     data: "users",
     total: json => json.total,
     create: data => ({
-      endpoint: `/_synapse/admin/v2/users/${data.id}`,
+      endpoint: `/_synapse/admin/v2/users/@${data.id}:${localStorage.getItem(
+        "home_server"
+      )}`,
       body: data,
       method: "PUT",
     }),
@@ -179,6 +181,32 @@ const resourceMap = {
       )}/delete?before_ts=${params.before_ts}&size_gt=${
         params.size_gt
       }&keep_profiles=${params.keep_profiles}`,
+      method: "POST",
+    }),
+  },
+  protect_media: {
+    map: pm => ({ id: pm.media_id }),
+    create: params => ({
+      endpoint: `/_synapse/admin/v1/media/protect/${params.media_id}`,
+      method: "POST",
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/unprotect/${params.media_id}`,
+      method: "POST",
+    }),
+  },
+  quarantine_media: {
+    map: qm => ({ id: qm.media_id }),
+    create: params => ({
+      endpoint: `/_synapse/admin/v1/media/quarantine/${localStorage.getItem(
+        "home_server"
+      )}/${params.media_id}`,
+      method: "POST",
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/media/unquarantine/${localStorage.getItem(
+        "home_server"
+      )}/${params.media_id}`,
       method: "POST",
     }),
   },

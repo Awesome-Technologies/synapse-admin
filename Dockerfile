@@ -1,5 +1,5 @@
 # Builder
-FROM node:current as builder
+FROM node:lts as builder
 
 WORKDIR /src
 
