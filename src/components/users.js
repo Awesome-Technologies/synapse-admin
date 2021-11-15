@@ -238,7 +238,7 @@ const UserEditToolbar = props => {
   const translate = useTranslate();
   return (
     <Toolbar {...props}>
-      <SaveButton submitOnEnter={true} />
+      <SaveButton submitOnEnter={true} disabled={props.pristine} />
       <DeleteButton
         label="resources.users.action.erase"
         confirmTitle={translate("resources.users.helper.erase", {

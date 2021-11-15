@@ -24,7 +24,10 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
 
   const ServerNoticeToolbar = props => (
     <Toolbar {...props}>
-      <SaveButton label="resources.servernotices.action.send" />
+      <SaveButton
+        label="resources.servernotices.action.send"
+        disabled={props.pristine}
+      />
       <Button label="ra.action.cancel" onClick={onClose}>
         <IconCancel />
       </Button>
