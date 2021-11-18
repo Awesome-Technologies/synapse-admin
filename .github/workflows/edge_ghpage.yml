@@ -1,7 +1,7 @@
 name: Build and Deploy Edge version to GH Pages
 on:
- workflow_dispatch:
- push:
+  workflow_dispatch:
+  push:
     branches:
       - main
       - master
