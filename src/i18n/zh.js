@@ -98,7 +98,6 @@ const zh = {
   },
   resources: {
     users: {
-      backtolist: "回到列表",
       name: "用户",
       email: "邮箱",
       msisdn: "电话",
