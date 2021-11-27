@@ -122,6 +122,7 @@ const en = {
         auth_provider: "Provider",
       },
       helper: {
+        password: "Changing password will log user out of all sessions.",
         deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
       },

@@ -317,7 +317,11 @@ export const UserEdit = props => {
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
-          <PasswordInput source="password" autoComplete="new-password" />
+          <PasswordInput
+            source="password"
+            autoComplete="new-password"
+            helperText="resources.users.helper.password"
+          />
           <BooleanInput source="admin" />
           <BooleanInput
             source="deactivated"
