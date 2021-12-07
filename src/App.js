@@ -7,12 +7,14 @@ import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomShow } from "./components/rooms";
 import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
-import UserIcon from "@material-ui/icons/Group";
+import CloudQueueIcon from "@material-ui/icons/CloudQueue";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
+import UserIcon from "@material-ui/icons/Group";
 import { UserMediaStatsList } from "./components/statistics";
 import RoomIcon from "@material-ui/icons/ViewList";
 import ReportIcon from "@material-ui/icons/Warning";
 import FolderSharedIcon from "@material-ui/icons/FolderShared";
+import { DestinationList, DestinationShow } from "./components/destinations";
 import { ImportFeature } from "./components/ImportFeature";
 import { RoomDirectoryList } from "./components/RoomDirectory";
 import { Route } from "react-router-dom";
@@ -65,6 +67,12 @@ const App = () => (
       name="room_directory"
       list={RoomDirectoryList}
       icon={FolderSharedIcon}
+    />
+    <Resource
+      name="destinations"
+      list={DestinationList}
+      show={DestinationShow}
+      icon={CloudQueueIcon}
     />
     <Resource name="connections" />
     <Resource name="devices" />
