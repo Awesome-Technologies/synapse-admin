@@ -176,6 +176,19 @@ export const UserList = props => {
         <BooleanField source="is_guest" />
         <BooleanField source="admin" />
         <BooleanField source="deactivated" />
+        <DateField
+          source="creation_ts"
+          label="resources.users.fields.creation_ts_ms"
+          showTime
+          options={{
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }}
+        />
       </Datagrid>
     </List>
   );
