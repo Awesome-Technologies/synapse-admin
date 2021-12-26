@@ -55,10 +55,14 @@ import {
 import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
-import { ProtectMediaButton, QuarantineMediaButton, DeleteMediaBulkButton } from "./media";
+import {
+  ProtectMediaButton,
+  QuarantineMediaButton,
+  DeleteMediaBulkButton,
+} from "./media";
 import { makeStyles } from "@material-ui/core/styles";
-import { TableHead, TableRow, TableCell, Checkbox } from '@material-ui/core';
-import classnames from 'classnames';
+import { TableHead, TableRow, TableCell, Checkbox } from "@material-ui/core";
+import classnames from "classnames";
 
 const redirect = () => {
   return {
@@ -321,8 +325,7 @@ const UserTitle = ({ record }) => {
   );
 };
 
-
-const UserMediaDatagridHeader = (props) => {
+const UserMediaDatagridHeader = props => {
   const {
     children,
     classes,
@@ -332,115 +335,98 @@ const UserMediaDatagridHeader = (props) => {
     isRowSelectable,
   } = props;
   const translate = useTranslate();
-  const {
-      currentSort,
-      data,
-      ids,
-      onSelect,
-      selectedIds,
-      setSort,
-  } = useListContext(props);
+  const { currentSort, data, ids, onSelect, selectedIds, setSort } =
+    useListContext(props);
 
   const updateSortCallback = React.useCallback(
-      event => {
-          event.stopPropagation();
-          const newField = event.currentTarget.dataset.field;
-          const newOrder =
-              currentSort.field === newField
-                  ? currentSort.order === 'ASC'
-                      ? 'DESC'
-                      : 'ASC'
-                  : event.currentTarget.dataset.order;
+    event => {
+      event.stopPropagation();
+      const newField = event.currentTarget.dataset.field;
+      const newOrder =
+        currentSort.field === newField
+          ? currentSort.order === "ASC"
+            ? "DESC"
+            : "ASC"
+          : event.currentTarget.dataset.order;
 
-          setSort(newField, newOrder);
-      },
-      [currentSort.field, currentSort.order, setSort]
+      setSort(newField, newOrder);
+    },
+    [currentSort.field, currentSort.order, setSort]
   );
 
   const updateSort = setSort ? updateSortCallback : null;
 
   const handleSelectAll = React.useCallback(
-      event => {
-          onSelect(
-              event.target.checked
-                  ? ids
-                        .filter(id =>
-                            isRowSelectable ? isRowSelectable(data[id]) : true
-                        )
-                        .concat(selectedIds.filter(id => !ids.includes(id)))
-                  : []
-          );
-      },
-      [data, ids, onSelect, isRowSelectable, selectedIds]
+    event => {
+      onSelect(
+        event.target.checked
+          ? ids
+              .filter(id =>
+                isRowSelectable ? isRowSelectable(data[id]) : true
+              )
+              .concat(selectedIds.filter(id => !ids.includes(id)))
+          : []
+      );
+    },
+    [data, ids, onSelect, isRowSelectable, selectedIds]
   );
 
   const selectableIds = isRowSelectable
-      ? ids.filter(id => isRowSelectable(data[id]))
-      : ids;
-
+    ? ids.filter(id => isRowSelectable(data[id]))
+    : ids;
 
   return (
     <TableHead className={classnames(className, classes.thead)}>
-        <TableRow>
-          <TableCell colSpan={ children.length + 1}>
-            <BulkActionsToolbar>
-              <DeleteMediaBulkButton />
-            </BulkActionsToolbar>
+      <TableRow>
+        <TableCell colSpan={children.length + 1}>
+          <BulkActionsToolbar>
+            <DeleteMediaBulkButton />
+          </BulkActionsToolbar>
+        </TableCell>
+      </TableRow>
+      <TableRow className={classnames(classes.row, classes.headerRow)}>
+        {hasExpand && (
+          <TableCell
+            padding="none"
+            className={classnames(classes.headerCell, classes.expandHeader)}
+          />
+        )}
+        {hasBulkActions && selectedIds && (
+          <TableCell padding="checkbox" className={classes.headerCell}>
+            <Checkbox
+              aria-label={translate("ra.action.select_all", {
+                _: "Select all",
+              })}
+              className="select-all"
+              color="primary"
+              checked={
+                selectedIds.length > 0 &&
+                selectableIds.length > 0 &&
+                selectableIds.every(id => selectedIds.includes(id))
+              }
+              onChange={handleSelectAll}
+            />
           </TableCell>
-        </TableRow>
-        <TableRow className={classnames(classes.row, classes.headerRow)}>
-            {hasExpand && (
-                <TableCell
-                    padding="none"
-                    className={classnames(
-                        classes.headerCell,
-                        classes.expandHeader
-                    )}
-                />
-            )}
-            {hasBulkActions && selectedIds && (
-                <TableCell
-                    padding="checkbox"
-                    className={classes.headerCell}
-                >
-                    <Checkbox
-                        aria-label={translate('ra.action.select_all', {
-                            _: 'Select all',
-                        })}
-                        className="select-all"
-                        color="primary"
-                        checked={
-                            selectedIds.length > 0 &&
-                            selectableIds.length > 0 &&
-                            selectableIds.every(id =>
-                                selectedIds.includes(id)
-                            )
-                        }
-                        onChange={handleSelectAll}
-                    />
-                </TableCell>
-            )}
-            {React.Children.map(children, (field, index) =>
-                React.isValidElement(field) ? (
-                    <DatagridHeaderCell
-                        className={classes.headerCell}
-                        currentSort={currentSort}
-                        field={field}
-                        isSorting={
-                            currentSort.field ===
-                            ((field.props).sortBy ||
-                                (field.props).source)
-                        }
-                        key={(field.props).source || index}
-                        resource="users_media"
-                        updateSort={updateSort}
-                    />
-                ) : null
-            )}
-        </TableRow>
+        )}
+        {React.Children.map(children, (field, index) =>
+          React.isValidElement(field) ? (
+            <DatagridHeaderCell
+              className={classes.headerCell}
+              currentSort={currentSort}
+              field={field}
+              isSorting={
+                currentSort.field === (field.props.sortBy || field.props.source)
+              }
+              key={field.props.source || index}
+              resource="users_media"
+              updateSort={updateSort}
+            />
+          ) : null
+        )}
+      </TableRow>
     </TableHead>
   );
-}
+};
 
 export const UserEdit = props => {
   const classes = useStyles();
@@ -604,18 +590,32 @@ export const UserEdit = props => {
             <Datagrid
               style={{ width: "100%" }}
               hasBulkActions={true}
-              header={<UserMediaDatagridHeader/>}
+              header={<UserMediaDatagridHeader />}
             >
               <FunctionField
                 label="Image"
                 render={record => {
                   let data = {
                     title: record.upload_name,
-                    imgURL: `${localStorage.getItem("base_url")}/_matrix/media/v1/thumbnail/${localStorage.getItem("home_server")}/${record.media_id}?width=50&height=50&method=crop`,
-                    downloadURL: `${localStorage.getItem("base_url")}/_matrix/media/r0/download/${localStorage.getItem("home_server")}/${record.media_id}`,
-                  }
+                    imgURL: `${localStorage.getItem(
+                      "base_url"
+                    )}/_matrix/media/v1/thumbnail/${localStorage.getItem(
+                      "home_server"
+                    )}/${record.media_id}?width=50&height=50&method=crop`,
+                    downloadURL: `${localStorage.getItem(
+                      "base_url"
+                    )}/_matrix/media/r0/download/${localStorage.getItem(
+                      "home_server"
+                    )}/${record.media_id}`,
+                  };
                   if (record.media_type.startsWith("image")) {
-                    return <ImageField record={data} source="imgURL" onClick={() => window.open(data.downloadURL)} />
+                    return (
+                      <ImageField
+                        record={data}
+                        source="imgURL"
+                        onClick={() => window.open(data.downloadURL)}
+                      />
+                    );
                   } else {
                     return "Preview unavailable";
                   }
