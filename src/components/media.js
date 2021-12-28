@@ -354,7 +354,7 @@ export const DeleteMediaBulkButton = ({ selectedIds }) => {
   return (
     <Fragment>
       <Button
-        label="Delete Selected"
+        label="ra.action.delete"
         onClick={handleSend}
         disabled={loading}
         className={classnames("ra-delete-button", classes.deleteButton)}
