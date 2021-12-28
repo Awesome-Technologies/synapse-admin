@@ -331,13 +331,11 @@ export const DeleteMediaBulkButton = ({ selectedIds }) => {
   const classes = useStyles(false);
   const notify = useNotify();
   const refresh = useRefresh();
-  const [deleteMany, { loading }] = useDeleteMany("delete_media");
+  const [deleteMany, { loading }] = useDeleteMany("users_media");
 
   const handleSend = values => {
     deleteMany(
       {
-        type: "deleteMany",
-        resource: "users_media",
         payload: { ids: selectedIds },
       },
       {
