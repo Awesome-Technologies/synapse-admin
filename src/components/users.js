@@ -50,7 +50,6 @@ import {
   DatagridHeaderCell,
   useListContext,
   FunctionField,
-  ImageField,
 } from "react-admin";
 import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
@@ -61,8 +60,15 @@ import {
   DeleteMediaBulkButton,
 } from "./media";
 import { makeStyles } from "@material-ui/core/styles";
-import { TableHead, TableRow, TableCell, Checkbox } from "@material-ui/core";
+import {
+  TableHead,
+  TableRow,
+  TableCell,
+  Checkbox,
+  Tooltip,
+} from "@material-ui/core";
 import classnames from "classnames";
+import BrokenImageIcon from "@material-ui/icons/BrokenImage";
 
 const redirect = () => {
   return {
@@ -593,32 +599,41 @@ export const UserEdit = props => {
               header={<UserMediaDatagridHeader />}
             >
               <FunctionField
-                label="Image"
+                label="resources.users_media.image"
                 render={record => {
                   let data = {
-                    title: record.upload_name,
-                    imgURL: `${localStorage.getItem(
-                      "base_url"
-                    )}/_matrix/media/v1/thumbnail/${localStorage.getItem(
-                      "home_server"
-                    )}/${record.media_id}?width=50&height=50&method=crop`,
+                    title:
+                      record.media_type.startsWith("image") &&
+                      record.media_length
+                        ? record.upload_name || record.media_id
+                        : translate(
+                            "resources.users_media.preview_unavailable"
+                          ),
+                    imgURL: record.media_type.startsWith("image")
+                      ? `${localStorage.getItem(
+                          "base_url"
+                        )}/_matrix/media/v1/thumbnail/${localStorage.getItem(
+                          "home_server"
+                        )}/${record.media_id}?width=40&height=40&method=crop`
+                      : null,
                     downloadURL: `${localStorage.getItem(
                       "base_url"
                     )}/_matrix/media/r0/download/${localStorage.getItem(
                       "home_server"
                     )}/${record.media_id}`,
                   };
-                  if (record.media_type.startsWith("image")) {
-                    return (
-                      <ImageField
-                        record={data}
-                        source="imgURL"
-                        onClick={() => window.open(data.downloadURL)}
-                      />
-                    );
-                  } else {
-                    return "Preview unavailable";
-                  }
+
+                  return (
+                    <Tooltip title={data["title"]}>
+                      <Avatar
+                        src={data["imgURL"]}
+                        onClick={() => window.open(data["downloadURL"])}
+                        variant="square"
+                      >
+                        <BrokenImageIcon />
+                      </Avatar>
+                    </Tooltip>
+                  );
                 }}
               />
               <DateField
