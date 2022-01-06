@@ -338,11 +338,7 @@ export const UserEdit = props => {
             source="deactivated"
             helperText="resources.users.helper.deactivate"
           />
-          <DateField
-            source="creation_ts_ms"
-            showTime
-            options={date_format}
-          />
+          <DateField source="creation_ts_ms" showTime options={date_format} />
           <TextField source="consent_version" />
         </FormTab>
 
@@ -454,11 +450,7 @@ export const UserEdit = props => {
             sort={{ field: "created_ts", order: "DESC" }}
           >
             <Datagrid style={{ width: "100%" }}>
-              <DateField
-                source="created_ts"
-                showTime
-                options={date_format}
-              />
+              <DateField source="created_ts" showTime options={date_format} />
               <DateField
                 source="last_access_ts"
                 showTime
