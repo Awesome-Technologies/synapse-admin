@@ -350,6 +350,16 @@ const en = {
         send_failure: "An error has occurred.",
       },
     },
+    destinations: {
+      name: "Federation",
+      fields: {
+        destination: "Destination",
+        failure_ts: "Failure timestamp",
+        retry_last_ts: "Last retry timestamp",
+        retry_interval: "Retry interval",
+        last_successful_stream_ordering: "Last successful stream",
+      },
+    },
   },
 };
 export default en;

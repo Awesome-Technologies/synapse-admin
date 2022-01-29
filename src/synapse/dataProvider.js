@@ -275,6 +275,17 @@ const resourceMap = {
       method: "PUT",
     }),
   },
+  destinations: {
+    path: "/_synapse/admin/v1/federation/destinations",
+    map: dst => ({
+      ...dst,
+      id: dst.destination,
+    }),
+    data: "destinations",
+    total: json => {
+      return json.total;
+    },
+  },
 };
 
 function filterNullValues(key, value) {
@@ -296,7 +307,8 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, name, guests, deactivated, search_term } = params.filter;
+    const { user_id, name, guests, deactivated, search_term, destination } =
+      params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -306,6 +318,7 @@ const dataProvider = {
       user_id: user_id,
       search_term: search_term,
       name: name,
+      destination: destination,
       guests: guests,
       deactivated: deactivated,
       order_by: field,
