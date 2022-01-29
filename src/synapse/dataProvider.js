@@ -69,7 +69,7 @@ const resourceMap = {
       return json.total_rooms;
     },
     delete: params => ({
-      endpoint: `/_synapse/admin/v1/rooms/${params.id}`,
+      endpoint: `/_synapse/admin/v2/rooms/${params.id}`,
       body: { block: false },
     }),
   },
