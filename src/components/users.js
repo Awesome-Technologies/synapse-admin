@@ -71,6 +71,15 @@ const useStyles = makeStyles({
   },
 });
 
+const date_format = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+};
+
 const UserListActions = ({
   currentSort,
   className,
@@ -180,14 +189,7 @@ export const UserList = props => {
           source="creation_ts"
           label="resources.users.fields.creation_ts_ms"
           showTime
-          options={{
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }}
+          options={date_format}
         />
       </Datagrid>
     </List>
@@ -336,18 +338,7 @@ export const UserEdit = props => {
             source="deactivated"
             helperText="resources.users.helper.deactivate"
           />
-          <DateField
-            source="creation_ts_ms"
-            showTime
-            options={{
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }}
-          />
+          <DateField source="creation_ts_ms" showTime options={date_format} />
           <TextField source="consent_version" />
         </FormTab>
 
@@ -404,14 +395,7 @@ export const UserEdit = props => {
               <DateField
                 source="last_seen_ts"
                 showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
+                options={date_format}
                 sortable={false}
               />
               <DeviceRemoveButton />
@@ -439,14 +423,7 @@ export const UserEdit = props => {
                 <DateField
                   source="last_seen"
                   showTime
-                  options={{
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                  }}
+                  options={date_format}
                   sortable={false}
                 />
                 <TextField
@@ -473,29 +450,11 @@ export const UserEdit = props => {
             sort={{ field: "created_ts", order: "DESC" }}
           >
             <Datagrid style={{ width: "100%" }}>
-              <DateField
-                source="created_ts"
-                showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
-              />
+              <DateField source="created_ts" showTime options={date_format} />
               <DateField
                 source="last_access_ts"
                 showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
+                options={date_format}
               />
               <TextField source="media_id" />
               <NumberField source="media_length" />
