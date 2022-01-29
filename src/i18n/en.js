@@ -241,6 +241,8 @@ const en = {
         created_ts: "Created",
         last_access_ts: "Last access",
       },
+      image: "Image",
+      preview_unavailable: "Preview unavailable",
     },
     delete_media: {
       name: "Media",

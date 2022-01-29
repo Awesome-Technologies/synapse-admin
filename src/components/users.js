@@ -46,12 +46,29 @@ import {
   TopToolbar,
   sanitizeListRestProps,
   NumberField,
+  BulkActionsToolbar,
+  DatagridHeaderCell,
+  useListContext,
+  FunctionField,
 } from "react-admin";
 import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
-import { ProtectMediaButton, QuarantineMediaButton } from "./media";
+import {
+  ProtectMediaButton,
+  QuarantineMediaButton,
+  DeleteMediaBulkButton,
+} from "./media";
 import { makeStyles } from "@material-ui/core/styles";
+import {
+  TableHead,
+  TableRow,
+  TableCell,
+  Checkbox,
+  Tooltip,
+} from "@material-ui/core";
+import classnames from "classnames";
+import BrokenImageIcon from "@material-ui/icons/BrokenImage";
 
 const redirect = () => {
   return {
@@ -322,6 +339,109 @@ const UserTitle = ({ record }) => {
   );
 };
 
+const UserMediaDatagridHeader = props => {
+  const {
+    children,
+    classes,
+    className,
+    hasExpand = false,
+    hasBulkActions = false,
+    isRowSelectable,
+  } = props;
+  const translate = useTranslate();
+  const { currentSort, data, ids, onSelect, selectedIds, setSort } =
+    useListContext(props);
+
+  const updateSortCallback = React.useCallback(
+    event => {
+      event.stopPropagation();
+      const newField = event.currentTarget.dataset.field;
+      const newOrder =
+        currentSort.field === newField
+          ? currentSort.order === "ASC"
+            ? "DESC"
+            : "ASC"
+          : event.currentTarget.dataset.order;
+
+      setSort(newField, newOrder);
+    },
+    [currentSort.field, currentSort.order, setSort]
+  );
+
+  const updateSort = setSort ? updateSortCallback : null;
+
+  const handleSelectAll = React.useCallback(
+    event => {
+      onSelect(
+        event.target.checked
+          ? ids
+              .filter(id =>
+                isRowSelectable ? isRowSelectable(data[id]) : true
+              )
+              .concat(selectedIds.filter(id => !ids.includes(id)))
+          : []
+      );
+    },
+    [data, ids, onSelect, isRowSelectable, selectedIds]
+  );
+
+  const selectableIds = isRowSelectable
+    ? ids.filter(id => isRowSelectable(data[id]))
+    : ids;
+
+  return (
+    <TableHead className={classnames(className, classes.thead)}>
+      <TableRow>
+        <TableCell colSpan={children.length + 1}>
+          <BulkActionsToolbar>
+            <DeleteMediaBulkButton />
+          </BulkActionsToolbar>
+        </TableCell>
+      </TableRow>
+      <TableRow className={classnames(classes.row, classes.headerRow)}>
+        {hasExpand && (
+          <TableCell
+            padding="none"
+            className={classnames(classes.headerCell, classes.expandHeader)}
+          />
+        )}
+        {hasBulkActions && selectedIds && (
+          <TableCell padding="checkbox" className={classes.headerCell}>
+            <Checkbox
+              aria-label={translate("ra.action.select_all", {
+                _: "Select all",
+              })}
+              className="select-all"
+              color="primary"
+              checked={
+                selectedIds.length > 0 &&
+                selectableIds.length > 0 &&
+                selectableIds.every(id => selectedIds.includes(id))
+              }
+              onChange={handleSelectAll}
+            />
+          </TableCell>
+        )}
+        {React.Children.map(children, (field, index) =>
+          React.isValidElement(field) ? (
+            <DatagridHeaderCell
+              className={classes.headerCell}
+              currentSort={currentSort}
+              field={field}
+              isSorting={
+                currentSort.field === (field.props.sortBy || field.props.source)
+              }
+              key={field.props.source || index}
+              resource="users_media"
+              updateSort={updateSort}
+            />
+          ) : null
+        )}
+      </TableRow>
+    </TableHead>
+  );
+};
+
 export const UserEdit = props => {
   const classes = useStyles();
   const translate = useTranslate();
@@ -456,7 +576,62 @@ export const UserEdit = props => {
             perPage={50}
             sort={{ field: "created_ts", order: "DESC" }}
           >
-            <Datagrid style={{ width: "100%" }}>
+                      <Datagrid
+              style={{ width: "100%" }}
+              hasBulkActions={true}
+              header={<UserMediaDatagridHeader />}
+            >
+              <FunctionField
+                label="resources.users_media.image"
+                render={record => {
+                  let data = {
+                    title:
+                      record.media_type.startsWith("image") &&
+                      record.media_length
+                        ? record.upload_name || record.media_id
+                        : translate(
+                            "resources.users_media.preview_unavailable"
+                          ),
+                    imgURL: record.media_type.startsWith("image")
+                      ? `${localStorage.getItem(
+                          "base_url"
+                        )}/_matrix/media/v1/thumbnail/${localStorage.getItem(
+                          "home_server"
+                        )}/${record.media_id}?width=40&height=40&method=crop`
+                      : null,
+                    downloadURL: `${localStorage.getItem(
+                      "base_url"
+                    )}/_matrix/media/r0/download/${localStorage.getItem(
+                      "home_server"
+                    )}/${record.media_id}`,
+                  };
+
+                  return (
+                    <Tooltip title={data["title"]}>
+                      <Avatar
+                        src={data["imgURL"]}
+                        onClick={() => window.open(data["downloadURL"])}
+                        variant="square"
+                      >
+                        <BrokenImageIcon />
+                      </Avatar>
+                    </Tooltip>
+                  );
+                }}
+              />
+              <DateField
+                source="created_ts"
+                showTime
+                options={{
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                }}
+              />
+              <Datagrid style={{ width: "100%" }}>
               <DateField source="created_ts" showTime options={date_format} />
               <DateField
                 source="last_access_ts"
