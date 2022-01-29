@@ -284,7 +284,7 @@ export const UserCreate = props => (
       />
       <BooleanInput source="admin" />
       <ArrayInput source="threepids">
-        <SimpleFormIterator>
+        <SimpleFormIterator disableReordering>
           <SelectInput
             source="medium"
             choices={[
@@ -297,7 +297,7 @@ export const UserCreate = props => (
         </SimpleFormIterator>
       </ArrayInput>
       <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
-        <SimpleFormIterator>
+        <SimpleFormIterator disableReordering>
           <TextInput source="auth_provider" validate={required()} />
           <TextInput
             source="external_id"
@@ -355,7 +355,7 @@ export const UserEdit = props => {
           path="threepid"
         >
           <ArrayInput source="threepids">
-            <SimpleFormIterator>
+            <SimpleFormIterator disableReordering>
               <SelectInput
                 source="medium"
                 choices={[
@@ -374,7 +374,7 @@ export const UserEdit = props => {
           path="sso"
         >
           <ArrayInput source="external_ids" label={false}>
-            <SimpleFormIterator>
+            <SimpleFormIterator disableReordering>
               <TextInput source="auth_provider" validate={required()} />
               <TextInput
                 source="external_id"
