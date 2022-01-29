@@ -13,6 +13,7 @@ import {
   Toolbar,
   useCreate,
   useDelete,
+  useDeleteMany,
   useNotify,
   useRefresh,
   useTranslate,
@@ -322,6 +323,42 @@ export const QuarantineMediaButton = props => {
           </div>
         </Tooltip>
       )}
+    </Fragment>
+  );
+};
+
+export const DeleteMediaBulkButton = ({ selectedIds }) => {
+  const classes = useStyles(false);
+  const notify = useNotify();
+  const refresh = useRefresh();
+  const [deleteMany, { loading }] = useDeleteMany("users_media");
+
+  const handleSend = values => {
+    deleteMany(
+      {
+        payload: { ids: selectedIds },
+      },
+      {
+        onSuccess: () => {
+          notify("resources.delete_media.action.send_success");
+          refresh();
+        },
+        onFailure: () =>
+          notify("resources.delete_media.action.send_failure", "error"),
+      }
+    );
+  };
+
+  return (
+    <Fragment>
+      <Button
+        label="ra.action.delete"
+        onClick={handleSend}
+        disabled={loading}
+        className={classnames("ra-delete-button", classes.deleteButton)}
+      >
+        <DeleteSweepIcon />
+      </Button>
     </Fragment>
   );
 };

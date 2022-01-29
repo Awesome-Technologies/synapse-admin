@@ -231,6 +231,8 @@ const zh = {
         created_ts: "创建",
         last_access_ts: "上一次访问",
       },
+      image: "图片",
+      preview_unavailable: "预览不可用",
     },
     delete_media: {
       name: "媒体文件",

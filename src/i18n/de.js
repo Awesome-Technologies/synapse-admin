@@ -245,6 +245,8 @@ const de = {
         created_ts: "Erstellt",
         last_access_ts: "Letzter Zugriff",
       },
+      image: "Bild",
+      preview_unavailable: "Vorschau nicht verfügbar",
     },
     delete_media: {
       name: "Medien",
