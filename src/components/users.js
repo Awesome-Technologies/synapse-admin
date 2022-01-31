@@ -255,9 +255,14 @@ const UserEditToolbar = props => (
 
 const UserEditActions = ({ data }) => {
   const translate = useTranslate();
+  var userStatus = "";
+  if (data) {
+    userStatus = data.deactivated;
+  }
+
   return (
     <TopToolbar>
-      {!data.deactivated && <ServerNoticeButton record={data} />}
+      {!userStatus && <ServerNoticeButton record={data} />}
       <DeleteButton
         record={data}
         label="resources.users.action.erase"
