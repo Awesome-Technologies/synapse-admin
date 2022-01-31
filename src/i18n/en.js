@@ -95,7 +95,6 @@ const en = {
   },
   resources: {
     users: {
-      backtolist: "Back to list",
       name: "User |||| Users",
       email: "Email",
       msisdn: "Phone",
