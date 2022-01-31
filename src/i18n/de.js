@@ -96,7 +96,6 @@ const de = {
   },
   resources: {
     users: {
-      backtolist: "Zurück zur Liste",
       name: "Benutzer",
       email: "E-Mail",
       msisdn: "Telefon",
