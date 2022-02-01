@@ -70,7 +70,7 @@ const resourceMap = {
     },
     delete: params => ({
       endpoint: `/_synapse/admin/v1/rooms/${params.id}`,
-      body: { block: false },
+      body: { block: !!params.block },
     }),
   },
   reports: {

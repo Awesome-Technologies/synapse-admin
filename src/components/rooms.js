@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
+import { fade } from "@material-ui/core/styles/colorManipulator";
 import { connect } from "react-redux";
 import {
   BooleanField,
   BulkDeleteButton,
   DateField,
   Datagrid,
-  DeleteButton,
   Filter,
   List,
   NumberField,
@@ -40,11 +40,22 @@ import {
   RoomDirectoryDeleteButton,
   RoomDirectorySaveButton,
 } from "./RoomDirectory";
+import { DeleteRoomButton } from "./DeleteRoom";
 
 const useStyles = makeStyles(theme => ({
   helper_forward_extremities: {
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
     margin: "0.5em",
+  },
+  deleteButton: {
+    color: theme.palette.error.main,
+    "&:hover": {
+      backgroundColor: fade(theme.palette.error.main, 0.12),
+      // Reset on mouse devices
+      "@media (hover: none)": {
+        backgroundColor: "transparent",
+      },
+    },
   },
 }));
 
@@ -106,14 +117,7 @@ const RoomShowActions = ({ basePath, data, resource }) => {
       {roomDirectoryStatus === true && (
         <RoomDirectoryDeleteButton record={data} />
       )}
-      <DeleteButton
-        basePath={basePath}
-        record={data}
-        resource={resource}
-        mutationMode="pessimistic"
-        confirmTitle="resources.rooms.action.erase.title"
-        confirmContent="resources.rooms.action.erase.content"
-      />
+      <DeleteRoomButton record={data} />
     </TopToolbar>
   );
 };
