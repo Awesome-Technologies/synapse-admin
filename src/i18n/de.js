@@ -371,7 +371,7 @@ const de = {
       },
     },
     notification: {
-      ...germanMessages.ra.notifiaction,
+      ...germanMessages.ra.notification,
       logged_out: "Abgemeldet",
     },
     page: {
