@@ -132,7 +132,7 @@ const LoginPage = ({ theme }) => {
           : typeof error === "undefined" || !error.message
           ? "ra.auth.sign_in_error"
           : error.message,
-        "warning"
+        { type: "warning" }
       );
     });
   };

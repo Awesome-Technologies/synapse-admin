@@ -81,7 +81,9 @@ export const ServerNoticeButton = ({ record }) => {
           handleDialogClose();
         },
         onFailure: () =>
-          notify("resources.servernotices.action.send_failure", "error"),
+          notify("resources.servernotices.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -127,7 +129,9 @@ export const ServerNoticeBulkButton = ({ selectedIds }) => {
           handleDialogClose();
         },
         onFailure: error =>
-          notify("resources.servernotices.action.send_failure", "error"),
+          notify("resources.servernotices.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
