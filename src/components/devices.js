@@ -44,7 +44,7 @@ export const DeviceRemoveButton = props => {
           refresh();
         },
         onFailure: () => {
-          notify("resources.devices.action.erase.failure", "error");
+          notify("resources.devices.action.erase.failure", { type: "error" });
         },
       }
     );
