@@ -19,6 +19,15 @@ import {
   Toolbar,
 } from "react-admin";
 
+const date_format = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+};
+
 const validateToken = [regex(/^[A-Za-z0-9._~-]{0,64}$/)];
 const validateUsesAllowed = [number()];
 const validateLength = [number(), maxValue(64)];
@@ -67,14 +76,7 @@ export const RegistrationTokenList = props => {
         <DateField
           source="expiry_time"
           showTime
-          options={{
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }}
+          options={date_format}
           sortable={false}
         />
       </Datagrid>
