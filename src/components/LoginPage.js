@@ -199,7 +199,7 @@ const LoginPage = ({ theme }) => {
             autoFocus
             name="username"
             component={renderInput}
-            label={translate("ra.auth.username")}
+            label="ra.auth.username"
             disabled={loading}
             onBlur={handleUsernameChange}
             resettable
@@ -210,7 +210,7 @@ const LoginPage = ({ theme }) => {
           <PasswordInput
             name="password"
             component={renderInput}
-            label={translate("ra.auth.password")}
+            label="ra.auth.password"
             type="password"
             disabled={loading}
             resettable
@@ -221,7 +221,7 @@ const LoginPage = ({ theme }) => {
           <TextInput
             name="base_url"
             component={renderInput}
-            label={translate("synapseadmin.auth.base_url")}
+            label="synapseadmin.auth.base_url"
             disabled={cfg_base_url || loading}
             resettable
             fullWidth

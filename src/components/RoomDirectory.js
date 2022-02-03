@@ -177,7 +177,6 @@ export const FilterableRoomDirectoryList = ({
   ...props
 }) => {
   const classes = useStyles();
-  const translate = useTranslate();
   const filter = roomDirectoryFilters;
   const roomIdFilter = filter && filter.room_id ? true : false;
   const topicFilter = filter && filter.topic ? true : false;
@@ -196,48 +195,48 @@ export const FilterableRoomDirectoryList = ({
           source="avatar_src"
           sortable={false}
           className={classes.small}
-          label={translate("resources.rooms.fields.avatar")}
+          label="resources.rooms.fields.avatar"
         />
         <TextField
           source="name"
           sortable={false}
-          label={translate("resources.rooms.fields.name")}
+          label="resources.rooms.fields.name"
         />
         {roomIdFilter && (
           <TextField
             source="room_id"
             sortable={false}
-            label={translate("resources.rooms.fields.room_id")}
+            label="resources.rooms.fields.room_id"
           />
         )}
         {canonicalAliasFilter && (
           <TextField
             source="canonical_alias"
             sortable={false}
-            label={translate("resources.rooms.fields.canonical_alias")}
+            label="resources.rooms.fields.canonical_alias"
           />
         )}
         {topicFilter && (
           <TextField
             source="topic"
             sortable={false}
-            label={translate("resources.rooms.fields.topic")}
+            label="resources.rooms.fields.topic"
           />
         )}
         <NumberField
           source="num_joined_members"
           sortable={false}
-          label={translate("resources.rooms.fields.joined_members")}
+          label="resources.rooms.fields.joined_members"
         />
         <BooleanField
           source="world_readable"
           sortable={false}
-          label={translate("resources.room_directory.fields.world_readable")}
+          label="resources.room_directory.fields.world_readable"
         />
         <BooleanField
           source="guest_can_join"
           sortable={false}
-          label={translate("resources.room_directory.fields.guest_can_join")}
+          label="resources.room_directory.fields.guest_can_join"
         />
       </Datagrid>
     </List>
