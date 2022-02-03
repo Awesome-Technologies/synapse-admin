@@ -78,7 +78,8 @@ const EncryptionField = ({ source, record = {}, emptyText }) => {
   );
 };
 
-const RoomTitle = ({ record }) => {
+const RoomTitle = props => {
+  const record = useRecordContext();
   const translate = useTranslate();
   var name = "";
   if (record) {
@@ -355,7 +356,7 @@ const RoomFilter = ({ ...props }) => {
 
 const RoomNameField = props => {
   const { source } = props;
-  const record = useRecordContext(props);
+  const record = useRecordContext();
   return (
     <span>{record[source] || record["canonical_alias"] || record["id"]}</span>
   );

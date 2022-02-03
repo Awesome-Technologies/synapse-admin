@@ -4,6 +4,7 @@ import {
   useMutation,
   useNotify,
   Confirm,
+  useRecordContext,
   useRefresh,
 } from "react-admin";
 import ActionDelete from "@material-ui/icons/Delete";
@@ -28,7 +29,7 @@ const useStyles = makeStyles(
 );
 
 export const DeviceRemoveButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
