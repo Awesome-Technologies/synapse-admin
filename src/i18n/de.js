@@ -360,7 +360,9 @@ const de = {
         retry_last_ts: "Letzter Wiederholungsversuch",
         retry_interval: "Wiederholungsintervall",
         last_successful_stream_ordering: "letzte erfogreicher Stream",
+        stream_ordering: "Stream",
       },
+      action: { reconnect: "Neu verbinden" },
     },
   },
   ra: {

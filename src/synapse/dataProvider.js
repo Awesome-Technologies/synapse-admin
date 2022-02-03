@@ -285,6 +285,23 @@ const resourceMap = {
     total: json => {
       return json.total;
     },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/federation/destinations/${params.id}/reset_connection`,
+      method: "POST",
+    }),
+  },
+  destination_rooms: {
+    map: dstroom => ({
+      ...dstroom,
+      id: dstroom.room_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/federation/destinations/${id}/rooms`,
+    }),
+    data: "rooms",
+    total: json => {
+      return json.total;
+    },
   },
 };
 
