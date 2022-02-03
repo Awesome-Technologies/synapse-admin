@@ -15,6 +15,15 @@ import {
 import PageviewIcon from "@material-ui/icons/Pageview";
 import ViewListIcon from "@material-ui/icons/ViewList";
 
+const date_format = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+};
+
 const ReportPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
@@ -33,14 +42,7 @@ export const ReportShow = props => {
           <DateField
             source="received_ts"
             showTime
-            options={{
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }}
+            options={date_format}
             sortable={true}
           />
           <ReferenceField source="user_id" reference="users">
@@ -72,14 +74,7 @@ export const ReportShow = props => {
           <DateField
             source="event_json.origin_server_ts"
             showTime
-            options={{
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }}
+            options={date_format}
             sortable={true}
           />
           <ReferenceField source="sender" reference="users">
@@ -116,14 +111,7 @@ export const ReportList = ({ ...props }) => {
         <DateField
           source="received_ts"
           showTime
-          options={{
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }}
+          options={date_format}
           sortable={true}
         />
         <TextField sortable={false} source="user_id" />
