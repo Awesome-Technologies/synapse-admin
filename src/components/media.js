@@ -17,16 +17,16 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
-import BlockIcon from "@material-ui/icons/Block";
-import ClearIcon from "@material-ui/icons/Clear";
-import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import BlockIcon from "@mui/icons-material/Block";
+import ClearIcon from "@mui/icons-material/Clear";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import IconCancel from "@material-ui/icons/Cancel";
-import LockIcon from "@material-ui/icons/Lock";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
+import IconCancel from "@mui/icons-material/Cancel";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const useStyles = makeStyles(
   theme => ({

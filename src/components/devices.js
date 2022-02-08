@@ -6,7 +6,7 @@ import {
   Confirm,
   useRefresh,
 } from "react-admin";
-import ActionDelete from "@material-ui/icons/Delete";
+import ActionDelete from "@mui/icons-material/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import classnames from "classnames";

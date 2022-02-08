@@ -12,8 +12,8 @@ import {
   useTranslate,
   useUnselectAll,
 } from "react-admin";
-import MessageIcon from "@material-ui/icons/Message";
-import IconCancel from "@material-ui/icons/Cancel";
+import MessageIcon from "@mui/icons-material/Message";
+import IconCancel from "@mui/icons-material/Cancel";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";

@@ -6,7 +6,7 @@ import {
   Title,
 } from "react-admin";
 import { parse as parseCsv, unparse as unparseCsv } from "papaparse";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import GetAppIcon from "@mui/icons-material/GetApp";
 import {
   Button,
   Card,

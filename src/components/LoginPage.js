@@ -23,7 +23,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import LockIcon from "@material-ui/icons/Lock";
+import LockIcon from "@mui/icons-material/Lock";
 
 const useStyles = makeStyles(theme => ({
   main: {
