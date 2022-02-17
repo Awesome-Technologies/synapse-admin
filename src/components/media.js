@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import classnames from "classnames";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@material-ui/core/styles/colorManipulator";
 import { makeStyles } from "@material-ui/core/styles";
 import { Tooltip } from "@material-ui/core";
 import {
@@ -33,7 +33,7 @@ const useStyles = makeStyles(
     deleteButton: {
       color: theme.palette.error.main,
       "&:hover": {
-        backgroundColor: fade(theme.palette.error.main, 0.12),
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
         // Reset on mouse devices
         "@media (hover: none)": {
           backgroundColor: "transparent",
