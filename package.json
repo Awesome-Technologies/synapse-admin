@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
