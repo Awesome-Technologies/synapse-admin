@@ -19,15 +19,15 @@ You need access to the following endpoints:
 
 See also [Synapse administration endpoints](https://matrix-org.github.io/synapse/develop/reverse_proxy.html#synapse-administration-endpoints)
 
-## Step-By-Step install:
+## Step-By-Step install
 
 You have three options:
 
-1.  Download the tarball and serve with any webserver
-2.  Download the source code from github and run using nodejs
-3.  Run the Docker container
+1.  [Download the tarball and serve with any webserver](#steps-for-1)
+2.  [Download the source code from github and run using nodejs](#steps-for-2)
+3.  [Run the Docker container](#steps-for-3)
 
-Steps for 1):
+### Steps for 1)
 
 - make sure you have a webserver installed that can serve static files (any webserver like nginx or apache will do)
 - configure a vhost for synapse admin on your webserver
@@ -36,7 +36,7 @@ Steps for 1):
 - move or symlink the `synapse-admin-x.x.x` into your vhosts root dir
 - open the url of the vhost in your browser
 
-Steps for 2):
+### Steps for 2)
 
 - make sure you have installed the following: git, yarn, nodejs
 - download the source code: `git clone https://github.com/Awesome-Technologies/synapse-admin.git`
@@ -49,7 +49,7 @@ Either you define it at startup (e.g. `REACT_APP_SERVER=https://yourmatrixserver
 or by editing it in the [.env](.env) file. See also the
 [documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
 
-Steps for 3):
+### Steps for 3)
 
 - run the Docker container from the public docker registry: `docker run -p 8080:80 awesometechnologies/synapse-admin` or use the [docker-compose.yml](docker-compose.yml): `docker-compose up -d`
 
