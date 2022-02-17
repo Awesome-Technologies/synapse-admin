@@ -173,10 +173,12 @@ const en = {
         },
         unencrypted: "Unencrypted",
       },
-      erase: {
-        title: "Delete room",
-        content:
-          "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
+      action: {
+        erase: {
+          title: "Delete room",
+          content:
+            "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
+        },
       },
     },
     reports: {
