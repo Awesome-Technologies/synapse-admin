@@ -7,6 +7,7 @@ import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomShow } from "./components/rooms";
 import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
+import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
 import CloudQueueIcon from "@material-ui/icons/CloudQueue";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import UserIcon from "@material-ui/icons/Group";
@@ -16,6 +17,11 @@ import ReportIcon from "@material-ui/icons/Warning";
 import FolderSharedIcon from "@material-ui/icons/FolderShared";
 import { DestinationList, DestinationShow } from "./components/destinations";
 import { ImportFeature } from "./components/ImportFeature";
+import {
+  RegistrationTokenCreate,
+  RegistrationTokenEdit,
+  RegistrationTokenList,
+} from "./components/RegistrationTokens";
 import { RoomDirectoryList } from "./components/RoomDirectory";
 import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
@@ -73,6 +79,13 @@ const App = () => (
       list={DestinationList}
       show={DestinationShow}
       icon={CloudQueueIcon}
+    />
+    <Resource
+      name="registration_tokens"
+      list={RegistrationTokenList}
+      create={RegistrationTokenCreate}
+      edit={RegistrationTokenEdit}
+      icon={ConfirmationNumberIcon}
     />
     <Resource name="connections" />
     <Resource name="devices" />

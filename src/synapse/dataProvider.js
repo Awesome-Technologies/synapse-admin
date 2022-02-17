@@ -303,6 +303,25 @@ const resourceMap = {
       return json.total;
     },
   },
+  registration_tokens: {
+    path: "/_synapse/admin/v1/registration_tokens",
+    map: rt => ({
+      ...rt,
+      id: rt.token,
+    }),
+    data: "registration_tokens",
+    total: json => {
+      return json.registration_tokens.length;
+    },
+    create: params => ({
+      endpoint: "/_synapse/admin/v1/registration_tokens/new",
+      body: params,
+      method: "POST",
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/registration_tokens/${params.id}`,
+    }),
+  },
 };
 
 function filterNullValues(key, value) {
@@ -324,8 +343,15 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, name, guests, deactivated, search_term, destination } =
-      params.filter;
+    const {
+      user_id,
+      name,
+      guests,
+      deactivated,
+      search_term,
+      destination,
+      valid,
+    } = params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -338,6 +364,7 @@ const dataProvider = {
       destination: destination,
       guests: guests,
       deactivated: deactivated,
+      valid: valid,
       order_by: field,
       dir: getSearchOrder(order),
     };
