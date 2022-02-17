@@ -351,5 +351,18 @@ const en = {
       },
     },
   },
+  registration_tokens: {
+    name: "Registration tokens",
+    fields: {
+      token: "Token",
+      valid: "Valid token",
+      uses_allowed: "Uses allowed",
+      pending: "Pending",
+      completed: "Completed",
+      expiry_time: "Expiry time",
+      length: "Length",
+    },
+    helper: { length: "Length of the token if no token is given." },
+  },
 };
 export default en;
