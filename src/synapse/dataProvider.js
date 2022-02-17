@@ -275,6 +275,25 @@ const resourceMap = {
       method: "PUT",
     }),
   },
+  registration_tokens: {
+    path: "/_synapse/admin/v1/registration_tokens",
+    map: rt => ({
+      ...rt,
+      id: rt.token,
+    }),
+    data: "registration_tokens",
+    total: json => {
+      return json.registration_tokens.length;
+    },
+    create: params => ({
+      endpoint: "/_synapse/admin/v1/registration_tokens/new",
+      body: params,
+      method: "POST",
+    }),
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/registration_tokens/${params.id}`,
+    }),
+  },
 };
 
 function filterNullValues(key, value) {
@@ -296,7 +315,8 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, name, guests, deactivated, search_term } = params.filter;
+    const { user_id, name, guests, deactivated, search_term, valid } =
+      params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -308,6 +328,7 @@ const dataProvider = {
       name: name,
       guests: guests,
       deactivated: deactivated,
+      valid: valid,
       order_by: field,
       dir: getSearchOrder(order),
     };

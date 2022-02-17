@@ -2,8 +2,14 @@ name: Create docker image(s) and push to docker hub
 
 on:
   push:
-    tags:
-      - '[0-9]+\.[0-9]+\.[0-9]+'
+    # Sequence of patterns matched against refs/heads
+    # prettier-ignore
+    branches:    
+      # Push events on master branch
+      - master
+    # Sequence of patterns matched against refs/tags
+    tags:        
+      - '[0-9]+\.[0-9]+\.[0-9]+'             # Push events to 0.X.X tag
 
 jobs:
   docker:
@@ -21,10 +27,25 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Calculate docker image tag
+        id: set-tag
+        run: |
+          case "${GITHUB_REF}" in
+              refs/heads/master|refs/heads/main)
+                  tag=latest
+                  ;;
+              refs/tags/*)
+                  tag=${GITHUB_REF#refs/tags/}
+                  ;;
+              *)
+                  tag=${GITHUB_SHA}
+                  ;;
+          esac
+          echo "::set-output name=tag::$tag"
+      - name: Build and Push Tag
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
           push: true
-          tags: awesometechnologies/synapse-admin:latest
+          tags: "awesometechnologies/synapse-admin:${{ steps.set-tag.outputs.tag }}"
+          platforms: linux/amd64,linux/arm64
