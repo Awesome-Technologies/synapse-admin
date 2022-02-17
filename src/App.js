@@ -9,11 +9,17 @@ import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@mui/icons-material/Group";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import { UserMediaStatsList } from "./components/statistics";
 import RoomIcon from "@mui/icons-material/ViewList";
 import ReportIcon from "@mui/icons-material/Warning";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import { ImportFeature } from "./components/ImportFeature";
+import {
+  RegistrationTokenCreate,
+  RegistrationTokenEdit,
+  RegistrationTokenList,
+} from "./components/RegistrationTokens";
 import { RoomDirectoryList } from "./components/RoomDirectory";
 import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
@@ -65,6 +71,13 @@ const App = () => (
       name="room_directory"
       list={RoomDirectoryList}
       icon={FolderSharedIcon}
+    />
+    <Resource
+      name="registration_tokens"
+      list={RegistrationTokenList}
+      create={RegistrationTokenCreate}
+      edit={RegistrationTokenEdit}
+      icon={ConfirmationNumberIcon}
     />
     <Resource name="connections" />
     <Resource name="devices" />
