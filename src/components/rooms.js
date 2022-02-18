@@ -25,7 +25,7 @@ import {
 import get from "lodash/get";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Tooltip, Typography, Chip } from "@material-ui/core";
+import { Tooltip, Typography, Chip } from "@mui/material";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import HttpsIcon from "@mui/icons-material/Https";
 import NoEncryptionIcon from "@mui/icons-material/NoEncryption";

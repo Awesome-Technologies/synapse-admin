@@ -16,7 +16,7 @@ import {
   FormControlLabel,
   Checkbox,
   NativeSelect,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useTranslate } from "ra-core";
 import Container from "@material-ui/core/Container/Container";
 import { generateRandomUser } from "./users";

@@ -1,5 +1,5 @@
 import React, { cloneElement, Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from "@mui/material/Avatar";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DevicesIcon from "@mui/icons-material/Devices";

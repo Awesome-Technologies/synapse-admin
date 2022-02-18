@@ -21,7 +21,7 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import LockIcon from "@mui/icons-material/Lock";
 
