@@ -98,6 +98,7 @@ export const RoomShow = props => {
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
           <TextField source="room_id" />
           <TextField source="name" />
+          <TextField source="topic" />
           <TextField source="canonical_alias" />
           <ReferenceField source="creator" reference="users">
             <TextField source="id" />
