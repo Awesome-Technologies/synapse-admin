@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import classnames from "classnames";
-import { alpha } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@mui/material/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   BooleanInput,

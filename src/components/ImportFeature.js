@@ -13,12 +13,12 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
   NativeSelect,
 } from "@mui/material";
 import { useTranslate } from "ra-core";
-import Container from "@material-ui/core/Container/Container";
 import { generateRandomUser } from "./users";
 
 const LOGGING = true;
