@@ -14,10 +14,12 @@ import {
 } from "react-admin";
 import MessageIcon from "@mui/icons-material/Message";
 import IconCancel from "@mui/icons-material/Cancel";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   const translate = useTranslate();

@@ -2,7 +2,6 @@ import React, { Fragment, useState } from "react";
 import classnames from "classnames";
 import { alpha } from "@material-ui/core/styles/colorManipulator";
 import { makeStyles } from "@material-ui/core/styles";
-import { Tooltip } from "@material-ui/core";
 import {
   BooleanInput,
   Button,
@@ -20,10 +19,13 @@ import {
 import BlockIcon from "@mui/icons-material/Block";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Tooltip,
+} from "@mui/material";
 import IconCancel from "@mui/icons-material/Cancel";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
