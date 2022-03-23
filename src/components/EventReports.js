@@ -70,7 +70,6 @@ export const ReportShow = props => {
           icon={<PageviewIcon />}
           path="detail"
         >
-          {" "}
           <DateField
             source="event_json.origin_server_ts"
             showTime
