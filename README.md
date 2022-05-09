@@ -31,9 +31,9 @@ You can use the current version of Synapse Admin without own installation direct
 via [GitHub Pages](https://awesome-technologies.github.io/synapse-admin/).
 
 **Note:**
-It is highly recommended to [deploy an own environment](#step-by-step-install),
-so that the admin endpoints (`/_synapse/admin`) do not have to be exposed to
-the internet.
+If you want to use the deployment, you have to make sure that the admin endpoints (`/_synapse/admin`) are accessible for your browser.
+**Remember: You have no need to expose these endpoints to the internet but to your network.**
+If you want your own deployment, follow the [Step-By-Step Install Guide](#step-by-step-install) below.
 
 ### Step-By-Step install
 
