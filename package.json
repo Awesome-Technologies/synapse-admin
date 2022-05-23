@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "author": "Awesome Technologies Innovationslabor GmbH",
   "license": "Apache-2.0",
@@ -26,7 +26,7 @@
     "ra-language-chinese": "^2.0.10",
     "ra-language-german": "^3.13.4",
     "react": "^17.0.0",
-    "react-admin": "^3.15.0",
+    "react-admin": "^3.19.7",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.0"
   },
