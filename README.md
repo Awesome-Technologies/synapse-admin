@@ -5,12 +5,18 @@
 
 This project is built using [react-admin](https://marmelab.com/react-admin/).
 
-It needs at least Synapse v1.48.0 for all functions to work as expected!
+## Usage
+
+### Supported Synapse
+
+It needs at least [Synapse](https://github.com/matrix-org/synapse) v1.48.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.
 See also [Synapse version API](https://matrix-org.github.io/synapse/develop/admin_api/version_api.html).
 
 After entering the URL on the login page of synapse-admin the server version appears below the input field.
+
+### Prerequisites
 
 You need access to the following endpoints:
 
@@ -19,7 +25,17 @@ You need access to the following endpoints:
 
 See also [Synapse administration endpoints](https://matrix-org.github.io/synapse/develop/reverse_proxy.html#synapse-administration-endpoints)
 
-## Step-By-Step install
+### Use without install
+
+You can use the current version of Synapse Admin without own installation direct
+via [GitHub Pages](https://awesome-technologies.github.io/synapse-admin/).
+
+**Note:**
+If you want to use the deployment, you have to make sure that the admin endpoints (`/_synapse/admin`) are accessible for your browser.
+**Remember: You have no need to expose these endpoints to the internet but to your network.**
+If you want your own deployment, follow the [Step-By-Step Install Guide](#step-by-step-install) below.
+
+### Step-By-Step install
 
 You have three options:
 
@@ -27,7 +43,7 @@ You have three options:
 2.  [Download the source code from github and run using nodejs](#steps-for-2)
 3.  [Run the Docker container](#steps-for-3)
 
-### Steps for 1)
+#### Steps for 1)
 
 - make sure you have a webserver installed that can serve static files (any webserver like nginx or apache will do)
 - configure a vhost for synapse admin on your webserver
@@ -36,7 +52,7 @@ You have three options:
 - move or symlink the `synapse-admin-x.x.x` into your vhosts root dir
 - open the url of the vhost in your browser
 
-### Steps for 2)
+#### Steps for 2)
 
 - make sure you have installed the following: git, yarn, nodejs
 - download the source code: `git clone https://github.com/Awesome-Technologies/synapse-admin.git`
@@ -49,7 +65,7 @@ Either you define it at startup (e.g. `REACT_APP_SERVER=https://yourmatrixserver
 or by editing it in the [.env](.env) file. See also the
 [documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
 
-### Steps for 3)
+#### Steps for 3)
 
 - run the Docker container from the public docker registry: `docker run -p 8080:80 awesometechnologies/synapse-admin` or use the [docker-compose.yml](docker-compose.yml): `docker-compose up -d`
 
@@ -66,6 +82,9 @@ or by editing it in the [.env](.env) file. See also the
         context: https://github.com/Awesome-Technologies/synapse-admin.git
         # args:
         #   - NODE_OPTIONS="--max_old_space_size=1024"
+        #   # see #266
+        #   - PUBLIC_URL="/synapse-admin"
+        #   - REACT_APP_SERVER="https://matrix.example.com"
       ports:
         - "8080:80"
       restart: unless-stopped

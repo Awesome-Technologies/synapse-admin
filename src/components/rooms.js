@@ -158,7 +158,11 @@ export const RoomShow = props => {
           />
         </Tab>
 
-        <Tab label="synapseadmin.rooms.tabs.members" icon={<UserIcon />}>
+        <Tab
+          label="synapseadmin.rooms.tabs.members"
+          icon={<UserIcon />}
+          path="members"
+        >
           <ReferenceManyField
             reference="room_members"
             target="room_id"
