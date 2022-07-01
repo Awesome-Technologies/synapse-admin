@@ -24,12 +24,14 @@ import { RoomDirectoryList } from "./components/RoomDirectory";
 import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
+import frenchMessages from "./i18n/fr";
 import chineseMessages from "./i18n/zh";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
   de: germanMessages,
   en: englishMessages,
+  fr: frenchMessages,
   zh: chineseMessages,
 };
 const i18nProvider = polyglotI18nProvider(

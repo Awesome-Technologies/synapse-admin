@@ -195,7 +195,7 @@ const en = {
         event_json: {
           origin: "origin server",
           origin_server_ts: "time of send",
-          type: "event typ",
+          type: "event type",
           content: {
             msgtype: "content type",
             body: "content",
@@ -343,7 +343,7 @@ const en = {
         title:
           "Delete room from directory |||| Delete %{smart_count} rooms from directory",
         content:
-          "Are you sure you want to remove this room from directory? |||| Are you sure you want to remove these %{smart_count} rooms from directory",
+          "Are you sure you want to remove this room from directory? |||| Are you sure you want to remove these %{smart_count} rooms from directory?",
         erase: "Delete from room directory",
         create: "Publish in room directory",
         send_success: "Room successfully published.",
