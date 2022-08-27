@@ -25,6 +25,16 @@ const mxcUrlToHttp = mxcUrl => {
   return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
 };
 
+async function isImage(url) {
+  const resp = await fetch(url, {
+    method: "HEAD"
+  });
+
+  const type = resp.headers.get("Content-Type");
+
+  return type === "image/png" || type === "image/jpeg";
+}
+
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
@@ -157,9 +167,11 @@ const resourceMap = {
     },
   },
   users_media: {
-    map: um => ({
+    map: async um => ({
       ...um,
       id: um.media_id,
+      url: `${localStorage.getItem("base_url")}/_matrix/media/v3/download/${localStorage.getItem("home_server")}/${um.media_id}`,
+      is_image: await isImage(`${localStorage.getItem("base_url")}/_matrix/media/v3/download/${localStorage.getItem("home_server")}/${um.media_id}`)
     }),
     reference: id => ({
       endpoint: `/_synapse/admin/v1/users/${id}/media`,
@@ -395,10 +407,17 @@ const dataProvider = {
     const ref = res["reference"](params.id);
     const endpoint_url = `${homeserver}${ref.endpoint}?${stringify(query)}`;
 
-    return jsonClient(endpoint_url).then(({ headers, json }) => ({
-      data: json[res.data].map(res.map),
-      total: res.total(json, from, perPage),
-    }));
+    return jsonClient(endpoint_url).then(async ({ headers, json }) => {
+      const data = [];
+      const arr = json[res.data];
+      for (const obj of arr) {
+        data.push(await res.map(obj));
+      }
+      return {
+        data: data,
+        total: res.total(json, from, perPage),
+      }
+    });
   },
 
   update: (resource, params) => {

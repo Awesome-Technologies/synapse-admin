@@ -46,6 +46,7 @@ import {
   TopToolbar,
   sanitizeListRestProps,
   NumberField,
+  ImageField
 } from "react-admin";
 import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
@@ -315,6 +316,7 @@ const UserTitle = ({ record }) => {
     </span>
   );
 };
+
 export const UserEdit = props => {
   const classes = useStyles();
   const translate = useTranslate();
@@ -449,7 +451,10 @@ export const UserEdit = props => {
             perPage={50}
             sort={{ field: "created_ts", order: "DESC" }}
           >
-            <Datagrid style={{ width: "100%" }}>
+            <Datagrid style={{ width: "100%" }} 
+              expand={ <ImageField source="url" /> }
+              isRowExpandable={row => row.is_image }
+            >
               <DateField source="created_ts" showTime options={date_format} />
               <DateField
                 source="last_access_ts"
