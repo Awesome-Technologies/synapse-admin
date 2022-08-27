@@ -27,7 +27,7 @@ const mxcUrlToHttp = mxcUrl => {
 
 async function isImage(url) {
   const resp = await fetch(url, {
-    method: "HEAD"
+    method: "HEAD",
   });
 
   const type = resp.headers.get("Content-Type");
@@ -170,8 +170,18 @@ const resourceMap = {
     map: async um => ({
       ...um,
       id: um.media_id,
-      url: `${localStorage.getItem("base_url")}/_matrix/media/v3/download/${localStorage.getItem("home_server")}/${um.media_id}`,
-      is_image: await isImage(`${localStorage.getItem("base_url")}/_matrix/media/v3/download/${localStorage.getItem("home_server")}/${um.media_id}`)
+      url: `${localStorage.getItem(
+        "base_url"
+      )}/_matrix/media/v3/download/${localStorage.getItem("home_server")}/${
+        um.media_id
+      }`,
+      is_image: await isImage(
+        `${localStorage.getItem(
+          "base_url"
+        )}/_matrix/media/v3/download/${localStorage.getItem("home_server")}/${
+          um.media_id
+        }`
+      ),
     }),
     reference: id => ({
       endpoint: `/_synapse/admin/v1/users/${id}/media`,
@@ -416,7 +426,7 @@ const dataProvider = {
       return {
         data: data,
         total: res.total(json, from, perPage),
-      }
+      };
     });
   },
 
