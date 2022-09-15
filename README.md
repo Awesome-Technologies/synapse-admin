@@ -82,8 +82,8 @@ or by editing it in the [.env](.env) file. See also the
         context: https://github.com/Awesome-Technologies/synapse-admin.git
         # args:
         #   - NODE_OPTIONS="--max_old_space_size=1024"
-        #   # see #266
-        #   - PUBLIC_URL="/synapse-admin"
+        #   # see #266, PUBLIC_URL must be without surrounding quotation marks
+        #   - PUBLIC_URL=/synapse-admin
         #   - REACT_APP_SERVER="https://matrix.example.com"
       ports:
         - "8080:80"
