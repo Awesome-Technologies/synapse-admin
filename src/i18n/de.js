@@ -108,6 +108,7 @@ const de = {
         is_guest: "Gast",
         admin: "Server Administrator",
         deactivated: "Deaktiviert",
+        erased: "Gelöscht",
         guests: "Zeige Gäste",
         show_deactivated: "Zeige deaktivierte Benutzer",
         user_id: "Suche Benutzer",

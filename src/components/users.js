@@ -185,6 +185,7 @@ export const UserList = props => {
         <BooleanField source="is_guest" />
         <BooleanField source="admin" />
         <BooleanField source="deactivated" />
+        <BooleanField source="erased" sortable={false} />
         <DateField
           source="creation_ts"
           label="resources.users.fields.creation_ts_ms"
@@ -338,6 +339,7 @@ export const UserEdit = props => {
             source="deactivated"
             helperText="resources.users.helper.deactivate"
           />
+          <BooleanInput source="erased" disabled />
           <DateField source="creation_ts_ms" showTime options={date_format} />
           <TextField source="consent_version" />
         </FormTab>
