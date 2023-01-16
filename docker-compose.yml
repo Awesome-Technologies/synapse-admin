@@ -13,14 +13,14 @@ services:
     # context: https://github.com/Awesome-Technologies/synapse-admin.git
 
     # args:
-      # if you're building on an architecture other than amd64, make sure
-      # to define a maximum ram for node. otherwise the build will fail.
-      # - NODE_OPTIONS="--max_old_space_size=1024"
-      # default is /
-      # - PUBLIC_URL=/synapse-admin
-      # You can use a fixed homeserver, so that the user can no longer
-      # define it himself
-      # - REACT_APP_SERVER="https://matrix.example.com"
+    # if you're building on an architecture other than amd64, make sure
+    # to define a maximum ram for node. otherwise the build will fail.
+    #   - NODE_OPTIONS="--max_old_space_size=1024"
+    # default is /
+    #   - PUBLIC_URL=/synapse-admin
+    # You can use a fixed homeserver, so that the user can no longer
+    # define it himself
+    #   - REACT_APP_SERVER="https://matrix.example.com"
     ports:
       - "8080:80"
     restart: unless-stopped
