@@ -122,6 +122,7 @@ const de = {
         creation_ts_ms: "Zeitpunkt der Erstellung",
         consent_version: "Zugestimmte Geschäftsbedingungen",
         auth_provider: "Provider",
+        user_type: "Benutzertyp",
       },
       helper: {
         deactivate:
