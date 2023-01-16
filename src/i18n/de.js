@@ -124,6 +124,7 @@ const de = {
         user_type: "Benutzertyp",
       },
       helper: {
+        password: "Durch die Änderung des Passworts wird der Benutzer von allen Sitzungen abgemeldet.",
         deactivate:
           "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
