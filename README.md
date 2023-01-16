@@ -9,7 +9,7 @@ This project is built using [react-admin](https://marmelab.com/react-admin/).
 
 ### Supported Synapse
 
-It needs at least [Synapse](https://github.com/matrix-org/synapse) v1.42.0 for all functions to work as expected!
+It needs at least [Synapse](https://github.com/matrix-org/synapse) v1.46.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.
 See also [Synapse version API](https://matrix-org.github.io/synapse/develop/admin_api/version_api.html).
