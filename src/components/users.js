@@ -71,6 +71,16 @@ const useStyles = makeStyles({
   },
 });
 
+const choices_medium = [
+  { id: "email", name: "resources.users.email" },
+  { id: "msisdn", name: "resources.users.msisdn" },
+];
+
+const choices_type = [
+  { id: "bot", name: "bot" },
+  { id: "support", name: "support" },
+];
+
 const date_format = {
   year: "numeric",
   month: "2-digit",
@@ -276,15 +286,19 @@ export const UserCreate = props => (
         autoComplete="new-password"
         validate={maxLength(512)}
       />
+      <SelectInput
+        source="user_type"
+        choices={choices_type}
+        translateChoice={false}
+        allowEmpty={true}
+        resettable
+      />
       <BooleanInput source="admin" />
       <ArrayInput source="threepids">
         <SimpleFormIterator disableReordering>
           <SelectInput
             source="medium"
-            choices={[
-              { id: "email", name: "resources.users.email" },
-              { id: "msisdn", name: "resources.users.msisdn" },
-            ]}
+            choices={choices_medium}
             validate={required()}
           />
           <TextInput source="address" validate={validateAddress} />
@@ -315,6 +329,7 @@ const UserTitle = ({ record }) => {
     </span>
   );
 };
+
 export const UserEdit = props => {
   const classes = useStyles();
   const translate = useTranslate();
@@ -333,6 +348,13 @@ export const UserEdit = props => {
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
           <PasswordInput source="password" autoComplete="new-password" />
+          <SelectInput
+            source="user_type"
+            choices={choices_type}
+            translateChoice={false}
+            allowEmpty={true}
+            resettable
+          />
           <BooleanInput source="admin" />
           <BooleanInput
             source="deactivated"
@@ -349,13 +371,7 @@ export const UserEdit = props => {
         >
           <ArrayInput source="threepids">
             <SimpleFormIterator disableReordering>
-              <SelectInput
-                source="medium"
-                choices={[
-                  { id: "email", name: "resources.users.email" },
-                  { id: "msisdn", name: "resources.users.msisdn" },
-                ]}
-              />
+              <SelectInput source="medium" choices={choices_medium} />
               <TextInput source="address" />
             </SimpleFormIterator>
           </ArrayInput>

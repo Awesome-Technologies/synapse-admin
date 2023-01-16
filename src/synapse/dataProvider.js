@@ -298,7 +298,8 @@ const resourceMap = {
 
 function filterNullValues(key, value) {
   // Filtering out null properties
-  if (value === null) {
+  // to reset user_type from user, it must be null
+  if (value === null && key !== "user_type") {
     return undefined;
   }
   return value;

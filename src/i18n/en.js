@@ -120,6 +120,7 @@ const en = {
         creation_ts_ms: "Creation timestamp",
         consent_version: "Consent version",
         auth_provider: "Provider",
+        user_type: "User type",
       },
       helper: {
         deactivate: "You must provide a password to re-activate an account.",
