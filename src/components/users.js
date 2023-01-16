@@ -259,20 +259,31 @@ export function generateRandomUser() {
   };
 }
 
-const UserEditToolbar = props => {
+const UserEditToolbar = props => (
+  <Toolbar {...props}>
+    <SaveButton submitOnEnter={true} disabled={props.pristine} />
+  </Toolbar>
+);
+
+const UserEditActions = ({ data }) => {
   const translate = useTranslate();
+  var userStatus = "";
+  if (data) {
+    userStatus = data.deactivated;
+  }
+
   return (
-    <Toolbar {...props}>
-      <SaveButton submitOnEnter={true} disabled={props.pristine} />
+    <TopToolbar>
+      {!userStatus && <ServerNoticeButton record={data} />}
       <DeleteButton
+        record={data}
         label="resources.users.action.erase"
         confirmTitle={translate("resources.users.helper.erase", {
           smart_count: 1,
         })}
         mutationMode="pessimistic"
       />
-      <ServerNoticeButton />
-    </Toolbar>
+    </TopToolbar>
   );
 };
 
@@ -334,7 +345,7 @@ export const UserEdit = props => {
   const classes = useStyles();
   const translate = useTranslate();
   return (
-    <Edit {...props} title={<UserTitle />}>
+    <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab
           label={translate("resources.users.name", { smart_count: 1 })}
