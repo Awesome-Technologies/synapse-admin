@@ -10,10 +10,12 @@ const zh = {
       username_error: "请输入完整有效的用户 ID: '@user:domain'",
       protocol_error: "URL 需要以'http://'或'https://'作为起始",
       url_error: "不是一个有效的 Matrix 服务器地址",
+      sso_sign_in: "使用 SSO 登录",
     },
     users: {
       invalid_user_id:
         "必须要是一个有效的 Matrix 用户 ID ，例如 @user_id:homeserver",
+      tabs: { sso: "SSO" },
     },
     rooms: {
       tabs: {
@@ -98,7 +100,6 @@ const zh = {
   },
   resources: {
     users: {
-      backtolist: "回到列表",
       name: "用户",
       email: "邮箱",
       msisdn: "电话",
