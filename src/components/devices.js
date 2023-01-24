@@ -1,5 +1,12 @@
 import React, { Fragment, useState } from "react";
-import { Button, useDelete, useNotify, Confirm, useRecordContext, useRefresh } from "react-admin";
+import {
+  Button,
+  useDelete,
+  useNotify,
+  Confirm,
+  useRecordContext,
+  useRefresh,
+} from "react-admin";
 import ActionDelete from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { alpha } from "@material-ui/core/styles/colorManipulator";
