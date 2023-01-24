@@ -1,11 +1,5 @@
 import React, { Fragment, useState } from "react";
-import {
-  Button,
-  useMutation,
-  useNotify,
-  Confirm,
-  useRefresh,
-} from "react-admin";
+import { Button, useDelete, useNotify, Confirm, useRefresh } from "react-admin";
 import ActionDelete from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { alpha } from "@material-ui/core/styles/colorManipulator";
@@ -34,7 +28,7 @@ export const DeviceRemoveButton = props => {
   const refresh = useRefresh();
   const notify = useNotify();
 
-  const [removeDevice, { loading }] = useMutation();
+  const [removeDevice, { isLoading }] = useDelete("devices");
 
   if (!record) return null;
 
@@ -43,21 +37,15 @@ export const DeviceRemoveButton = props => {
 
   const handleConfirm = () => {
     removeDevice(
-      {
-        type: "delete",
-        resource: "devices",
-        payload: {
-          id: record.id,
-          user_id: record.user_id,
-        },
-      },
+      { payload: { id: record.id, user_id: record.user_id } },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");
           refresh();
         },
-        onFailure: () =>
-          notify("resources.devices.action.erase.failure", "error"),
+        onFailure: () => {
+          notify("resources.devices.action.erase.failure", { type: "error" });
+        },
       }
     );
     setOpen(false);
@@ -74,7 +62,7 @@ export const DeviceRemoveButton = props => {
       </Button>
       <Confirm
         isOpen={open}
-        loading={loading}
+        loading={isLoading}
         onConfirm={handleConfirm}
         onClose={handleDialogClose}
         title="resources.devices.action.erase.title"
