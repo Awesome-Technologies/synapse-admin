@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import { Chip } from "@material-ui/core";
+import { Avatar, Chip } from "@mui/material";
 import { connect } from "react-redux";
-import FolderSharedIcon from "@material-ui/icons/FolderShared";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   BooleanField,
@@ -19,6 +18,7 @@ import {
   useMutation,
   useNotify,
   useTranslate,
+  useRecordContext,
   useRefresh,
   useUnselectAll,
 } from "react-admin";
@@ -87,7 +87,9 @@ export const RoomDirectoryBulkSaveButton = ({ selectedIds }) => {
           refresh();
         },
         onFailure: error =>
-          notify("resources.room_directory.action.send_failure", "error"),
+          notify("resources.room_directory.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -103,7 +105,8 @@ export const RoomDirectoryBulkSaveButton = ({ selectedIds }) => {
   );
 };
 
-export const RoomDirectorySaveButton = ({ record }) => {
+export const RoomDirectorySaveButton = props => {
+  const record = useRecordContext();
   const notify = useNotify();
   const refresh = useRefresh();
   const [create, { loading }] = useCreate("room_directory");
@@ -119,7 +122,9 @@ export const RoomDirectorySaveButton = ({ record }) => {
           refresh();
         },
         onFailure: error =>
-          notify("resources.room_directory.action.send_failure", "error"),
+          notify("resources.room_directory.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -177,7 +182,6 @@ export const FilterableRoomDirectoryList = ({
   ...props
 }) => {
   const classes = useStyles();
-  const translate = useTranslate();
   const filter = roomDirectoryFilters;
   const roomIdFilter = filter && filter.room_id ? true : false;
   const topicFilter = filter && filter.topic ? true : false;
@@ -196,48 +200,48 @@ export const FilterableRoomDirectoryList = ({
           source="avatar_src"
           sortable={false}
           className={classes.small}
-          label={translate("resources.rooms.fields.avatar")}
+          label="resources.rooms.fields.avatar"
         />
         <TextField
           source="name"
           sortable={false}
-          label={translate("resources.rooms.fields.name")}
+          label="resources.rooms.fields.name"
         />
         {roomIdFilter && (
           <TextField
             source="room_id"
             sortable={false}
-            label={translate("resources.rooms.fields.room_id")}
+            label="resources.rooms.fields.room_id"
           />
         )}
         {canonicalAliasFilter && (
           <TextField
             source="canonical_alias"
             sortable={false}
-            label={translate("resources.rooms.fields.canonical_alias")}
+            label="resources.rooms.fields.canonical_alias"
           />
         )}
         {topicFilter && (
           <TextField
             source="topic"
             sortable={false}
-            label={translate("resources.rooms.fields.topic")}
+            label="resources.rooms.fields.topic"
           />
         )}
         <NumberField
           source="num_joined_members"
           sortable={false}
-          label={translate("resources.rooms.fields.joined_members")}
+          label="resources.rooms.fields.joined_members"
         />
         <BooleanField
           source="world_readable"
           sortable={false}
-          label={translate("resources.room_directory.fields.world_readable")}
+          label="resources.room_directory.fields.world_readable"
         />
         <BooleanField
           source="guest_can_join"
           sortable={false}
-          label={translate("resources.room_directory.fields.guest_can_join")}
+          label="resources.room_directory.fields.guest_can_join"
         />
       </Datagrid>
     </List>

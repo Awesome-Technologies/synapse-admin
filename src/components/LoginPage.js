@@ -21,9 +21,9 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@material-ui/core";
+} from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
-import LockIcon from "@material-ui/icons/Lock";
+import LockIcon from "@mui/icons-material/Lock";
 
 const useStyles = makeStyles(theme => ({
   main: {
@@ -169,7 +169,7 @@ const LoginPage = ({ theme }) => {
           : typeof error === "undefined" || !error.message
           ? "ra.auth.sign_in_error"
           : error.message,
-        "warning"
+        { type: "warning" }
       );
     });
   };
@@ -269,7 +269,7 @@ const LoginPage = ({ theme }) => {
             autoFocus
             name="username"
             component={renderInput}
-            label={translate("ra.auth.username")}
+            label="ra.auth.username"
             disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             resettable
@@ -280,7 +280,7 @@ const LoginPage = ({ theme }) => {
           <PasswordInput
             name="password"
             component={renderInput}
-            label={translate("ra.auth.password")}
+            label="ra.auth.password"
             type="password"
             disabled={loading || !supportPassAuth}
             resettable
@@ -291,7 +291,7 @@ const LoginPage = ({ theme }) => {
           <TextInput
             name="base_url"
             component={renderInput}
-            label={translate("synapseadmin.auth.base_url")}
+            label="synapseadmin.auth.base_url"
             disabled={cfg_base_url || loading}
             resettable
             fullWidth

@@ -1,14 +1,15 @@
 import React, { Fragment, useState } from "react";
 import {
   Button,
-  useMutation,
+  useDelete,
   useNotify,
   Confirm,
+  useRecordContext,
   useRefresh,
 } from "react-admin";
-import ActionDelete from "@material-ui/icons/Delete";
+import ActionDelete from "@mui/icons-material/Delete";
 import { makeStyles } from "@material-ui/core/styles";
-import { alpha } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@mui/material/styles";
 import classnames from "classnames";
 
 const useStyles = makeStyles(
@@ -28,13 +29,13 @@ const useStyles = makeStyles(
 );
 
 export const DeviceRemoveButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const notify = useNotify();
 
-  const [removeDevice, { loading }] = useMutation();
+  const [removeDevice, { isLoading }] = useDelete("devices");
 
   if (!record) return null;
 
@@ -43,21 +44,15 @@ export const DeviceRemoveButton = props => {
 
   const handleConfirm = () => {
     removeDevice(
-      {
-        type: "delete",
-        resource: "devices",
-        payload: {
-          id: record.id,
-          user_id: record.user_id,
-        },
-      },
+      { payload: { id: record.id, user_id: record.user_id } },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");
           refresh();
         },
-        onFailure: () =>
-          notify("resources.devices.action.erase.failure", "error"),
+        onFailure: () => {
+          notify("resources.devices.action.erase.failure", { type: "error" });
+        },
       }
     );
     setOpen(false);
@@ -74,7 +69,7 @@ export const DeviceRemoveButton = props => {
       </Button>
       <Confirm
         isOpen={open}
-        loading={loading}
+        loading={isLoading}
         onConfirm={handleConfirm}
         onClose={handleDialogClose}
         title="resources.devices.action.erase.title"

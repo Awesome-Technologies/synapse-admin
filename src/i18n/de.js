@@ -121,8 +121,11 @@ const de = {
         creation_ts_ms: "Zeitpunkt der Erstellung",
         consent_version: "Zugestimmte Geschäftsbedingungen",
         auth_provider: "Provider",
+        user_type: "Benutzertyp",
       },
       helper: {
+        password:
+          "Durch die Änderung des Passworts wird der Benutzer von allen Sitzungen abgemeldet.",
         deactivate:
           "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
@@ -351,6 +354,18 @@ const de = {
         send_success: "Raum erfolgreich eingetragen.",
         send_failure: "Beim Entfernen ist ein Fehler aufgetreten.",
       },
+    },
+    destinations: {
+      name: "Föderation",
+      fields: {
+        destination: "Ziel",
+        failure_ts: "Fehlerzeitpunkt",
+        retry_last_ts: "Letzter Wiederholungsversuch",
+        retry_interval: "Wiederholungsintervall",
+        last_successful_stream_ordering: "letzte erfogreicher Stream",
+        stream_ordering: "Stream",
+      },
+      action: { reconnect: "Neu verbinden" },
     },
     registration_tokens: {
       name: "Registrierungstoken",

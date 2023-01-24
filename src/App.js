@@ -7,13 +7,15 @@ import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomShow } from "./components/rooms";
 import { ReportList, ReportShow } from "./components/EventReports";
 import LoginPage from "./components/LoginPage";
-import UserIcon from "@material-ui/icons/Group";
-import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
-import EqualizerIcon from "@material-ui/icons/Equalizer";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import CloudQueueIcon from "@mui/icons-material/CloudQueue";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import UserIcon from "@mui/icons-material/Group";
 import { UserMediaStatsList } from "./components/statistics";
-import RoomIcon from "@material-ui/icons/ViewList";
-import ReportIcon from "@material-ui/icons/Warning";
-import FolderSharedIcon from "@material-ui/icons/FolderShared";
+import RoomIcon from "@mui/icons-material/ViewList";
+import ReportIcon from "@mui/icons-material/Warning";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import { DestinationList, DestinationShow } from "./components/destinations";
 import { ImportFeature } from "./components/ImportFeature";
 import {
   RegistrationTokenCreate,
@@ -75,6 +77,12 @@ const App = () => (
       icon={FolderSharedIcon}
     />
     <Resource
+      name="destinations"
+      list={DestinationList}
+      show={DestinationShow}
+      icon={CloudQueueIcon}
+    />
+    <Resource
       name="registration_tokens"
       list={RegistrationTokenList}
       create={RegistrationTokenCreate}
@@ -90,6 +98,7 @@ const App = () => (
     <Resource name="servernotices" />
     <Resource name="forward_extremities" />
     <Resource name="room_state" />
+    <Resource name="destination_rooms" />
   </Admin>
 );
 

@@ -1,14 +1,14 @@
 import React, { cloneElement, Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import ContactMailIcon from "@material-ui/icons/ContactMail";
-import DevicesIcon from "@material-ui/icons/Devices";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import PermMediaIcon from "@material-ui/icons/PermMedia";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import ViewListIcon from "@material-ui/icons/ViewList";
+import Avatar from "@mui/material/Avatar";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import DevicesIcon from "@mui/icons-material/Devices";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   ArrayInput,
   ArrayField,
@@ -39,6 +39,7 @@ import {
   maxLength,
   regex,
   required,
+  useRecordContext,
   useTranslate,
   Pagination,
   CreateButton,
@@ -70,6 +71,16 @@ const useStyles = makeStyles({
     float: "right",
   },
 });
+
+const choices_medium = [
+  { id: "email", name: "resources.users.email" },
+  { id: "msisdn", name: "resources.users.msisdn" },
+];
+
+const choices_type = [
+  { id: "bot", name: "bot" },
+  { id: "support", name: "support" },
+];
 
 const date_format = {
   year: "numeric",
@@ -249,20 +260,31 @@ export function generateRandomUser() {
   };
 }
 
-const UserEditToolbar = props => {
+const UserEditToolbar = props => (
+  <Toolbar {...props}>
+    <SaveButton submitOnEnter={true} disabled={props.pristine} />
+  </Toolbar>
+);
+
+const UserEditActions = ({ data }) => {
   const translate = useTranslate();
+  var userStatus = "";
+  if (data) {
+    userStatus = data.deactivated;
+  }
+
   return (
-    <Toolbar {...props}>
-      <SaveButton submitOnEnter={true} disabled={props.pristine} />
+    <TopToolbar>
+      {!userStatus && <ServerNoticeButton record={data} />}
       <DeleteButton
+        record={data}
         label="resources.users.action.erase"
         confirmTitle={translate("resources.users.helper.erase", {
           smart_count: 1,
         })}
         mutationMode="pessimistic"
       />
-      <ServerNoticeButton />
-    </Toolbar>
+    </TopToolbar>
   );
 };
 
@@ -276,15 +298,19 @@ export const UserCreate = props => (
         autoComplete="new-password"
         validate={maxLength(512)}
       />
+      <SelectInput
+        source="user_type"
+        choices={choices_type}
+        translateChoice={false}
+        allowEmpty={true}
+        resettable
+      />
       <BooleanInput source="admin" />
       <ArrayInput source="threepids">
         <SimpleFormIterator disableReordering>
           <SelectInput
             source="medium"
-            choices={[
-              { id: "email", name: "resources.users.email" },
-              { id: "msisdn", name: "resources.users.msisdn" },
-            ]}
+            choices={choices_medium}
             validate={required()}
           />
           <TextInput source="address" validate={validateAddress} />
@@ -304,7 +330,8 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = ({ record }) => {
+const UserTitle = props => {
+  const record = useRecordContext();
   const translate = useTranslate();
   return (
     <span>
@@ -315,11 +342,12 @@ const UserTitle = ({ record }) => {
     </span>
   );
 };
+
 export const UserEdit = props => {
   const classes = useStyles();
   const translate = useTranslate();
   return (
-    <Edit {...props} title={<UserTitle />}>
+    <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab
           label={translate("resources.users.name", { smart_count: 1 })}
@@ -332,7 +360,18 @@ export const UserEdit = props => {
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
-          <PasswordInput source="password" autoComplete="new-password" />
+          <PasswordInput
+            source="password"
+            autoComplete="new-password"
+            helperText="resources.users.helper.password"
+          />
+          <SelectInput
+            source="user_type"
+            choices={choices_type}
+            translateChoice={false}
+            allowEmpty={true}
+            resettable
+          />
           <BooleanInput source="admin" />
           <BooleanInput
             source="deactivated"
@@ -349,13 +388,7 @@ export const UserEdit = props => {
         >
           <ArrayInput source="threepids">
             <SimpleFormIterator disableReordering>
-              <SelectInput
-                source="medium"
-                choices={[
-                  { id: "email", name: "resources.users.email" },
-                  { id: "msisdn", name: "resources.users.msisdn" },
-                ]}
-              />
+              <SelectInput source="medium" choices={choices_medium} />
               <TextInput source="address" />
             </SimpleFormIterator>
           </ArrayInput>

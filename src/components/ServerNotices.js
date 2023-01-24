@@ -9,15 +9,18 @@ import {
   useCreate,
   useMutation,
   useNotify,
+  useRecordContext,
   useTranslate,
   useUnselectAll,
 } from "react-admin";
-import MessageIcon from "@material-ui/icons/Message";
-import IconCancel from "@material-ui/icons/Cancel";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import MessageIcon from "@mui/icons-material/Message";
+import IconCancel from "@mui/icons-material/Cancel";
+import {
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   const translate = useTranslate();
@@ -64,7 +67,8 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const ServerNoticeButton = ({ record }) => {
+export const ServerNoticeButton = props => {
+  const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const [create, { loading }] = useCreate("servernotices");
@@ -81,7 +85,9 @@ export const ServerNoticeButton = ({ record }) => {
           handleDialogClose();
         },
         onFailure: () =>
-          notify("resources.servernotices.action.send_failure", "error"),
+          notify("resources.servernotices.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -127,7 +133,9 @@ export const ServerNoticeBulkButton = ({ selectedIds }) => {
           handleDialogClose();
         },
         onFailure: error =>
-          notify("resources.servernotices.action.send_failure", "error"),
+          notify("resources.servernotices.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
