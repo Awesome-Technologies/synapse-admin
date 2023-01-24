@@ -120,8 +120,10 @@ const en = {
         creation_ts_ms: "Creation timestamp",
         consent_version: "Consent version",
         auth_provider: "Provider",
+        user_type: "User type",
       },
       helper: {
+        password: "Changing password will log user out of all sessions.",
         deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
       },

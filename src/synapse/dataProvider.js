@@ -69,7 +69,7 @@ const resourceMap = {
       return json.total_rooms;
     },
     delete: params => ({
-      endpoint: `/_synapse/admin/v1/rooms/${params.id}`,
+      endpoint: `/_synapse/admin/v2/rooms/${params.id}`,
       body: { block: false },
     }),
   },
@@ -298,7 +298,8 @@ const resourceMap = {
 
 function filterNullValues(key, value) {
   // Filtering out null properties
-  if (value === null) {
+  // to reset user_type from user, it must be null
+  if (value === null && key !== "user_type") {
     return undefined;
   }
   return value;
