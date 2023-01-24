@@ -93,7 +93,7 @@ const fr = {
         skipped: "%{smart_count} entrées ignorées",
         download_skipped: "Télécharger les entrées ignorées",
         with_error:
-        "%{smart_count} entrée avec des erreurs ||| %{smart_count} entrées avec des erreurs",
+          "%{smart_count} entrée avec des erreurs ||| %{smart_count} entrées avec des erreurs",
         simulated_only: "L'import était simulé",
       },
     },
@@ -126,7 +126,8 @@ const fr = {
         auth_provider: "Fournisseur d'identité",
       },
       helper: {
-        deactivate: "Vous devrez fournir un mot de passe pour réactiver le compte.",
+        deactivate:
+          "Vous devrez fournir un mot de passe pour réactiver le compte.",
         erase: "Marquer l'utilisateur comme effacé conformément au RGPD",
       },
       action: {
@@ -340,7 +341,8 @@ const fr = {
     room_directory: {
       name: "Répertoire des salons",
       fields: {
-        world_readable: "Tout utilisateur peut avoir un aperçu du salon, sans en devenir membre",
+        world_readable:
+          "Tout utilisateur peut avoir un aperçu du salon, sans en devenir membre",
         guest_can_join: "Les visiteurs peuvent rejoindre le salon",
       },
       action: {
@@ -366,7 +368,10 @@ const fr = {
       expiry_time: "Date d'expiration",
       length: "Longueur",
     },
-    helper: { length: "Longueur du jeton généré aléatoirement si aucun jeton n'est pas spécifié" },
+    helper: {
+      length:
+        "Longueur du jeton généré aléatoirement si aucun jeton n'est pas spécifié",
+    },
   },
 };
 export default fr;
