@@ -10,6 +10,7 @@ const en = {
       username_error: "Please enter fully qualified user ID: '@user:domain'",
       protocol_error: "URL has to start with 'http://' or 'https://'",
       url_error: "Not a valid Matrix server URL",
+      sso_sign_in: "Sign in with SSO",
     },
     users: {
       invalid_user_id: "Localpart of a Matrix user-id without homeserver.",
@@ -119,8 +120,10 @@ const en = {
         creation_ts_ms: "Creation timestamp",
         consent_version: "Consent version",
         auth_provider: "Provider",
+        user_type: "User type",
       },
       helper: {
+        password: "Changing password will log user out of all sessions.",
         deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
       },
@@ -173,10 +176,12 @@ const en = {
         },
         unencrypted: "Unencrypted",
       },
-      erase: {
-        title: "Delete room",
-        content:
-          "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
+      action: {
+        erase: {
+          title: "Delete room",
+          content:
+            "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
+        },
       },
     },
     reports: {
@@ -347,6 +352,19 @@ const en = {
         send_failure: "An error has occurred.",
       },
     },
+  },
+  registration_tokens: {
+    name: "Registration tokens",
+    fields: {
+      token: "Token",
+      valid: "Valid token",
+      uses_allowed: "Uses allowed",
+      pending: "Pending",
+      completed: "Completed",
+      expiry_time: "Expiry time",
+      length: "Length",
+    },
+    helper: { length: "Length of the token if no token is given." },
   },
 };
 export default en;
