@@ -24,7 +24,7 @@ jobs:
           mkdir -p dist
           cp -r build synapse-admin-$version
           tar chvzf dist/synapse-admin-$version.tar.gz synapse-admin-$version
-      - uses: softprops/action-gh-release@b7e450da2a4b4cb4bfbae528f788167786cfcedf
+      - uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844
         with:
           files: dist/*.tar.gz
         env:
