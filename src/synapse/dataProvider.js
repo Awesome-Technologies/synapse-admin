@@ -281,6 +281,34 @@ const resourceMap = {
       method: "PUT",
     }),
   },
+  destinations: {
+    path: "/_synapse/admin/v1/federation/destinations",
+    map: dst => ({
+      ...dst,
+      id: dst.destination,
+    }),
+    data: "destinations",
+    total: json => {
+      return json.total;
+    },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/federation/destinations/${params.id}/reset_connection`,
+      method: "POST",
+    }),
+  },
+  destination_rooms: {
+    map: dstroom => ({
+      ...dstroom,
+      id: dstroom.room_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/federation/destinations/${id}/rooms`,
+    }),
+    data: "rooms",
+    total: json => {
+      return json.total;
+    },
+  },
   registration_tokens: {
     path: "/_synapse/admin/v1/registration_tokens",
     map: rt => ({
@@ -322,8 +350,15 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, name, guests, deactivated, search_term, valid } =
-      params.filter;
+    const {
+      user_id,
+      name,
+      guests,
+      deactivated,
+      search_term,
+      destination,
+      valid,
+    } = params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -333,6 +368,7 @@ const dataProvider = {
       user_id: user_id,
       search_term: search_term,
       name: name,
+      destination: destination,
       guests: guests,
       deactivated: deactivated,
       valid: valid,
