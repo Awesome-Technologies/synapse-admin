@@ -1,8 +1,7 @@
 import React, { Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import { Chip } from "@material-ui/core";
+import { Avatar, Chip } from "@mui/material";
 import { connect } from "react-redux";
-import FolderSharedIcon from "@material-ui/icons/FolderShared";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   BooleanField,

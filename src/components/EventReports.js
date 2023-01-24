@@ -12,8 +12,8 @@ import {
   TextField,
   useTranslate,
 } from "react-admin";
-import PageviewIcon from "@material-ui/icons/Pageview";
-import ViewListIcon from "@material-ui/icons/ViewList";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import ViewListIcon from "@mui/icons-material/ViewList";
 
 const date_format = {
   year: "numeric",

@@ -6,19 +6,19 @@ import {
   Title,
 } from "react-admin";
 import { parse as parseCsv, unparse as unparseCsv } from "papaparse";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import GetAppIcon from "@mui/icons-material/GetApp";
 import {
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
   NativeSelect,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useTranslate } from "ra-core";
-import Container from "@material-ui/core/Container/Container";
 import { generateRandomUser } from "./users";
 
 const LOGGING = true;

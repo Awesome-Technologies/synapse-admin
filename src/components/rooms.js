@@ -25,15 +25,15 @@ import {
 import get from "lodash/get";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { Tooltip, Typography, Chip } from "@material-ui/core";
-import FastForwardIcon from "@material-ui/icons/FastForward";
-import HttpsIcon from "@material-ui/icons/Https";
-import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
-import PageviewIcon from "@material-ui/icons/Pageview";
-import UserIcon from "@material-ui/icons/Group";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import EventIcon from "@material-ui/icons/Event";
+import { Tooltip, Typography, Chip } from "@mui/material";
+import FastForwardIcon from "@mui/icons-material/FastForward";
+import HttpsIcon from "@mui/icons-material/Https";
+import NoEncryptionIcon from "@mui/icons-material/NoEncryption";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import UserIcon from "@mui/icons-material/Group";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EventIcon from "@mui/icons-material/Event";
 import {
   RoomDirectoryBulkDeleteButton,
   RoomDirectoryBulkSaveButton,

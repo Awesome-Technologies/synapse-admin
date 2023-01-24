@@ -7,9 +7,9 @@ import {
   useRecordContext,
   useRefresh,
 } from "react-admin";
-import ActionDelete from "@material-ui/icons/Delete";
+import ActionDelete from "@mui/icons-material/Delete";
 import { makeStyles } from "@material-ui/core/styles";
-import { alpha } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@mui/material/styles";
 import classnames from "classnames";
 
 const useStyles = makeStyles(

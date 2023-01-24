@@ -1,14 +1,14 @@
 import React, { cloneElement, Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
-import ContactMailIcon from "@material-ui/icons/ContactMail";
-import DevicesIcon from "@material-ui/icons/Devices";
-import GetAppIcon from "@material-ui/icons/GetApp";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import PermMediaIcon from "@material-ui/icons/PermMedia";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
-import ViewListIcon from "@material-ui/icons/ViewList";
+import Avatar from "@mui/material/Avatar";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
+import DevicesIcon from "@mui/icons-material/Devices";
+import GetAppIcon from "@mui/icons-material/GetApp";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   ArrayInput,
   ArrayField,

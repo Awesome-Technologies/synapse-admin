@@ -1,10 +1,10 @@
 // in src/Menu.js
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { useMediaQuery } from "@material-ui/core";
+import { useMediaQuery } from "@mui/material";
 import { MenuItemLink, getResources } from "react-admin";
-import DefaultIcon from "@material-ui/icons/ViewList";
-import LabelIcon from "@material-ui/icons/Label";
+import DefaultIcon from "@mui/icons-material/ViewList";
+import LabelIcon from "@mui/icons-material/Label";
 
 const Menu = ({ onMenuClick, logout }) => {
   const isXSmall = useMediaQuery(theme => theme.breakpoints.down("xs"));
