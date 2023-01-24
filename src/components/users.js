@@ -39,6 +39,7 @@ import {
   maxLength,
   regex,
   required,
+  useRecordContext,
   useTranslate,
   Pagination,
   CreateButton,
@@ -330,7 +331,8 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = ({ record }) => {
+const UserTitle = props => {
+  const record = useRecordContext();
   const translate = useTranslate();
   return (
     <span>
@@ -359,7 +361,11 @@ export const UserEdit = props => {
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
-          <PasswordInput source="password" autoComplete="new-password" />
+          <PasswordInput
+            source="password"
+            autoComplete="new-password"
+            helperText="resources.users.helper.password"
+          />
           <SelectInput
             source="user_type"
             choices={choices_type}

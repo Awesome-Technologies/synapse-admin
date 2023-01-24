@@ -41,14 +41,16 @@ const resourceMap = {
     data: "users",
     total: json => json.total,
     create: data => ({
-      endpoint: `/_synapse/admin/v2/users/@${data.id}:${localStorage.getItem(
-        "home_server"
-      )}`,
+      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(
+        data.id
+      )}:${localStorage.getItem("home_server")}`,
       body: data,
       method: "PUT",
     }),
     delete: params => ({
-      endpoint: `/_synapse/admin/v1/deactivate/${params.id}`,
+      endpoint: `/_synapse/admin/v1/deactivate/${encodeURIComponent(
+        params.id
+      )}`,
       body: { erase: true },
       method: "POST",
     }),
@@ -92,10 +94,12 @@ const resourceMap = {
       return json.total;
     },
     reference: id => ({
-      endpoint: `/_synapse/admin/v2/users/${id}/devices`,
+      endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(id)}/devices`,
     }),
     delete: params => ({
-      endpoint: `/_synapse/admin/v2/users/${params.user_id}/devices/${params.id}`,
+      endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(
+        params.user_id
+      )}/devices/${params.id}`,
     }),
   },
   connections: {
@@ -137,7 +141,7 @@ const resourceMap = {
       id: p.pushkey,
     }),
     reference: id => ({
-      endpoint: `/_synapse/admin/v1/users/${id}/pushers`,
+      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/pushers`,
     }),
     data: "pushers",
     total: json => {
@@ -149,7 +153,9 @@ const resourceMap = {
       id: jr,
     }),
     reference: id => ({
-      endpoint: `/_synapse/admin/v1/users/${id}/joined_rooms`,
+      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(
+        id
+      )}/joined_rooms`,
     }),
     data: "joined_rooms",
     total: json => {
@@ -162,7 +168,7 @@ const resourceMap = {
       id: um.media_id,
     }),
     reference: id => ({
-      endpoint: `/_synapse/admin/v1/users/${id}/media`,
+      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/media`,
     }),
     data: "media",
     total: json => {
@@ -275,6 +281,34 @@ const resourceMap = {
       method: "PUT",
     }),
   },
+  destinations: {
+    path: "/_synapse/admin/v1/federation/destinations",
+    map: dst => ({
+      ...dst,
+      id: dst.destination,
+    }),
+    data: "destinations",
+    total: json => {
+      return json.total;
+    },
+    delete: params => ({
+      endpoint: `/_synapse/admin/v1/federation/destinations/${params.id}/reset_connection`,
+      method: "POST",
+    }),
+  },
+  destination_rooms: {
+    map: dstroom => ({
+      ...dstroom,
+      id: dstroom.room_id,
+    }),
+    reference: id => ({
+      endpoint: `/_synapse/admin/v1/federation/destinations/${id}/rooms`,
+    }),
+    data: "rooms",
+    total: json => {
+      return json.total;
+    },
+  },
   registration_tokens: {
     path: "/_synapse/admin/v1/registration_tokens",
     map: rt => ({
@@ -316,8 +350,15 @@ function getSearchOrder(order) {
 const dataProvider = {
   getList: (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, name, guests, deactivated, search_term, valid } =
-      params.filter;
+    const {
+      user_id,
+      name,
+      guests,
+      deactivated,
+      search_term,
+      destination,
+      valid,
+    } = params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -327,6 +368,7 @@ const dataProvider = {
       user_id: user_id,
       search_term: search_term,
       name: name,
+      destination: destination,
       guests: guests,
       deactivated: deactivated,
       valid: valid,
@@ -355,9 +397,11 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${params.id}`).then(({ json }) => ({
-      data: res.map(json),
-    }));
+    return jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`).then(
+      ({ json }) => ({
+        data: res.map(json),
+      })
+    );
   },
 
   getMany: (resource, params) => {
@@ -369,7 +413,9 @@ const dataProvider = {
 
     const endpoint_url = homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${endpoint_url}/${id}`))
+      params.ids.map(id =>
+        jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`)
+      )
     ).then(responses => ({
       data: responses.map(({ json }) => res.map(json)),
       total: responses.length,
@@ -410,7 +456,7 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${params.data.id}`, {
+    return jsonClient(`${endpoint_url}/${encodeURIComponent(params.data.id)}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
     }).then(({ json }) => ({
@@ -427,10 +473,13 @@ const dataProvider = {
 
     const endpoint_url = homeserver + res.path;
     return Promise.all(
-      params.ids.map(id => jsonClient(`${endpoint_url}/${id}`), {
-        method: "PUT",
-        body: JSON.stringify(params.data, filterNullValues),
-      })
+      params.ids.map(
+        id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`),
+        {
+          method: "PUT",
+          body: JSON.stringify(params.data, filterNullValues),
+        }
+      )
     ).then(responses => ({
       data: responses.map(({ json }) => json),
     }));

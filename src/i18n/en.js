@@ -124,6 +124,7 @@ const en = {
         user_type: "User type",
       },
       helper: {
+        password: "Changing password will log user out of all sessions.",
         deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
       },
@@ -351,6 +352,18 @@ const en = {
         send_success: "Room successfully published.",
         send_failure: "An error has occurred.",
       },
+    },
+    destinations: {
+      name: "Federation",
+      fields: {
+        destination: "Destination",
+        failure_ts: "Failure timestamp",
+        retry_last_ts: "Last retry timestamp",
+        retry_interval: "Retry interval",
+        last_successful_stream_ordering: "Last successful stream",
+        stream_ordering: "Stream",
+      },
+      action: { reconnect: "Reconnect" },
     },
   },
   registration_tokens: {

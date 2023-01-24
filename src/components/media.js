@@ -14,6 +14,7 @@ import {
   useCreate,
   useDelete,
   useNotify,
+  useRecordContext,
   useRefresh,
   useTranslate,
 } from "react-admin";
@@ -127,7 +128,9 @@ export const DeleteMediaButton = props => {
           handleDialogClose();
         },
         onFailure: () =>
-          notify("resources.delete_media.action.send_failure", "error"),
+          notify("resources.delete_media.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -152,7 +155,7 @@ export const DeleteMediaButton = props => {
 };
 
 export const ProtectMediaButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
@@ -170,7 +173,9 @@ export const ProtectMediaButton = props => {
           refresh();
         },
         onFailure: () =>
-          notify("resources.protect_media.action.send_failure", "error"),
+          notify("resources.protect_media.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -184,7 +189,9 @@ export const ProtectMediaButton = props => {
           refresh();
         },
         onFailure: () =>
-          notify("resources.protect_media.action.send_failure", "error"),
+          notify("resources.protect_media.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -244,7 +251,7 @@ export const ProtectMediaButton = props => {
 };
 
 export const QuarantineMediaButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
@@ -262,7 +269,9 @@ export const QuarantineMediaButton = props => {
           refresh();
         },
         onFailure: () =>
-          notify("resources.quarantine_media.action.send_failure", "error"),
+          notify("resources.quarantine_media.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -276,7 +285,9 @@ export const QuarantineMediaButton = props => {
           refresh();
         },
         onFailure: () =>
-          notify("resources.quarantine_media.action.send_failure", "error"),
+          notify("resources.quarantine_media.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
