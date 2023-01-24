@@ -1,5 +1,12 @@
 import React, { Fragment, useState } from "react";
-import { Button, useDelete, useNotify, Confirm, useRefresh } from "react-admin";
+import {
+  Button,
+  useDelete,
+  useNotify,
+  Confirm,
+  useRecordContext,
+  useRefresh,
+} from "react-admin";
 import ActionDelete from "@mui/icons-material/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { alpha } from "@mui/material/styles";
@@ -22,7 +29,7 @@ const useStyles = makeStyles(
 );
 
 export const DeviceRemoveButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();

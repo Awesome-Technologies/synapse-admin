@@ -39,6 +39,7 @@ import {
   maxLength,
   regex,
   required,
+  useRecordContext,
   useTranslate,
   Pagination,
   CreateButton,
@@ -329,7 +330,8 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = ({ record }) => {
+const UserTitle = props => {
+  const record = useRecordContext();
   const translate = useTranslate();
   return (
     <span>

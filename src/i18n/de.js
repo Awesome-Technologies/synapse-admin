@@ -355,6 +355,18 @@ const de = {
         send_failure: "Beim Entfernen ist ein Fehler aufgetreten.",
       },
     },
+    destinations: {
+      name: "Föderation",
+      fields: {
+        destination: "Ziel",
+        failure_ts: "Fehlerzeitpunkt",
+        retry_last_ts: "Letzter Wiederholungsversuch",
+        retry_interval: "Wiederholungsintervall",
+        last_successful_stream_ordering: "letzte erfogreicher Stream",
+        stream_ordering: "Stream",
+      },
+      action: { reconnect: "Neu verbinden" },
+    },
     registration_tokens: {
       name: "Registrierungstoken",
       fields: {

@@ -13,6 +13,7 @@ import {
   useCreate,
   useDelete,
   useNotify,
+  useRecordContext,
   useRefresh,
   useTranslate,
 } from "react-admin";
@@ -156,7 +157,7 @@ export const DeleteMediaButton = props => {
 };
 
 export const ProtectMediaButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
@@ -252,7 +253,7 @@ export const ProtectMediaButton = props => {
 };
 
 export const QuarantineMediaButton = props => {
-  const { record } = props;
+  const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
