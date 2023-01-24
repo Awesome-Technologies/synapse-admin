@@ -19,6 +19,7 @@ import {
   useMutation,
   useNotify,
   useTranslate,
+  useRecordContext,
   useRefresh,
   useUnselectAll,
 } from "react-admin";
@@ -105,7 +106,8 @@ export const RoomDirectoryBulkSaveButton = ({ selectedIds }) => {
   );
 };
 
-export const RoomDirectorySaveButton = ({ record }) => {
+export const RoomDirectorySaveButton = props => {
+  const record = useRecordContext();
   const notify = useNotify();
   const refresh = useRefresh();
   const [create, { loading }] = useCreate("room_directory");

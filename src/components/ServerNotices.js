@@ -9,6 +9,7 @@ import {
   useCreate,
   useMutation,
   useNotify,
+  useRecordContext,
   useTranslate,
   useUnselectAll,
 } from "react-admin";
@@ -64,7 +65,8 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const ServerNoticeButton = ({ record }) => {
+export const ServerNoticeButton = props => {
+  const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const [create, { loading }] = useCreate("servernotices");
