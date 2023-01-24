@@ -72,6 +72,25 @@ const useStyles = makeStyles({
   },
 });
 
+const choices_medium = [
+  { id: "email", name: "resources.users.email" },
+  { id: "msisdn", name: "resources.users.msisdn" },
+];
+
+const choices_type = [
+  { id: "bot", name: "bot" },
+  { id: "support", name: "support" },
+];
+
+const date_format = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+};
+
 const UserListActions = ({
   currentSort,
   className,
@@ -181,14 +200,7 @@ export const UserList = props => {
           source="creation_ts"
           label="resources.users.fields.creation_ts_ms"
           showTime
-          options={{
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          }}
+          options={date_format}
         />
       </Datagrid>
     </List>
@@ -248,20 +260,31 @@ export function generateRandomUser() {
   };
 }
 
-const UserEditToolbar = props => {
+const UserEditToolbar = props => (
+  <Toolbar {...props}>
+    <SaveButton submitOnEnter={true} disabled={props.pristine} />
+  </Toolbar>
+);
+
+const UserEditActions = ({ data }) => {
   const translate = useTranslate();
+  var userStatus = "";
+  if (data) {
+    userStatus = data.deactivated;
+  }
+
   return (
-    <Toolbar {...props}>
-      <SaveButton submitOnEnter={true} disabled={props.pristine} />
+    <TopToolbar>
+      {!userStatus && <ServerNoticeButton record={data} />}
       <DeleteButton
+        record={data}
         label="resources.users.action.erase"
         confirmTitle={translate("resources.users.helper.erase", {
           smart_count: 1,
         })}
         mutationMode="pessimistic"
       />
-      <ServerNoticeButton />
-    </Toolbar>
+    </TopToolbar>
   );
 };
 
@@ -275,22 +298,26 @@ export const UserCreate = props => (
         autoComplete="new-password"
         validate={maxLength(512)}
       />
+      <SelectInput
+        source="user_type"
+        choices={choices_type}
+        translateChoice={false}
+        allowEmpty={true}
+        resettable
+      />
       <BooleanInput source="admin" />
       <ArrayInput source="threepids">
-        <SimpleFormIterator>
+        <SimpleFormIterator disableReordering>
           <SelectInput
             source="medium"
-            choices={[
-              { id: "email", name: "resources.users.email" },
-              { id: "msisdn", name: "resources.users.msisdn" },
-            ]}
+            choices={choices_medium}
             validate={required()}
           />
           <TextInput source="address" validate={validateAddress} />
         </SimpleFormIterator>
       </ArrayInput>
       <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
-        <SimpleFormIterator>
+        <SimpleFormIterator disableReordering>
           <TextInput source="auth_provider" validate={required()} />
           <TextInput
             source="external_id"
@@ -315,11 +342,12 @@ const UserTitle = props => {
     </span>
   );
 };
+
 export const UserEdit = props => {
   const classes = useStyles();
   const translate = useTranslate();
   return (
-    <Edit {...props} title={<UserTitle />}>
+    <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab
           label={translate("resources.users.name", { smart_count: 1 })}
@@ -332,24 +360,24 @@ export const UserEdit = props => {
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
-          <PasswordInput source="password" autoComplete="new-password" />
+          <PasswordInput
+            source="password"
+            autoComplete="new-password"
+            helperText="resources.users.helper.password"
+          />
+          <SelectInput
+            source="user_type"
+            choices={choices_type}
+            translateChoice={false}
+            allowEmpty={true}
+            resettable
+          />
           <BooleanInput source="admin" />
           <BooleanInput
             source="deactivated"
             helperText="resources.users.helper.deactivate"
           />
-          <DateField
-            source="creation_ts_ms"
-            showTime
-            options={{
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-            }}
-          />
+          <DateField source="creation_ts_ms" showTime options={date_format} />
           <TextField source="consent_version" />
         </FormTab>
 
@@ -359,14 +387,8 @@ export const UserEdit = props => {
           path="threepid"
         >
           <ArrayInput source="threepids">
-            <SimpleFormIterator>
-              <SelectInput
-                source="medium"
-                choices={[
-                  { id: "email", name: "resources.users.email" },
-                  { id: "msisdn", name: "resources.users.msisdn" },
-                ]}
-              />
+            <SimpleFormIterator disableReordering>
+              <SelectInput source="medium" choices={choices_medium} />
               <TextInput source="address" />
             </SimpleFormIterator>
           </ArrayInput>
@@ -378,7 +400,7 @@ export const UserEdit = props => {
           path="sso"
         >
           <ArrayInput source="external_ids" label={false}>
-            <SimpleFormIterator>
+            <SimpleFormIterator disableReordering>
               <TextInput source="auth_provider" validate={required()} />
               <TextInput
                 source="external_id"
@@ -406,14 +428,7 @@ export const UserEdit = props => {
               <DateField
                 source="last_seen_ts"
                 showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
+                options={date_format}
                 sortable={false}
               />
               <DeviceRemoveButton />
@@ -441,14 +456,7 @@ export const UserEdit = props => {
                 <DateField
                   source="last_seen"
                   showTime
-                  options={{
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                  }}
+                  options={date_format}
                   sortable={false}
                 />
                 <TextField
@@ -475,29 +483,11 @@ export const UserEdit = props => {
             sort={{ field: "created_ts", order: "DESC" }}
           >
             <Datagrid style={{ width: "100%" }}>
-              <DateField
-                source="created_ts"
-                showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
-              />
+              <DateField source="created_ts" showTime options={date_format} />
               <DateField
                 source="last_access_ts"
                 showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
+                options={date_format}
               />
               <TextField source="media_id" />
               <NumberField source="media_length" />

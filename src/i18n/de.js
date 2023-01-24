@@ -10,6 +10,7 @@ const de = {
       username_error: "Bitte vollständigen Nutzernamen angeben: '@user:domain'",
       protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
       url_error: "Keine gültige Matrix Server URL",
+      sso_sign_in: "Anmeldung mit SSO",
     },
     users: {
       invalid_user_id: "Lokaler Anteil der Matrix Benutzer-ID ohne Homeserver.",
@@ -96,7 +97,6 @@ const de = {
   },
   resources: {
     users: {
-      backtolist: "Zurück zur Liste",
       name: "Benutzer",
       email: "E-Mail",
       msisdn: "Telefon",
@@ -121,8 +121,11 @@ const de = {
         creation_ts_ms: "Zeitpunkt der Erstellung",
         consent_version: "Zugestimmte Geschäftsbedingungen",
         auth_provider: "Provider",
+        user_type: "Benutzertyp",
       },
       helper: {
+        password:
+          "Durch die Änderung des Passworts wird der Benutzer von allen Sitzungen abgemeldet.",
         deactivate:
           "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
@@ -352,6 +355,19 @@ const de = {
         send_failure: "Beim Entfernen ist ein Fehler aufgetreten.",
       },
     },
+    registration_tokens: {
+      name: "Registrierungstoken",
+      fields: {
+        token: "Token",
+        valid: "Gültige Token",
+        uses_allowed: "Anzahl",
+        pending: "Ausstehend",
+        completed: "Abgeschlossen",
+        expiry_time: "Ablaufzeit",
+        length: "Länge",
+      },
+      helper: { length: "Länge des Tokens, wenn kein Token vorgegeben wird." },
+    },
   },
   ra: {
     ...germanMessages.ra,
@@ -372,7 +388,7 @@ const de = {
       },
     },
     notification: {
-      ...germanMessages.ra.notifiaction,
+      ...germanMessages.ra.notification,
       logged_out: "Abgemeldet",
     },
     page: {
