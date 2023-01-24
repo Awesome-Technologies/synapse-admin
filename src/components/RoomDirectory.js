@@ -86,7 +86,9 @@ export const RoomDirectoryBulkSaveButton = ({ selectedIds }) => {
           refresh();
         },
         onFailure: error =>
-          notify("resources.room_directory.action.send_failure", "error"),
+          notify("resources.room_directory.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
@@ -118,7 +120,9 @@ export const RoomDirectorySaveButton = ({ record }) => {
           refresh();
         },
         onFailure: error =>
-          notify("resources.room_directory.action.send_failure", "error"),
+          notify("resources.room_directory.action.send_failure", {
+            type: "error",
+          }),
       }
     );
   };
