@@ -10,7 +10,7 @@
     "url": "https://github.com/Awesome-Technologies/synapse-admin"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.1.1",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^14.4.3",
     "eslint": "^8.32.0",
