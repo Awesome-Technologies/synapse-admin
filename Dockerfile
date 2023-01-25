@@ -7,7 +7,7 @@ ARG REACT_APP_SERVER
 WORKDIR /src
 
 COPY . /src
-RUN yarn --network-timeout=100000 install
+RUN yarn --network-timeout=300000 install
 RUN PUBLIC_URL=$PUBLIC_URL REACT_APP_SERVER=$REACT_APP_SERVER yarn build
 
 
