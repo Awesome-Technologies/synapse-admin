@@ -1,5 +1,7 @@
 import React from "react";
 import { Admin, Resource, resolveBrowserLocale } from "react-admin";
+import { StylesProvider, createGenerateClassName } from "@mui/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
@@ -41,65 +43,84 @@ const i18nProvider = polyglotI18nProvider(
   resolveBrowserLocale()
 );
 
+const defaultTheme = createTheme();
+const generateClassName = createGenerateClassName({
+  disableGlobal: true,
+  seed: "mui-jss",
+});
+
 const App = () => (
-  <Admin
-    disableTelemetry
-    loginPage={LoginPage}
-    authProvider={authProvider}
-    dataProvider={dataProvider}
-    i18nProvider={i18nProvider}
-    customRoutes={[
-      <Route key="userImport" path="/import_users" component={ImportFeature} />,
-    ]}
-  >
-    <Resource
-      name="users"
-      list={UserList}
-      create={UserCreate}
-      edit={UserEdit}
-      icon={UserIcon}
-    />
-    <Resource name="rooms" list={RoomList} show={RoomShow} icon={RoomIcon} />
-    <Resource
-      name="user_media_statistics"
-      list={UserMediaStatsList}
-      icon={EqualizerIcon}
-    />
-    <Resource
-      name="reports"
-      list={ReportList}
-      show={ReportShow}
-      icon={ReportIcon}
-    />
-    <Resource
-      name="room_directory"
-      list={RoomDirectoryList}
-      icon={FolderSharedIcon}
-    />
-    <Resource
-      name="destinations"
-      list={DestinationList}
-      show={DestinationShow}
-      icon={CloudQueueIcon}
-    />
-    <Resource
-      name="registration_tokens"
-      list={RegistrationTokenList}
-      create={RegistrationTokenCreate}
-      edit={RegistrationTokenEdit}
-      icon={ConfirmationNumberIcon}
-    />
-    <Resource name="connections" />
-    <Resource name="devices" />
-    <Resource name="room_members" />
-    <Resource name="users_media" />
-    <Resource name="joined_rooms" />
-    <Resource name="pushers" />
-    <Resource name="servernotices" />
-    <Resource name="forward_extremities" />
-    <Resource name="room_state" />
-    <Resource name="destination_rooms" />
-  </Admin>
+  <StylesProvider generateClassName={generateClassName}>
+    <ThemeProvider theme={defaultTheme}>
+      <Admin
+        disableTelemetry
+        loginPage={LoginPage}
+        authProvider={authProvider}
+        dataProvider={dataProvider}
+        i18nProvider={i18nProvider}
+        customRoutes={[
+          <Route
+            key="userImport"
+            path="/import_users"
+            component={ImportFeature}
+          />,
+        ]}
+      >
+        <Resource
+          name="users"
+          list={UserList}
+          create={UserCreate}
+          edit={UserEdit}
+          icon={UserIcon}
+        />
+        <Resource
+          name="rooms"
+          list={RoomList}
+          show={RoomShow}
+          icon={RoomIcon}
+        />
+        <Resource
+          name="user_media_statistics"
+          list={UserMediaStatsList}
+          icon={EqualizerIcon}
+        />
+        <Resource
+          name="reports"
+          list={ReportList}
+          show={ReportShow}
+          icon={ReportIcon}
+        />
+        <Resource
+          name="room_directory"
+          list={RoomDirectoryList}
+          icon={FolderSharedIcon}
+        />
+        <Resource
+          name="destinations"
+          list={DestinationList}
+          show={DestinationShow}
+          icon={CloudQueueIcon}
+        />
+        <Resource
+          name="registration_tokens"
+          list={RegistrationTokenList}
+          create={RegistrationTokenCreate}
+          edit={RegistrationTokenEdit}
+          icon={ConfirmationNumberIcon}
+        />
+        <Resource name="connections" />
+        <Resource name="devices" />
+        <Resource name="room_members" />
+        <Resource name="users_media" />
+        <Resource name="joined_rooms" />
+        <Resource name="pushers" />
+        <Resource name="servernotices" />
+        <Resource name="forward_extremities" />
+        <Resource name="room_state" />
+        <Resource name="destination_rooms" />
+      </Admin>
+    </ThemeProvider>
+  </StylesProvider>
 );
 
 export default App;

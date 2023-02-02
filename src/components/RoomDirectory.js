@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Avatar, Chip } from "@mui/material";
 import { connect } from "react-redux";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import {
   BooleanField,
   BulkDeleteButton,

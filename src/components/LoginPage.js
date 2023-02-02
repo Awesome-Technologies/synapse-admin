@@ -22,7 +22,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import LockIcon from "@mui/icons-material/Lock";
 
 const useStyles = makeStyles(theme => ({
@@ -345,7 +345,6 @@ const LoginPage = ({ theme }) => {
                   type="submit"
                   color="primary"
                   disabled={loading || !supportPassAuth}
-                  className={classes.button}
                   fullWidth
                 >
                   {loading && <CircularProgress size={25} thickness={2} />}
@@ -356,7 +355,6 @@ const LoginPage = ({ theme }) => {
                   color="secondary"
                   onClick={handleSSO}
                   disabled={loading || ssoBaseUrl === ""}
-                  className={classes.button}
                   fullWidth
                 >
                   {loading && <CircularProgress size={25} thickness={2} />}

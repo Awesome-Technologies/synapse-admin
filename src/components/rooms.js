@@ -24,7 +24,7 @@ import {
 } from "react-admin";
 import get from "lodash/get";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 import { Tooltip, Typography, Chip } from "@mui/material";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import HttpsIcon from "@mui/icons-material/Https";

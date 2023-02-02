@@ -52,7 +52,7 @@ import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { ProtectMediaButton, QuarantineMediaButton } from "./media";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 const redirect = () => {
   return {
