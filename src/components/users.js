@@ -174,7 +174,7 @@ export const UserList = props => {
       <Datagrid rowClick="edit">
         <AvatarField
           source="avatar_src"
-          sx={{ height: "40", width: "40" }}
+          sx={{ height: "40px", width: "40px" }}
           sortBy="avatar_url"
         />
         <TextField source="id" sortBy="name" />
@@ -341,7 +341,7 @@ export const UserEdit = props => {
           <AvatarField
             source="avatar_src"
             sortable={false}
-            sx={{ height: "120", width: "120", float: "right" }}
+            sx={{ height: "120px", width: "120px", float: "right" }}
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
