@@ -7,7 +7,7 @@ import DefaultIcon from "@mui/icons-material/ViewList";
 import LabelIcon from "@mui/icons-material/Label";
 
 const Menu = ({ onMenuClick, logout }) => {
-  const isXSmall = useMediaQuery(theme => theme.breakpoints.down("xs"));
+  const isXSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
   const open = useSelector(state => state.admin.ui.sidebarOpen);
   const resources = useSelector(getResources);
   return (

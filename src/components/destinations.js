@@ -20,9 +20,9 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
-import AutorenewIcon from "@material-ui/icons/Autorenew";
-import FolderSharedIcon from "@material-ui/icons/FolderShared";
-import ViewListIcon from "@material-ui/icons/ViewList";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import ViewListIcon from "@mui/icons-material/ViewList";
 
 const DestinationPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
