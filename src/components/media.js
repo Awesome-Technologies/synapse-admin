@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import classnames from "classnames";
 import { alpha } from "@mui/material/styles";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import {
   BooleanInput,
   Button,

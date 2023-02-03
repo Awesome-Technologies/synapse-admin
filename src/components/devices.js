@@ -8,7 +8,7 @@ import {
   useRefresh,
 } from "react-admin";
 import ActionDelete from "@mui/icons-material/Delete";
-import { makeStyles } from "@mui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { alpha } from "@mui/material/styles";
 import classnames from "classnames";
 
