@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  Button as ReactAdminButton,
-  useDataProvider,
-  useNotify,
-  Title,
-} from "react-admin";
+import { useDataProvider, useNotify, Title } from "react-admin";
 import { parse as parseCsv, unparse as unparseCsv } from "papaparse";
-import GetAppIcon from "@mui/icons-material/GetApp";
 import {
   Button,
   Card,

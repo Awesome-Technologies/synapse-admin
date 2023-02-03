@@ -117,7 +117,7 @@ const UserListActions = ({
       />
       {/* Add your custom actions */}
       <Button component={Link} to={redirect} label="CSV Import">
-        <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
+        <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
       </Button>
     </TopToolbar>
   );
