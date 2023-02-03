@@ -52,25 +52,12 @@ import { Link } from "react-router-dom";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { ProtectMediaButton, QuarantineMediaButton } from "./media";
-import { makeStyles } from "@mui/styles";
 
 const redirect = () => {
   return {
     pathname: "/import_users",
   };
 };
-
-const useStyles = makeStyles({
-  small: {
-    height: "40px",
-    width: "40px",
-  },
-  large: {
-    height: "120px",
-    width: "120px",
-    float: "right",
-  },
-});
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -169,12 +156,11 @@ const UserBulkActionButtons = props => (
   </Fragment>
 );
 
-const AvatarField = ({ source, className, record = {} }) => (
-  <Avatar src={record[source]} className={className} />
+const AvatarField = ({ source, record, sx }) => (
+  <Avatar src={record[source]} sx={sx} />
 );
 
 export const UserList = props => {
-  const classes = useStyles();
   return (
     <List
       {...props}
@@ -188,7 +174,7 @@ export const UserList = props => {
       <Datagrid rowClick="edit">
         <AvatarField
           source="avatar_src"
-          className={classes.small}
+          sx={{ height: "40", width: "40" }}
           sortBy="avatar_url"
         />
         <TextField source="id" sortBy="name" />
@@ -344,7 +330,6 @@ const UserTitle = props => {
 };
 
 export const UserEdit = props => {
-  const classes = useStyles();
   const translate = useTranslate();
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
@@ -356,7 +341,7 @@ export const UserEdit = props => {
           <AvatarField
             source="avatar_src"
             sortable={false}
-            className={classes.large}
+            sx={{ height: "120", width: "120", float: "right" }}
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
