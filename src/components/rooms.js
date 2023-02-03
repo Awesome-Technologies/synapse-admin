@@ -24,8 +24,8 @@ import {
 } from "react-admin";
 import get from "lodash/get";
 import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
 import { Tooltip, Typography, Chip } from "@mui/material";
+import Box from "@mui/material/Box";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import HttpsIcon from "@mui/icons-material/Https";
 import NoEncryptionIcon from "@mui/icons-material/NoEncryption";
@@ -49,13 +49,6 @@ const date_format = {
   minute: "2-digit",
   second: "2-digit",
 };
-
-const useStyles = makeStyles(theme => ({
-  helper_forward_extremities: {
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    margin: "0.5em",
-  },
-}));
 
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -129,7 +122,6 @@ const RoomShowActions = ({ basePath, data, resource }) => {
 };
 
 export const RoomShow = props => {
-  const classes = useStyles({ props });
   const translate = useTranslate();
   return (
     <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
@@ -281,9 +273,14 @@ export const RoomShow = props => {
           icon={<FastForwardIcon />}
           path="forward_extremities"
         >
-          <div className={classes.helper_forward_extremities}>
+          <Box
+            sx={{
+              fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+              margin: "0.5em",
+            }}
+          >
             {translate("resources.rooms.helper.forward_extremities")}
-          </div>
+          </Box>
           <ReferenceManyField
             reference="forward_extremities"
             target="room_id"
@@ -329,25 +326,25 @@ const RoomFilter = ({ ...props }) => {
         label={translate("resources.rooms.fields.joined_local_members")}
         source="joined_local_members"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
       <Chip
         label={translate("resources.rooms.fields.state_events")}
         source="state_events"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
       <Chip
         label={translate("resources.rooms.fields.version")}
         source="version"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
       <Chip
         label={translate("resources.rooms.fields.federatable")}
         source="federatable"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
     </Filter>
   );
