@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import { Avatar, Chip } from "@mui/material";
 import { connect } from "react-redux";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
-import { makeStyles } from "@mui/styles";
 import {
   BooleanField,
   BulkDeleteButton,
@@ -22,13 +21,6 @@ import {
   useRefresh,
   useUnselectAll,
 } from "react-admin";
-
-const useStyles = makeStyles({
-  small: {
-    height: "40px",
-    width: "40px",
-  },
-});
 
 const RoomDirectoryPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[100, 500, 1000, 2000]} />
@@ -158,19 +150,19 @@ const RoomDirectoryFilter = ({ ...props }) => {
         label={translate("resources.rooms.fields.room_id")}
         source="room_id"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
       <Chip
         label={translate("resources.rooms.fields.topic")}
         source="topic"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
       <Chip
         label={translate("resources.rooms.fields.canonical_alias")}
         source="canonical_alias"
         defaultValue={false}
-        style={{ marginBottom: 8 }}
+        sx={{ marginBottom: "8px" }}
       />
     </Filter>
   );
@@ -181,7 +173,6 @@ export const FilterableRoomDirectoryList = ({
   dispatch,
   ...props
 }) => {
-  const classes = useStyles();
   const filter = roomDirectoryFilters;
   const roomIdFilter = filter && filter.room_id ? true : false;
   const topicFilter = filter && filter.topic ? true : false;
@@ -199,7 +190,7 @@ export const FilterableRoomDirectoryList = ({
         <AvatarField
           source="avatar_src"
           sortable={false}
-          className={classes.small}
+          sx={{ height: "40px", width: "40px" }}
           label="resources.rooms.fields.avatar"
         />
         <TextField
