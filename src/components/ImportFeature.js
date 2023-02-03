@@ -23,19 +23,6 @@ import { generateRandomUser } from "./users";
 
 const LOGGING = true;
 
-export const ImportButton = ({ label, variant = "text" }) => {
-  return (
-    <ReactAdminButton
-      color="primary"
-      component="span"
-      variant={variant}
-      label={label}
-    >
-      <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
-    </ReactAdminButton>
-  );
-};
-
 const expectedFields = ["id", "displayname"].sort();
 const optionalFields = [
   "user_type",
