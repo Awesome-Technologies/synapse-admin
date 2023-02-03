@@ -156,7 +156,7 @@ const UserBulkActionButtons = props => (
   </Fragment>
 );
 
-const AvatarField = ({ source, record, sx }) => (
+const AvatarField = ({ source, record = {}, sx }) => (
   <Avatar src={record[source]} sx={sx} />
 );
 
