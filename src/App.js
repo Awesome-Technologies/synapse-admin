@@ -43,7 +43,7 @@ const i18nProvider = polyglotI18nProvider(
   resolveBrowserLocale()
 );
 
-const defaultTheme = createTheme();
+const theme = createTheme();
 const generateClassName = createGenerateClassName({
   disableGlobal: true,
   seed: "mui-jss",
@@ -51,7 +51,7 @@ const generateClassName = createGenerateClassName({
 
 const App = () => (
   <StylesProvider generateClassName={generateClassName}>
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <Admin
         disableTelemetry
         loginPage={LoginPage}
