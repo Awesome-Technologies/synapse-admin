@@ -8,29 +8,11 @@ import {
   useRefresh,
 } from "react-admin";
 import ActionDelete from "@mui/icons-material/Delete";
-import { makeStyles } from "@material-ui/core/styles";
-import { alpha } from "@mui/material/styles";
-import classnames from "classnames";
-
-const useStyles = makeStyles(
-  theme => ({
-    deleteButton: {
-      color: theme.palette.error.main,
-      "&:hover": {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
-        // Reset on mouse devices
-        "@media (hover: none)": {
-          backgroundColor: "transparent",
-        },
-      },
-    },
-  }),
-  { name: "RaDeleteDeviceButton" }
-);
+import { alpha, useTheme } from "@mui/material/styles";
 
 export const DeviceRemoveButton = props => {
+  const theme = useTheme();
   const record = useRecordContext();
-  const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const notify = useNotify();
@@ -63,7 +45,16 @@ export const DeviceRemoveButton = props => {
       <Button
         label="ra.action.remove"
         onClick={handleClick}
-        className={classnames("ra-delete-button", classes.deleteButton)}
+        sx={{
+          color: theme.palette.error.main,
+          "&:hover": {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            "@media (hover: none)": {
+              backgroundColor: "transparent",
+            },
+          },
+        }}
       >
         <ActionDelete />
       </Button>

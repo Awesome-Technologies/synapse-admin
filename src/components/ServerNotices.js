@@ -7,12 +7,13 @@ import {
   Toolbar,
   required,
   useCreate,
-  useMutation,
+  useListContext,
   useNotify,
   useRecordContext,
   useTranslate,
   useUnselectAll,
 } from "react-admin";
+import { useMutation } from "react-query";
 import MessageIcon from "@mui/icons-material/Message";
 import IconCancel from "@mui/icons-material/Cancel";
 import {
@@ -48,7 +49,6 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
         </DialogContentText>
         <SimpleForm
           toolbar={<ServerNoticeToolbar />}
-          submitOnEnter={false}
           redirect={false}
           save={onSend}
         >
@@ -67,11 +67,11 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const ServerNoticeButton = props => {
+export const ServerNoticeButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [create, { loading }] = useCreate("servernotices");
+  const [create, { isloading }] = useCreate("servernotices");
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
@@ -84,7 +84,7 @@ export const ServerNoticeButton = props => {
           notify("resources.servernotices.action.send_success");
           handleDialogClose();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.servernotices.action.send_failure", {
             type: "error",
           }),
@@ -97,7 +97,7 @@ export const ServerNoticeButton = props => {
       <Button
         label="resources.servernotices.send"
         onClick={handleDialogOpen}
-        disabled={loading}
+        disabled={isloading}
       >
         <MessageIcon />
       </Button>
@@ -110,29 +110,26 @@ export const ServerNoticeButton = props => {
   );
 };
 
-export const ServerNoticeBulkButton = ({ selectedIds }) => {
+export const ServerNoticeBulkButton = () => {
+  const { selectedIds } = useListContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const unselectAll = useUnselectAll();
-  const [createMany, { loading }] = useMutation();
+  const { createMany, isloading } = useMutation();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
     createMany(
+      ["servernotices", "createMany", { ids: selectedIds, data: values }],
       {
-        type: "createMany",
-        resource: "servernotices",
-        payload: { ids: selectedIds, data: values },
-      },
-      {
-        onSuccess: ({ data }) => {
+        onSuccess: data => {
           notify("resources.servernotices.action.send_success");
           unselectAll("users");
           handleDialogClose();
         },
-        onFailure: error =>
+        onError: error =>
           notify("resources.servernotices.action.send_failure", {
             type: "error",
           }),
@@ -145,7 +142,7 @@ export const ServerNoticeBulkButton = ({ selectedIds }) => {
       <Button
         label="resources.servernotices.send"
         onClick={handleDialogOpen}
-        disabled={loading}
+        disabled={isloading}
       >
         <MessageIcon />
       </Button>

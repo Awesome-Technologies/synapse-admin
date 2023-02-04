@@ -1,5 +1,10 @@
 import React from "react";
-import { Admin, Resource, resolveBrowserLocale } from "react-admin";
+import {
+  Admin,
+  CustomRoutes,
+  Resource,
+  resolveBrowserLocale,
+} from "react-admin";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
@@ -50,10 +55,10 @@ const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
-    customRoutes={[
-      <Route key="userImport" path="/import_users" component={ImportFeature} />,
-    ]}
   >
+    <CustomRoutes>
+      <Route path="/import_users" element={<ImportFeature />} />
+    </CustomRoutes>
     <Resource
       name="users"
       list={UserList}

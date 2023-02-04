@@ -1,5 +1,4 @@
 import React, { cloneElement, Fragment } from "react";
-import Avatar from "@mui/material/Avatar";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DevicesIcon from "@mui/icons-material/Devices";
@@ -49,15 +48,10 @@ import {
   NumberField,
 } from "react-admin";
 import { Link } from "react-router-dom";
+import AvatarField from "./AvatarField";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { ProtectMediaButton, QuarantineMediaButton } from "./media";
-
-const redirect = () => {
-  return {
-    pathname: "/import_users",
-  };
-};
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -88,7 +82,6 @@ const UserListActions = ({
   filterValues,
   permanentFilter,
   hasCreate, // you can hide CreateButton if hasCreate = false
-  basePath,
   selectedIds,
   onUnselectItems,
   showFilter,
@@ -106,7 +99,7 @@ const UserListActions = ({
           filterValues,
           context: "button",
         })}
-      <CreateButton basePath={basePath} />
+      <CreateButton />
       <ExportButton
         disabled={total === 0}
         resource={resource}
@@ -116,7 +109,7 @@ const UserListActions = ({
         maxResults={maxResults}
       />
       {/* Add your custom actions */}
-      <Button component={Link} to={redirect} label="CSV Import">
+      <Button component={Link} to="/import_users" label="CSV Import">
         <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
       </Button>
     </TopToolbar>
@@ -156,10 +149,6 @@ const UserBulkActionButtons = props => (
   </Fragment>
 );
 
-const AvatarField = ({ source, record = {}, sx }) => (
-  <Avatar src={record[source]} sx={sx} />
-);
-
 export const UserList = props => {
   return (
     <List
@@ -168,10 +157,9 @@ export const UserList = props => {
       filterDefaultValues={{ guests: true, deactivated: false }}
       sort={{ field: "name", order: "ASC" }}
       actions={<UserListActions maxResults={10000} />}
-      bulkActionButtons={<UserBulkActionButtons />}
       pagination={<UserPagination />}
     >
-      <Datagrid rowClick="edit">
+      <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
         <AvatarField
           source="avatar_src"
           sx={{ height: "40px", width: "40px" }}
@@ -248,7 +236,7 @@ export function generateRandomUser() {
 
 const UserEditToolbar = props => (
   <Toolbar {...props}>
-    <SaveButton submitOnEnter={true} disabled={props.pristine} />
+    <SaveButton disabled={props.pristine} />
   </Toolbar>
 );
 
@@ -288,7 +276,6 @@ export const UserCreate = props => (
         source="user_type"
         choices={choices_type}
         translateChoice={false}
-        allowEmpty={true}
         resettable
       />
       <BooleanInput source="admin" />
@@ -354,7 +341,6 @@ export const UserEdit = props => {
             source="user_type"
             choices={choices_type}
             translateChoice={false}
-            allowEmpty={true}
             resettable
           />
           <BooleanInput source="admin" />
@@ -498,7 +484,7 @@ export const UserEdit = props => {
           >
             <Datagrid
               style={{ width: "100%" }}
-              rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}
+              rowClick={(id, resource, record) => "/rooms/" + id + "/show"}
             >
               <TextField
                 source="id"

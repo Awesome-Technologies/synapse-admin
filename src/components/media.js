@@ -1,7 +1,4 @@
 import React, { Fragment, useState } from "react";
-import classnames from "classnames";
-import { alpha } from "@mui/material/styles";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   BooleanInput,
   Button,
@@ -30,22 +27,7 @@ import {
 import IconCancel from "@mui/icons-material/Cancel";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-
-const useStyles = makeStyles(
-  theme => ({
-    deleteButton: {
-      color: theme.palette.error.main,
-      "&:hover": {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
-        // Reset on mouse devices
-        "@media (hover: none)": {
-          backgroundColor: "transparent",
-        },
-      },
-    },
-  }),
-  { name: "RaDeleteDeviceButton" }
-);
+import { alpha, useTheme } from "@mui/material/styles";
 
 const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
   const translate = useTranslate();
@@ -81,7 +63,6 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
         </DialogContentText>
         <SimpleForm
           toolbar={<DeleteMediaToolbar />}
-          submitOnEnter={false}
           redirect={false}
           save={onSend}
         >
@@ -113,10 +94,10 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
 };
 
 export const DeleteMediaButton = props => {
-  const classes = useStyles(props);
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [deleteOne, { loading }] = useDelete("delete_media");
+  const [deleteOne, { isLoading }] = useDelete("delete_media");
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
@@ -129,7 +110,7 @@ export const DeleteMediaButton = props => {
           notify("resources.delete_media.action.send_success");
           handleDialogClose();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.delete_media.action.send_failure", {
             type: "error",
           }),
@@ -142,8 +123,17 @@ export const DeleteMediaButton = props => {
       <Button
         label="resources.delete_media.action.send"
         onClick={handleDialogOpen}
-        disabled={loading}
-        className={classnames("ra-delete-button", classes.deleteButton)}
+        disabled={isLoading}
+        sx={{
+          color: theme.palette.error.main,
+          "&:hover": {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            "@media (hover: none)": {
+              backgroundColor: "transparent",
+            },
+          },
+        }}
       >
         <DeleteSweepIcon />
       </Button>
@@ -174,7 +164,7 @@ export const ProtectMediaButton = props => {
           notify("resources.protect_media.action.send_success");
           refresh();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.protect_media.action.send_failure", {
             type: "error",
           }),
@@ -190,7 +180,7 @@ export const ProtectMediaButton = props => {
           notify("resources.protect_media.action.send_success");
           refresh();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.protect_media.action.send_failure", {
             type: "error",
           }),
@@ -270,7 +260,7 @@ export const QuarantineMediaButton = props => {
           notify("resources.quarantine_media.action.send_success");
           refresh();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.quarantine_media.action.send_failure", {
             type: "error",
           }),
@@ -286,7 +276,7 @@ export const QuarantineMediaButton = props => {
           notify("resources.quarantine_media.action.send_success");
           refresh();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.quarantine_media.action.send_failure", {
             type: "error",
           }),
