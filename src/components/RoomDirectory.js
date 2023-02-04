@@ -149,13 +149,6 @@ const RoomDirectoryListActions = () => (
 );
 
 export const RoomDirectoryList = () => (
-  /*
-  const filter = roomDirectoryFilters;
-  const roomIdFilter = filter && filter.room_id ? true : false;
-  const topicFilter = filter && filter.topic ? true : false;
-  const canonicalAliasFilter = filter && filter.canonical_alias ? true : false;
-  */
-
   <List
     pagination={<RoomDirectoryPagination />}
     perPage={100}
@@ -177,25 +170,21 @@ export const RoomDirectoryList = () => (
         sortable={false}
         label="resources.rooms.fields.name"
       />
-
       <TextField
         source="room_id"
         sortable={false}
         label="resources.rooms.fields.room_id"
       />
-
       <TextField
         source="canonical_alias"
         sortable={false}
         label="resources.rooms.fields.canonical_alias"
       />
-
       <TextField
         source="topic"
         sortable={false}
         label="resources.rooms.fields.topic"
       />
-
       <NumberField
         source="num_joined_members"
         sortable={false}

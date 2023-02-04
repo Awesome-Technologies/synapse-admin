@@ -26,7 +26,7 @@ import {
 } from "react-admin";
 import get from "lodash/get";
 import PropTypes from "prop-types";
-import { Tooltip, Typography, Chip } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import HttpsIcon from "@mui/icons-material/Https";
@@ -318,38 +318,11 @@ const RoomBulkActionButtons = () => (
   </Fragment>
 );
 
-const RoomFilter = ({ ...props }) => {
-  const translate = useTranslate();
-  return (
-    <Filter {...props}>
-      <SearchInput source="search_term" alwaysOn />
-      <Chip
-        label={translate("resources.rooms.fields.joined_local_members")}
-        source="joined_local_members"
-        defaultValue={false}
-        sx={{ marginBottom: "8px" }}
-      />
-      <Chip
-        label={translate("resources.rooms.fields.state_events")}
-        source="state_events"
-        defaultValue={false}
-        sx={{ marginBottom: "8px" }}
-      />
-      <Chip
-        label={translate("resources.rooms.fields.version")}
-        source="version"
-        defaultValue={false}
-        sx={{ marginBottom: "8px" }}
-      />
-      <Chip
-        label={translate("resources.rooms.fields.federatable")}
-        source="federatable"
-        defaultValue={false}
-        sx={{ marginBottom: "8px" }}
-      />
-    </Filter>
-  );
-};
+const RoomFilter = props => (
+  <Filter {...props}>
+    <SearchInput source="search_term" alwaysOn />
+  </Filter>
+);
 
 const RoomNameField = props => {
   const { source } = props;
@@ -387,6 +360,7 @@ export const RoomList = () => (
       <EncryptionField
         source="is_encrypted"
         sortBy="encryption"
+        // DatagridConfigurable thorws an error with an icon in `label`
         //label={<HttpsIcon />}
       />
 

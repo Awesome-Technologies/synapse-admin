@@ -41,7 +41,7 @@ const destinationRowStyle = (record, index) => ({
   backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : "white",
 });
 
-const DestinationFilter = ({ ...props }) => {
+const DestinationFilter = props => {
   return (
     <Filter {...props}>
       <SearchInput source="destination" alwaysOn />
@@ -105,10 +105,9 @@ const DestinationTitle = props => {
   );
 };
 
-export const DestinationList = props => {
+export const DestinationList = () => {
   return (
     <List
-      {...props}
       filters={<DestinationFilter />}
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
