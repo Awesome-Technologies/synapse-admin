@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  Button as ReactAdminButton,
-  useDataProvider,
-  useNotify,
-  Title,
-} from "react-admin";
+import { useDataProvider, useNotify, Title } from "react-admin";
 import { parse as parseCsv, unparse as unparseCsv } from "papaparse";
-import GetAppIcon from "@mui/icons-material/GetApp";
 import {
   Button,
   Card,
@@ -22,19 +16,6 @@ import { useTranslate } from "ra-core";
 import { generateRandomUser } from "./users";
 
 const LOGGING = true;
-
-export const ImportButton = ({ label, variant = "text" }) => {
-  return (
-    <ReactAdminButton
-      color="primary"
-      component="span"
-      variant={variant}
-      label={label}
-    >
-      <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
-    </ReactAdminButton>
-  );
-};
 
 const expectedFields = ["id", "displayname"].sort();
 const optionalFields = [
