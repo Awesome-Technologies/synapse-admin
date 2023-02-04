@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
-import { connect } from "react-redux";
 import {
   BooleanField,
   BulkDeleteButton,
   DateField,
   Datagrid,
+  DatagridConfigurable,
   DeleteButton,
+  ExportButton,
   Filter,
   List,
   NumberField,
@@ -13,6 +14,7 @@ import {
   ReferenceField,
   ReferenceManyField,
   SearchInput,
+  SelectColumnsButton,
   SelectField,
   Show,
   Tab,
@@ -54,8 +56,9 @@ const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const EncryptionField = ({ source, record = {}, emptyText }) => {
+const EncryptionField = ({ source, emptyText }) => {
   const translate = useTranslate();
+  const record = useRecordContext();
   const value = get(record, source);
   let ariaLabel = value === false ? "ra.boolean.false" : "ra.boolean.true";
 
@@ -95,7 +98,7 @@ const RoomTitle = props => {
   );
 };
 
-const RoomShowActions = ({ basePath, data, resource }) => {
+const RoomShowActions = ({ data, resource }) => {
   var roomDirectoryStatus = "";
   if (data) {
     roomDirectoryStatus = data.public;
@@ -110,7 +113,6 @@ const RoomShowActions = ({ basePath, data, resource }) => {
         <RoomDirectoryDeleteButton record={data} />
       )}
       <DeleteButton
-        basePath={basePath}
         record={data}
         resource={resource}
         mutationMode="pessimistic"
@@ -163,7 +165,7 @@ export const RoomShow = props => {
           >
             <Datagrid
               style={{ width: "100%" }}
-              rowClick={(id, basePath, record) => "/users/" + id}
+              rowClick={(id, resource, record) => "/users/" + id}
             >
               <TextField
                 source="id"
@@ -304,12 +306,11 @@ export const RoomShow = props => {
   );
 };
 
-const RoomBulkActionButtons = props => (
+const RoomBulkActionButtons = () => (
   <Fragment>
-    <RoomDirectoryBulkSaveButton {...props} />
-    <RoomDirectoryBulkDeleteButton {...props} />
+    <RoomDirectoryBulkSaveButton />
+    <RoomDirectoryBulkDeleteButton />
     <BulkDeleteButton
-      {...props}
       confirmTitle="resources.rooms.action.erase.title"
       confirmContent="resources.rooms.action.erase.content"
       mutationMode="pessimistic"
@@ -364,44 +365,38 @@ RoomNameField.propTypes = {
   source: PropTypes.string.isRequired,
 };
 
-const FilterableRoomList = ({ roomFilters, dispatch, ...props }) => {
-  const filter = roomFilters;
-  const localMembersFilter =
-    filter && filter.joined_local_members ? true : false;
-  const stateEventsFilter = filter && filter.state_events ? true : false;
-  const versionFilter = filter && filter.version ? true : false;
-  const federateableFilter = filter && filter.federatable ? true : false;
+const RoomListActions = () => (
+  <TopToolbar>
+    <SelectColumnsButton />
+    <ExportButton />
+  </TopToolbar>
+);
 
-  return (
-    <List
-      {...props}
-      pagination={<RoomPagination />}
-      sort={{ field: "name", order: "ASC" }}
-      filters={<RoomFilter />}
+export const RoomList = () => (
+  <List
+    pagination={<RoomPagination />}
+    sort={{ field: "name", order: "ASC" }}
+    filters={<RoomFilter />}
+    actions={<RoomListActions />}
+  >
+    <DatagridConfigurable
+      rowClick="show"
       bulkActionButtons={<RoomBulkActionButtons />}
+      omit={["joined_local_members", "state_events", "version", "federatable"]}
     >
-      <Datagrid rowClick="show">
-        <EncryptionField
-          source="is_encrypted"
-          sortBy="encryption"
-          label={<HttpsIcon />}
-        />
-        <RoomNameField source="name" />
-        <TextField source="joined_members" />
-        {localMembersFilter && <TextField source="joined_local_members" />}
-        {stateEventsFilter && <TextField source="state_events" />}
-        {versionFilter && <TextField source="version" />}
-        {federateableFilter && <BooleanField source="federatable" />}
-        <BooleanField source="public" />
-      </Datagrid>
-    </List>
-  );
-};
+      <EncryptionField
+        source="is_encrypted"
+        sortBy="encryption"
+        //label={<HttpsIcon />}
+      />
 
-function mapStateToProps(state) {
-  return {
-    roomFilters: state.admin.resources.rooms.list.params.displayedFilters,
-  };
-}
-
-export const RoomList = connect(mapStateToProps)(FilterableRoomList);
+      <RoomNameField source="name" />
+      <TextField source="joined_members" />
+      <TextField source="joined_local_members" />
+      <TextField source="state_events" />
+      <TextField source="version" />
+      <BooleanField source="federatable" />
+      <BooleanField source="public" />
+    </DatagridConfigurable>
+  </List>
+);

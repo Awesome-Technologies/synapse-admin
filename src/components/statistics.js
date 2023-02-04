@@ -65,9 +65,11 @@ export const UserMediaStatsList = props => {
       filters={<UserMediaStatsFilter />}
       pagination={<UserMediaStatsPagination />}
       sort={{ field: "media_length", order: "DESC" }}
-      bulkActionButtons={false}
     >
-      <Datagrid rowClick={(id, basePath, record) => "/users/" + id + "/media"}>
+      <Datagrid
+        rowClick={(id, resource, record) => "/users/" + id + "/media"}
+        bulkActionButtons={false}
+      >
         <TextField source="user_id" label="resources.users.fields.id" />
         <TextField
           source="displayname"

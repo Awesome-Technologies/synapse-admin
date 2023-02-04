@@ -71,7 +71,7 @@ export const DestinationReconnectButton = props => {
           });
           refresh();
         },
-        onFailure: () => {
+        onError: () => {
           notify("ra.message.error", { type: "error" });
         },
       }
@@ -112,11 +112,11 @@ export const DestinationList = props => {
       filters={<DestinationFilter />}
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
-      bulkActionButtons={false}
     >
       <Datagrid
         rowStyle={destinationRowStyle}
-        rowClick={(id, basePath, record) => `${basePath}/${id}/show/rooms`}
+        rowClick={(id, resource, record) => `${id}/show/rooms`}
+        bulkActionButtons={false}
       >
         <TextField source="destination" />
         <DateField source="failure_ts" showTime options={date_format} />
@@ -160,7 +160,7 @@ export const DestinationShow = props => {
           >
             <Datagrid
               style={{ width: "100%" }}
-              rowClick={(id, basePath, record) => `/rooms/${id}/show`}
+              rowClick={(id, resource, record) => `/rooms/${id}/show`}
             >
               <TextField
                 source="room_id"
