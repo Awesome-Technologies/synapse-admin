@@ -79,6 +79,7 @@ export const ReportShow = props => {
           <ReferenceField source="sender" reference="users">
             <TextField source="id" />
           </ReferenceField>
+          <TextField source="sender" label="Sender (raw user ID)" />
           <TextField source="event_id" />
           <TextField source="event_json.origin" />
           <TextField source="event_json.type" />
