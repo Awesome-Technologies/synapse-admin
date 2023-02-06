@@ -57,27 +57,24 @@ const UserMediaStatsFilter = props => (
   </Filter>
 );
 
-export const UserMediaStatsList = props => {
-  return (
-    <List
-      {...props}
-      actions={<ListActions />}
-      filters={<UserMediaStatsFilter />}
-      pagination={<UserMediaStatsPagination />}
-      sort={{ field: "media_length", order: "DESC" }}
+export const UserMediaStatsList = () => (
+  <List
+    actions={<ListActions />}
+    filters={<UserMediaStatsFilter />}
+    pagination={<UserMediaStatsPagination />}
+    sort={{ field: "media_length", order: "DESC" }}
+  >
+    <Datagrid
+      rowClick={(id, resource, record) => "/users/" + id + "/media"}
+      bulkActionButtons={false}
     >
-      <Datagrid
-        rowClick={(id, resource, record) => "/users/" + id + "/media"}
-        bulkActionButtons={false}
-      >
-        <TextField source="user_id" label="resources.users.fields.id" />
-        <TextField
-          source="displayname"
-          label="resources.users.fields.displayname"
-        />
-        <NumberField source="media_count" />
-        <NumberField source="media_length" />
-      </Datagrid>
-    </List>
-  );
-};
+      <TextField source="user_id" label="resources.users.fields.id" />
+      <TextField
+        source="displayname"
+        label="resources.users.fields.displayname"
+      />
+      <NumberField source="media_count" />
+      <NumberField source="media_length" />
+    </Datagrid>
+  </List>
+);

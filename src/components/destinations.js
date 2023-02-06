@@ -128,14 +128,10 @@ export const DestinationList = () => {
   );
 };
 
-export const DestinationShow = props => {
+export const DestinationShow = () => {
   const translate = useTranslate();
   return (
-    <Show
-      actions={<DestinationShowActions />}
-      title={<DestinationTitle />}
-      {...props}
-    >
+    <Show actions={<DestinationShowActions />} title={<DestinationTitle />}>
       <TabbedShowLayout>
         <Tab label="status" icon={<ViewListIcon />}>
           <TextField source="destination" />

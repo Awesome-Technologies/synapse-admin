@@ -28,12 +28,11 @@ const RoomDirectoryPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[100, 500, 1000, 2000]} />
 );
 
-export const RoomDirectoryDeleteButton = props => {
+export const RoomDirectoryDeleteButton = () => {
   const translate = useTranslate();
 
   return (
     <DeleteButton
-      {...props}
       label="resources.room_directory.action.erase"
       redirect={false}
       mutationMode="pessimistic"
@@ -49,9 +48,8 @@ export const RoomDirectoryDeleteButton = props => {
   );
 };
 
-export const RoomDirectoryBulkDeleteButton = props => (
+export const RoomDirectoryBulkDeleteButton = () => (
   <BulkDeleteButton
-    {...props}
     label="resources.room_directory.action.erase"
     mutationMode="pessimistic"
     confirmTitle="resources.room_directory.action.title"
@@ -100,13 +98,12 @@ export const RoomDirectorySaveButton = () => {
   const record = useRecordContext();
   const notify = useNotify();
   const refresh = useRefresh();
-  const [create, { isloading }] = useCreate("room_directory");
+  const [create, { isloading }] = useCreate();
 
   const handleSend = values => {
     create(
-      {
-        payload: { data: { id: record.id } },
-      },
+      "room_directory",
+      { data: { id: record.id } },
       {
         onSuccess: data => {
           notify("resources.room_directory.action.send_success");
@@ -137,9 +134,10 @@ const RoomDirectoryBulkActionButtons = () => (
   </Fragment>
 );
 
-const AvatarField = ({ source, className, record = {} }) => (
-  <Avatar src={record[source]} className={className} />
-);
+const AvatarField = ({ source, sx }) => {
+  const record = useRecordContext();
+  return <Avatar src={record[source]} sx={sx} />;
+};
 
 const RoomDirectoryListActions = () => (
   <TopToolbar>

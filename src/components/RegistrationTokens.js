@@ -59,33 +59,30 @@ const RegistrationTokenFilter = props => (
   </Filter>
 );
 
-export const RegistrationTokenList = props => {
-  return (
-    <List
-      {...props}
-      filters={<RegistrationTokenFilter />}
-      filterDefaultValues={{ valid: true }}
-      pagination={false}
-      perPage={500}
-    >
-      <Datagrid rowClick="edit">
-        <TextField source="token" sortable={false} />
-        <NumberField source="uses_allowed" sortable={false} />
-        <NumberField source="pending" sortable={false} />
-        <NumberField source="completed" sortable={false} />
-        <DateField
-          source="expiry_time"
-          showTime
-          options={date_format}
-          sortable={false}
-        />
-      </Datagrid>
-    </List>
-  );
-};
+export const RegistrationTokenList = () => (
+  <List
+    filters={<RegistrationTokenFilter />}
+    filterDefaultValues={{ valid: true }}
+    pagination={false}
+    perPage={500}
+  >
+    <Datagrid rowClick="edit">
+      <TextField source="token" sortable={false} />
+      <NumberField source="uses_allowed" sortable={false} />
+      <NumberField source="pending" sortable={false} />
+      <NumberField source="completed" sortable={false} />
+      <DateField
+        source="expiry_time"
+        showTime
+        options={date_format}
+        sortable={false}
+      />
+    </Datagrid>
+  </List>
+);
 
-export const RegistrationTokenCreate = props => (
-  <Create {...props}>
+export const RegistrationTokenCreate = () => (
+  <Create>
     <SimpleForm redirect="list" toolbar={<Toolbar alwaysEnableSaveButton />}>
       <TextInput
         source="token"
@@ -109,24 +106,22 @@ export const RegistrationTokenCreate = props => (
   </Create>
 );
 
-export const RegistrationTokenEdit = props => {
-  return (
-    <Edit {...props}>
-      <SimpleForm>
-        <TextInput source="token" disabled />
-        <NumberInput source="pending" disabled />
-        <NumberInput source="completed" disabled />
-        <NumberInput
-          source="uses_allowed"
-          validate={validateUsesAllowed}
-          step={1}
-        />
-        <DateTimeInput
-          source="expiry_time"
-          parse={dateParser}
-          format={dateFormatter}
-        />
-      </SimpleForm>
-    </Edit>
-  );
-};
+export const RegistrationTokenEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <TextInput source="token" disabled />
+      <NumberInput source="pending" disabled />
+      <NumberInput source="completed" disabled />
+      <NumberInput
+        source="uses_allowed"
+        validate={validateUsesAllowed}
+        step={1}
+      />
+      <DateTimeInput
+        source="expiry_time"
+        parse={dateParser}
+        format={dateFormatter}
+      />
+    </SimpleForm>
+  </Edit>
+);

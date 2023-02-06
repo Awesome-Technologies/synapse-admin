@@ -148,41 +148,39 @@ const UserBulkActionButtons = () => (
   </>
 );
 
-const AvatarField = ({ source, record = {}, sx }) => (
-  <Avatar src={record[source]} sx={sx} />
-);
-
-export const UserList = props => {
-  return (
-    <List
-      {...props}
-      filters={<UserFilter />}
-      filterDefaultValues={{ guests: true, deactivated: false }}
-      sort={{ field: "name", order: "ASC" }}
-      actions={<UserListActions maxResults={10000} />}
-      pagination={<UserPagination />}
-    >
-      <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
-        <AvatarField
-          source="avatar_src"
-          sx={{ height: "40px", width: "40px" }}
-          sortBy="avatar_url"
-        />
-        <TextField source="id" sortBy="name" />
-        <TextField source="displayname" />
-        <BooleanField source="is_guest" />
-        <BooleanField source="admin" />
-        <BooleanField source="deactivated" />
-        <DateField
-          source="creation_ts"
-          label="resources.users.fields.creation_ts_ms"
-          showTime
-          options={date_format}
-        />
-      </Datagrid>
-    </List>
-  );
+const AvatarField = ({ source, sx }) => {
+  const record = useRecordContext();
+  return <Avatar src={record[source]} sx={sx} />;
 };
+
+export const UserList = () => (
+  <List
+    filters={<UserFilter />}
+    filterDefaultValues={{ guests: true, deactivated: false }}
+    sort={{ field: "name", order: "ASC" }}
+    actions={<UserListActions maxResults={10000} />}
+    pagination={<UserPagination />}
+  >
+    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
+      <AvatarField
+        source="avatar_src"
+        sx={{ height: "40px", width: "40px" }}
+        sortBy="avatar_url"
+      />
+      <TextField source="id" sortBy="name" />
+      <TextField source="displayname" />
+      <BooleanField source="is_guest" />
+      <BooleanField source="admin" />
+      <BooleanField source="deactivated" />
+      <DateField
+        source="creation_ts"
+        label="resources.users.fields.creation_ts_ms"
+        showTime
+        options={date_format}
+      />
+    </Datagrid>
+  </List>
+);
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
 // here only local part of user_id
@@ -265,8 +263,8 @@ const UserEditActions = ({ data }) => {
   );
 };
 
-export const UserCreate = props => (
-  <Create {...props}>
+export const UserCreate = () => (
+  <Create>
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />
@@ -306,7 +304,7 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = props => {
+const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (
@@ -319,10 +317,10 @@ const UserTitle = props => {
   );
 };
 
-export const UserEdit = props => {
+export const UserEdit = () => {
   const translate = useTranslate();
   return (
-    <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
+    <Edit title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab
           label={translate("resources.users.name", { smart_count: 1 })}

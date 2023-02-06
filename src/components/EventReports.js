@@ -28,10 +28,10 @@ const ReportPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-export const ReportShow = props => {
+export const ReportShow = () => {
   const translate = useTranslate();
   return (
-    <Show {...props}>
+    <Show>
       <TabbedShowLayout>
         <Tab
           label={translate("synapseadmin.reports.tabs.basic", {
@@ -97,26 +97,23 @@ export const ReportShow = props => {
   );
 };
 
-export const ReportList = ({ ...props }) => {
-  return (
-    <List
-      {...props}
-      pagination={<ReportPagination />}
-      sort={{ field: "received_ts", order: "DESC" }}
-      bulkActionButtons={false}
-    >
-      <Datagrid rowClick="show">
-        <TextField source="id" sortable={false} />
-        <DateField
-          source="received_ts"
-          showTime
-          options={date_format}
-          sortable={true}
-        />
-        <TextField sortable={false} source="user_id" />
-        <TextField sortable={false} source="name" />
-        <TextField sortable={false} source="score" />
-      </Datagrid>
-    </List>
-  );
-};
+export const ReportList = () => (
+  <List
+    pagination={<ReportPagination />}
+    sort={{ field: "received_ts", order: "DESC" }}
+    bulkActionButtons={false}
+  >
+    <Datagrid rowClick="show">
+      <TextField source="id" sortable={false} />
+      <DateField
+        source="received_ts"
+        showTime
+        options={date_format}
+        sortable={true}
+      />
+      <TextField sortable={false} source="user_id" />
+      <TextField sortable={false} source="name" />
+      <TextField sortable={false} source="score" />
+    </Datagrid>
+  </List>
+);

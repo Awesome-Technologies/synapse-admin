@@ -55,7 +55,7 @@ const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const RoomTitle = props => {
+const RoomTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   var name = "";
@@ -70,23 +70,23 @@ const RoomTitle = props => {
   );
 };
 
-const RoomShowActions = ({ data, resource }) => {
+const RoomShowActions = () => {
+  const record = useRecordContext();
   var roomDirectoryStatus = "";
-  if (data) {
-    roomDirectoryStatus = data.public;
+  if (record) {
+    roomDirectoryStatus = record.public;
   }
 
   return (
     <TopToolbar>
       {roomDirectoryStatus === false && (
-        <RoomDirectorySaveButton record={data} />
+        <RoomDirectorySaveButton record={record} />
       )}
       {roomDirectoryStatus === true && (
-        <RoomDirectoryDeleteButton record={data} />
+        <RoomDirectoryDeleteButton record={record} />
       )}
       <DeleteButton
-        record={data}
-        resource={resource}
+        record={record}
         mutationMode="pessimistic"
         confirmTitle="resources.rooms.action.erase.title"
         confirmContent="resources.rooms.action.erase.content"
@@ -95,10 +95,10 @@ const RoomShowActions = ({ data, resource }) => {
   );
 };
 
-export const RoomShow = props => {
+export const RoomShow = () => {
   const translate = useTranslate();
   return (
-    <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
+    <Show actions={<RoomShowActions />} title={<RoomTitle />}>
       <TabbedShowLayout>
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
           <TextField source="room_id" />
@@ -348,7 +348,6 @@ export const RoomList = () => {
             [`& [data-testid="false"]`]: { color: theme.palette.error.main },
           }}
         />
-
         <RoomNameField source="name" />
         <TextField source="joined_members" />
         <TextField source="joined_local_members" />
