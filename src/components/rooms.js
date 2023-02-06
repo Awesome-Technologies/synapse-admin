@@ -24,9 +24,8 @@ import {
   useRecordContext,
   useTranslate,
 } from "react-admin";
-import get from "lodash/get";
+import { useTheme } from "@mui/material/styles";
 import PropTypes from "prop-types";
-import { Tooltip, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import HttpsIcon from "@mui/icons-material/Https";
@@ -55,33 +54,6 @@ const date_format = {
 const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
-
-const EncryptionField = ({ source, emptyText }) => {
-  const translate = useTranslate();
-  const record = useRecordContext();
-  const value = get(record, source);
-  let ariaLabel = value === false ? "ra.boolean.false" : "ra.boolean.true";
-
-  if (value === false || value === true) {
-    return (
-      <Typography component="span" variant="body2">
-        <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
-          {value === true ? (
-            <HttpsIcon data-testid="true" htmlColor="limegreen" />
-          ) : (
-            <NoEncryptionIcon data-testid="false" color="error" />
-          )}
-        </Tooltip>
-      </Typography>
-    );
-  }
-
-  return (
-    <Typography component="span" variant="body2">
-      {emptyText}
-    </Typography>
-  );
-};
 
 const RoomTitle = props => {
   const record = useRecordContext();
@@ -345,32 +317,46 @@ const RoomListActions = () => (
   </TopToolbar>
 );
 
-export const RoomList = () => (
-  <List
-    pagination={<RoomPagination />}
-    sort={{ field: "name", order: "ASC" }}
-    filters={<RoomFilter />}
-    actions={<RoomListActions />}
-  >
-    <DatagridConfigurable
-      rowClick="show"
-      bulkActionButtons={<RoomBulkActionButtons />}
-      omit={["joined_local_members", "state_events", "version", "federatable"]}
-    >
-      <EncryptionField
-        source="is_encrypted"
-        sortBy="encryption"
-        // DatagridConfigurable thorws an error with an icon in `label`
-        //label={<HttpsIcon />}
-      />
+export const RoomList = () => {
+  const theme = useTheme();
 
-      <RoomNameField source="name" />
-      <TextField source="joined_members" />
-      <TextField source="joined_local_members" />
-      <TextField source="state_events" />
-      <TextField source="version" />
-      <BooleanField source="federatable" />
-      <BooleanField source="public" />
-    </DatagridConfigurable>
-  </List>
-);
+  return (
+    <List
+      pagination={<RoomPagination />}
+      sort={{ field: "name", order: "ASC" }}
+      filters={<RoomFilter />}
+      actions={<RoomListActions />}
+    >
+      <DatagridConfigurable
+        rowClick="show"
+        bulkActionButtons={<RoomBulkActionButtons />}
+        omit={[
+          "joined_local_members",
+          "state_events",
+          "version",
+          "federatable",
+        ]}
+      >
+        <BooleanField
+          source="is_encrypted"
+          sortBy="encryption"
+          TrueIcon={HttpsIcon}
+          FalseIcon={NoEncryptionIcon}
+          label={<HttpsIcon />}
+          sx={{
+            [`& [data-testid="true"]`]: { color: theme.palette.success.main },
+            [`& [data-testid="false"]`]: { color: theme.palette.error.main },
+          }}
+        />
+
+        <RoomNameField source="name" />
+        <TextField source="joined_members" />
+        <TextField source="joined_local_members" />
+        <TextField source="state_events" />
+        <TextField source="version" />
+        <BooleanField source="federatable" />
+        <BooleanField source="public" />
+      </DatagridConfigurable>
+    </List>
+  );
+};
