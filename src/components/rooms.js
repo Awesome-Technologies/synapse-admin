@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   BooleanField,
   BulkDeleteButton,
@@ -279,7 +279,7 @@ export const RoomShow = () => {
 };
 
 const RoomBulkActionButtons = () => (
-  <Fragment>
+  <>
     <RoomDirectoryBulkSaveButton />
     <RoomDirectoryBulkDeleteButton />
     <BulkDeleteButton
@@ -287,7 +287,7 @@ const RoomBulkActionButtons = () => (
       confirmContent="resources.rooms.action.erase.content"
       mutationMode="pessimistic"
     />
-  </Fragment>
+  </>
 );
 
 const RoomFilter = props => (

@@ -261,7 +261,7 @@ const LoginPage = () => {
     );
 
     return (
-      <Box>
+      <>
         <TextInput
           autoFocus
           name="username"
@@ -293,7 +293,7 @@ const LoginPage = () => {
           className="input"
         />
         <Box className="serverVersion">{serverVersion}</Box>
-      </Box>
+      </>
     );
   };
 

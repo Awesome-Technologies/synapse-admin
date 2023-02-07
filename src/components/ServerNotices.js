@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   SaveButton,
@@ -93,7 +93,7 @@ export const ServerNoticeButton = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
         label="resources.servernotices.send"
         onClick={handleDialogOpen}
@@ -106,7 +106,7 @@ export const ServerNoticeButton = () => {
         onClose={handleDialogClose}
         onSend={handleSend}
       />
-    </Fragment>
+    </>
   );
 };
 
