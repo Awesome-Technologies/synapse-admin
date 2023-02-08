@@ -17,7 +17,7 @@ export const DeviceRemoveButton = props => {
   const refresh = useRefresh();
   const notify = useNotify();
 
-  const [removeDevice, { isLoading }] = useDelete("devices");
+  const [removeDevice, { isLoading }] = useDelete();
 
   if (!record) return null;
 
@@ -26,7 +26,8 @@ export const DeviceRemoveButton = props => {
 
   const handleConfirm = () => {
     removeDevice(
-      { payload: { id: record.id, user_id: record.user_id } },
+      "devices",
+      { id: record.id, meta: { user_id: record.user_id } },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");
