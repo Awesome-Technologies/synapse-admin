@@ -97,14 +97,15 @@ export const DeleteMediaButton = props => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [deleteOne, { isLoading }] = useDelete("delete_media");
+  const [deleteOne, { isLoading }] = useDelete();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
     deleteOne(
-      { payload: { ...values } },
+      "delete_media",
+      { id: values.id },
       {
         onSuccess: () => {
           notify("resources.delete_media.action.send_success");
@@ -151,14 +152,15 @@ export const ProtectMediaButton = props => {
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [create, { loading }] = useCreate("protect_media");
-  const [deleteOne] = useDelete("protect_media");
+  const [create, { isLoading }] = useCreate();
+  const [deleteOne] = useDelete();
 
   if (!record) return null;
 
   const handleProtect = () => {
     create(
-      { payload: { data: record } },
+      "protect_media",
+      { data: record },
       {
         onSuccess: () => {
           notify("resources.protect_media.action.send_success");
@@ -174,7 +176,8 @@ export const ProtectMediaButton = props => {
 
   const handleUnprotect = () => {
     deleteOne(
-      { payload: { ...record } },
+      "protect_media",
+      { id: record.id },
       {
         onSuccess: () => {
           notify("resources.protect_media.action.send_success");
@@ -219,7 +222,7 @@ export const ProtectMediaButton = props => {
           arrow
         >
           <div>
-            <Button onClick={handleUnprotect} disabled={loading}>
+            <Button onClick={handleUnprotect} disabled={isLoading}>
               <LockIcon />
             </Button>
           </div>
@@ -232,7 +235,7 @@ export const ProtectMediaButton = props => {
           })}
         >
           <div>
-            <Button onClick={handleProtect} disabled={loading}>
+            <Button onClick={handleProtect} disabled={isLoading}>
               <LockOpenIcon />
             </Button>
           </div>
@@ -247,14 +250,15 @@ export const QuarantineMediaButton = props => {
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [create, { loading }] = useCreate("quarantine_media");
-  const [deleteOne] = useDelete("quarantine_media");
+  const [create, { isLoading }] = useCreate();
+  const [deleteOne] = useDelete();
 
   if (!record) return null;
 
   const handleQuarantaine = () => {
     create(
-      { payload: { data: record } },
+      "quarantine_media",
+      { data: record },
       {
         onSuccess: () => {
           notify("resources.quarantine_media.action.send_success");
@@ -270,7 +274,8 @@ export const QuarantineMediaButton = props => {
 
   const handleRemoveQuarantaine = () => {
     deleteOne(
-      { payload: { ...record } },
+      "quarantine_media",
+      { id: record.id },
       {
         onSuccess: () => {
           notify("resources.quarantine_media.action.send_success");
@@ -306,7 +311,7 @@ export const QuarantineMediaButton = props => {
           })}
         >
           <div>
-            <Button onClick={handleRemoveQuarantaine} disabled={loading}>
+            <Button onClick={handleRemoveQuarantaine} disabled={isLoading}>
               <BlockIcon color="error" />
             </Button>
           </div>
@@ -319,7 +324,7 @@ export const QuarantineMediaButton = props => {
           })}
         >
           <div>
-            <Button onClick={handleQuarantaine} disabled={loading}>
+            <Button onClick={handleQuarantaine} disabled={isLoading}>
               <BlockIcon />
             </Button>
           </div>

@@ -50,7 +50,7 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
         <SimpleForm
           toolbar={<ServerNoticeToolbar />}
           redirect={false}
-          save={onSend}
+          onSubmit={onSend}
         >
           <TextInput
             source="body"
@@ -71,14 +71,15 @@ export const ServerNoticeButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [create, { isloading }] = useCreate("servernotices");
+  const [create, { isloading }] = useCreate();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
     create(
-      { payload: { data: { id: record.id, ...values } } },
+      "servernotices",
+      { data: { id: record.id, ...values } },
       {
         onSuccess: () => {
           notify("resources.servernotices.action.send_success");

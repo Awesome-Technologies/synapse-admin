@@ -53,7 +53,7 @@ export const DestinationReconnectButton = props => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [handleReconnect, { isLoading }] = useDelete("destinations");
+  const [handleReconnect, { isLoading }] = useDelete();
 
   // Reconnect is not required if no error has occurred. (`failure_ts`)
   if (!record || !record.failure_ts) return null;
@@ -63,7 +63,8 @@ export const DestinationReconnectButton = props => {
     e.stopPropagation();
 
     handleReconnect(
-      { payload: { id: record.id } },
+      "destinations",
+      { id: record.id },
       {
         onSuccess: () => {
           notify("ra.notification.updated", {
