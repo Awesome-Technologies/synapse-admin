@@ -332,6 +332,7 @@ const LoginPage = ({ theme }) => {
                     <MenuItem value="de">Deutsch</MenuItem>
                     <MenuItem value="en">English</MenuItem>
                     <MenuItem value="fr">Français</MenuItem>
+                    <MenuItem value="it">Italiano</MenuItem>
                     <MenuItem value="zh">简体中文</MenuItem>
                   </Select>
                 </div>
