@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^11.2.6",
+    "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.8.0",
