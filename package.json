@@ -31,6 +31,7 @@
     "ra-language-chinese": "^2.0.10",
     "ra-language-french": "^4.9.3",
     "ra-language-german": "^3.13.4",
+    "ra-language-italian": "^3.13.1",
     "react": "^17.0.0",
     "react-admin": "^3.19.12",
     "react-dom": "^17.0.2",
