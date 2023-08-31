@@ -7,7 +7,8 @@ const it = {
       base_url: "URL dell'homeserver",
       welcome: "Benvenuto in Synapse-admin",
       server_version: "Versione di Synapse",
-      username_error: "Per favore inserisci un ID utente completo: '@utente:dominio'",
+      username_error:
+        "Per favore inserisci un ID utente completo: '@utente:dominio'",
       protocol_error: "L'URL deve iniziare per 'http://' o 'https://'",
       url_error: "URL del server Matrix non valido",
       sso_sign_in: "Accedi con SSO",
@@ -46,7 +47,8 @@ const it = {
         users_total:
           "%{smart_count} utente nel file CSV |||| %{smart_count} utenti nel file CSV",
         guest_count: "%{smart_count} ospite |||| %{smart_count} ospiti",
-        admin_count: "%{smart_count} amministratore |||| %{smart_count} amministratori",
+        admin_count:
+          "%{smart_count} amministratore |||| %{smart_count} amministratori",
       },
       conflicts: {
         header: "Strategia di conflitto",
@@ -123,7 +125,8 @@ const it = {
         user_type: "Tipo d'utente",
       },
       helper: {
-        password: "Cambiando la password l'utente verrà disconnesso da tutte le sessioni attive.",
+        password:
+          "Cambiando la password l'utente verrà disconnesso da tutte le sessioni attive.",
         deactivate: "Devi fornire una password per riattivare l'account.",
         erase: "Constrassegna l'utente come cancellato dal GDPR",
       },
@@ -154,7 +157,7 @@ const it = {
         avatar: "Avatar",
       },
       helper: {
-/*        forward_extremities:
+        /*        forward_extremities:
           "Forward extremities are the leaf events at the end of a Directed acyclic graph (DAG) in a room, aka events that have no children. The more exist in a room, the more state resolution that Synapse needs to perform (hint: it's an expensive operation). While Synapse has code to prevent too many of these existing at one time in a room, bugs can sometimes make them crop up again. If a room has >10 forward extremities, it's worth checking which room is the culprit and potentially removing them using the SQL queries mentioned in #1760.", */
       },
       enums: {
