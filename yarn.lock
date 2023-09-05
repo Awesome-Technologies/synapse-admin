@@ -9346,10 +9346,10 @@ ra-language-italian@^3.13.1:
   resolved "https://registry.yarnpkg.com/ra-language-italian/-/ra-language-italian-3.13.1.tgz#115f15c00f140ba319d5daf53c7bd477c73b9546"
   integrity sha512-iGgdkbnpA+5GD6OcAjOuOA95/jmJegC9txE8X+AmlA7vhsHdcnHam/D6goqv3sqfeqgCkPCPmJAMO/+slHXR1w==
 
-ra-test@^3.15.0:
-  version "3.19.4"
-  resolved "https://registry.yarnpkg.com/ra-test/-/ra-test-3.19.4.tgz#fa50fd8a7334ed8769da905bd26bdfac624cb9b8"
-  integrity sha512-a2lP6X2dgyVEZgCuk0uevoa26DvZRPPqwbba2ORJpQ9hllbgjHuz0XlhoNe+cHF4k8buB9O3SurHS2c+s3VL0A==
+ra-test@^3.19.12:
+  version "3.19.12"
+  resolved "https://registry.yarnpkg.com/ra-test/-/ra-test-3.19.12.tgz#f67c3c90291d1b1cd181828d8abe48b82741d717"
+  integrity sha512-SX6oi+VPADIeQeQlGWUVj2kgEYgLbizpzYMq+oacCmnAqvHezwnQ2MXrLDRK6C56YIl+t8DyY/ipYBiRPZnHbA==
   dependencies:
     "@testing-library/react" "^11.2.3"
     classnames "~2.3.1"
