@@ -217,7 +217,9 @@ const LoginPage = ({ theme }) => {
       _ => {
         if (
           !formData.base_url ||
-          !formData.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+$/)
+          !formData.base_url.match(
+            /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/
+          )
         )
           return;
         const versionUrl = `${formData.base_url}/_synapse/admin/v1/server_version`;
