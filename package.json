@@ -26,7 +26,7 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
-    "papaparse": "^5.2.0",
+    "papaparse": "^5.4.1",
     "prop-types": "^15.8.1",
     "ra-language-chinese": "^2.0.10",
     "ra-language-french": "^4.13.3",
