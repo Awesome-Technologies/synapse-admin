@@ -27,7 +27,7 @@
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.4.0",
     "papaparse": "^5.2.0",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.1",
     "ra-language-chinese": "^2.0.10",
     "ra-language-french": "^4.13.3",
     "ra-language-german": "^3.13.4",
