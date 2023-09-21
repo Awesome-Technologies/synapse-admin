@@ -154,6 +154,11 @@ const UserFilter = props => (
       source="deactivated"
       alwaysOn
     />
+    <BooleanInput
+      label="resources.users.fields.show_locked"
+      source="locked"
+      alwaysOn
+    />
   </Filter>
 );
 
@@ -179,7 +184,7 @@ export const UserList = props => {
     <List
       {...props}
       filters={<UserFilter />}
-      filterDefaultValues={{ guests: true, deactivated: false }}
+      filterDefaultValues={{ guests: true, deactivated: false, locked: false }}
       sort={{ field: "name", order: "ASC" }}
       actions={<UserListActions maxResults={10000} />}
       bulkActionButtons={<UserBulkActionButtons />}
@@ -196,6 +201,7 @@ export const UserList = props => {
         <BooleanField source="is_guest" />
         <BooleanField source="admin" />
         <BooleanField source="deactivated" />
+        <BooleanField source="locked" />
         <DateField
           source="creation_ts"
           label="resources.users.fields.creation_ts_ms"
@@ -218,6 +224,16 @@ const validateUser = [
 ];
 
 const validateAddress = [required(), maxLength(255)];
+
+const validateForm = values => {
+  const errors = {};
+
+  if (values.deactivated && values.locked) {
+    errors.locked = "resources.users.action.update.locked_and_deactivated";
+  }
+
+  return errors;
+};
 
 export function generateRandomUser() {
   const homeserver = localStorage.getItem("home_server");
@@ -348,7 +364,7 @@ export const UserEdit = props => {
   const translate = useTranslate();
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
-      <TabbedForm toolbar={<UserEditToolbar />}>
+      <TabbedForm toolbar={<UserEditToolbar />} validate={validateForm}>
         <FormTab
           label={translate("resources.users.name", { smart_count: 1 })}
           icon={<PersonPinIcon />}
@@ -377,6 +393,7 @@ export const UserEdit = props => {
             source="deactivated"
             helperText="resources.users.helper.deactivate"
           />
+          <BooleanInput source="locked" />
           <DateField source="creation_ts_ms" showTime options={date_format} />
           <TextField source="consent_version" />
         </FormTab>
