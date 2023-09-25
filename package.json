@@ -13,7 +13,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
-    "eslint": "^8.48.0",
+    "eslint": "^8.50.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^4.2.1",
