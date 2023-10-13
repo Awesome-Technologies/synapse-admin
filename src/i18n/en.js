@@ -106,6 +106,7 @@ const en = {
         name: "Name",
         is_guest: "Guest",
         admin: "Server Administrator",
+        locked: "Locked",
         deactivated: "Deactivated",
         guests: "Show guests",
         show_deactivated: "Show deactivated users",
