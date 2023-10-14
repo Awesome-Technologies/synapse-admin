@@ -215,7 +215,9 @@ const LoginPage = () => {
       _ => {
         if (
           !formData.base_url ||
-          !formData.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+$/)
+          !formData.base_url.match(
+            /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/
+          )
         )
           return;
         const versionUrl = `${formData.base_url}/_synapse/admin/v1/server_version`;
@@ -324,6 +326,7 @@ const LoginPage = () => {
               <MenuItem value="de">Deutsch</MenuItem>
               <MenuItem value="en">English</MenuItem>
               <MenuItem value="fr">Français</MenuItem>
+              <MenuItem value="it">Italiano</MenuItem>
               <MenuItem value="zh">简体中文</MenuItem>
             </Select>
             <FormDataConsumer>
