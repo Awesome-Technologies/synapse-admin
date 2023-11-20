@@ -29,7 +29,7 @@
     "papaparse": "^5.4.1",
     "prop-types": "^15.8.1",
     "ra-language-chinese": "^2.0.10",
-    "ra-language-french": "^4.13.3",
+    "ra-language-french": "^4.16.0",
     "ra-language-german": "^3.13.4",
     "ra-language-italian": "^3.13.1",
     "react": "^17.0.0",
