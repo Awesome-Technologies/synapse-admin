@@ -15,7 +15,10 @@ const authProvider = {
             device_id: localStorage.getItem("device_id"),
             initial_device_display_name: "Synapse Admin",
           },
-          loginToken
+          process.env.REACT_APP_SSO_TOKEN ? {
+            type: "org.matrix.login.jwt",
+            token: process.env.REACT_APP_SSO_TOKEN,
+          } :(loginToken
             ? {
                 type: "m.login.token",
                 token: loginToken,
@@ -24,7 +27,7 @@ const authProvider = {
                 type: "m.login.password",
                 user: username,
                 password: password,
-              }
+              })
         )
       ),
     };
