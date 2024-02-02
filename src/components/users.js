@@ -1,12 +1,13 @@
 import React, { cloneElement, Fragment } from "react";
 import Avatar from "@material-ui/core/Avatar";
-import PersonPinIcon from "@material-ui/icons/PersonPin";
+import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
 import DevicesIcon from "@material-ui/icons/Devices";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
+import PersonPinIcon from "@material-ui/icons/PersonPin";
+import SettingsInputComponentIcon from "@material-ui/icons/SettingsInputComponent";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import {
   ArrayInput,
@@ -48,6 +49,7 @@ import {
 import SaveQrButton from "./SaveQrButton";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
+import { ProtectMediaButton, QuarantineMediaButton } from "./media";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
@@ -399,6 +401,23 @@ export const UserEdit = props => {
         </FormTab>
 
         <FormTab
+          label="synapseadmin.users.tabs.sso"
+          icon={<AssignmentIndIcon />}
+          path="sso"
+        >
+          <ArrayField source="external_ids" label={false}>
+            <Datagrid style={{ width: "100%" }}>
+              <TextField source="auth_provider" sortable={false} />
+              <TextField
+                source="external_id"
+                label="resources.users.fields.id"
+                sortable={false}
+              />
+            </Datagrid>
+          </ArrayField>
+        </FormTab>
+
+        <FormTab
           label={translate("resources.devices.name", { smart_count: 2 })}
           icon={<DevicesIcon />}
           path="devices"
@@ -513,7 +532,8 @@ export const UserEdit = props => {
               <TextField source="media_type" />
               <TextField source="upload_name" />
               <TextField source="quarantined_by" />
-              <BooleanField source="safe_from_quarantine" />
+              <QuarantineMediaButton label="resources.quarantine_media.action.name" />
+              <ProtectMediaButton label="resources.users_media.fields.safe_from_quarantine" />
               <DeleteButton mutationMode="pessimistic" redirect={false} />
             </Datagrid>
           </ReferenceManyField>
