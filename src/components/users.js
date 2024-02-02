@@ -51,7 +51,7 @@ import { DeviceRemoveButton } from "./devices";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
-const redirect = (basePath, id, data) => {
+const redirect = () => {
   return {
     pathname: "/importcsv",
   };

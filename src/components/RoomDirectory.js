@@ -171,10 +171,14 @@ const RoomDirectoryFilter = ({ ...props }) => {
   );
 };
 
-export const FilterableRoomDirectoryList = ({ dispatch, ...props }) => {
+export const FilterableRoomDirectoryList = ({
+  roomDirectoryFilters,
+  dispatch,
+  ...props
+}) => {
   const classes = useStyles();
   const translate = useTranslate();
-  const filter = props.roomDirectoryFilters;
+  const filter = roomDirectoryFilters;
   const roomIdFilter = filter && filter.room_id ? true : false;
   const topicFilter = filter && filter.topic ? true : false;
   const canonicalAliasFilter = filter && filter.canonical_alias ? true : false;
@@ -242,7 +246,7 @@ export const FilterableRoomDirectoryList = ({ dispatch, ...props }) => {
 
 function mapStateToProps(state) {
   return {
-    roomdirectoryfilters:
+    roomDirectoryFilters:
       state.admin.resources.room_directory.list.params.displayedFilters,
   };
 }
