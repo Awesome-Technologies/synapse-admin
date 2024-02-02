@@ -43,7 +43,7 @@ jobs:
           esac
           echo "::set-output name=tag::$tag"
       - name: Build and Push Tag
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: false
