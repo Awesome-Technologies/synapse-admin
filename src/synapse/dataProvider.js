@@ -184,8 +184,9 @@ const resourceMap = {
     delete: params => ({
       endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
         "home_server"
-      )}/delete?before_ts=${params.meta.before_ts}&size_gt=${-params.meta
-        .size_gt}&keep_profiles=${params.meta.keep_profiles}`,
+      )}/delete?before_ts=${params.meta.before_ts}&size_gt=${
+        params.meta.size_gt
+      }&keep_profiles=${params.meta.keep_profiles}`,
       method: "POST",
     }),
   },
