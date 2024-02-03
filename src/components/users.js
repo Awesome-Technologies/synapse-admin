@@ -1,4 +1,4 @@
-import React, { cloneElement, Fragment } from "react";
+import React, { cloneElement } from "react";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DevicesIcon from "@mui/icons-material/Devices";
@@ -138,7 +138,7 @@ const UserFilter = props => (
 );
 
 const UserBulkActionButtons = props => (
-  <Fragment>
+  <>
     <ServerNoticeBulkButton {...props} />
     <BulkDeleteButton
       {...props}
@@ -146,7 +146,7 @@ const UserBulkActionButtons = props => (
       confirmTitle="resources.users.helper.erase"
       mutationMode="pessimistic"
     />
-  </Fragment>
+  </>
 );
 
 export const UserList = props => {

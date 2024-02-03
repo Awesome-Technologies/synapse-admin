@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   useDelete,
@@ -41,7 +41,7 @@ export const DeviceRemoveButton = props => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
         label="ra.action.remove"
         onClick={handleClick}
@@ -70,6 +70,6 @@ export const DeviceRemoveButton = props => {
           name: record.display_name ? record.display_name : record.id,
         }}
       />
-    </Fragment>
+    </>
   );
 };

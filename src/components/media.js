@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   BooleanInput,
   Button,
@@ -119,7 +119,7 @@ export const DeleteMediaButton = props => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
         label="resources.delete_media.action.send"
         onClick={handleDialogOpen}
@@ -142,7 +142,7 @@ export const DeleteMediaButton = props => {
         onClose={handleDialogClose}
         onSend={handleSend}
       />
-    </Fragment>
+    </>
   );
 };
 
@@ -193,7 +193,7 @@ export const ProtectMediaButton = props => {
     Wrapping Tooltip with <div>
     https://github.com/marmelab/react-admin/issues/4349#issuecomment-578594735
     */
-    <Fragment>
+    <>
       {record.quarantined_by && (
         <Tooltip
           title={translate("resources.protect_media.action.none", {
@@ -238,7 +238,7 @@ export const ProtectMediaButton = props => {
           </div>
         </Tooltip>
       )}
-    </Fragment>
+    </>
   );
 };
 
@@ -285,7 +285,7 @@ export const QuarantineMediaButton = props => {
   };
 
   return (
-    <Fragment>
+    <>
       {record.safe_from_quarantine && (
         <Tooltip
           title={translate("resources.quarantine_media.action.none", {
@@ -325,6 +325,6 @@ export const QuarantineMediaButton = props => {
           </div>
         </Tooltip>
       )}
-    </Fragment>
+    </>
   );
 };

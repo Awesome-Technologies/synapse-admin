@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import {
   BooleanField,
@@ -130,11 +130,7 @@ export const RoomDirectorySaveButton = () => {
   );
 };
 
-const RoomDirectoryBulkActionButtons = () => (
-  <Fragment>
-    <RoomDirectoryBulkDeleteButton />
-  </Fragment>
-);
+const RoomDirectoryBulkActionButtons = () => <RoomDirectoryBulkDeleteButton />;
 
 const RoomDirectoryListActions = () => (
   <TopToolbar>
