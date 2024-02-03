@@ -253,39 +253,45 @@ const LoginPage = () => {
 
     return (
       <>
-        <TextInput
-          autoFocus
-          name="username"
-          component={renderInput}
-          label="ra.auth.username"
-          disabled={loading || !supportPassAuth}
-          onBlur={handleUsernameChange}
-          resettable
-          fullWidth
-          className="input"
-          validate={required()}
-        />
-        <PasswordInput
-          name="password"
-          component={renderInput}
-          label="ra.auth.password"
-          type="password"
-          disabled={loading || !supportPassAuth}
-          resettable
-          fullWidth
-          className="input"
-          validate={required()}
-        />
-        <TextInput
-          name="base_url"
-          component={renderInput}
-          label="synapseadmin.auth.base_url"
-          disabled={cfg_base_url || loading}
-          resettable
-          fullWidth
-          className="input"
-          validate={[required(), validateBaseUrl]}
-        />
+        <Box>
+          <TextInput
+            autoFocus
+            name="username"
+            component={renderInput}
+            label="ra.auth.username"
+            disabled={loading || !supportPassAuth}
+            onBlur={handleUsernameChange}
+            resettable
+            fullWidth
+            className="input"
+            validate={required()}
+          />
+        </Box>
+        <Box>
+          <PasswordInput
+            name="password"
+            component={renderInput}
+            label="ra.auth.password"
+            type="password"
+            disabled={loading || !supportPassAuth}
+            resettable
+            fullWidth
+            className="input"
+            validate={required()}
+          />
+        </Box>
+        <Box>
+          <TextInput
+            name="base_url"
+            component={renderInput}
+            label="synapseadmin.auth.base_url"
+            disabled={cfg_base_url || loading}
+            resettable
+            fullWidth
+            className="input"
+            validate={[required(), validateBaseUrl]}
+          />
+        </Box>
         <Box className="serverVersion">{serverVersion}</Box>
       </>
     );
