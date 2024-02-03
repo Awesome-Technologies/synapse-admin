@@ -6,7 +6,6 @@ import {
   DateField,
   DateTimeInput,
   Edit,
-  Filter,
   List,
   maxValue,
   number,
@@ -53,17 +52,13 @@ const dateFormatter = v => {
   return `${year}-${month}-${day}T${hour}:${minute}`;
 };
 
-const RegistrationTokenFilter = props => (
-  <Filter {...props}>
-    <BooleanInput source="valid" alwaysOn />
-  </Filter>
-);
+const registrationTokenFilters = [<BooleanInput source="valid" alwaysOn />];
 
 export const RegistrationTokenList = props => {
   return (
     <List
       {...props}
-      filters={<RegistrationTokenFilter />}
+      filters={registrationTokenFilters}
       filterDefaultValues={{ valid: true }}
       pagination={false}
       perPage={500}

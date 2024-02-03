@@ -3,7 +3,6 @@ import {
   Button,
   Datagrid,
   DateField,
-  Filter,
   List,
   Pagination,
   ReferenceField,
@@ -41,13 +40,7 @@ const destinationRowSx = (record, _index) => ({
   backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : "white",
 });
 
-const DestinationFilter = props => {
-  return (
-    <Filter {...props}>
-      <SearchInput source="destination" alwaysOn />
-    </Filter>
-  );
-};
+const destinationFilters = [<SearchInput source="destination" alwaysOn />];
 
 export const DestinationReconnectButton = props => {
   const record = useRecordContext();
@@ -110,7 +103,7 @@ export const DestinationList = props => {
   return (
     <List
       {...props}
-      filters={<DestinationFilter />}
+      filters={destinationFilters}
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
     >

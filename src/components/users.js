@@ -17,7 +17,6 @@ import {
   Create,
   Edit,
   List,
-  Filter,
   Toolbar,
   SimpleForm,
   SimpleFormIterator,
@@ -125,17 +124,15 @@ const UserPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const UserFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="name" alwaysOn />
-    <BooleanInput source="guests" alwaysOn />
-    <BooleanInput
-      label="resources.users.fields.show_deactivated"
-      source="deactivated"
-      alwaysOn
-    />
-  </Filter>
-);
+const userFilters = [
+  <SearchInput source="name" alwaysOn />,
+  <BooleanInput source="guests" alwaysOn />,
+  <BooleanInput
+    label="resources.users.fields.show_deactivated"
+    source="deactivated"
+    alwaysOn
+  />,
+];
 
 const UserBulkActionButtons = props => (
   <>
@@ -153,7 +150,7 @@ export const UserList = props => {
   return (
     <List
       {...props}
-      filters={<UserFilter />}
+      filters={userFilters}
       filterDefaultValues={{ guests: true, deactivated: false }}
       sort={{ field: "name", order: "ASC" }}
       actions={<UserListActions maxResults={10000} />}

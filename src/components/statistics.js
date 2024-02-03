@@ -3,7 +3,6 @@ import { cloneElement } from "react";
 import {
   Datagrid,
   ExportButton,
-  Filter,
   List,
   NumberField,
   Pagination,
@@ -51,18 +50,14 @@ const UserMediaStatsPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const UserMediaStatsFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="search_term" alwaysOn />
-  </Filter>
-);
+const userMediaStatsFilters = [<SearchInput source="search_term" alwaysOn />];
 
 export const UserMediaStatsList = props => {
   return (
     <List
       {...props}
       actions={<ListActions />}
-      filters={<UserMediaStatsFilter />}
+      filters={userMediaStatsFilters}
       pagination={<UserMediaStatsPagination />}
       sort={{ field: "media_length", order: "DESC" }}
     >

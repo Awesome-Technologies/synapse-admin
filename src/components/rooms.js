@@ -7,7 +7,6 @@ import {
   DatagridConfigurable,
   DeleteButton,
   ExportButton,
-  Filter,
   FunctionField,
   List,
   NumberField,
@@ -290,11 +289,7 @@ const RoomBulkActionButtons = () => (
   </>
 );
 
-const RoomFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="search_term" alwaysOn />
-  </Filter>
-);
+const roomFilters = [<SearchInput source="search_term" alwaysOn />];
 
 const RoomListActions = () => (
   <TopToolbar>
@@ -310,7 +305,7 @@ export const RoomList = () => {
     <List
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
-      filters={<RoomFilter />}
+      filters={roomFilters}
       actions={<RoomListActions />}
     >
       <DatagridConfigurable
