@@ -49,7 +49,7 @@ const FormBox = styled(Box)(({ theme }) => ({
     justifyContent: "center",
   },
   [`& .icon`]: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.grey[400],
   },
   [`& .hint`]: {
     marginTop: "1em",
