@@ -4,6 +4,7 @@ import {
   Form,
   FormDataConsumer,
   Notification,
+  required,
   useLogin,
   useNotify,
   useLocaleState,
@@ -26,7 +27,7 @@ import {
 import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
 
-const FormBox = styled("div")(({ theme }) => ({
+const FormBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   minHeight: "calc(100vh - 1em)",
@@ -76,10 +77,10 @@ const FormBox = styled("div")(({ theme }) => ({
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
+  const translate = useTranslate();
   const [loading, setLoading] = useState(false);
   const [supportPassAuth, setSupportPassAuth] = useState(true);
   const [locale, setLocale] = useLocaleState();
-  const translate = useTranslate();
   const base_url = localStorage.getItem("base_url");
   const cfg_base_url = process.env.REACT_APP_SERVER;
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
@@ -133,28 +134,16 @@ const LoginPage = () => {
     />
   );
 
-  const validate = values => {
-    const errors = {};
-    if (!values.username) {
-      errors.username = translate("ra.validation.required");
-    }
-    if (!values.password) {
-      errors.password = translate("ra.validation.required");
-    }
-    if (!values.base_url) {
-      errors.base_url = translate("ra.validation.required");
+  const validateBaseUrl = value => {
+    if (!value.match(/^(http|https):\/\//)) {
+      return translate("synapseadmin.auth.protocol_error");
+    } else if (
+      !value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)
+    ) {
+      return translate("synapseadmin.auth.url_error");
     } else {
-      if (!values.base_url.match(/^(http|https):\/\//)) {
-        errors.base_url = translate("synapseadmin.auth.protocol_error");
-      } else if (
-        !values.base_url.match(
-          /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/
-        )
-      ) {
-        errors.base_url = translate("synapseadmin.auth.url_error");
-      }
+      return undefined;
     }
-    return errors;
   };
 
   const handleSubmit = auth => {
@@ -274,6 +263,7 @@ const LoginPage = () => {
           resettable
           fullWidth
           className="input"
+          validate={required()}
         />
         <PasswordInput
           name="password"
@@ -284,6 +274,7 @@ const LoginPage = () => {
           resettable
           fullWidth
           className="input"
+          validate={required()}
         />
         <TextInput
           name="base_url"
@@ -293,6 +284,7 @@ const LoginPage = () => {
           resettable
           fullWidth
           className="input"
+          validate={[required(), validateBaseUrl]}
         />
         <Box className="serverVersion">{serverVersion}</Box>
       </>
@@ -301,9 +293,9 @@ const LoginPage = () => {
 
   return (
     <Form
-      initialValues={{ base_url: cfg_base_url || base_url }}
+      defaultValues={{ base_url: cfg_base_url || base_url }}
       onSubmit={handleSubmit}
-      validate={validate}
+      mode="onTouched"
     >
       <FormBox>
         <Card className="card">
