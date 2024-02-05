@@ -31,7 +31,7 @@ const ReportPagination = props => (
 export const ReportShow = props => {
   const translate = useTranslate();
   return (
-    <Show {...props}>
+    <Show>
       <TabbedShowLayout>
         <Tab
           label={translate("synapseadmin.reports.tabs.basic", {
@@ -98,10 +98,9 @@ export const ReportShow = props => {
   );
 };
 
-export const ReportList = ({ ...props }) => {
+export const ReportList = () => {
   return (
     <List
-      {...props}
       pagination={<ReportPagination />}
       sort={{ field: "received_ts", order: "DESC" }}
       bulkActionButtons={false}

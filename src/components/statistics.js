@@ -60,7 +60,6 @@ const UserMediaStatsFilter = props => (
 export const UserMediaStatsList = props => {
   return (
     <List
-      {...props}
       actions={<ListActions />}
       filters={<UserMediaStatsFilter />}
       pagination={<UserMediaStatsPagination />}

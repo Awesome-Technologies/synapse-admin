@@ -85,7 +85,7 @@ export const RegistrationTokenList = props => {
 };
 
 export const RegistrationTokenCreate = props => (
-  <Create {...props}>
+  <Create>
     <SimpleForm redirect="list" toolbar={<Toolbar alwaysEnableSaveButton />}>
       <TextInput
         source="token"
@@ -111,7 +111,7 @@ export const RegistrationTokenCreate = props => (
 
 export const RegistrationTokenEdit = props => {
   return (
-    <Edit {...props}>
+    <Edit>
       <SimpleForm>
         <TextInput source="token" disabled />
         <NumberInput source="pending" disabled />

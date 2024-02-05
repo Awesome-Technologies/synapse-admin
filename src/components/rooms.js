@@ -98,7 +98,7 @@ const RoomShowActions = ({ data, resource }) => {
 export const RoomShow = props => {
   const translate = useTranslate();
   return (
-    <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
+    <Show actions={<RoomShowActions />} title={<RoomTitle />}>
       <TabbedShowLayout>
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
           <TextField source="room_id" />

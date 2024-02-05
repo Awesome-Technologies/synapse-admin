@@ -152,7 +152,6 @@ const UserBulkActionButtons = props => (
 export const UserList = props => {
   return (
     <List
-      {...props}
       filters={<UserFilter />}
       filterDefaultValues={{ guests: true, deactivated: false }}
       sort={{ field: "name", order: "ASC" }}
@@ -263,7 +262,7 @@ const UserEditActions = ({ data }) => {
 };
 
 export const UserCreate = props => (
-  <Create {...props}>
+  <Create>
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />
@@ -319,7 +318,7 @@ const UserTitle = props => {
 export const UserEdit = props => {
   const translate = useTranslate();
   return (
-    <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
+    <Edit title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab
           label={translate("resources.users.name", { smart_count: 1 })}

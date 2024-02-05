@@ -108,7 +108,6 @@ const DestinationTitle = props => {
 export const DestinationList = props => {
   return (
     <List
-      {...props}
       filters={<DestinationFilter />}
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
@@ -135,7 +134,6 @@ export const DestinationShow = props => {
     <Show
       actions={<DestinationShowActions />}
       title={<DestinationTitle />}
-      {...props}
     >
       <TabbedShowLayout>
         <Tab label="status" icon={<ViewListIcon />}>
