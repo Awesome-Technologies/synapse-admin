@@ -103,9 +103,8 @@ export const ReportList = () => {
     <List
       pagination={<ReportPagination />}
       sort={{ field: "received_ts", order: "DESC" }}
-      bulkActionButtons={false}
     >
-      <Datagrid rowClick="show">
+      <Datagrid rowClick="show" bulkActionButtons={false}>
         <TextField source="id" sortable={false} />
         <DateField
           source="received_ts"
