@@ -80,9 +80,8 @@ export const RegistrationTokenList = props => (
 );
 
 export const RegistrationTokenCreate = props => (
-  <Create {...props}>
+  <Create {...props} redirect="list">
     <SimpleForm
-      redirect="list"
       toolbar={
         <Toolbar>
           {/* It is possible to create tokens per default without input. */}
