@@ -26,6 +26,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
+
+import { useAppContext } from "../AppContext";
 import {
   getServerVersion,
   getSupportedFeatures,
@@ -92,13 +94,18 @@ const FormBox = styled(Box)(({ theme }) => ({
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
+  const { restrictBaseUrl } = useAppContext();
+  const allowSingleBaseUrl = typeof restrictBaseUrl === "string";
+  const allowMultipleBaseUrls = Array.isArray(restrictBaseUrl);
+  const allowAnyBaseUrl = !(allowSingleBaseUrl || allowMultipleBaseUrls);
   const [loading, setLoading] = useState(false);
   const [supportPassAuth, setSupportPassAuth] = useState(true);
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
   const translate = useTranslate();
-  const base_url = localStorage.getItem("base_url");
-  const cfg_base_url = process.env.REACT_APP_SERVER;
+  const base_url = allowSingleBaseUrl
+    ? restrictBaseUrl
+    : localStorage.getItem("base_url");
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
 
@@ -177,15 +184,24 @@ const LoginPage = () => {
     const [matrixVersions, setMatrixVersions] = useState("");
 
     const handleUsernameChange = _ => {
-      if (formData.base_url || cfg_base_url) return;
+      if (formData.base_url || allowSingleBaseUrl) return;
       // check if username is a full qualified userId then set base_url accordingly
       const domain = splitMxid(formData.username)?.domain;
       if (domain) {
-        getWellKnownUrl(domain).then(url => form.setValue("base_url", url));
+        getWellKnownUrl(domain).then(url => {
+          if (
+            allowAnyBaseUrl ||
+            (allowMultipleBaseUrls && restrictBaseUrl.includes(url))
+          )
+            form.setValue("base_url", url);
+        });
       }
     };
 
     useEffect(() => {
+      if (formData.base_url === "" && allowMultipleBaseUrls) {
+        form.setValue("base_url", restrictBaseUrl[0]);
+      }
       if (!isValidBaseUrl(formData.base_url)) return;
 
       getServerVersion(formData.base_url)
@@ -215,7 +231,7 @@ const LoginPage = () => {
           setSSOBaseUrl(supportSSO ? formData.base_url : "");
         })
         .catch(() => setSSOBaseUrl(""));
-    }, [formData.base_url]);
+    }, [formData.base_url, form]);
 
     return (
       <>
@@ -224,11 +240,11 @@ const LoginPage = () => {
             autoFocus
             name="username"
             label="ra.auth.username"
+            autoComplete="username"
             disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             resettable
             fullWidth
-            className="input"
             validate={required()}
           />
         </Box>
@@ -237,10 +253,10 @@ const LoginPage = () => {
             name="password"
             label="ra.auth.password"
             type="password"
+            autoComplete="current-password"
             disabled={loading || !supportPassAuth}
             resettable
             fullWidth
-            className="input"
             validate={required()}
           />
         </Box>
@@ -248,12 +264,21 @@ const LoginPage = () => {
           <TextInput
             name="base_url"
             label="synapseadmin.auth.base_url"
-            disabled={cfg_base_url || loading}
-            resettable
+            select={allowMultipleBaseUrls}
+            autoComplete="url"
+            disabled={loading}
+            readOnly={allowSingleBaseUrl}
+            resettable={allowAnyBaseUrl}
             fullWidth
-            className="input"
             validate={[required(), validateBaseUrl]}
-          />
+          >
+            {allowMultipleBaseUrls &&
+              restrictBaseUrl.map(url => (
+                <MenuItem key={url} value={url}>
+                  {url}
+                </MenuItem>
+              ))}
+          </TextInput>
         </Box>
         <Typography className="serverVersion">{serverVersion}</Typography>
         <Typography className="matrixVersions">{matrixVersions}</Typography>
@@ -263,7 +288,7 @@ const LoginPage = () => {
 
   return (
     <Form
-      defaultValues={{ base_url: cfg_base_url || base_url }}
+      defaultValues={{ base_url: base_url }}
       onSubmit={handleSubmit}
       mode="onTouched"
     >
