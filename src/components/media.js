@@ -29,7 +29,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { alpha, useTheme } from "@mui/material/styles";
 
-const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
+const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
 
   const dateParser = v => {
@@ -61,11 +61,7 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
         <DialogContentText>
           {translate("resources.delete_media.helper.send")}
         </DialogContentText>
-        <SimpleForm
-          toolbar={<DeleteMediaToolbar />}
-          redirect={false}
-          save={onSend}
-        >
+        <SimpleForm toolbar={<DeleteMediaToolbar />} onSubmit={onSubmit}>
           <DateTimeInput
             fullWidth
             source="before_ts"

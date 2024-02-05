@@ -23,7 +23,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
+const ServerNoticeDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
 
   const ServerNoticeToolbar = props => (
@@ -50,7 +50,7 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
         <SimpleForm
           toolbar={<ServerNoticeToolbar />}
           redirect={false}
-          onSubmit={onSend}
+          onSubmit={onSubmit}
         >
           <TextInput
             source="body"
@@ -105,7 +105,7 @@ export const ServerNoticeButton = () => {
       <ServerNoticeDialog
         open={open}
         onClose={handleDialogClose}
-        onSend={handleSend}
+        onSubmit={handleSend}
       />
     </>
   );
@@ -150,7 +150,7 @@ export const ServerNoticeBulkButton = () => {
       <ServerNoticeDialog
         open={open}
         onClose={handleDialogClose}
-        onSend={handleSend}
+        onSubmit={handleSend}
       />
     </>
   );
