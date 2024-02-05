@@ -41,8 +41,8 @@ const ListActions = props => {
   );
 };
 
-const UserMediaStatsPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const UserMediaStatsPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const userMediaStatsFilters = [<SearchInput source="search_term" alwaysOn />];

@@ -24,8 +24,8 @@ import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
-const DestinationPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const DestinationPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const date_format = {

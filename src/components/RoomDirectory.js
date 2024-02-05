@@ -24,8 +24,8 @@ import { useMutation } from "react-query";
 import RoomDirectoryIcon from "@mui/icons-material/FolderShared";
 import AvatarField from "./AvatarField";
 
-const RoomDirectoryPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[100, 500, 1000, 2000]} />
+const RoomDirectoryPagination = () => (
+  <Pagination rowsPerPageOptions={[100, 500, 1000, 2000]} />
 );
 
 export const RoomDirectoryDeleteButton = props => {

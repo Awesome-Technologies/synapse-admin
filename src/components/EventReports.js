@@ -25,8 +25,8 @@ const date_format = {
   second: "2-digit",
 };
 
-const ReportPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const ReportPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 export const ReportShow = props => {

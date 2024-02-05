@@ -51,8 +51,8 @@ const date_format = {
   second: "2-digit",
 };
 
-const RoomPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const RoomPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const RoomTitle = () => {
