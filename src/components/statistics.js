@@ -18,7 +18,7 @@ import { DeleteMediaButton } from "./media";
 const ListActions = props => {
   const { className, exporter, filters, maxResults, ...rest } = props;
   const {
-    currentSort,
+    sort,
     resource,
     displayedFilters,
     filterValues,
@@ -39,7 +39,7 @@ const ListActions = props => {
       <ExportButton
         disabled={total === 0}
         resource={resource}
-        sort={currentSort}
+        sort={sort}
         filterValues={filterValues}
         maxResults={maxResults}
       />
