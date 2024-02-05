@@ -64,7 +64,7 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
         <SimpleForm
           toolbar={<DeleteMediaToolbar />}
           redirect={false}
-          save={onSend}
+          onSubmit={onSend}
         >
           <DateTimeInput
             fullWidth

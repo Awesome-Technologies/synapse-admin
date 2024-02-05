@@ -50,7 +50,7 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
         <SimpleForm
           toolbar={<ServerNoticeToolbar />}
           redirect={false}
-          save={onSend}
+          onSubmit={onSend}
         >
           <TextInput
             source="body"
