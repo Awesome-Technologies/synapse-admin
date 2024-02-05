@@ -73,7 +73,7 @@ const date_format = {
 };
 
 const UserListActions = ({
-  currentSort,
+  sort,
   className,
   resource,
   filters,
@@ -103,7 +103,7 @@ const UserListActions = ({
       <ExportButton
         disabled={total === 0}
         resource={resource}
-        sort={currentSort}
+        sort={sort}
         filter={{ ...filterValues, ...permanentFilter }}
         exporter={exporter}
         maxResults={maxResults}

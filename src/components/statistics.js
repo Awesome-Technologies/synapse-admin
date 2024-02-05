@@ -17,14 +17,8 @@ import { DeleteMediaButton } from "./media";
 
 const ListActions = props => {
   const { className, exporter, filters, maxResults, ...rest } = props;
-  const {
-    currentSort,
-    resource,
-    displayedFilters,
-    filterValues,
-    showFilter,
-    total,
-  } = useListContext();
+  const { sort, resource, displayedFilters, filterValues, showFilter, total } =
+    useListContext();
   return (
     <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
       {filters &&
@@ -39,7 +33,7 @@ const ListActions = props => {
       <ExportButton
         disabled={total === 0}
         resource={resource}
-        sort={currentSort}
+        sort={sort}
         filterValues={filterValues}
         maxResults={maxResults}
       />
