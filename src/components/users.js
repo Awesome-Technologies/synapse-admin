@@ -121,8 +121,8 @@ UserListActions.defaultProps = {
   onUnselectItems: () => null,
 };
 
-const UserPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const UserPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const UserFilter = props => (
