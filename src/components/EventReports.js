@@ -13,6 +13,7 @@ import {
   useTranslate,
 } from "react-admin";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import ReportIcon from "@mui/icons-material/Warning";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
 const date_format = {
@@ -118,3 +119,12 @@ export const ReportList = props => (
     </Datagrid>
   </List>
 );
+
+const resource = {
+  name: "reports",
+  icon: ReportIcon,
+  list: ReportList,
+  show: ReportShow,
+};
+
+export default resource;

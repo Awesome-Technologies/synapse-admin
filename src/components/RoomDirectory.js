@@ -1,5 +1,4 @@
 import React from "react";
-import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import {
   BooleanField,
   BulkDeleteButton,
@@ -22,6 +21,7 @@ import {
   useUnselectAll,
 } from "react-admin";
 import { useMutation } from "react-query";
+import RoomDirectoryIcon from "@mui/icons-material/FolderShared";
 import AvatarField from "./AvatarField";
 
 const RoomDirectoryPagination = props => (
@@ -44,7 +44,7 @@ export const RoomDirectoryDeleteButton = props => {
         smart_count: 1,
       })}
       resource="room_directory"
-      icon={<FolderSharedIcon />}
+      icon={<RoomDirectoryIcon />}
     />
   );
 };
@@ -57,7 +57,7 @@ export const RoomDirectoryBulkDeleteButton = props => (
     confirmTitle="resources.room_directory.action.title"
     confirmContent="resources.room_directory.action.content"
     resource="room_directory"
-    icon={<FolderSharedIcon />}
+    icon={<RoomDirectoryIcon />}
   />
 );
 
@@ -91,7 +91,7 @@ export const RoomDirectoryBulkSaveButton = () => {
       onClick={handleSend}
       disabled={isloading}
     >
-      <FolderSharedIcon />
+      <RoomDirectoryIcon />
     </Button>
   );
 };
@@ -125,7 +125,7 @@ export const RoomDirectorySaveButton = () => {
       onClick={handleSend}
       disabled={isloading}
     >
-      <FolderSharedIcon />
+      <RoomDirectoryIcon />
     </Button>
   );
 };
@@ -194,3 +194,11 @@ export const RoomDirectoryList = () => (
     </DatagridConfigurable>
   </List>
 );
+
+const resource = {
+  name: "room_directory",
+  icon: RoomDirectoryIcon,
+  list: RoomDirectoryList,
+};
+
+export default resource;

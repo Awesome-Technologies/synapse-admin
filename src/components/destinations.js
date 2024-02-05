@@ -20,6 +20,7 @@ import {
   useTranslate,
 } from "react-admin";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
@@ -177,3 +178,12 @@ export const DestinationShow = props => {
     </Show>
   );
 };
+
+const resource = {
+  name: "destinations",
+  icon: DestinationsIcon,
+  list: DestinationList,
+  show: DestinationShow,
+};
+
+export default resource;

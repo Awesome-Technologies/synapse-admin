@@ -7,6 +7,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import UserIcon from "@mui/icons-material/Group";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   ArrayInput,
@@ -524,3 +525,13 @@ export const UserEdit = props => {
     </Edit>
   );
 };
+
+const resource = {
+  name: "users",
+  icon: UserIcon,
+  list: UserList,
+  edit: UserEdit,
+  create: UserCreate,
+};
+
+export default resource;

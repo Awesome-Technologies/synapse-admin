@@ -34,6 +34,7 @@ import UserIcon from "@mui/icons-material/Group";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EventIcon from "@mui/icons-material/Event";
+import RoomIcon from "@mui/icons-material/ViewList";
 import {
   RoomDirectoryBulkDeleteButton,
   RoomDirectoryBulkSaveButton,
@@ -346,3 +347,12 @@ export const RoomList = props => {
     </List>
   );
 };
+
+const resource = {
+  name: "rooms",
+  icon: RoomIcon,
+  list: RoomList,
+  show: RoomShow,
+};
+
+export default resource;

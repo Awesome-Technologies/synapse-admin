@@ -17,6 +17,7 @@ import {
   TextField,
   Toolbar,
 } from "react-admin";
+import RegistrationTokenIcon from "@mui/icons-material/ConfirmationNumber";
 
 const date_format = {
   year: "numeric",
@@ -121,3 +122,13 @@ export const RegistrationTokenEdit = props => (
     </SimpleForm>
   </Edit>
 );
+
+const resource = {
+  name: "users",
+  icon: RegistrationTokenIcon,
+  list: RegistrationTokenList,
+  edit: RegistrationTokenEdit,
+  create: RegistrationTokenCreate,
+};
+
+export default resource;

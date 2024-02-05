@@ -12,6 +12,7 @@ import {
   TopToolbar,
   useListContext,
 } from "react-admin";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 import { DeleteMediaButton } from "./media";
 
 const ListActions = props => {
@@ -74,3 +75,11 @@ export const UserMediaStatsList = props => (
     </Datagrid>
   </List>
 );
+
+const resource = {
+  name: "user_media_statistics",
+  icon: EqualizerIcon,
+  list: UserMediaStatsList,
+};
+
+export default resource;
