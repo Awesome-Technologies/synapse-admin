@@ -23,7 +23,7 @@
   "dependencies": {
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.8",
-    "@mui/styles": "5.14.10",
+    "@mui/styles": "5.15.7",
     "papaparse": "^5.4.1",
     "prop-types": "^15.8.1",
     "ra-language-chinese": "^2.0.10",
