@@ -108,8 +108,10 @@ const de = {
         is_guest: "Gast",
         admin: "Server Administrator",
         deactivated: "Deaktiviert",
+        locked: "Gesperrt",
         guests: "Zeige Gäste",
         show_deactivated: "Zeige deaktivierte Benutzer",
+        show_locked: "Zeige gesperrte Benutzer",
         user_id: "Suche Benutzer",
         displayname: "Anzeigename",
         password: "Passwort",
@@ -132,6 +134,10 @@ const de = {
       },
       action: {
         erase: "Lösche Benutzerdaten",
+        update: {
+          locked_and_deactivated:
+            "Ein Benutzer kann nicht deaktiviert und gesperrt werden.",
+        },
       },
     },
     rooms: {

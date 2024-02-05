@@ -35,6 +35,7 @@ const resourceMap = {
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
+      locked: !!u.locked,
       // need timestamp in milliseconds
       creation_ts_ms: u.creation_ts * 1000,
     }),
@@ -355,6 +356,7 @@ const dataProvider = {
       name,
       guests,
       deactivated,
+      locked,
       search_term,
       destination,
       valid,
@@ -371,6 +373,7 @@ const dataProvider = {
       destination: destination,
       guests: guests,
       deactivated: deactivated,
+      locked: locked,
       valid: valid,
       order_by: field,
       dir: getSearchOrder(order),
