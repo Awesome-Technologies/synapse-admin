@@ -32,7 +32,7 @@ function TranslatableOption({ value, text }) {
   return <option value={value}>{translate(text)}</option>;
 }
 
-const FilePicker = props => {
+const FilePicker = () => {
   const [values, setValues] = useState(null);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
@@ -191,7 +191,7 @@ const FilePicker = props => {
     return true;
   };
 
-  const runImport = async e => {
+  const runImport = async _e => {
     if (progress !== null) {
       notify("import_users.errors.already_in_progress");
       return;
@@ -307,7 +307,7 @@ const FilePicker = props => {
         let retries = 0;
         const submitRecord = recordData => {
           return dataProvider.getOne("users", { id: recordData.id }).then(
-            async alreadyExists => {
+            async _alreadyExists => {
               if (LOGGING) console.log("already existed");
 
               if (useridMode === "update" || conflictMode === "skip") {
@@ -332,7 +332,7 @@ const FilePicker = props => {
                 }
               }
             },
-            async okToSubmit => {
+            async _okToSubmit => {
               if (LOGGING)
                 console.log(
                   "OK to create record " +

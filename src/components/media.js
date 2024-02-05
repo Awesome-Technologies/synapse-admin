@@ -122,6 +122,7 @@ export const DeleteMediaButton = props => {
   return (
     <>
       <Button
+        {...props}
         label="resources.delete_media.action.send"
         onClick={handleDialogOpen}
         disabled={isLoading}
@@ -298,7 +299,7 @@ export const QuarantineMediaButton = props => {
           })}
         >
           <div>
-            <Button disabled={true}>
+            <Button {...props} disabled={true}>
               <ClearIcon />
             </Button>
           </div>
@@ -311,7 +312,11 @@ export const QuarantineMediaButton = props => {
           })}
         >
           <div>
-            <Button onClick={handleRemoveQuarantaine} disabled={isLoading}>
+            <Button
+              {...props}
+              onClick={handleRemoveQuarantaine}
+              disabled={isLoading}
+            >
               <BlockIcon color="error" />
             </Button>
           </div>

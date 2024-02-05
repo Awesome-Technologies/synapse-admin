@@ -102,16 +102,16 @@ export const RoomDirectorySaveButton = () => {
   const refresh = useRefresh();
   const [create, { isloading }] = useCreate();
 
-  const handleSend = values => {
+  const handleSend = () => {
     create(
       "room_directory",
       { data: { id: record.id } },
       {
-        onSuccess: data => {
+        onSuccess: _data => {
           notify("resources.room_directory.action.send_success");
           refresh();
         },
-        onError: error =>
+        onError: _error =>
           notify("resources.room_directory.action.send_failure", {
             type: "error",
           }),

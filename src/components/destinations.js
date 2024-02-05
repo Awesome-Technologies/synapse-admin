@@ -42,7 +42,7 @@ const destinationRowSx = (record, _index) => ({
 
 const destinationFilters = [<SearchInput source="destination" alwaysOn />];
 
-export const DestinationReconnectButton = props => {
+export const DestinationReconnectButton = () => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
@@ -83,13 +83,13 @@ export const DestinationReconnectButton = props => {
   );
 };
 
-const DestinationShowActions = props => (
+const DestinationShowActions = () => (
   <TopToolbar>
     <DestinationReconnectButton />
   </TopToolbar>
 );
 
-const DestinationTitle = props => {
+const DestinationTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (

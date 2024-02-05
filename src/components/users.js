@@ -134,11 +134,10 @@ const userFilters = [
   />,
 ];
 
-const UserBulkActionButtons = props => (
+const UserBulkActionButtons = () => (
   <>
-    <ServerNoticeBulkButton {...props} />
+    <ServerNoticeBulkButton />
     <BulkDeleteButton
-      {...props}
       label="resources.users.action.erase"
       confirmTitle="resources.users.helper.erase"
       mutationMode="pessimistic"
@@ -146,37 +145,35 @@ const UserBulkActionButtons = props => (
   </>
 );
 
-export const UserList = props => {
-  return (
-    <List
-      {...props}
-      filters={userFilters}
-      filterDefaultValues={{ guests: true, deactivated: false }}
-      sort={{ field: "name", order: "ASC" }}
-      actions={<UserListActions maxResults={10000} />}
-      pagination={<UserPagination />}
-    >
-      <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
-        <AvatarField
-          source="avatar_src"
-          sx={{ height: "40px", width: "40px" }}
-          sortBy="avatar_url"
-        />
-        <TextField source="id" sortBy="name" />
-        <TextField source="displayname" />
-        <BooleanField source="is_guest" />
-        <BooleanField source="admin" />
-        <BooleanField source="deactivated" />
-        <DateField
-          source="creation_ts"
-          label="resources.users.fields.creation_ts_ms"
-          showTime
-          options={date_format}
-        />
-      </Datagrid>
-    </List>
-  );
-};
+export const UserList = props => (
+  <List
+    {...props}
+    filters={userFilters}
+    filterDefaultValues={{ guests: true, deactivated: false }}
+    sort={{ field: "name", order: "ASC" }}
+    actions={<UserListActions maxResults={10000} />}
+    pagination={<UserPagination />}
+  >
+    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
+      <AvatarField
+        source="avatar_src"
+        sx={{ height: "40px", width: "40px" }}
+        sortBy="avatar_url"
+      />
+      <TextField source="id" sortBy="name" />
+      <TextField source="displayname" />
+      <BooleanField source="is_guest" />
+      <BooleanField source="admin" />
+      <BooleanField source="deactivated" />
+      <DateField
+        source="creation_ts"
+        label="resources.users.fields.creation_ts_ms"
+        showTime
+        options={date_format}
+      />
+    </Datagrid>
+  </List>
+);
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
 // here only local part of user_id
@@ -300,7 +297,7 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = props => {
+const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (

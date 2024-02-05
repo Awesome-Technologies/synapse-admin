@@ -44,6 +44,7 @@ export const DeviceRemoveButton = props => {
   return (
     <>
       <Button
+        {...props}
         label="ra.action.remove"
         onClick={handleClick}
         sx={{

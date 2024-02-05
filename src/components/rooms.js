@@ -54,7 +54,7 @@ const RoomPagination = props => (
   <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const RoomTitle = props => {
+const RoomTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   var name = "";
@@ -69,23 +69,23 @@ const RoomTitle = props => {
   );
 };
 
-const RoomShowActions = ({ data, resource }) => {
+const RoomShowActions = () => {
+  const record = useRecordContext();
   var roomDirectoryStatus = "";
-  if (data) {
-    roomDirectoryStatus = data.public;
+  if (record) {
+    roomDirectoryStatus = record.public;
   }
 
   return (
     <TopToolbar>
       {roomDirectoryStatus === false && (
-        <RoomDirectorySaveButton record={data} />
+        <RoomDirectorySaveButton record={record} />
       )}
       {roomDirectoryStatus === true && (
-        <RoomDirectoryDeleteButton record={data} />
+        <RoomDirectoryDeleteButton record={record} />
       )}
       <DeleteButton
-        record={data}
-        resource={resource}
+        record={record}
         mutationMode="pessimistic"
         confirmTitle="resources.rooms.action.erase.title"
         confirmContent="resources.rooms.action.erase.content"
@@ -298,11 +298,12 @@ const RoomListActions = () => (
   </TopToolbar>
 );
 
-export const RoomList = () => {
+export const RoomList = props => {
   const theme = useTheme();
 
   return (
     <List
+      {...props}
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
       filters={roomFilters}

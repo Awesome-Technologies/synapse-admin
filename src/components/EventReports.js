@@ -98,26 +98,23 @@ export const ReportShow = props => {
   );
 };
 
-export const ReportList = ({ ...props }) => {
-  return (
-    <List
-      {...props}
-      pagination={<ReportPagination />}
-      sort={{ field: "received_ts", order: "DESC" }}
-      bulkActionButtons={false}
-    >
-      <Datagrid rowClick="show">
-        <TextField source="id" sortable={false} />
-        <DateField
-          source="received_ts"
-          showTime
-          options={date_format}
-          sortable={true}
-        />
-        <TextField sortable={false} source="user_id" />
-        <TextField sortable={false} source="name" />
-        <TextField sortable={false} source="score" />
-      </Datagrid>
-    </List>
-  );
-};
+export const ReportList = props => (
+  <List
+    {...props}
+    pagination={<ReportPagination />}
+    sort={{ field: "received_ts", order: "DESC" }}
+  >
+    <Datagrid rowClick="show" bulkActionButtons={false}>
+      <TextField source="id" sortable={false} />
+      <DateField
+        source="received_ts"
+        showTime
+        options={date_format}
+        sortable={true}
+      />
+      <TextField sortable={false} source="user_id" />
+      <TextField sortable={false} source="name" />
+      <TextField sortable={false} source="score" />
+    </Datagrid>
+  </List>
+);
