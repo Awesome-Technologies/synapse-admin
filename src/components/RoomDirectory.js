@@ -65,7 +65,7 @@ export const RoomDirectoryBulkSaveButton = () => {
   const { selectedIds } = useListContext();
   const notify = useNotify();
   const refresh = useRefresh();
-  const unselectAll = useUnselectAll();
+  const unselectAllRooms = useUnselectAll("rooms");
   const { createMany, isloading } = useMutation();
 
   const handleSend = values => {
@@ -74,7 +74,7 @@ export const RoomDirectoryBulkSaveButton = () => {
       {
         onSuccess: data => {
           notify("resources.room_directory.action.send_success");
-          unselectAll("rooms");
+          unselectAllRooms();
           refresh();
         },
         onError: error =>
