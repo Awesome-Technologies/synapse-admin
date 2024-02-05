@@ -86,7 +86,10 @@ export const RegistrationTokenList = props => {
 
 export const RegistrationTokenCreate = props => (
   <Create>
-    <SimpleForm redirect="list" toolbar={<Toolbar alwaysEnableSaveButton />}>
+    <SimpleForm
+      redirect="list"
+      toolbar={<Toolbar {...props}><SaveButton alwaysEnable /></Toolbar>}
+    >
       <TextInput
         source="token"
         autoComplete="off"
