@@ -119,8 +119,8 @@ const LoginPage = () => {
           typeof error === "string"
             ? error
             : typeof error === "undefined" || !error.message
-            ? "ra.auth.sign_in_error"
-            : error.message
+              ? "ra.auth.sign_in_error"
+              : error.message
         );
         console.error(error);
       });
@@ -161,8 +161,8 @@ const LoginPage = () => {
         typeof error === "string"
           ? error
           : typeof error === "undefined" || !error.message
-          ? "ra.auth.sign_in_error"
-          : error.message,
+            ? "ra.auth.sign_in_error"
+            : error.message,
         { type: "warning" }
       );
     });
