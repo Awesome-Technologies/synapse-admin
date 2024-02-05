@@ -114,7 +114,7 @@ export const ServerNoticeBulkButton = () => {
   const { selectedIds } = useListContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const unselectAll = useUnselectAll();
+  const unselectAll = useUnselectAll("users");
   const { createMany, isloading } = useMutation();
 
   const handleDialogOpen = () => setOpen(true);
@@ -126,7 +126,7 @@ export const ServerNoticeBulkButton = () => {
       {
         onSuccess: data => {
           notify("resources.servernotices.action.send_success");
-          unselectAll("users");
+          unselectAll();
           handleDialogClose();
         },
         onError: error =>
