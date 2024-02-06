@@ -27,7 +27,8 @@ export const DeviceRemoveButton = props => {
   const handleConfirm = () => {
     removeDevice(
       "devices",
-      { id: record.id, meta: { user_id: record.user_id } },
+      // needs previousData for user_id
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");

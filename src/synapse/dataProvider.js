@@ -98,7 +98,7 @@ const resourceMap = {
     }),
     delete: params => ({
       endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(
-        params.meta.user_id
+        params.previousData.user_id
       )}/devices/${params.id}`,
     }),
   },
@@ -546,7 +546,7 @@ const dataProvider = {
       const endpoint_url = homeserver + res.path;
       return jsonClient(`${endpoint_url}/${params.id}`, {
         method: "DELETE",
-        body: JSON.stringify(params.data, filterNullValues),
+        body: JSON.stringify(params.previousData, filterNullValues),
       }).then(({ json }) => ({
         data: json,
       }));
