@@ -90,7 +90,7 @@ export const ReportShow = props => {
           <TextField source="event_json.content.algorithm" />
           <TextField
             source="event_json.content.device_id"
-            label="resources.users.fields.device_id"
+            label="resources.devices.fields.device_id"
           />
         </Tab>
       </TabbedShowLayout>
