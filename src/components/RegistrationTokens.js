@@ -90,6 +90,7 @@ export const RegistrationTokenCreate = props => (
     <SimpleForm
       toolbar={
         <Toolbar {...props}>
+          {/* It is possible to create tokens per default without input. */}
           <SaveButton alwaysEnable />
         </Toolbar>
       }
