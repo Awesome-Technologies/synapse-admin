@@ -13,6 +13,7 @@ import {
   NumberField,
   NumberInput,
   regex,
+  SaveButton,
   SimpleForm,
   TextInput,
   TextField,
@@ -87,7 +88,11 @@ export const RegistrationTokenList = props => {
 export const RegistrationTokenCreate = props => (
   <Create redirect="list">
     <SimpleForm
-      toolbar={<Toolbar {...props}><SaveButton alwaysEnable /></Toolbar>}
+      toolbar={
+        <Toolbar {...props}>
+          <SaveButton alwaysEnable />
+        </Toolbar>
+      }
     >
       <TextInput
         source="token"
