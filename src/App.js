@@ -44,6 +44,7 @@ const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
+    darkTheme
   >
     <CustomRoutes>
       <Route path="/import_users" element={<ImportFeature />} />
