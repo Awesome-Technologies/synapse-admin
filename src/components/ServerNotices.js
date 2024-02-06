@@ -7,6 +7,7 @@ import {
   Toolbar,
   required,
   useCreate,
+  useDataProvider,
   useListContext,
   useNotify,
   useRecordContext,
@@ -47,11 +48,7 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSubmit }) => {
         <DialogContentText>
           {translate("resources.servernotices.helper.send")}
         </DialogContentText>
-        <SimpleForm
-          toolbar={<ServerNoticeToolbar />}
-          redirect={false}
-          onSubmit={onSubmit}
-        >
+        <SimpleForm toolbar={<ServerNoticeToolbar />} onSubmit={onSubmit}>
           <TextInput
             source="body"
             label="resources.servernotices.fields.body"
@@ -114,43 +111,44 @@ export const ServerNoticeButton = () => {
 export const ServerNoticeBulkButton = () => {
   const { selectedIds } = useListContext();
   const [open, setOpen] = useState(false);
+  const openDialog = () => setOpen(true);
+  const closeDialog = () => setOpen(false);
   const notify = useNotify();
   const unselectAllUsers = useUnselectAll("users");
-  const { createMany, isloading } = useMutation();
+  const dataProvider = useDataProvider();
 
-  const handleDialogOpen = () => setOpen(true);
-  const handleDialogClose = () => setOpen(false);
-
-  const handleSend = values => {
-    createMany(
-      ["servernotices", "createMany", { ids: selectedIds, data: values }],
-      {
-        onSuccess: data => {
-          notify("resources.servernotices.action.send_success");
-          unselectAllUsers();
-          handleDialogClose();
-        },
-        onError: error =>
-          notify("resources.servernotices.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
+  const { mutate: sendNotices, isLoading } = useMutation(
+    data =>
+      dataProvider.createMany("servernotices", {
+        ids: selectedIds,
+        data: data,
+      }),
+    {
+      onSuccess: () => {
+        notify("resources.servernotices.action.send_success");
+        unselectAllUsers();
+        closeDialog();
+      },
+      onError: () =>
+        notify("resources.servernotices.action.send_failure", {
+          type: "error",
+        }),
+    }
+  );
 
   return (
     <>
       <Button
         label="resources.servernotices.send"
-        onClick={handleDialogOpen}
-        disabled={isloading}
+        onClick={openDialog}
+        disabled={isLoading}
       >
         <MessageIcon />
       </Button>
       <ServerNoticeDialog
         open={open}
-        onClose={handleDialogClose}
-        onSubmit={handleSend}
+        onClose={closeDialog}
+        onSubmit={sendNotices}
       />
     </>
   );
