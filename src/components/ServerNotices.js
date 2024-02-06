@@ -7,6 +7,7 @@ import {
   Toolbar,
   required,
   useCreate,
+  useDataProvider,
   useListContext,
   useNotify,
   useRecordContext,
@@ -23,11 +24,11 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
+const ServerNoticeDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
 
   const ServerNoticeToolbar = props => (
-    <Toolbar {...props}>
+    <Toolbar>
       <SaveButton
         label="resources.servernotices.action.send"
         disabled={props.pristine}
@@ -47,11 +48,7 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
         <DialogContentText>
           {translate("resources.servernotices.helper.send")}
         </DialogContentText>
-        <SimpleForm
-          toolbar={<ServerNoticeToolbar />}
-          redirect={false}
-          onSubmit={onSend}
-        >
+        <SimpleForm toolbar={<ServerNoticeToolbar />} onSubmit={onSubmit}>
           <TextInput
             source="body"
             label="resources.servernotices.fields.body"
@@ -71,14 +68,15 @@ export const ServerNoticeButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [create, { isloading }] = useCreate("servernotices");
+  const [create, { isloading }] = useCreate();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
     create(
-      { payload: { data: { id: record.id, ...values } } },
+      "servernotices",
+      { data: { id: record.id, ...values } },
       {
         onSuccess: () => {
           notify("resources.servernotices.action.send_success");
@@ -104,38 +102,39 @@ export const ServerNoticeButton = () => {
       <ServerNoticeDialog
         open={open}
         onClose={handleDialogClose}
-        onSend={handleSend}
+        onSubmit={handleSend}
       />
     </Fragment>
   );
 };
 
-export const ServerNoticeBulkButton = () => {
+export const ServerNoticeBulkButton = ({ body }) => {
   const { selectedIds } = useListContext();
   const [open, setOpen] = useState(false);
-  const notify = useNotify();
-  const unselectAll = useUnselectAll("users");
-  const { createMany, isloading } = useMutation();
-
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
+  const notify = useNotify();
+  const unselectAll = useUnselectAll("users");
+  const dataProvider = useDataProvider();
 
-  const handleSend = values => {
-    createMany(
-      ["servernotices", "createMany", { ids: selectedIds, data: values }],
-      {
-        onSuccess: data => {
-          notify("resources.servernotices.action.send_success");
-          unselectAll();
-          handleDialogClose();
-        },
-        onError: error =>
-          notify("resources.servernotices.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
+  const { mutate, isloading } = useMutation(
+    data =>
+      dataProvider.createMany("servernotices", {
+        ids: selectedIds,
+        data: data,
+      }),
+    {
+      onSuccess: () => {
+        notify("resources.servernotices.action.send_success");
+        unselectAll();
+        handleDialogClose();
+      },
+      onError: () =>
+        notify("resources.servernotices.action.send_failure", {
+          type: "error",
+        }),
+    }
+  );
 
   return (
     <Fragment>
@@ -149,7 +148,7 @@ export const ServerNoticeBulkButton = () => {
       <ServerNoticeDialog
         open={open}
         onClose={handleDialogClose}
-        onSend={handleSend}
+        onSubmit={mutate}
       />
     </Fragment>
   );
