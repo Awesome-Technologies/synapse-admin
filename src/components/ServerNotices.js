@@ -108,7 +108,7 @@ export const ServerNoticeButton = () => {
   );
 };
 
-export const ServerNoticeBulkButton = ({ body }) => {
+export const ServerNoticeBulkButton = () => {
   const { selectedIds } = useListContext();
   const [open, setOpen] = useState(false);
   const handleDialogOpen = () => setOpen(true);
