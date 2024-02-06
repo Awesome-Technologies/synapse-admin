@@ -534,7 +534,7 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     if ("delete" in res) {
-      const del = res["delete"](params);
+      const del = res["delete"](params.previousData);
       const endpoint_url = homeserver + del.endpoint;
       return jsonClient(endpoint_url, {
         method: "method" in del ? del.method : "DELETE",
@@ -546,7 +546,7 @@ const dataProvider = {
       const endpoint_url = homeserver + res.path;
       return jsonClient(`${endpoint_url}/${params.id}`, {
         method: "DELETE",
-        body: JSON.stringify(params.data, filterNullValues),
+        body: JSON.stringify(params.previousData, filterNullValues),
       }).then(({ json }) => ({
         data: json,
       }));

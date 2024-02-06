@@ -64,7 +64,7 @@ export const DestinationReconnectButton = props => {
 
     handleReconnect(
       "destinations",
-      { id: record.id },
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("ra.notification.updated", {

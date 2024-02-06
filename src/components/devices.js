@@ -10,14 +10,14 @@ import {
 import ActionDelete from "@mui/icons-material/Delete";
 import { alpha, useTheme } from "@mui/material/styles";
 
-export const DeviceRemoveButton = props => {
+export const DeviceRemoveButton = () => {
   const theme = useTheme();
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const notify = useNotify();
 
-  const [removeDevice, { isLoading }] = useDelete("devices");
+  const [removeDevice, { isLoading }] = useDelete();
 
   if (!record) return null;
 
@@ -25,8 +25,10 @@ export const DeviceRemoveButton = props => {
   const handleDialogClose = () => setOpen(false);
 
   const handleConfirm = () => {
+    console.log(record);
     removeDevice(
-      { payload: { id: record.id, user_id: record.user_id } },
+      "devices",
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");
