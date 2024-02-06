@@ -89,7 +89,7 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
   );
 };
 
-export const DeleteMediaButton = () => {
+export const DeleteMediaButton = props => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
@@ -242,7 +242,7 @@ export const ProtectMediaButton = () => {
   );
 };
 
-export const QuarantineMediaButton = () => {
+export const QuarantineMediaButton = props => {
   const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();

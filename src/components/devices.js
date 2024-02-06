@@ -10,7 +10,7 @@ import {
 import ActionDelete from "@mui/icons-material/Delete";
 import { alpha, useTheme } from "@mui/material/styles";
 
-export const DeviceRemoveButton = () => {
+export const DeviceRemoveButton = props => {
   const theme = useTheme();
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
