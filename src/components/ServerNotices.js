@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   SaveButton,
@@ -91,7 +91,7 @@ export const ServerNoticeButton = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
         label="resources.servernotices.send"
         onClick={handleDialogOpen}
@@ -104,7 +104,7 @@ export const ServerNoticeButton = () => {
         onClose={handleDialogClose}
         onSubmit={handleSend}
       />
-    </Fragment>
+    </>
   );
 };
 
@@ -137,7 +137,7 @@ export const ServerNoticeBulkButton = () => {
   );
 
   return (
-    <Fragment>
+    <>
       <Button
         label="resources.servernotices.send"
         onClick={handleDialogOpen}
@@ -150,6 +150,6 @@ export const ServerNoticeBulkButton = () => {
         onClose={handleDialogClose}
         onSubmit={mutate}
       />
-    </Fragment>
+    </>
   );
 };

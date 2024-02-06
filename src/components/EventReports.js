@@ -13,6 +13,7 @@ import {
   useTranslate,
 } from "react-admin";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import ReportIcon from "@mui/icons-material/Warning";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
 const date_format = {
@@ -98,24 +99,31 @@ export const ReportShow = props => {
   );
 };
 
-export const ReportList = () => {
-  return (
-    <List
-      pagination={<ReportPagination />}
-      sort={{ field: "received_ts", order: "DESC" }}
-    >
-      <Datagrid rowClick="show" bulkActionButtons={false}>
-        <TextField source="id" sortable={false} />
-        <DateField
-          source="received_ts"
-          showTime
-          options={date_format}
-          sortable={true}
-        />
-        <TextField sortable={false} source="user_id" />
-        <TextField sortable={false} source="name" />
-        <TextField sortable={false} source="score" />
-      </Datagrid>
-    </List>
-  );
+export const ReportList = () => (
+  <List
+    pagination={<ReportPagination />}
+    sort={{ field: "received_ts", order: "DESC" }}
+  >
+    <Datagrid rowClick="show" bulkActionButtons={false}>
+      <TextField source="id" sortable={false} />
+      <DateField
+        source="received_ts"
+        showTime
+        options={date_format}
+        sortable={true}
+      />
+      <TextField sortable={false} source="user_id" />
+      <TextField sortable={false} source="name" />
+      <TextField sortable={false} source="score" />
+    </Datagrid>
+  </List>
+);
+
+const resource = {
+  name: "reports",
+  icon: ReportIcon,
+  list: ReportList,
+  show: ReportShow,
 };
+
+export default resource;

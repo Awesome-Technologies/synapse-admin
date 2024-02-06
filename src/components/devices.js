@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   useDelete,
@@ -25,10 +25,9 @@ export const DeviceRemoveButton = () => {
   const handleDialogClose = () => setOpen(false);
 
   const handleConfirm = () => {
-    console.log(record);
     removeDevice(
       "devices",
-      { id: record.id, previousData: record },
+      { id: record.id, meta: { user_id: record.user_id } },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");
@@ -43,8 +42,9 @@ export const DeviceRemoveButton = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
+        {...props}
         label="ra.action.remove"
         onClick={handleClick}
         sx={{
@@ -72,6 +72,6 @@ export const DeviceRemoveButton = () => {
           name: record.display_name ? record.display_name : record.id,
         }}
       />
-    </Fragment>
+    </>
   );
 };

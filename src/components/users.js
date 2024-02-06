@@ -1,4 +1,4 @@
-import React, { cloneElement, Fragment } from "react";
+import React, { cloneElement } from "react";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DevicesIcon from "@mui/icons-material/Devices";
@@ -7,6 +7,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import UserIcon from "@mui/icons-material/Group";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   ArrayInput,
@@ -17,7 +18,6 @@ import {
   Create,
   Edit,
   List,
-  Filter,
   Toolbar,
   SimpleForm,
   SimpleFormIterator,
@@ -125,60 +125,55 @@ const UserPagination = () => (
   <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const UserFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="name" alwaysOn />
-    <BooleanInput source="guests" alwaysOn />
-    <BooleanInput
-      label="resources.users.fields.show_deactivated"
-      source="deactivated"
-      alwaysOn
-    />
-  </Filter>
-);
+const userFilters = [
+  <SearchInput source="name" alwaysOn />,
+  <BooleanInput source="guests" alwaysOn />,
+  <BooleanInput
+    label="resources.users.fields.show_deactivated"
+    source="deactivated"
+    alwaysOn
+  />,
+];
 
-const UserBulkActionButtons = props => (
-  <Fragment>
-    <ServerNoticeBulkButton {...props} />
+const UserBulkActionButtons = () => (
+  <>
+    <ServerNoticeBulkButton />
     <BulkDeleteButton
-      {...props}
       label="resources.users.action.erase"
       confirmTitle="resources.users.helper.erase"
       mutationMode="pessimistic"
     />
-  </Fragment>
+  </>
 );
 
-export const UserList = props => {
-  return (
-    <List
-      filters={<UserFilter />}
-      filterDefaultValues={{ guests: true, deactivated: false }}
-      sort={{ field: "name", order: "ASC" }}
-      actions={<UserListActions maxResults={10000} />}
-      pagination={<UserPagination />}
-    >
-      <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
-        <AvatarField
-          source="avatar_src"
-          sx={{ height: "40px", width: "40px" }}
-          sortBy="avatar_url"
-        />
-        <TextField source="id" sortBy="name" />
-        <TextField source="displayname" />
-        <BooleanField source="is_guest" />
-        <BooleanField source="admin" />
-        <BooleanField source="deactivated" />
-        <DateField
-          source="creation_ts"
-          label="resources.users.fields.creation_ts_ms"
-          showTime
-          options={date_format}
-        />
-      </Datagrid>
-    </List>
-  );
-};
+export const UserList = () => (
+  <List
+    filters={userFilters}
+    filterDefaultValues={{ guests: true, deactivated: false }}
+    sort={{ field: "name", order: "ASC" }}
+    actions={<UserListActions maxResults={10000} />}
+    pagination={<UserPagination />}
+  >
+    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
+      <AvatarField
+        source="avatar_src"
+        sx={{ height: "40px", width: "40px" }}
+        sortBy="avatar_url"
+      />
+      <TextField source="id" sortBy="name" />
+      <TextField source="displayname" />
+      <BooleanField source="is_guest" />
+      <BooleanField source="admin" />
+      <BooleanField source="deactivated" />
+      <DateField
+        source="creation_ts"
+        label="resources.users.fields.creation_ts_ms"
+        showTime
+        options={date_format}
+      />
+    </Datagrid>
+  </List>
+);
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
 // here only local part of user_id
@@ -302,7 +297,7 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = props => {
+const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (
@@ -529,3 +524,13 @@ export const UserEdit = props => {
     </Edit>
   );
 };
+
+const resource = {
+  name: "users",
+  icon: UserIcon,
+  list: UserList,
+  edit: UserEdit,
+  create: UserCreate,
+};
+
+export default resource;

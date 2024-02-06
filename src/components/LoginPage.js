@@ -307,9 +307,13 @@ const LoginPage = () => {
       <FormBox>
         <Card className="card">
           <Box className="avatar">
-            <Avatar className="icon">
-              <LockIcon />
-            </Avatar>
+            {loading ? (
+              <CircularProgress size={25} thickness={2} />
+            ) : (
+              <Avatar className="icon">
+                <LockIcon />
+              </Avatar>
+            )}
           </Box>
           <Box className="hint">{translate("synapseadmin.auth.welcome")}</Box>
           <Box className="form">
@@ -339,7 +343,6 @@ const LoginPage = () => {
                 disabled={loading || !supportPassAuth}
                 fullWidth
               >
-                {loading && <CircularProgress size={25} thickness={2} />}
                 {translate("ra.auth.sign_in")}
               </Button>
               <Button
@@ -349,7 +352,6 @@ const LoginPage = () => {
                 disabled={loading || ssoBaseUrl === ""}
                 fullWidth
               >
-                {loading && <CircularProgress size={25} thickness={2} />}
                 {translate("synapseadmin.auth.sso_sign_in")}
               </Button>
             </CardActions>

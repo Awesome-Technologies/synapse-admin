@@ -3,7 +3,6 @@ import {
   Button,
   Datagrid,
   DateField,
-  Filter,
   List,
   Pagination,
   ReferenceField,
@@ -21,6 +20,7 @@ import {
   useTranslate,
 } from "react-admin";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
@@ -41,15 +41,9 @@ const destinationRowSx = (record, _index) => ({
   backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : "white",
 });
 
-const DestinationFilter = props => {
-  return (
-    <Filter {...props}>
-      <SearchInput source="destination" alwaysOn />
-    </Filter>
-  );
-};
+const destinationFilters = [<SearchInput source="destination" alwaysOn />];
 
-export const DestinationReconnectButton = props => {
+export const DestinationReconnectButton = () => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
@@ -64,7 +58,7 @@ export const DestinationReconnectButton = props => {
 
     handleReconnect(
       "destinations",
-      { id: record.id, previousData: record },
+      { id: record.id },
       {
         onSuccess: () => {
           notify("ra.notification.updated", {
@@ -90,7 +84,7 @@ export const DestinationReconnectButton = props => {
   );
 };
 
-const DestinationShowActions = props => (
+const DestinationShowActions = () => (
   <TopToolbar>
     <DestinationReconnectButton />
   </TopToolbar>
@@ -109,7 +103,7 @@ const DestinationTitle = () => {
 export const DestinationList = () => {
   return (
     <List
-      filters={<DestinationFilter />}
+      filters={destinationFilters}
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
     >
@@ -179,3 +173,12 @@ export const DestinationShow = () => {
     </Show>
   );
 };
+
+const resource = {
+  name: "destinations",
+  icon: DestinationsIcon,
+  list: DestinationList,
+  show: DestinationShow,
+};
+
+export default resource;

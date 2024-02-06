@@ -1,5 +1,4 @@
-import React, { Fragment } from "react";
-import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import React from "react";
 import {
   BooleanField,
   BulkDeleteButton,
@@ -23,6 +22,7 @@ import {
   useUnselectAll,
 } from "react-admin";
 import { useMutation } from "react-query";
+import RoomDirectoryIcon from "@mui/icons-material/FolderShared";
 import AvatarField from "./AvatarField";
 
 const RoomDirectoryPagination = () => (
@@ -44,7 +44,7 @@ export const RoomDirectoryDeleteButton = () => {
         smart_count: 1,
       })}
       resource="room_directory"
-      icon={<FolderSharedIcon />}
+      icon={<RoomDirectoryIcon />}
     />
   );
 };
@@ -56,7 +56,7 @@ export const RoomDirectoryBulkDeleteButton = () => (
     confirmTitle="resources.room_directory.action.title"
     confirmContent="resources.room_directory.action.content"
     resource="room_directory"
-    icon={<FolderSharedIcon />}
+    icon={<RoomDirectoryIcon />}
   />
 );
 
@@ -91,7 +91,7 @@ export const RoomDirectoryBulkSaveButton = () => {
       onClick={mutate}
       disabled={isloading}
     >
-      <FolderSharedIcon />
+      <RoomDirectoryIcon />
     </Button>
   );
 };
@@ -102,16 +102,16 @@ export const RoomDirectorySaveButton = () => {
   const refresh = useRefresh();
   const [create, { isloading }] = useCreate();
 
-  const handleSend = values => {
+  const handleSend = () => {
     create(
       "room_directory",
       { data: { id: record.id } },
       {
-        onSuccess: () => {
+        onSuccess: _data => {
           notify("resources.room_directory.action.send_success");
           refresh();
         },
-        onError: () =>
+        onError: _error =>
           notify("resources.room_directory.action.send_failure", {
             type: "error",
           }),
@@ -125,16 +125,12 @@ export const RoomDirectorySaveButton = () => {
       onClick={handleSend}
       disabled={isloading}
     >
-      <FolderSharedIcon />
+      <RoomDirectoryIcon />
     </Button>
   );
 };
 
-const RoomDirectoryBulkActionButtons = () => (
-  <Fragment>
-    <RoomDirectoryBulkDeleteButton />
-  </Fragment>
-);
+const RoomDirectoryBulkActionButtons = () => <RoomDirectoryBulkDeleteButton />;
 
 const RoomDirectoryListActions = () => (
   <TopToolbar>
@@ -198,3 +194,11 @@ export const RoomDirectoryList = () => (
     </DatagridConfigurable>
   </List>
 );
+
+const resource = {
+  name: "room_directory",
+  icon: RoomDirectoryIcon,
+  list: RoomDirectoryList,
+};
+
+export default resource;

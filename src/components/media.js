@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   BooleanInput,
   Button,
@@ -99,10 +99,9 @@ export const DeleteMediaButton = () => {
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = data => {
-    console.log({ ...data });
     deleteOne(
       "delete_media",
-      { previousData: { ...data } },
+      { id: data.id, meta: { ...data } },
       {
         onSuccess: () => {
           notify("resources.delete_media.action.send_success");
@@ -117,8 +116,9 @@ export const DeleteMediaButton = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
+        {...props}
         label="resources.delete_media.action.send"
         onClick={handleDialogOpen}
         disabled={isLoading}
@@ -140,7 +140,7 @@ export const DeleteMediaButton = () => {
         onClose={handleDialogClose}
         onSubmit={handleSend}
       />
-    </Fragment>
+    </>
   );
 };
 
@@ -149,7 +149,7 @@ export const ProtectMediaButton = () => {
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [create, { loading }] = useCreate();
+  const [create, { isLoading }] = useCreate();
   const [deleteOne] = useDelete();
 
   if (!record) return null;
@@ -174,7 +174,7 @@ export const ProtectMediaButton = () => {
   const handleUnprotect = () => {
     deleteOne(
       "protect_media",
-      { id: record.id, previousData: record },
+      { id: record.id },
       {
         onSuccess: () => {
           notify("resources.protect_media.action.send_success");
@@ -193,7 +193,7 @@ export const ProtectMediaButton = () => {
     Wrapping Tooltip with <div>
     https://github.com/marmelab/react-admin/issues/4349#issuecomment-578594735
     */
-    <Fragment>
+    <>
       {record.quarantined_by && (
         <Tooltip
           title={translate("resources.protect_media.action.none", {
@@ -219,7 +219,7 @@ export const ProtectMediaButton = () => {
           arrow
         >
           <div>
-            <Button onClick={handleUnprotect} disabled={loading}>
+            <Button onClick={handleUnprotect} disabled={isLoading}>
               <LockIcon />
             </Button>
           </div>
@@ -232,13 +232,13 @@ export const ProtectMediaButton = () => {
           })}
         >
           <div>
-            <Button onClick={handleProtect} disabled={loading}>
+            <Button onClick={handleProtect} disabled={isLoading}>
               <LockOpenIcon />
             </Button>
           </div>
         </Tooltip>
       )}
-    </Fragment>
+    </>
   );
 };
 
@@ -247,7 +247,7 @@ export const QuarantineMediaButton = () => {
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [create, { loading }] = useCreate();
+  const [create, { isLoading }] = useCreate();
   const [deleteOne] = useDelete();
 
   if (!record) return null;
@@ -272,7 +272,7 @@ export const QuarantineMediaButton = () => {
   const handleRemoveQuarantaine = () => {
     deleteOne(
       "quarantine_media",
-      { id: record.id, previousData: record },
+      { id: record.id },
       {
         onSuccess: () => {
           notify("resources.quarantine_media.action.send_success");
@@ -287,7 +287,7 @@ export const QuarantineMediaButton = () => {
   };
 
   return (
-    <Fragment>
+    <>
       {record.safe_from_quarantine && (
         <Tooltip
           title={translate("resources.quarantine_media.action.none", {
@@ -295,7 +295,7 @@ export const QuarantineMediaButton = () => {
           })}
         >
           <div>
-            <Button disabled={true}>
+            <Button {...props} disabled={true}>
               <ClearIcon />
             </Button>
           </div>
@@ -308,7 +308,11 @@ export const QuarantineMediaButton = () => {
           })}
         >
           <div>
-            <Button onClick={handleRemoveQuarantaine} disabled={loading}>
+            <Button
+              {...props}
+              onClick={handleRemoveQuarantaine}
+              disabled={isLoading}
+            >
               <BlockIcon color="error" />
             </Button>
           </div>
@@ -321,12 +325,12 @@ export const QuarantineMediaButton = () => {
           })}
         >
           <div>
-            <Button onClick={handleQuarantaine} disabled={loading}>
+            <Button onClick={handleQuarantaine} disabled={isLoading}>
               <BlockIcon />
             </Button>
           </div>
         </Tooltip>
       )}
-    </Fragment>
+    </>
   );
 };

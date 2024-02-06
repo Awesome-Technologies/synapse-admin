@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   BooleanField,
   BulkDeleteButton,
@@ -7,7 +7,6 @@ import {
   DatagridConfigurable,
   DeleteButton,
   ExportButton,
-  Filter,
   FunctionField,
   List,
   NumberField,
@@ -35,6 +34,7 @@ import UserIcon from "@mui/icons-material/Group";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EventIcon from "@mui/icons-material/Event";
+import RoomIcon from "@mui/icons-material/ViewList";
 import {
   RoomDirectoryBulkDeleteButton,
   RoomDirectoryBulkSaveButton,
@@ -274,7 +274,7 @@ export const RoomShow = () => {
 };
 
 const RoomBulkActionButtons = () => (
-  <Fragment>
+  <>
     <RoomDirectoryBulkSaveButton />
     <RoomDirectoryBulkDeleteButton />
     <BulkDeleteButton
@@ -282,14 +282,10 @@ const RoomBulkActionButtons = () => (
       confirmContent="resources.rooms.action.erase.content"
       mutationMode="pessimistic"
     />
-  </Fragment>
+  </>
 );
 
-const RoomFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="search_term" alwaysOn />
-  </Filter>
-);
+const roomFilters = [<SearchInput source="search_term" alwaysOn />];
 
 const RoomListActions = () => (
   <TopToolbar>
@@ -298,14 +294,15 @@ const RoomListActions = () => (
   </TopToolbar>
 );
 
-export const RoomList = () => {
+export const RoomList = props => {
   const theme = useTheme();
 
   return (
     <List
+      {...props}
       pagination={<RoomPagination />}
       sort={{ field: "name", order: "ASC" }}
-      filters={<RoomFilter />}
+      filters={roomFilters}
       actions={<RoomListActions />}
     >
       <DatagridConfigurable
@@ -345,3 +342,12 @@ export const RoomList = () => {
     </List>
   );
 };
+
+const resource = {
+  name: "rooms",
+  icon: RoomIcon,
+  list: RoomList,
+  show: RoomShow,
+};
+
+export default resource;
