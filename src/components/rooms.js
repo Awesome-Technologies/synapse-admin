@@ -36,10 +36,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EventIcon from "@mui/icons-material/Event";
 import RoomIcon from "@mui/icons-material/ViewList";
 import {
-  RoomDirectoryBulkDeleteButton,
-  RoomDirectoryBulkSaveButton,
-  RoomDirectoryDeleteButton,
-  RoomDirectorySaveButton,
+  RoomDirectoryBulkUnpublishButton,
+  RoomDirectoryBulkPublishButton,
+  RoomDirectoryUnpublishButton,
+  RoomDirectoryPublishButton,
 } from "./RoomDirectory";
 
 const date_format = {
@@ -79,14 +79,9 @@ const RoomShowActions = () => {
 
   return (
     <TopToolbar>
-      {roomDirectoryStatus === false && (
-        <RoomDirectorySaveButton record={record} />
-      )}
-      {roomDirectoryStatus === true && (
-        <RoomDirectoryDeleteButton record={record} />
-      )}
+      {roomDirectoryStatus === false && <RoomDirectoryPublishButton />}
+      {roomDirectoryStatus === true && <RoomDirectoryUnpublishButton />}
       <DeleteButton
-        record={record}
         mutationMode="pessimistic"
         confirmTitle="resources.rooms.action.erase.title"
         confirmContent="resources.rooms.action.erase.content"
@@ -280,8 +275,8 @@ export const RoomShow = props => {
 
 const RoomBulkActionButtons = () => (
   <>
-    <RoomDirectoryBulkSaveButton />
-    <RoomDirectoryBulkDeleteButton />
+    <RoomDirectoryBulkPublishButton />
+    <RoomDirectoryBulkUnpublishButton />
     <BulkDeleteButton
       confirmTitle="resources.rooms.action.erase.title"
       confirmContent="resources.rooms.action.erase.content"

@@ -13,6 +13,7 @@ import {
   TextField,
   TopToolbar,
   useCreate,
+  useDataProvider,
   useListContext,
   useNotify,
   useTranslate,
@@ -28,7 +29,7 @@ const RoomDirectoryPagination = () => (
   <Pagination rowsPerPageOptions={[100, 500, 1000, 2000]} />
 );
 
-export const RoomDirectoryDeleteButton = props => {
+export const RoomDirectoryUnpublishButton = props => {
   const translate = useTranslate();
 
   return (
@@ -49,7 +50,7 @@ export const RoomDirectoryDeleteButton = props => {
   );
 };
 
-export const RoomDirectoryBulkDeleteButton = props => (
+export const RoomDirectoryBulkUnpublishButton = props => (
   <BulkDeleteButton
     {...props}
     label="resources.room_directory.action.erase"
@@ -61,57 +62,59 @@ export const RoomDirectoryBulkDeleteButton = props => (
   />
 );
 
-export const RoomDirectoryBulkSaveButton = () => {
+export const RoomDirectoryBulkPublishButton = props => {
   const { selectedIds } = useListContext();
   const notify = useNotify();
   const refresh = useRefresh();
   const unselectAllRooms = useUnselectAll("rooms");
-  const { createMany, isloading } = useMutation();
-
-  const handleSend = values => {
-    createMany(
-      ["room_directory", "createMany", { ids: selectedIds, data: {} }],
-      {
-        onSuccess: data => {
-          notify("resources.room_directory.action.send_success");
-          unselectAllRooms();
-          refresh();
-        },
-        onError: error =>
-          notify("resources.room_directory.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
+  const dataProvider = useDataProvider();
+  const { mutate, isLoading } = useMutation(
+    () =>
+      dataProvider.createMany("room_directory", {
+        ids: selectedIds,
+        data: {},
+      }),
+    {
+      onSuccess: () => {
+        notify("resources.room_directory.action.send_success");
+        unselectAllRooms();
+        refresh();
+      },
+      onError: () =>
+        notify("resources.room_directory.action.send_failure", {
+          type: "error",
+        }),
+    }
+  );
 
   return (
     <Button
+      {...props}
       label="resources.room_directory.action.create"
-      onClick={handleSend}
-      disabled={isloading}
+      onClick={mutate}
+      disabled={isLoading}
     >
       <RoomDirectoryIcon />
     </Button>
   );
 };
 
-export const RoomDirectorySaveButton = () => {
+export const RoomDirectoryPublishButton = props => {
   const record = useRecordContext();
   const notify = useNotify();
   const refresh = useRefresh();
-  const [create, { isloading }] = useCreate();
+  const [create, { isLoading }] = useCreate();
 
   const handleSend = () => {
     create(
       "room_directory",
       { data: { id: record.id } },
       {
-        onSuccess: _data => {
+        onSuccess: () => {
           notify("resources.room_directory.action.send_success");
           refresh();
         },
-        onError: _error =>
+        onError: () =>
           notify("resources.room_directory.action.send_failure", {
             type: "error",
           }),
@@ -121,16 +124,15 @@ export const RoomDirectorySaveButton = () => {
 
   return (
     <Button
+      {...props}
       label="resources.room_directory.action.create"
       onClick={handleSend}
-      disabled={isloading}
+      disabled={isLoading}
     >
       <RoomDirectoryIcon />
     </Button>
   );
 };
-
-const RoomDirectoryBulkActionButtons = () => <RoomDirectoryBulkDeleteButton />;
 
 const RoomDirectoryListActions = () => (
   <TopToolbar>
@@ -146,8 +148,8 @@ export const RoomDirectoryList = () => (
     actions={<RoomDirectoryListActions />}
   >
     <DatagridConfigurable
-      rowClick={(id, resource, record) => "/rooms/" + id + "/show"}
-      bulkActionButtons={<RoomDirectoryBulkActionButtons />}
+      rowClick={(id, _resource, _record) => "/rooms/" + id + "/show"}
+      bulkActionButtons={<RoomDirectoryBulkUnpublishButton />}
       omit={["room_id", "canonical_alias", "topic"]}
     >
       <AvatarField
