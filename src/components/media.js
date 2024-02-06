@@ -29,7 +29,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { alpha, useTheme } from "@mui/material/styles";
 
-const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
+const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
 
   const dateParser = v => {
@@ -38,9 +38,9 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
     return d.getTime();
   };
 
-  const DeleteMediaToolbar = props => {
+  const DeleteMediaToolbar = () => {
     return (
-      <Toolbar {...props}>
+      <Toolbar>
         <SaveButton
           label="resources.delete_media.action.send"
           icon={<DeleteSweepIcon />}
@@ -61,11 +61,7 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
         <DialogContentText>
           {translate("resources.delete_media.helper.send")}
         </DialogContentText>
-        <SimpleForm
-          toolbar={<DeleteMediaToolbar />}
-          redirect={false}
-          onSubmit={onSend}
-        >
+        <SimpleForm toolbar={<DeleteMediaToolbar />} onSubmit={onSubmit}>
           <DateTimeInput
             fullWidth
             source="before_ts"
@@ -93,18 +89,20 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const DeleteMediaButton = props => {
+export const DeleteMediaButton = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [deleteOne, { isLoading }] = useDelete("delete_media");
+  const [deleteOne, { isLoading }] = useDelete();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
-  const handleSend = values => {
+  const handleSend = data => {
+    console.log({ ...data });
     deleteOne(
-      { payload: { ...values } },
+      "delete_media",
+      { previousData: { ...data } },
       {
         onSuccess: () => {
           notify("resources.delete_media.action.send_success");
@@ -140,25 +138,26 @@ export const DeleteMediaButton = props => {
       <DeleteMediaDialog
         open={open}
         onClose={handleDialogClose}
-        onSend={handleSend}
+        onSubmit={handleSend}
       />
     </Fragment>
   );
 };
 
-export const ProtectMediaButton = props => {
+export const ProtectMediaButton = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [create, { loading }] = useCreate("protect_media");
-  const [deleteOne] = useDelete("protect_media");
+  const [create, { loading }] = useCreate();
+  const [deleteOne] = useDelete();
 
   if (!record) return null;
 
   const handleProtect = () => {
     create(
-      { payload: { data: record } },
+      "protect_media",
+      { data: record },
       {
         onSuccess: () => {
           notify("resources.protect_media.action.send_success");
@@ -174,7 +173,8 @@ export const ProtectMediaButton = props => {
 
   const handleUnprotect = () => {
     deleteOne(
-      { payload: { ...record } },
+      "protect_media",
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("resources.protect_media.action.send_success");
@@ -242,19 +242,20 @@ export const ProtectMediaButton = props => {
   );
 };
 
-export const QuarantineMediaButton = props => {
+export const QuarantineMediaButton = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [create, { loading }] = useCreate("quarantine_media");
-  const [deleteOne] = useDelete("quarantine_media");
+  const [create, { loading }] = useCreate();
+  const [deleteOne] = useDelete();
 
   if (!record) return null;
 
   const handleQuarantaine = () => {
     create(
-      { payload: { data: record } },
+      "quarantine_media",
+      { data: record },
       {
         onSuccess: () => {
           notify("resources.quarantine_media.action.send_success");
@@ -270,7 +271,8 @@ export const QuarantineMediaButton = props => {
 
   const handleRemoveQuarantaine = () => {
     deleteOne(
-      { payload: { ...record } },
+      "quarantine_media",
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("resources.quarantine_media.action.send_success");
