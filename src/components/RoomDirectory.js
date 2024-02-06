@@ -14,6 +14,7 @@ import {
   TextField,
   TopToolbar,
   useCreate,
+  useDataProvider,
   useListContext,
   useNotify,
   useTranslate,
@@ -28,12 +29,11 @@ const RoomDirectoryPagination = () => (
   <Pagination rowsPerPageOptions={[100, 500, 1000, 2000]} />
 );
 
-export const RoomDirectoryDeleteButton = props => {
+export const RoomDirectoryDeleteButton = () => {
   const translate = useTranslate();
 
   return (
     <DeleteButton
-      {...props}
       label="resources.room_directory.action.erase"
       redirect={false}
       mutationMode="pessimistic"
@@ -49,9 +49,8 @@ export const RoomDirectoryDeleteButton = props => {
   );
 };
 
-export const RoomDirectoryBulkDeleteButton = props => (
+export const RoomDirectoryBulkDeleteButton = () => (
   <BulkDeleteButton
-    {...props}
     label="resources.room_directory.action.erase"
     mutationMode="pessimistic"
     confirmTitle="resources.room_directory.action.title"
@@ -66,29 +65,30 @@ export const RoomDirectoryBulkSaveButton = () => {
   const notify = useNotify();
   const refresh = useRefresh();
   const unselectAll = useUnselectAll("rooms");
-  const { createMany, isloading } = useMutation();
-
-  const handleSend = values => {
-    createMany(
-      ["room_directory", "createMany", { ids: selectedIds, data: {} }],
-      {
-        onSuccess: data => {
-          notify("resources.room_directory.action.send_success");
-          unselectAll();
-          refresh();
-        },
-        onError: error =>
-          notify("resources.room_directory.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
+  const dataProvider = useDataProvider();
+  const { mutate, isloading } = useMutation(
+    () =>
+      dataProvider.createMany("room_directory", {
+        ids: selectedIds,
+        data: {},
+      }),
+    {
+      onSuccess: () => {
+        notify("resources.room_directory.action.send_success");
+        unselectAll();
+        refresh();
+      },
+      onError: () =>
+        notify("resources.room_directory.action.send_failure", {
+          type: "error",
+        }),
+    }
+  );
 
   return (
     <Button
       label="resources.room_directory.action.create"
-      onClick={handleSend}
+      onClick={mutate}
       disabled={isloading}
     >
       <FolderSharedIcon />
@@ -107,11 +107,11 @@ export const RoomDirectorySaveButton = () => {
       "room_directory",
       { data: { id: record.id } },
       {
-        onSuccess: data => {
+        onSuccess: () => {
           notify("resources.room_directory.action.send_success");
           refresh();
         },
-        onError: error =>
+        onError: () =>
           notify("resources.room_directory.action.send_failure", {
             type: "error",
           }),
