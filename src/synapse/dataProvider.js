@@ -546,7 +546,7 @@ const dataProvider = {
       const endpoint_url = homeserver + res.path;
       return jsonClient(`${endpoint_url}/${params.id}`, {
         method: "DELETE",
-        body: JSON.stringify(params, filterNullValues),
+        body: JSON.stringify(params.data, filterNullValues),
       }).then(({ json }) => ({
         data: json,
       }));
