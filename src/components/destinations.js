@@ -53,7 +53,7 @@ export const DestinationReconnectButton = props => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [handleReconnect, { isLoading }] = useDelete("destinations");
+  const [handleReconnect, { isLoading }] = useDelete();
 
   // Reconnect is not required if no error has occurred. (`failure_ts`)
   if (!record || !record.failure_ts) return null;
@@ -63,7 +63,8 @@ export const DestinationReconnectButton = props => {
     e.stopPropagation();
 
     handleReconnect(
-      { payload: { id: record.id } },
+      "destinations",
+      { id: record.id },
       {
         onSuccess: () => {
           notify("ra.notification.updated", {
@@ -95,7 +96,7 @@ const DestinationShowActions = props => (
   </TopToolbar>
 );
 
-const DestinationTitle = props => {
+const DestinationTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (
@@ -105,7 +106,7 @@ const DestinationTitle = props => {
   );
 };
 
-export const DestinationList = props => {
+export const DestinationList = () => {
   return (
     <List
       filters={<DestinationFilter />}
@@ -128,7 +129,7 @@ export const DestinationList = props => {
   );
 };
 
-export const DestinationShow = props => {
+export const DestinationShow = () => {
   const translate = useTranslate();
   return (
     <Show actions={<DestinationShowActions />} title={<DestinationTitle />}>
