@@ -188,7 +188,7 @@ const de = {
       },
     },
     reports: {
-      name: "Ereignisbericht |||| Ereignisberichte",
+      name: "Gemeldetes Ereignis |||| Gemeldete Ereignisse",
       fields: {
         id: "ID",
         received_ts: "Meldezeit",
