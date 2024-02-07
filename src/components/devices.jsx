@@ -1,28 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Button,
+  DeleteButton,
   useDelete,
   useNotify,
-  Confirm,
   useRecordContext,
   useRefresh,
 } from "react-admin";
-import ActionDelete from "@mui/icons-material/Delete";
-import { alpha, useTheme } from "@mui/material/styles";
 
 export const DeviceRemoveButton = props => {
-  const theme = useTheme();
   const record = useRecordContext();
-  const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const notify = useNotify();
 
-  const [removeDevice, { isLoading }] = useDelete();
+  const [removeDevice] = useDelete();
 
   if (!record) return null;
-
-  const handleClick = () => setOpen(true);
-  const handleDialogClose = () => setOpen(false);
 
   const handleConfirm = () => {
     removeDevice(
@@ -39,40 +31,21 @@ export const DeviceRemoveButton = props => {
         },
       }
     );
-    setOpen(false);
   };
 
   return (
-    <>
-      <Button
-        {...props}
-        label="ra.action.remove"
-        onClick={handleClick}
-        sx={{
-          color: theme.palette.error.main,
-          "&:hover": {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            "@media (hover: none)": {
-              backgroundColor: "transparent",
-            },
-          },
-        }}
-      >
-        <ActionDelete />
-      </Button>
-      <Confirm
-        isOpen={open}
-        loading={isLoading}
-        onConfirm={handleConfirm}
-        onClose={handleDialogClose}
-        title="resources.devices.action.erase.title"
-        content="resources.devices.action.erase.content"
-        translateOptions={{
-          id: record.id,
-          name: record.display_name ? record.display_name : record.id,
-        }}
-      />
-    </>
+    <DeleteButton
+      {...props}
+      label="ra.action.remove"
+      confirmTitle="resources.devices.action.erase.title"
+      confirmContent="resources.devices.action.erase.content"
+      onConfirm={handleConfirm}
+      mutationMode="pessimistic"
+      redirect={false}
+      translateOptions={{
+        id: record.id,
+        name: record.display_name ? record.display_name : record.id,
+      }}
+    />
   );
 };
