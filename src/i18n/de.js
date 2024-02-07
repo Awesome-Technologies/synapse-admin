@@ -210,6 +210,13 @@ const de = {
           },
         },
       },
+      action: {
+        erase: {
+          title: "Gemeldetes Event löschen",
+          content:
+            "Sind Sie sicher dass Sie das gemeldete Event löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+        },
+      },
     },
     connections: {
       name: "Verbindungen",
