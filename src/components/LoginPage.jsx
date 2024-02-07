@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  fetchUtils,
   Form,
   FormDataConsumer,
   Notification,
@@ -27,6 +26,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
+import {
+  getServerVersion,
+  getSupportedLoginFlows,
+  getWellKnownUrl,
+  isValidBaseUrl,
+  splitMxid,
+} from "../synapse/synapse";
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -113,8 +119,8 @@ const LoginPage = () => {
           typeof error === "string"
             ? error
             : typeof error === "undefined" || !error.message
-            ? "ra.auth.sign_in_error"
-            : error.message
+              ? "ra.auth.sign_in_error"
+              : error.message
         );
         console.error(error);
       });
@@ -155,8 +161,8 @@ const LoginPage = () => {
         typeof error === "string"
           ? error
           : typeof error === "undefined" || !error.message
-          ? "ra.auth.sign_in_error"
-          : error.message,
+            ? "ra.auth.sign_in_error"
+            : error.message,
         { type: "warning" }
       );
     });
@@ -170,87 +176,42 @@ const LoginPage = () => {
     window.location.href = ssoFullUrl;
   };
 
-  const extractHomeServer = username => {
-    const usernameRegex = /@[a-zA-Z0-9._=\-/]+:([a-zA-Z0-9\-.]+\.[a-zA-Z]+)/;
-    if (!username) return null;
-    const res = username.match(usernameRegex);
-    if (res) return res[1];
-    return null;
-  };
-
   const UserData = ({ formData }) => {
     const form = useFormContext();
     const [serverVersion, setServerVersion] = useState("");
 
     const handleUsernameChange = _ => {
       if (formData.base_url || cfg_base_url) return;
-      // check if username is a full qualified userId then set base_url accordially
-      const home_server = extractHomeServer(formData.username);
-      const wellKnownUrl = `https://${home_server}/.well-known/matrix/client`;
-      if (home_server) {
-        // fetch .well-known entry to get base_url
-        fetchUtils
-          .fetchJson(wellKnownUrl, { method: "GET" })
-          .then(({ json }) => {
-            form.setValue("base_url", json["m.homeserver"].base_url);
-          })
-          .catch(_ => {
-            // if there is no .well-known entry, try the home server name
-            form.setValue("base_url", `https://${home_server}`);
-          });
+      // check if username is a full qualified userId then set base_url accordingly
+      const domain = splitMxid(formData.username)?.domain;
+      if (domain) {
+        getWellKnownUrl(domain).then(url => form.setValue("base_url", url));
       }
     };
 
-    useEffect(
-      _ => {
-        if (
-          !formData.base_url ||
-          !formData.base_url.match(
-            /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/
+    useEffect(() => {
+      if (!isValidBaseUrl(formData.base_url)) return;
+
+      getServerVersion(formData.base_url)
+        .then(serverVersion =>
+          setServerVersion(
+            `${translate("synapseadmin.auth.server_version")} ${serverVersion}`
           )
         )
-          return;
-        const versionUrl = `${formData.base_url}/_synapse/admin/v1/server_version`;
-        fetchUtils
-          .fetchJson(versionUrl, { method: "GET" })
-          .then(({ json }) => {
-            setServerVersion(
-              `${translate("synapseadmin.auth.server_version")} ${
-                json["server_version"]
-              }`
-            );
-          })
-          .catch(_ => {
-            setServerVersion("");
-          });
+        .catch(() => setServerVersion(""));
 
-        // Set SSO Url
-        const authMethodUrl = `${formData.base_url}/_matrix/client/r0/login`;
-        let supportPass = false,
-          supportSSO = false;
-        fetchUtils
-          .fetchJson(authMethodUrl, { method: "GET" })
-          .then(({ json }) => {
-            json.flows.forEach(f => {
-              if (f.type === "m.login.password") {
-                supportPass = true;
-              } else if (f.type === "m.login.sso") {
-                supportSSO = true;
-              }
-            });
-            setSupportPassAuth(supportPass);
-            if (supportSSO) {
-              setSSOBaseUrl(formData.base_url);
-            } else {
-              setSSOBaseUrl("");
-            }
-          })
-          .catch(_ => {
-            setSSOBaseUrl("");
-          });
-      },
-      [formData.base_url]
-    );
+      // Set SSO Url
+      getSupportedLoginFlows(formData.base_url)
+        .then(loginFlows => {
+          const supportPass =
+            loginFlows.find(f => f.type === "m.login.password") !== undefined;
+          const supportSSO =
+            loginFlows.find(f => f.type === "m.login.sso") !== undefined;
+          setSupportPassAuth(supportPass);
+          setSSOBaseUrl(supportSSO ? formData.base_url : "");
+        })
+        .catch(() => setSSOBaseUrl(""));
+    }, [formData.base_url]);
 
     return (
       <>

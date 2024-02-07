@@ -208,6 +208,13 @@ const en = {
           },
         },
       },
+      action: {
+        erase: {
+          title: "Delete reported event",
+          content:
+            "Are you sure you want to delete the reported event? This cannot be undone.",
+        },
+      },
     },
     connections: {
       name: "Connections",
