@@ -3,7 +3,6 @@ import {
   Button,
   Datagrid,
   DateField,
-  Filter,
   List,
   Pagination,
   ReferenceField,
@@ -21,11 +20,12 @@ import {
   useTranslate,
 } from "react-admin";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
+import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
-const DestinationPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const DestinationPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const date_format = {
@@ -37,23 +37,17 @@ const date_format = {
   second: "2-digit",
 };
 
-const destinationRowStyle = (record, index) => ({
+const destinationRowSx = (record, _index) => ({
   backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : "white",
 });
 
-const DestinationFilter = ({ ...props }) => {
-  return (
-    <Filter {...props}>
-      <SearchInput source="destination" alwaysOn />
-    </Filter>
-  );
-};
+const destinationFilters = [<SearchInput source="destination" alwaysOn />];
 
-export const DestinationReconnectButton = props => {
+export const DestinationReconnectButton = () => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [handleReconnect, { isLoading }] = useDelete("destinations");
+  const [handleReconnect, { isLoading }] = useDelete();
 
   // Reconnect is not required if no error has occurred. (`failure_ts`)
   if (!record || !record.failure_ts) return null;
@@ -63,7 +57,8 @@ export const DestinationReconnectButton = props => {
     e.stopPropagation();
 
     handleReconnect(
-      { payload: { id: record.id } },
+      "destinations",
+      { id: record.id },
       {
         onSuccess: () => {
           notify("ra.notification.updated", {
@@ -71,7 +66,7 @@ export const DestinationReconnectButton = props => {
           });
           refresh();
         },
-        onFailure: () => {
+        onError: () => {
           notify("ra.message.error", { type: "error" });
         },
       }
@@ -89,13 +84,13 @@ export const DestinationReconnectButton = props => {
   );
 };
 
-const DestinationShowActions = props => (
+const DestinationShowActions = () => (
   <TopToolbar>
     <DestinationReconnectButton />
   </TopToolbar>
 );
 
-const DestinationTitle = props => {
+const DestinationTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (
@@ -109,14 +104,14 @@ export const DestinationList = props => {
   return (
     <List
       {...props}
-      filters={<DestinationFilter />}
+      filters={destinationFilters}
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
-      bulkActionButtons={false}
     >
       <Datagrid
-        rowStyle={destinationRowStyle}
-        rowClick={(id, basePath, record) => `${basePath}/${id}/show/rooms`}
+        rowSx={destinationRowSx}
+        rowClick={(id, _resource, _record) => `${id}/show/rooms`}
+        bulkActionButtons={false}
       >
         <TextField source="destination" />
         <DateField source="failure_ts" showTime options={date_format} />
@@ -160,7 +155,7 @@ export const DestinationShow = props => {
           >
             <Datagrid
               style={{ width: "100%" }}
-              rowClick={(id, basePath, record) => `/rooms/${id}/show`}
+              rowClick={(id, resource, record) => `/rooms/${id}/show`}
             >
               <TextField
                 source="room_id"
@@ -183,3 +178,12 @@ export const DestinationShow = props => {
     </Show>
   );
 };
+
+const resource = {
+  name: "destinations",
+  icon: DestinationsIcon,
+  list: DestinationList,
+  show: DestinationShow,
+};
+
+export default resource;

@@ -98,7 +98,7 @@ const resourceMap = {
     }),
     delete: params => ({
       endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(
-        params.user_id
+        params.previousData.user_id
       )}/devices/${params.id}`,
     }),
   },
@@ -184,9 +184,9 @@ const resourceMap = {
     delete: params => ({
       endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
         "home_server"
-      )}/delete?before_ts=${params.before_ts}&size_gt=${
-        params.size_gt
-      }&keep_profiles=${params.keep_profiles}`,
+      )}/delete?before_ts=${params.meta.before_ts}&size_gt=${
+        params.meta.size_gt
+      }&keep_profiles=${params.meta.keep_profiles}`,
       method: "POST",
     }),
   },
@@ -197,7 +197,7 @@ const resourceMap = {
       method: "POST",
     }),
     delete: params => ({
-      endpoint: `/_synapse/admin/v1/media/unprotect/${params.media_id}`,
+      endpoint: `/_synapse/admin/v1/media/unprotect/${params.id}`,
       method: "POST",
     }),
   },
@@ -212,7 +212,7 @@ const resourceMap = {
     delete: params => ({
       endpoint: `/_synapse/admin/v1/media/unquarantine/${localStorage.getItem(
         "home_server"
-      )}/${params.media_id}`,
+      )}/${params.id}`,
       method: "POST",
     }),
   },
@@ -546,7 +546,7 @@ const dataProvider = {
       const endpoint_url = homeserver + res.path;
       return jsonClient(`${endpoint_url}/${params.id}`, {
         method: "DELETE",
-        body: JSON.stringify(params.data, filterNullValues),
+        body: JSON.stringify(params.previousData, filterNullValues),
       }).then(({ json }) => ({
         data: json,
       }));

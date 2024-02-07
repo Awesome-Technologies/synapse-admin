@@ -13,6 +13,7 @@ import {
   useTranslate,
 } from "react-admin";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import ReportIcon from "@mui/icons-material/Warning";
 import ViewListIcon from "@mui/icons-material/ViewList";
 
 const date_format = {
@@ -24,8 +25,8 @@ const date_format = {
   second: "2-digit",
 };
 
-const ReportPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const ReportPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 export const ReportShow = props => {
@@ -90,7 +91,7 @@ export const ReportShow = props => {
           <TextField source="event_json.content.algorithm" />
           <TextField
             source="event_json.content.device_id"
-            label="resources.users.fields.device_id"
+            label="resources.devices.fields.device_id"
           />
         </Tab>
       </TabbedShowLayout>
@@ -98,26 +99,32 @@ export const ReportShow = props => {
   );
 };
 
-export const ReportList = ({ ...props }) => {
-  return (
-    <List
-      {...props}
-      pagination={<ReportPagination />}
-      sort={{ field: "received_ts", order: "DESC" }}
-      bulkActionButtons={false}
-    >
-      <Datagrid rowClick="show">
-        <TextField source="id" sortable={false} />
-        <DateField
-          source="received_ts"
-          showTime
-          options={date_format}
-          sortable={true}
-        />
-        <TextField sortable={false} source="user_id" />
-        <TextField sortable={false} source="name" />
-        <TextField sortable={false} source="score" />
-      </Datagrid>
-    </List>
-  );
+export const ReportList = props => (
+  <List
+    {...props}
+    pagination={<ReportPagination />}
+    sort={{ field: "received_ts", order: "DESC" }}
+  >
+    <Datagrid rowClick="show" bulkActionButtons={false}>
+      <TextField source="id" sortable={false} />
+      <DateField
+        source="received_ts"
+        showTime
+        options={date_format}
+        sortable={true}
+      />
+      <TextField sortable={false} source="user_id" />
+      <TextField sortable={false} source="name" />
+      <TextField sortable={false} source="score" />
+    </Datagrid>
+  </List>
+);
+
+const resource = {
+  name: "reports",
+  icon: ReportIcon,
+  list: ReportList,
+  show: ReportShow,
 };
+
+export default resource;

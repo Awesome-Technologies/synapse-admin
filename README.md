@@ -13,10 +13,10 @@ This project is built using [react-admin](https://marmelab.com/react-admin/).
 
 ### Supported Synapse
 
-It needs at least [Synapse](https://github.com/matrix-org/synapse) v1.93.0 for all functions to work as expected!
+It needs at least [Synapse](https://github.com/element-hq/synapse) v1.93.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.
-See also [Synapse version API](https://matrix-org.github.io/synapse/develop/admin_api/version_api.html).
+See also [Synapse version API](https://element-hq.github.io/synapse/latest/admin_api/version_api.html).
 
 After entering the URL on the login page of synapse-admin the server version appears below the input field.
 
@@ -27,7 +27,7 @@ You need access to the following endpoints:
 - `/_matrix`
 - `/_synapse/admin`
 
-See also [Synapse administration endpoints](https://matrix-org.github.io/synapse/develop/reverse_proxy.html#synapse-administration-endpoints)
+See also [Synapse administration endpoints](https://element-hq.github.io/synapse/latest/reverse_proxy.html#synapse-administration-endpoints)
 
 ### Use without install
 

@@ -1,5 +1,4 @@
-import React, { cloneElement, Fragment } from "react";
-import Avatar from "@mui/material/Avatar";
+import React, { cloneElement } from "react";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DevicesIcon from "@mui/icons-material/Devices";
@@ -8,6 +7,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
+import UserIcon from "@mui/icons-material/Group";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   ArrayInput,
@@ -18,7 +18,6 @@ import {
   Create,
   Edit,
   List,
-  Filter,
   Toolbar,
   SimpleForm,
   SimpleFormIterator,
@@ -49,28 +48,10 @@ import {
   NumberField,
 } from "react-admin";
 import { Link } from "react-router-dom";
+import AvatarField from "./AvatarField";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { ProtectMediaButton, QuarantineMediaButton } from "./media";
-import { makeStyles } from "@material-ui/core/styles";
-
-const redirect = () => {
-  return {
-    pathname: "/import_users",
-  };
-};
-
-const useStyles = makeStyles({
-  small: {
-    height: "40px",
-    width: "40px",
-  },
-  large: {
-    height: "120px",
-    width: "120px",
-    float: "right",
-  },
-});
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -92,7 +73,7 @@ const date_format = {
 };
 
 const UserListActions = ({
-  currentSort,
+  sort,
   className,
   resource,
   filters,
@@ -101,7 +82,6 @@ const UserListActions = ({
   filterValues,
   permanentFilter,
   hasCreate, // you can hide CreateButton if hasCreate = false
-  basePath,
   selectedIds,
   onUnselectItems,
   showFilter,
@@ -119,18 +99,18 @@ const UserListActions = ({
           filterValues,
           context: "button",
         })}
-      <CreateButton basePath={basePath} />
+      <CreateButton />
       <ExportButton
         disabled={total === 0}
         resource={resource}
-        sort={currentSort}
+        sort={sort}
         filter={{ ...filterValues, ...permanentFilter }}
         exporter={exporter}
         maxResults={maxResults}
       />
       {/* Add your custom actions */}
-      <Button component={Link} to={redirect} label="CSV Import">
-        <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
+      <Button component={Link} to="/import_users" label="CSV Import">
+        <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
       </Button>
     </TopToolbar>
   );
@@ -141,72 +121,61 @@ UserListActions.defaultProps = {
   onUnselectItems: () => null,
 };
 
-const UserPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const UserPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const UserFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="name" alwaysOn />
-    <BooleanInput source="guests" alwaysOn />
-    <BooleanInput
-      label="resources.users.fields.show_deactivated"
-      source="deactivated"
-      alwaysOn
-    />
-  </Filter>
-);
+const userFilters = [
+  <SearchInput source="name" alwaysOn />,
+  <BooleanInput source="guests" alwaysOn />,
+  <BooleanInput
+    label="resources.users.fields.show_deactivated"
+    source="deactivated"
+    alwaysOn
+  />,
+];
 
-const UserBulkActionButtons = props => (
-  <Fragment>
-    <ServerNoticeBulkButton {...props} />
+const UserBulkActionButtons = () => (
+  <>
+    <ServerNoticeBulkButton />
     <BulkDeleteButton
-      {...props}
       label="resources.users.action.erase"
       confirmTitle="resources.users.helper.erase"
       mutationMode="pessimistic"
     />
-  </Fragment>
+  </>
 );
 
-const AvatarField = ({ source, className, record = {} }) => (
-  <Avatar src={record[source]} className={className} />
+export const UserList = props => (
+  <List
+    {...props}
+    filters={userFilters}
+    filterDefaultValues={{ guests: true, deactivated: false }}
+    sort={{ field: "name", order: "ASC" }}
+    actions={<UserListActions maxResults={10000} />}
+    pagination={<UserPagination />}
+  >
+    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
+      <AvatarField
+        source="avatar_src"
+        sx={{ height: "40px", width: "40px" }}
+        sortBy="avatar_url"
+      />
+      <TextField source="id" sortBy="name" />
+      <TextField source="displayname" />
+      <BooleanField source="is_guest" />
+      <BooleanField source="admin" />
+      <BooleanField source="deactivated" />
+      <BooleanField source="locked" />
+      <DateField
+        source="creation_ts"
+        label="resources.users.fields.creation_ts_ms"
+        showTime
+        options={date_format}
+      />
+    </Datagrid>
+  </List>
 );
-
-export const UserList = props => {
-  const classes = useStyles();
-  return (
-    <List
-      {...props}
-      filters={<UserFilter />}
-      filterDefaultValues={{ guests: true, deactivated: false }}
-      sort={{ field: "name", order: "ASC" }}
-      actions={<UserListActions maxResults={10000} />}
-      bulkActionButtons={<UserBulkActionButtons />}
-      pagination={<UserPagination />}
-    >
-      <Datagrid rowClick="edit">
-        <AvatarField
-          source="avatar_src"
-          className={classes.small}
-          sortBy="avatar_url"
-        />
-        <TextField source="id" sortBy="name" />
-        <TextField source="displayname" />
-        <BooleanField source="is_guest" />
-        <BooleanField source="admin" />
-        <BooleanField source="deactivated" />
-        <BooleanField source="locked" />
-        <DateField
-          source="creation_ts"
-          label="resources.users.fields.creation_ts_ms"
-          showTime
-          options={date_format}
-        />
-      </Datagrid>
-    </List>
-  );
-};
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
 // here only local part of user_id
@@ -263,7 +232,7 @@ export function generateRandomUser() {
 
 const UserEditToolbar = props => (
   <Toolbar {...props}>
-    <SaveButton submitOnEnter={true} disabled={props.pristine} />
+    <SaveButton disabled={props.pristine} />
   </Toolbar>
 );
 
@@ -303,7 +272,6 @@ export const UserCreate = props => (
         source="user_type"
         choices={choices_type}
         translateChoice={false}
-        allowEmpty={true}
         resettable
       />
       <BooleanInput source="admin" />
@@ -331,7 +299,7 @@ export const UserCreate = props => (
   </Create>
 );
 
-const UserTitle = props => {
+const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   return (
@@ -345,7 +313,6 @@ const UserTitle = props => {
 };
 
 export const UserEdit = props => {
-  const classes = useStyles();
   const translate = useTranslate();
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
@@ -357,7 +324,7 @@ export const UserEdit = props => {
           <AvatarField
             source="avatar_src"
             sortable={false}
-            className={classes.large}
+            sx={{ height: "120px", width: "120px", float: "right" }}
           />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
@@ -370,7 +337,6 @@ export const UserEdit = props => {
             source="user_type"
             choices={choices_type}
             translateChoice={false}
-            allowEmpty={true}
             resettable
           />
           <BooleanInput source="admin" />
@@ -515,7 +481,7 @@ export const UserEdit = props => {
           >
             <Datagrid
               style={{ width: "100%" }}
-              rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}
+              rowClick={(id, resource, record) => "/rooms/" + id + "/show"}
             >
               <TextField
                 source="id"
@@ -561,3 +527,13 @@ export const UserEdit = props => {
     </Edit>
   );
 };
+
+const resource = {
+  name: "users",
+  icon: UserIcon,
+  list: UserList,
+  edit: UserEdit,
+  create: UserCreate,
+};
+
+export default resource;

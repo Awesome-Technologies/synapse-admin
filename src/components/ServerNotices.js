@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   SaveButton,
@@ -7,12 +7,14 @@ import {
   Toolbar,
   required,
   useCreate,
-  useMutation,
+  useDataProvider,
+  useListContext,
   useNotify,
   useRecordContext,
   useTranslate,
   useUnselectAll,
 } from "react-admin";
+import { useMutation } from "react-query";
 import MessageIcon from "@mui/icons-material/Message";
 import IconCancel from "@mui/icons-material/Cancel";
 import {
@@ -22,7 +24,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
+const ServerNoticeDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
 
   const ServerNoticeToolbar = props => (
@@ -46,12 +48,7 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
         <DialogContentText>
           {translate("resources.servernotices.helper.send")}
         </DialogContentText>
-        <SimpleForm
-          toolbar={<ServerNoticeToolbar />}
-          submitOnEnter={false}
-          redirect={false}
-          save={onSend}
-        >
+        <SimpleForm toolbar={<ServerNoticeToolbar />} onSubmit={onSubmit}>
           <TextInput
             source="body"
             label="resources.servernotices.fields.body"
@@ -67,24 +64,25 @@ const ServerNoticeDialog = ({ open, loading, onClose, onSend }) => {
   );
 };
 
-export const ServerNoticeButton = props => {
+export const ServerNoticeButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [create, { loading }] = useCreate("servernotices");
+  const [create, { isloading }] = useCreate();
 
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
   const handleSend = values => {
     create(
-      { payload: { data: { id: record.id, ...values } } },
+      "servernotices",
+      { data: { id: record.id, ...values } },
       {
         onSuccess: () => {
           notify("resources.servernotices.action.send_success");
           handleDialogClose();
         },
-        onFailure: () =>
+        onError: () =>
           notify("resources.servernotices.action.send_failure", {
             type: "error",
           }),
@@ -93,67 +91,65 @@ export const ServerNoticeButton = props => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
         label="resources.servernotices.send"
         onClick={handleDialogOpen}
-        disabled={loading}
+        disabled={isloading}
       >
         <MessageIcon />
       </Button>
       <ServerNoticeDialog
         open={open}
         onClose={handleDialogClose}
-        onSend={handleSend}
+        onSubmit={handleSend}
       />
-    </Fragment>
+    </>
   );
 };
 
-export const ServerNoticeBulkButton = ({ selectedIds }) => {
+export const ServerNoticeBulkButton = () => {
+  const { selectedIds } = useListContext();
   const [open, setOpen] = useState(false);
+  const openDialog = () => setOpen(true);
+  const closeDialog = () => setOpen(false);
   const notify = useNotify();
-  const unselectAll = useUnselectAll();
-  const [createMany, { loading }] = useMutation();
+  const unselectAllUsers = useUnselectAll("users");
+  const dataProvider = useDataProvider();
 
-  const handleDialogOpen = () => setOpen(true);
-  const handleDialogClose = () => setOpen(false);
-
-  const handleSend = values => {
-    createMany(
-      {
-        type: "createMany",
-        resource: "servernotices",
-        payload: { ids: selectedIds, data: values },
+  const { mutate: sendNotices, isLoading } = useMutation(
+    data =>
+      dataProvider.createMany("servernotices", {
+        ids: selectedIds,
+        data: data,
+      }),
+    {
+      onSuccess: () => {
+        notify("resources.servernotices.action.send_success");
+        unselectAllUsers();
+        closeDialog();
       },
-      {
-        onSuccess: ({ data }) => {
-          notify("resources.servernotices.action.send_success");
-          unselectAll("users");
-          handleDialogClose();
-        },
-        onFailure: error =>
-          notify("resources.servernotices.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
+      onError: () =>
+        notify("resources.servernotices.action.send_failure", {
+          type: "error",
+        }),
+    }
+  );
 
   return (
-    <Fragment>
+    <>
       <Button
         label="resources.servernotices.send"
-        onClick={handleDialogOpen}
-        disabled={loading}
+        onClick={openDialog}
+        disabled={isLoading}
       >
         <MessageIcon />
       </Button>
       <ServerNoticeDialog
         open={open}
-        onClose={handleDialogClose}
-        onSend={handleSend}
+        onClose={closeDialog}
+        onSubmit={sendNotices}
       />
-    </Fragment>
+    </>
   );
 };

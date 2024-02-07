@@ -6,18 +6,19 @@ import {
   DateField,
   DateTimeInput,
   Edit,
-  Filter,
   List,
   maxValue,
   number,
   NumberField,
   NumberInput,
   regex,
+  SaveButton,
   SimpleForm,
   TextInput,
   TextField,
   Toolbar,
 } from "react-admin";
+import RegistrationTokenIcon from "@mui/icons-material/ConfirmationNumber";
 
 const date_format = {
   year: "numeric",
@@ -53,40 +54,41 @@ const dateFormatter = v => {
   return `${year}-${month}-${day}T${hour}:${minute}`;
 };
 
-const RegistrationTokenFilter = props => (
-  <Filter {...props}>
-    <BooleanInput source="valid" alwaysOn />
-  </Filter>
+const registrationTokenFilters = [<BooleanInput source="valid" alwaysOn />];
+
+export const RegistrationTokenList = props => (
+  <List
+    {...props}
+    filters={registrationTokenFilters}
+    filterDefaultValues={{ valid: true }}
+    pagination={false}
+    perPage={500}
+  >
+    <Datagrid rowClick="edit">
+      <TextField source="token" sortable={false} />
+      <NumberField source="uses_allowed" sortable={false} />
+      <NumberField source="pending" sortable={false} />
+      <NumberField source="completed" sortable={false} />
+      <DateField
+        source="expiry_time"
+        showTime
+        options={date_format}
+        sortable={false}
+      />
+    </Datagrid>
+  </List>
 );
 
-export const RegistrationTokenList = props => {
-  return (
-    <List
-      {...props}
-      filters={<RegistrationTokenFilter />}
-      filterDefaultValues={{ valid: true }}
-      pagination={false}
-      perPage={500}
-    >
-      <Datagrid rowClick="edit">
-        <TextField source="token" sortable={false} />
-        <NumberField source="uses_allowed" sortable={false} />
-        <NumberField source="pending" sortable={false} />
-        <NumberField source="completed" sortable={false} />
-        <DateField
-          source="expiry_time"
-          showTime
-          options={date_format}
-          sortable={false}
-        />
-      </Datagrid>
-    </List>
-  );
-};
-
 export const RegistrationTokenCreate = props => (
-  <Create {...props}>
-    <SimpleForm redirect="list" toolbar={<Toolbar alwaysEnableSaveButton />}>
+  <Create {...props} redirect="list">
+    <SimpleForm
+      toolbar={
+        <Toolbar>
+          {/* It is possible to create tokens per default without input. */}
+          <SaveButton alwaysEnable />
+        </Toolbar>
+      }
+    >
       <TextInput
         source="token"
         autoComplete="off"
@@ -109,24 +111,32 @@ export const RegistrationTokenCreate = props => (
   </Create>
 );
 
-export const RegistrationTokenEdit = props => {
-  return (
-    <Edit {...props}>
-      <SimpleForm>
-        <TextInput source="token" disabled />
-        <NumberInput source="pending" disabled />
-        <NumberInput source="completed" disabled />
-        <NumberInput
-          source="uses_allowed"
-          validate={validateUsesAllowed}
-          step={1}
-        />
-        <DateTimeInput
-          source="expiry_time"
-          parse={dateParser}
-          format={dateFormatter}
-        />
-      </SimpleForm>
-    </Edit>
-  );
+export const RegistrationTokenEdit = props => (
+  <Edit {...props}>
+    <SimpleForm>
+      <TextInput source="token" disabled />
+      <NumberInput source="pending" disabled />
+      <NumberInput source="completed" disabled />
+      <NumberInput
+        source="uses_allowed"
+        validate={validateUsesAllowed}
+        step={1}
+      />
+      <DateTimeInput
+        source="expiry_time"
+        parse={dateParser}
+        format={dateFormatter}
+      />
+    </SimpleForm>
+  </Edit>
+);
+
+const resource = {
+  name: "users",
+  icon: RegistrationTokenIcon,
+  list: RegistrationTokenList,
+  edit: RegistrationTokenEdit,
+  create: RegistrationTokenCreate,
 };
+
+export default resource;
