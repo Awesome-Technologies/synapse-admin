@@ -188,7 +188,7 @@ const de = {
       },
     },
     reports: {
-      name: "Ereignisbericht |||| Ereignisberichte",
+      name: "Gemeldetes Ereignis |||| Gemeldete Ereignisse",
       fields: {
         id: "ID",
         received_ts: "Meldezeit",
@@ -208,6 +208,13 @@ const de = {
             formatted_body: "Formatierter Nachrichteninhalt",
             algorithm: "Verschlüsselungsalgorithmus",
           },
+        },
+      },
+      action: {
+        erase: {
+          title: "Gemeldetes Event löschen",
+          content:
+            "Sind Sie sicher dass Sie das gemeldete Event löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
         },
       },
     },
