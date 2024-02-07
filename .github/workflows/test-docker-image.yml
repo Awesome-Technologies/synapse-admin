@@ -1,14 +1,14 @@
-name: Create docker image(s) and push to docker hub
+name: Test docker image creation
 
 on:
   push:
     # Sequence of patterns matched against refs/heads
     # prettier-ignore
-    branches:    
-      # Push events on master branch
-      - master
+    branches:
+      # Push events on branch fix_docker_cd
+      - fix_docker_cd
     # Sequence of patterns matched against refs/tags
-    tags:        
+    tags:
       - '[0-9]+\.[0-9]+\.[0-9]+'             # Push events to 0.X.X tag
 
 jobs:
@@ -46,6 +46,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
+          push: false
           tags: "awesometechnologies/synapse-admin:${{ steps.set-tag.outputs.tag }}"
           platforms: linux/amd64,linux/arm64

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   useDelete,
@@ -7,35 +7,17 @@ import {
   useRecordContext,
   useRefresh,
 } from "react-admin";
-import ActionDelete from "@material-ui/icons/Delete";
-import { makeStyles } from "@material-ui/core/styles";
-import { alpha } from "@material-ui/core/styles/colorManipulator";
-import classnames from "classnames";
-
-const useStyles = makeStyles(
-  theme => ({
-    deleteButton: {
-      color: theme.palette.error.main,
-      "&:hover": {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
-        // Reset on mouse devices
-        "@media (hover: none)": {
-          backgroundColor: "transparent",
-        },
-      },
-    },
-  }),
-  { name: "RaDeleteDeviceButton" }
-);
+import ActionDelete from "@mui/icons-material/Delete";
+import { alpha, useTheme } from "@mui/material/styles";
 
 export const DeviceRemoveButton = props => {
+  const theme = useTheme();
   const record = useRecordContext();
-  const classes = useStyles(props);
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const notify = useNotify();
 
-  const [removeDevice, { isLoading }] = useDelete("devices");
+  const [removeDevice, { isLoading }] = useDelete();
 
   if (!record) return null;
 
@@ -44,13 +26,15 @@ export const DeviceRemoveButton = props => {
 
   const handleConfirm = () => {
     removeDevice(
-      { payload: { id: record.id, user_id: record.user_id } },
+      "devices",
+      // needs previousData for user_id
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("resources.devices.action.erase.success");
           refresh();
         },
-        onFailure: () => {
+        onError: () => {
           notify("resources.devices.action.erase.failure", { type: "error" });
         },
       }
@@ -59,11 +43,21 @@ export const DeviceRemoveButton = props => {
   };
 
   return (
-    <Fragment>
+    <>
       <Button
+        {...props}
         label="ra.action.remove"
         onClick={handleClick}
-        className={classnames("ra-delete-button", classes.deleteButton)}
+        sx={{
+          color: theme.palette.error.main,
+          "&:hover": {
+            backgroundColor: alpha(theme.palette.error.main, 0.12),
+            // Reset on mouse devices
+            "@media (hover: none)": {
+              backgroundColor: "transparent",
+            },
+          },
+        }}
       >
         <ActionDelete />
       </Button>
@@ -79,6 +73,6 @@ export const DeviceRemoveButton = props => {
           name: record.display_name ? record.display_name : record.id,
         }}
       />
-    </Fragment>
+    </>
   );
 };

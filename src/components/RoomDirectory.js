@@ -1,41 +1,35 @@
-import React, { Fragment } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import { Chip } from "@material-ui/core";
-import { connect } from "react-redux";
-import FolderSharedIcon from "@material-ui/icons/FolderShared";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import {
   BooleanField,
   BulkDeleteButton,
   Button,
-  Datagrid,
+  DatagridConfigurable,
+  ExportButton,
   DeleteButton,
-  Filter,
   List,
   NumberField,
   Pagination,
+  SelectColumnsButton,
   TextField,
+  TopToolbar,
   useCreate,
-  useMutation,
+  useDataProvider,
+  useListContext,
   useNotify,
   useTranslate,
   useRecordContext,
   useRefresh,
   useUnselectAll,
 } from "react-admin";
+import { useMutation } from "react-query";
+import RoomDirectoryIcon from "@mui/icons-material/FolderShared";
+import AvatarField from "./AvatarField";
 
-const useStyles = makeStyles({
-  small: {
-    height: "40px",
-    width: "40px",
-  },
-});
-
-const RoomDirectoryPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[100, 500, 1000, 2000]} />
+const RoomDirectoryPagination = () => (
+  <Pagination rowsPerPageOptions={[100, 500, 1000, 2000]} />
 );
 
-export const RoomDirectoryDeleteButton = props => {
+export const RoomDirectoryUnpublishButton = props => {
   const translate = useTranslate();
 
   return (
@@ -51,12 +45,12 @@ export const RoomDirectoryDeleteButton = props => {
         smart_count: 1,
       })}
       resource="room_directory"
-      icon={<FolderSharedIcon />}
+      icon={<RoomDirectoryIcon />}
     />
   );
 };
 
-export const RoomDirectoryBulkDeleteButton = props => (
+export const RoomDirectoryBulkUnpublishButton = props => (
   <BulkDeleteButton
     {...props}
     label="resources.room_directory.action.erase"
@@ -64,65 +58,63 @@ export const RoomDirectoryBulkDeleteButton = props => (
     confirmTitle="resources.room_directory.action.title"
     confirmContent="resources.room_directory.action.content"
     resource="room_directory"
-    icon={<FolderSharedIcon />}
+    icon={<RoomDirectoryIcon />}
   />
 );
 
-export const RoomDirectoryBulkSaveButton = ({ selectedIds }) => {
+export const RoomDirectoryBulkPublishButton = props => {
+  const { selectedIds } = useListContext();
   const notify = useNotify();
   const refresh = useRefresh();
-  const unselectAll = useUnselectAll();
-  const [createMany, { loading }] = useMutation();
-
-  const handleSend = values => {
-    createMany(
-      {
-        type: "createMany",
-        resource: "room_directory",
-        payload: { ids: selectedIds, data: {} },
+  const unselectAllRooms = useUnselectAll("rooms");
+  const dataProvider = useDataProvider();
+  const { mutate, isLoading } = useMutation(
+    () =>
+      dataProvider.createMany("room_directory", {
+        ids: selectedIds,
+        data: {},
+      }),
+    {
+      onSuccess: () => {
+        notify("resources.room_directory.action.send_success");
+        unselectAllRooms();
+        refresh();
       },
-      {
-        onSuccess: ({ data }) => {
-          notify("resources.room_directory.action.send_success");
-          unselectAll("rooms");
-          refresh();
-        },
-        onFailure: error =>
-          notify("resources.room_directory.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
+      onError: () =>
+        notify("resources.room_directory.action.send_failure", {
+          type: "error",
+        }),
+    }
+  );
 
   return (
     <Button
+      {...props}
       label="resources.room_directory.action.create"
-      onClick={handleSend}
-      disabled={loading}
+      onClick={mutate}
+      disabled={isLoading}
     >
-      <FolderSharedIcon />
+      <RoomDirectoryIcon />
     </Button>
   );
 };
 
-export const RoomDirectorySaveButton = props => {
+export const RoomDirectoryPublishButton = props => {
   const record = useRecordContext();
   const notify = useNotify();
   const refresh = useRefresh();
-  const [create, { loading }] = useCreate("room_directory");
+  const [create, { isLoading }] = useCreate();
 
-  const handleSend = values => {
+  const handleSend = () => {
     create(
+      "room_directory",
+      { data: { id: record.id } },
       {
-        payload: { data: { id: record.id } },
-      },
-      {
-        onSuccess: ({ data }) => {
+        onSuccess: () => {
           notify("resources.room_directory.action.send_success");
           refresh();
         },
-        onFailure: error =>
+        onError: () =>
           notify("resources.room_directory.action.send_failure", {
             type: "error",
           }),
@@ -132,131 +124,83 @@ export const RoomDirectorySaveButton = props => {
 
   return (
     <Button
+      {...props}
       label="resources.room_directory.action.create"
       onClick={handleSend}
-      disabled={loading}
+      disabled={isLoading}
     >
-      <FolderSharedIcon />
+      <RoomDirectoryIcon />
     </Button>
   );
 };
 
-const RoomDirectoryBulkActionButtons = props => (
-  <Fragment>
-    <RoomDirectoryBulkDeleteButton {...props} />
-  </Fragment>
+const RoomDirectoryListActions = () => (
+  <TopToolbar>
+    <SelectColumnsButton />
+    <ExportButton />
+  </TopToolbar>
 );
 
-const AvatarField = ({ source, className, record = {} }) => (
-  <Avatar src={record[source]} className={className} />
-);
-
-const RoomDirectoryFilter = ({ ...props }) => {
-  const translate = useTranslate();
-  return (
-    <Filter {...props}>
-      <Chip
-        label={translate("resources.rooms.fields.room_id")}
-        source="room_id"
-        defaultValue={false}
-        style={{ marginBottom: 8 }}
-      />
-      <Chip
-        label={translate("resources.rooms.fields.topic")}
-        source="topic"
-        defaultValue={false}
-        style={{ marginBottom: 8 }}
-      />
-      <Chip
-        label={translate("resources.rooms.fields.canonical_alias")}
-        source="canonical_alias"
-        defaultValue={false}
-        style={{ marginBottom: 8 }}
-      />
-    </Filter>
-  );
-};
-
-export const FilterableRoomDirectoryList = ({
-  roomDirectoryFilters,
-  dispatch,
-  ...props
-}) => {
-  const classes = useStyles();
-  const translate = useTranslate();
-  const filter = roomDirectoryFilters;
-  const roomIdFilter = filter && filter.room_id ? true : false;
-  const topicFilter = filter && filter.topic ? true : false;
-  const canonicalAliasFilter = filter && filter.canonical_alias ? true : false;
-
-  return (
-    <List
-      {...props}
-      pagination={<RoomDirectoryPagination />}
-      bulkActionButtons={<RoomDirectoryBulkActionButtons />}
-      filters={<RoomDirectoryFilter />}
-      perPage={100}
+export const RoomDirectoryList = () => (
+  <List
+    pagination={<RoomDirectoryPagination />}
+    perPage={100}
+    actions={<RoomDirectoryListActions />}
+  >
+    <DatagridConfigurable
+      rowClick={(id, _resource, _record) => "/rooms/" + id + "/show"}
+      bulkActionButtons={<RoomDirectoryBulkUnpublishButton />}
+      omit={["room_id", "canonical_alias", "topic"]}
     >
-      <Datagrid rowClick={(id, basePath, record) => "/rooms/" + id + "/show"}>
-        <AvatarField
-          source="avatar_src"
-          sortable={false}
-          className={classes.small}
-          label={translate("resources.rooms.fields.avatar")}
-        />
-        <TextField
-          source="name"
-          sortable={false}
-          label={translate("resources.rooms.fields.name")}
-        />
-        {roomIdFilter && (
-          <TextField
-            source="room_id"
-            sortable={false}
-            label={translate("resources.rooms.fields.room_id")}
-          />
-        )}
-        {canonicalAliasFilter && (
-          <TextField
-            source="canonical_alias"
-            sortable={false}
-            label={translate("resources.rooms.fields.canonical_alias")}
-          />
-        )}
-        {topicFilter && (
-          <TextField
-            source="topic"
-            sortable={false}
-            label={translate("resources.rooms.fields.topic")}
-          />
-        )}
-        <NumberField
-          source="num_joined_members"
-          sortable={false}
-          label={translate("resources.rooms.fields.joined_members")}
-        />
-        <BooleanField
-          source="world_readable"
-          sortable={false}
-          label={translate("resources.room_directory.fields.world_readable")}
-        />
-        <BooleanField
-          source="guest_can_join"
-          sortable={false}
-          label={translate("resources.room_directory.fields.guest_can_join")}
-        />
-      </Datagrid>
-    </List>
-  );
+      <AvatarField
+        source="avatar_src"
+        sortable={false}
+        sx={{ height: "40px", width: "40px" }}
+        label="resources.rooms.fields.avatar"
+      />
+      <TextField
+        source="name"
+        sortable={false}
+        label="resources.rooms.fields.name"
+      />
+      <TextField
+        source="room_id"
+        sortable={false}
+        label="resources.rooms.fields.room_id"
+      />
+      <TextField
+        source="canonical_alias"
+        sortable={false}
+        label="resources.rooms.fields.canonical_alias"
+      />
+      <TextField
+        source="topic"
+        sortable={false}
+        label="resources.rooms.fields.topic"
+      />
+      <NumberField
+        source="num_joined_members"
+        sortable={false}
+        label="resources.rooms.fields.joined_members"
+      />
+      <BooleanField
+        source="world_readable"
+        sortable={false}
+        label="resources.room_directory.fields.world_readable"
+      />
+      <BooleanField
+        source="guest_can_join"
+        sortable={false}
+        label="resources.room_directory.fields.guest_can_join"
+      />
+    </DatagridConfigurable>
+  </List>
+);
+
+const resource = {
+  name: "room_directory",
+  icon: RoomDirectoryIcon,
+  list: RoomDirectoryList,
 };
 
-function mapStateToProps(state) {
-  return {
-    roomDirectoryFilters:
-      state.admin.resources.room_directory.list.params.displayedFilters,
-  };
-}
-
-export const RoomDirectoryList = connect(mapStateToProps)(
-  FilterableRoomDirectoryList
-);
+export default resource;

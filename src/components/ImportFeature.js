@@ -1,40 +1,21 @@
 import React, { useState } from "react";
-import {
-  Button as ReactAdminButton,
-  useDataProvider,
-  useNotify,
-  Title,
-} from "react-admin";
+import { useDataProvider, useNotify, Title } from "react-admin";
 import { parse as parseCsv, unparse as unparseCsv } from "papaparse";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import {
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  FormControlLabel,
   Checkbox,
+  Container,
+  FormControlLabel,
   NativeSelect,
-} from "@material-ui/core";
+} from "@mui/material";
 import { useTranslate } from "ra-core";
-import Container from "@material-ui/core/Container/Container";
 import { generateRandomUser } from "./users";
 
 const LOGGING = true;
-
-export const ImportButton = ({ label, variant = "text" }) => {
-  return (
-    <ReactAdminButton
-      color="primary"
-      component="span"
-      variant={variant}
-      label={label}
-    >
-      <GetAppIcon style={{ transform: "rotate(180deg)", fontSize: "20" }} />
-    </ReactAdminButton>
-  );
-};
 
 const expectedFields = ["id", "displayname"].sort();
 const optionalFields = [
@@ -51,7 +32,7 @@ function TranslatableOption({ value, text }) {
   return <option value={value}>{translate(text)}</option>;
 }
 
-const FilePicker = props => {
+const FilePicker = () => {
   const [values, setValues] = useState(null);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
@@ -210,7 +191,7 @@ const FilePicker = props => {
     return true;
   };
 
-  const runImport = async e => {
+  const runImport = async _e => {
     if (progress !== null) {
       notify("import_users.errors.already_in_progress");
       return;
@@ -326,7 +307,7 @@ const FilePicker = props => {
         let retries = 0;
         const submitRecord = recordData => {
           return dataProvider.getOne("users", { id: recordData.id }).then(
-            async alreadyExists => {
+            async _alreadyExists => {
               if (LOGGING) console.log("already existed");
 
               if (useridMode === "update" || conflictMode === "skip") {
@@ -351,7 +332,7 @@ const FilePicker = props => {
                 }
               }
             },
-            async okToSubmit => {
+            async _okToSubmit => {
               if (LOGGING)
                 console.log(
                   "OK to create record " +

@@ -16,7 +16,7 @@ services:
     # if you're building on an architecture other than amd64, make sure
     # to define a maximum ram for node. otherwise the build will fail.
     #   - NODE_OPTIONS="--max_old_space_size=1024"
-    # default is /
+    # default is .
     #   - PUBLIC_URL=/synapse-admin
     # You can use a fixed homeserver, so that the user can no longer
     # define it himself

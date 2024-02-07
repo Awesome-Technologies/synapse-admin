@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import {
   fetchUtils,
+  Form,
   FormDataConsumer,
   Notification,
+  required,
   useLogin,
   useNotify,
-  useLocale,
-  useSetLocale,
+  useLocaleState,
   useTranslate,
   PasswordInput,
   TextInput,
 } from "react-admin";
-import { Form, useForm } from "react-final-form";
+import { useFormContext } from "react-hook-form";
 import {
   Avatar,
+  Box,
   Button,
   Card,
   CardActions,
@@ -21,66 +23,64 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import LockIcon from "@material-ui/icons/Lock";
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import LockIcon from "@mui/icons-material/Lock";
 
-const useStyles = makeStyles(theme => ({
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "calc(100vh - 1em)",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    background: "url(./images/floating-cogs.svg)",
-    backgroundColor: "#f9f9f9",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-  },
-  card: {
+const FormBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  minHeight: "calc(100vh - 1em)",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  background: "url(./images/floating-cogs.svg)",
+  backgroundColor: "#f9f9f9",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+
+  [`& .card`]: {
     minWidth: "30em",
     marginTop: "6em",
     marginBottom: "6em",
   },
-  avatar: {
+  [`& .avatar`]: {
     margin: "1em",
     display: "flex",
     justifyContent: "center",
   },
-  icon: {
-    backgroundColor: theme.palette.secondary.main,
+  [`& .icon`]: {
+    backgroundColor: theme.palette.grey[500],
   },
-  hint: {
+  [`& .hint`]: {
     marginTop: "1em",
     display: "flex",
     justifyContent: "center",
-    color: theme.palette.grey[500],
+    color: theme.palette.grey[600],
   },
-  form: {
+  [`& .form`]: {
     padding: "0 1em 1em 1em",
   },
-  input: {
+  [`& .input`]: {
     marginTop: "1em",
   },
-  actions: {
+  [`& .actions`]: {
     padding: "0 1em 1em 1em",
   },
-  serverVersion: {
-    color: "#9e9e9e",
+  [`& .serverVersion`]: {
+    color: theme.palette.grey[500],
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
     marginBottom: "1em",
     marginLeft: "0.5em",
   },
 }));
 
-const LoginPage = ({ theme }) => {
-  const classes = useStyles({ theme });
+const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
   const [loading, setLoading] = useState(false);
   const [supportPassAuth, setSupportPassAuth] = useState(true);
-  var locale = useLocale();
-  const setLocale = useSetLocale();
+  const [locale, setLocale] = useLocaleState();
   const translate = useTranslate();
   const base_url = localStorage.getItem("base_url");
   const cfg_base_url = process.env.REACT_APP_SERVER;
@@ -135,28 +135,16 @@ const LoginPage = ({ theme }) => {
     />
   );
 
-  const validate = values => {
-    const errors = {};
-    if (!values.username) {
-      errors.username = translate("ra.validation.required");
-    }
-    if (!values.password) {
-      errors.password = translate("ra.validation.required");
-    }
-    if (!values.base_url) {
-      errors.base_url = translate("ra.validation.required");
+  const validateBaseUrl = value => {
+    if (!value.match(/^(http|https):\/\//)) {
+      return translate("synapseadmin.auth.protocol_error");
+    } else if (
+      !value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)
+    ) {
+      return translate("synapseadmin.auth.url_error");
     } else {
-      if (!values.base_url.match(/^(http|https):\/\//)) {
-        errors.base_url = translate("synapseadmin.auth.protocol_error");
-      } else if (
-        !values.base_url.match(
-          /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/
-        )
-      ) {
-        errors.base_url = translate("synapseadmin.auth.url_error");
-      }
+      return undefined;
     }
-    return errors;
   };
 
   const handleSubmit = auth => {
@@ -191,7 +179,7 @@ const LoginPage = ({ theme }) => {
   };
 
   const UserData = ({ formData }) => {
-    const form = useForm();
+    const form = useFormContext();
     const [serverVersion, setServerVersion] = useState("");
 
     const handleUsernameChange = _ => {
@@ -204,11 +192,11 @@ const LoginPage = ({ theme }) => {
         fetchUtils
           .fetchJson(wellKnownUrl, { method: "GET" })
           .then(({ json }) => {
-            form.change("base_url", json["m.homeserver"].base_url);
+            form.setValue("base_url", json["m.homeserver"].base_url);
           })
           .catch(_ => {
             // if there is no .well-known entry, try the home server name
-            form.change("base_url", `https://${home_server}`);
+            form.setValue("base_url", `https://${home_server}`);
           });
       }
     };
@@ -217,7 +205,9 @@ const LoginPage = ({ theme }) => {
       _ => {
         if (
           !formData.base_url ||
-          !formData.base_url.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+$/)
+          !formData.base_url.match(
+            /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/
+          )
         )
           return;
         const versionUrl = `${formData.base_url}/_synapse/admin/v1/server_version`;
@@ -263,111 +253,113 @@ const LoginPage = ({ theme }) => {
     );
 
     return (
-      <div>
-        <div className={classes.input}>
+      <>
+        <Box>
           <TextInput
             autoFocus
             name="username"
             component={renderInput}
-            label={translate("ra.auth.username")}
+            label="ra.auth.username"
             disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             resettable
             fullWidth
+            className="input"
+            validate={required()}
           />
-        </div>
-        <div className={classes.input}>
+        </Box>
+        <Box>
           <PasswordInput
             name="password"
             component={renderInput}
-            label={translate("ra.auth.password")}
+            label="ra.auth.password"
             type="password"
             disabled={loading || !supportPassAuth}
             resettable
             fullWidth
+            className="input"
+            validate={required()}
           />
-        </div>
-        <div className={classes.input}>
+        </Box>
+        <Box>
           <TextInput
             name="base_url"
             component={renderInput}
-            label={translate("synapseadmin.auth.base_url")}
+            label="synapseadmin.auth.base_url"
             disabled={cfg_base_url || loading}
             resettable
             fullWidth
+            className="input"
+            validate={[required(), validateBaseUrl]}
           />
-        </div>
-        <div className={classes.serverVersion}>{serverVersion}</div>
-      </div>
+        </Box>
+        <Typography className="serverVersion">{serverVersion}</Typography>
+      </>
     );
   };
 
   return (
     <Form
-      initialValues={{ base_url: cfg_base_url || base_url }}
+      defaultValues={{ base_url: cfg_base_url || base_url }}
       onSubmit={handleSubmit}
-      validate={validate}
-      render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit} noValidate>
-          <div className={classes.main}>
-            <Card className={classes.card}>
-              <div className={classes.avatar}>
-                <Avatar className={classes.icon}>
-                  <LockIcon />
-                </Avatar>
-              </div>
-              <div className={classes.hint}>
-                {translate("synapseadmin.auth.welcome")}
-              </div>
-              <div className={classes.form}>
-                <div className={classes.input}>
-                  <Select
-                    value={locale}
-                    onChange={e => {
-                      setLocale(e.target.value);
-                    }}
-                    fullWidth
-                    disabled={loading}
-                  >
-                    <MenuItem value="de">Deutsch</MenuItem>
-                    <MenuItem value="en">English</MenuItem>
-                    <MenuItem value="zh">简体中文</MenuItem>
-                  </Select>
-                </div>
-                <FormDataConsumer>
-                  {formDataProps => <UserData {...formDataProps} />}
-                </FormDataConsumer>
-              </div>
-              <CardActions className={classes.actions}>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  disabled={loading || !supportPassAuth}
-                  className={classes.button}
-                  fullWidth
-                >
-                  {loading && <CircularProgress size={25} thickness={2} />}
-                  {translate("ra.auth.sign_in")}
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleSSO}
-                  disabled={loading || ssoBaseUrl === ""}
-                  className={classes.button}
-                  fullWidth
-                >
-                  {loading && <CircularProgress size={25} thickness={2} />}
-                  {translate("synapseadmin.auth.sso_sign_in")}
-                </Button>
-              </CardActions>
-            </Card>
-            <Notification />
-          </div>
-        </form>
-      )}
-    />
+      mode="onTouched"
+    >
+      <FormBox>
+        <Card className="card">
+          <Box className="avatar">
+            {loading ? (
+              <CircularProgress size={25} thickness={2} />
+            ) : (
+              <Avatar className="icon">
+                <LockIcon />
+              </Avatar>
+            )}
+          </Box>
+          <Box className="hint">{translate("synapseadmin.auth.welcome")}</Box>
+          <Box className="form">
+            <Select
+              value={locale}
+              onChange={e => {
+                setLocale(e.target.value);
+              }}
+              fullWidth
+              disabled={loading}
+              className="input"
+            >
+              <MenuItem value="de">Deutsch</MenuItem>
+              <MenuItem value="en">English</MenuItem>
+              <MenuItem value="fr">Français</MenuItem>
+              <MenuItem value="it">Italiano</MenuItem>
+              <MenuItem value="zh">简体中文</MenuItem>
+            </Select>
+            <FormDataConsumer>
+              {formDataProps => <UserData {...formDataProps} />}
+            </FormDataConsumer>
+            <CardActions className="actions">
+              <Button
+                variant="contained"
+                type="submit"
+                color="primary"
+                disabled={loading || !supportPassAuth}
+                fullWidth
+              >
+                {translate("ra.auth.sign_in")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleSSO}
+                disabled={loading || ssoBaseUrl === ""}
+                fullWidth
+              >
+                {translate("synapseadmin.auth.sso_sign_in")}
+              </Button>
+            </CardActions>
+          </Box>
+        </Card>
+      </FormBox>
+      <Notification />
+    </Form>
   );
 };
 

@@ -3,7 +3,6 @@ import { cloneElement } from "react";
 import {
   Datagrid,
   ExportButton,
-  Filter,
   List,
   NumberField,
   Pagination,
@@ -13,18 +12,13 @@ import {
   TopToolbar,
   useListContext,
 } from "react-admin";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 import { DeleteMediaButton } from "./media";
 
 const ListActions = props => {
   const { className, exporter, filters, maxResults, ...rest } = props;
-  const {
-    currentSort,
-    resource,
-    displayedFilters,
-    filterValues,
-    showFilter,
-    total,
-  } = useListContext();
+  const { sort, resource, displayedFilters, filterValues, showFilter, total } =
+    useListContext();
   return (
     <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
       {filters &&
@@ -39,7 +33,7 @@ const ListActions = props => {
       <ExportButton
         disabled={total === 0}
         resource={resource}
-        sort={currentSort}
+        sort={sort}
         filterValues={filterValues}
         maxResults={maxResults}
       />
@@ -47,35 +41,39 @@ const ListActions = props => {
   );
 };
 
-const UserMediaStatsPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const UserMediaStatsPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
-const UserMediaStatsFilter = props => (
-  <Filter {...props}>
-    <SearchInput source="search_term" alwaysOn />
-  </Filter>
-);
+const userMediaStatsFilters = [<SearchInput source="search_term" alwaysOn />];
 
-export const UserMediaStatsList = props => {
-  return (
-    <List
-      {...props}
-      actions={<ListActions />}
-      filters={<UserMediaStatsFilter />}
-      pagination={<UserMediaStatsPagination />}
-      sort={{ field: "media_length", order: "DESC" }}
+export const UserMediaStatsList = props => (
+  <List
+    {...props}
+    actions={<ListActions />}
+    filters={userMediaStatsFilters}
+    pagination={<UserMediaStatsPagination />}
+    sort={{ field: "media_length", order: "DESC" }}
+  >
+    <Datagrid
+      rowClick={(id, resource, record) => "/users/" + id + "/media"}
       bulkActionButtons={false}
     >
-      <Datagrid rowClick={(id, basePath, record) => "/users/" + id + "/media"}>
-        <TextField source="user_id" label="resources.users.fields.id" />
-        <TextField
-          source="displayname"
-          label="resources.users.fields.displayname"
-        />
-        <NumberField source="media_count" />
-        <NumberField source="media_length" />
-      </Datagrid>
-    </List>
-  );
+      <TextField source="user_id" label="resources.users.fields.id" />
+      <TextField
+        source="displayname"
+        label="resources.users.fields.displayname"
+      />
+      <NumberField source="media_count" />
+      <NumberField source="media_length" />
+    </Datagrid>
+  </List>
+);
+
+const resource = {
+  name: "user_media_statistics",
+  icon: EqualizerIcon,
+  list: UserMediaStatsList,
 };
+
+export default resource;
