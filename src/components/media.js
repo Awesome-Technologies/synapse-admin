@@ -38,19 +38,17 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
     return d.getTime();
   };
 
-  const DeleteMediaToolbar = props => {
-    return (
-      <Toolbar {...props}>
-        <SaveButton
-          label="resources.delete_media.action.send"
-          icon={<DeleteSweepIcon />}
-        />
-        <Button label="ra.action.cancel" onClick={onClose}>
-          <IconCancel />
-        </Button>
-      </Toolbar>
-    );
-  };
+  const DeleteMediaToolbar = props => (
+    <Toolbar {...props}>
+      <SaveButton
+        label="resources.delete_media.action.send"
+        icon={<DeleteSweepIcon />}
+      />
+      <Button label="ra.action.cancel" onClick={onClose}>
+        <IconCancel />
+      </Button>
+    </Toolbar>
+  );
 
   return (
     <Dialog open={open} onClose={onClose} loading={loading}>
