@@ -2,6 +2,7 @@ import React from "react";
 import {
   Datagrid,
   DateField,
+  DeleteButton,
   List,
   NumberField,
   Pagination,
@@ -10,6 +11,8 @@ import {
   Tab,
   TabbedShowLayout,
   TextField,
+  TopToolbar,
+  useRecordContext,
   useTranslate,
 } from "react-admin";
 import PageviewIcon from "@mui/icons-material/Pageview";
@@ -32,7 +35,7 @@ const ReportPagination = () => (
 export const ReportShow = props => {
   const translate = useTranslate();
   return (
-    <Show {...props}>
+    <Show {...props} actions={<ReportShowActions />}>
       <TabbedShowLayout>
         <Tab
           label={translate("synapseadmin.reports.tabs.basic", {
@@ -96,6 +99,21 @@ export const ReportShow = props => {
         </Tab>
       </TabbedShowLayout>
     </Show>
+  );
+};
+
+const ReportShowActions = () => {
+  const record = useRecordContext();
+
+  return (
+    <TopToolbar>
+      <DeleteButton
+        record={record}
+        mutationMode="pessimistic"
+        confirmTitle="resources.reports.action.erase.title"
+        confirmContent="resources.reports.action.erase.content"
+      />
+    </TopToolbar>
   );
 };
 

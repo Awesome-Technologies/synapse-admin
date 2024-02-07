@@ -456,7 +456,7 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${encodeURIComponent(params.data.id)}`, {
+    return jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`, {
       method: "PUT",
       body: JSON.stringify(params.data, filterNullValues),
     }).then(({ json }) => ({
