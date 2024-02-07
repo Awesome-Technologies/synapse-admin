@@ -12,6 +12,7 @@ import {
   NumberField,
   NumberInput,
   regex,
+  SaveButton,
   SimpleForm,
   TextInput,
   TextField,
@@ -79,8 +80,15 @@ export const RegistrationTokenList = props => (
 );
 
 export const RegistrationTokenCreate = props => (
-  <Create {...props}>
-    <SimpleForm redirect="list" toolbar={<Toolbar alwaysEnableSaveButton />}>
+  <Create {...props} redirect="list">
+    <SimpleForm
+      toolbar={
+        <Toolbar>
+          {/* It is possible to create tokens per default without input. */}
+          <SaveButton alwaysEnable />
+        </Toolbar>
+      }
+    >
       <TextInput
         source="token"
         autoComplete="off"

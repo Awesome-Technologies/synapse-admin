@@ -36,10 +36,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EventIcon from "@mui/icons-material/Event";
 import RoomIcon from "@mui/icons-material/ViewList";
 import {
-  RoomDirectoryBulkDeleteButton,
-  RoomDirectoryBulkSaveButton,
-  RoomDirectoryDeleteButton,
-  RoomDirectorySaveButton,
+  RoomDirectoryBulkUnpublishButton,
+  RoomDirectoryBulkPublishButton,
+  RoomDirectoryUnpublishButton,
+  RoomDirectoryPublishButton,
 } from "./RoomDirectory";
 
 const date_format = {
@@ -51,8 +51,8 @@ const date_format = {
   second: "2-digit",
 };
 
-const RoomPagination = props => (
-  <Pagination {...props} rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
+const RoomPagination = () => (
+  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
 );
 
 const RoomTitle = () => {
@@ -79,14 +79,9 @@ const RoomShowActions = () => {
 
   return (
     <TopToolbar>
-      {roomDirectoryStatus === false && (
-        <RoomDirectorySaveButton record={record} />
-      )}
-      {roomDirectoryStatus === true && (
-        <RoomDirectoryDeleteButton record={record} />
-      )}
+      {roomDirectoryStatus === false && <RoomDirectoryPublishButton />}
+      {roomDirectoryStatus === true && <RoomDirectoryUnpublishButton />}
       <DeleteButton
-        record={record}
         mutationMode="pessimistic"
         confirmTitle="resources.rooms.action.erase.title"
         confirmContent="resources.rooms.action.erase.content"
@@ -103,6 +98,7 @@ export const RoomShow = props => {
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
           <TextField source="room_id" />
           <TextField source="name" />
+          <TextField source="topic" />
           <TextField source="canonical_alias" />
           <ReferenceField source="creator" reference="users">
             <TextField source="id" />
@@ -280,8 +276,8 @@ export const RoomShow = props => {
 
 const RoomBulkActionButtons = () => (
   <>
-    <RoomDirectoryBulkSaveButton />
-    <RoomDirectoryBulkDeleteButton />
+    <RoomDirectoryBulkPublishButton />
+    <RoomDirectoryBulkUnpublishButton />
     <BulkDeleteButton
       confirmTitle="resources.rooms.action.erase.title"
       confirmContent="resources.rooms.action.erase.content"

@@ -29,7 +29,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { alpha, useTheme } from "@mui/material/styles";
 
-const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
+const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
 
   const dateParser = v => {
@@ -38,19 +38,17 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
     return d.getTime();
   };
 
-  const DeleteMediaToolbar = props => {
-    return (
-      <Toolbar {...props}>
-        <SaveButton
-          label="resources.delete_media.action.send"
-          icon={<DeleteSweepIcon />}
-        />
-        <Button label="ra.action.cancel" onClick={onClose}>
-          <IconCancel />
-        </Button>
-      </Toolbar>
-    );
-  };
+  const DeleteMediaToolbar = props => (
+    <Toolbar {...props}>
+      <SaveButton
+        label="resources.delete_media.action.send"
+        icon={<DeleteSweepIcon />}
+      />
+      <Button label="ra.action.cancel" onClick={onClose}>
+        <IconCancel />
+      </Button>
+    </Toolbar>
+  );
 
   return (
     <Dialog open={open} onClose={onClose} loading={loading}>
@@ -61,11 +59,7 @@ const DeleteMediaDialog = ({ open, loading, onClose, onSend }) => {
         <DialogContentText>
           {translate("resources.delete_media.helper.send")}
         </DialogContentText>
-        <SimpleForm
-          toolbar={<DeleteMediaToolbar />}
-          redirect={false}
-          save={onSend}
-        >
+        <SimpleForm toolbar={<DeleteMediaToolbar />} onSubmit={onSubmit}>
           <DateTimeInput
             fullWidth
             source="before_ts"
@@ -99,17 +93,18 @@ export const DeleteMediaButton = props => {
   const notify = useNotify();
   const [deleteOne, { isLoading }] = useDelete();
 
-  const handleDialogOpen = () => setOpen(true);
-  const handleDialogClose = () => setOpen(false);
+  const openDialog = () => setOpen(true);
+  const closeDialog = () => setOpen(false);
 
-  const handleSend = values => {
+  const deleteMedia = values => {
     deleteOne(
       "delete_media",
-      { id: values.id },
+      // needs meta.before_ts, meta.size_gt and meta.keep_profiles
+      { meta: values },
       {
         onSuccess: () => {
           notify("resources.delete_media.action.send_success");
-          handleDialogClose();
+          closeDialog();
         },
         onError: () =>
           notify("resources.delete_media.action.send_failure", {
@@ -124,7 +119,7 @@ export const DeleteMediaButton = props => {
       <Button
         {...props}
         label="resources.delete_media.action.send"
-        onClick={handleDialogOpen}
+        onClick={openDialog}
         disabled={isLoading}
         sx={{
           color: theme.palette.error.main,
@@ -141,14 +136,14 @@ export const DeleteMediaButton = props => {
       </Button>
       <DeleteMediaDialog
         open={open}
-        onClose={handleDialogClose}
-        onSend={handleSend}
+        onClose={closeDialog}
+        onSubmit={deleteMedia}
       />
     </>
   );
 };
 
-export const ProtectMediaButton = props => {
+export const ProtectMediaButton = () => {
   const record = useRecordContext();
   const translate = useTranslate();
   const refresh = useRefresh();
@@ -276,7 +271,7 @@ export const QuarantineMediaButton = props => {
   const handleRemoveQuarantaine = () => {
     deleteOne(
       "quarantine_media",
-      { id: record.id },
+      { id: record.id, previousData: record },
       {
         onSuccess: () => {
           notify("resources.quarantine_media.action.send_success");
