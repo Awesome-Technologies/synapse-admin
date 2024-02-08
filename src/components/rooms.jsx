@@ -134,6 +134,7 @@ export const RoomShow = props => {
             <Datagrid
               style={{ width: "100%" }}
               rowClick={(id, resource, record) => "/users/" + id}
+              bulkActionButtons={false}
             >
               <TextField
                 source="id"
@@ -218,7 +219,7 @@ export const RoomShow = props => {
             target="room_id"
             addLabel={false}
           >
-            <Datagrid style={{ width: "100%" }}>
+            <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="type" sortable={false} />
               <DateField
                 source="origin_server_ts"
@@ -256,7 +257,7 @@ export const RoomShow = props => {
             target="room_id"
             addLabel={false}
           >
-            <Datagrid style={{ width: "100%" }}>
+            <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="id" sortable={false} />
               <DateField
                 source="received_ts"
