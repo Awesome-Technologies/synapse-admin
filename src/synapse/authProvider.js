@@ -1,10 +1,10 @@
 import { fetchUtils } from "react-admin";
 
-const authProvider = {
+const authProvider = (fixed_base_url, store) => ({
   // called when the user attempts to log in
   login: ({ base_url, username, password, loginToken }) => {
     // force homeserver for protection in case the form is manipulated
-    base_url = process.env.REACT_APP_SERVER || base_url;
+    base_url = fixed_base_url || base_url;
 
     console.log("login ");
     const options = {
@@ -12,7 +12,7 @@ const authProvider = {
       body: JSON.stringify(
         Object.assign(
           {
-            device_id: localStorage.getItem("device_id"),
+            device_id: store.getItem("device_id"),
             initial_device_display_name: "Synapse Admin",
           },
           loginToken
@@ -33,16 +33,16 @@ const authProvider = {
     // server, since the admin might want to access the admin API via some
     // private address
     base_url = base_url.replace(/\/+$/g, "");
-    localStorage.setItem("base_url", base_url);
+    store.setItem("base_url", base_url);
 
     const decoded_base_url = window.decodeURIComponent(base_url);
     const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
-      localStorage.setItem("home_server", json.home_server);
-      localStorage.setItem("user_id", json.user_id);
-      localStorage.setItem("access_token", json.access_token);
-      localStorage.setItem("device_id", json.device_id);
+      store.setItem("home_server", json.home_server);
+      store.setItem("user_id", json.user_id);
+      store.setItem("access_token", json.access_token);
+      store.setItem("device_id", json.device_id);
     });
   },
   // called when the user clicks on the logout button
@@ -86,6 +86,6 @@ const authProvider = {
   },
   // called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve(),
-};
+});
 
 export default authProvider;

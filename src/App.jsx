@@ -24,6 +24,8 @@ import frenchMessages from "./i18n/fr";
 import chineseMessages from "./i18n/zh";
 import italianMessages from "./i18n/it";
 
+const fixed_base_url = undefined; // FIXME: process.env.REACT_APP_SERVER;
+
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
   de: germanMessages,
@@ -42,7 +44,7 @@ const App = () => (
     disableTelemetry
     requireAuth
     loginPage={LoginPage}
-    authProvider={authProvider}
+    authProvider={authProvider(fixed_base_url)}
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
   >
