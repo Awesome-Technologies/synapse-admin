@@ -30,7 +30,7 @@
     "ra-language-german": "^3.13.4",
     "ra-language-italian": "^3.13.1",
     "react": "^18.0.0",
-    "react-admin": "^4.16.9",
+    "react-admin": "^4.16.10",
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.1"
   },
