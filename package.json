@@ -21,7 +21,7 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "@mui/icons-material": "^5.15.7",
+    "@mui/icons-material": "^5.15.10",
     "@mui/material": "^5.15.7",
     "@mui/styles": "^5.15.8",
     "papaparse": "^5.4.1",
