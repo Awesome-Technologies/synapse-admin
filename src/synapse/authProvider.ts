@@ -28,6 +28,10 @@ const authProvider: AuthProvider = {
                 token: loginToken,
               }
             : {
+                identifier: {
+                  type: "m.id.user",
+                  user: username,
+                },
                 type: "m.login.password",
                 user: username,
                 password: password,
