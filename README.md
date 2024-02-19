@@ -66,7 +66,7 @@ You have three options:
 
 You can fix the homeserver, so that the user can no longer define it himself.
 Either you define it at startup (e.g. `REACT_APP_SERVER=https://yourmatrixserver.example.com yarn start`)
-or by editing it in the [.env](.env) file. See also the
+or by editing it in the .env file, you can use [.env.example](.env.example) as a reference. See also the
 [documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
 
 #### Steps for 3)
