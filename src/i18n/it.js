@@ -108,6 +108,7 @@ const it = {
         name: "Nome",
         is_guest: "Ospite",
         admin: "Amministratore",
+        locked: "Bloccato",
         deactivated: "Disattivato",
         guests: "Mostra gli ospiti",
         show_deactivated: "Mostra gli utenti disattivati",

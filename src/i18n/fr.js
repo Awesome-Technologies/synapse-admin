@@ -110,6 +110,7 @@ const fr = {
         name: "Nom",
         is_guest: "Visiteur",
         admin: "Administrateur du serveur",
+        locked: "Verrouillé",
         deactivated: "Désactivé",
         guests: "Afficher les visiteurs",
         show_deactivated: "Afficher les utilisateurs désactivés",
