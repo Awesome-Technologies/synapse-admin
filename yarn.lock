@@ -8266,10 +8266,10 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-ra-core@^4.16.11:
-  version "4.16.11"
-  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-4.16.11.tgz#91d003dc3e3974315922fab60b1c8d8ca5278c94"
-  integrity sha512-Zlzg34jMKUNdVWCCZAojGDFXkwA4tGn4VxRV2fQOA+izoNoq521no5KZfWFN21NThNxUT+Z6vip0MJ7uhuLDaA==
+ra-core@^4.16.11, ra-core@^4.16.12:
+  version "4.16.12"
+  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-4.16.12.tgz#61fd5e1d5c81ddce458cf658edbff4f7c69b7a64"
+  integrity sha512-D4cVuUeXCFEgMEte5GksiBN3DGnJ9k8754rTgdYhk9+uEKu5MFedvhJCtFCUaysrMsaVvbAfyajDfQWxSplwOQ==
   dependencies:
     clsx "^1.1.1"
     date-fns "^2.19.0"
@@ -8302,12 +8302,12 @@ ra-language-english@^4.16.11:
   dependencies:
     ra-core "^4.16.11"
 
-ra-language-french@^4.16.11:
-  version "4.16.11"
-  resolved "https://registry.yarnpkg.com/ra-language-french/-/ra-language-french-4.16.11.tgz#4c28c86491aee305fb657913f473e4d21890c476"
-  integrity sha512-K4+EZWUJ3L6ZG/VAg0kRScWlPTkcOTkGZlbjthjFfH9830xO6ZYeJy0c8zX9W/DnAW9eE3uZVbGNdrzpap3lhg==
+ra-language-french@^4.16.12:
+  version "4.16.12"
+  resolved "https://registry.yarnpkg.com/ra-language-french/-/ra-language-french-4.16.12.tgz#ae044d410f9996fb5efe891645d6d937bee1b9d2"
+  integrity sha512-JBGXwj79qxszUrnrJkPguNdnulJPitHsrC94XsMalBbiOZKFg5dyFAgclR2JvEEWeHAqs6blDA4z4u8cR2rGVQ==
   dependencies:
-    ra-core "^4.16.11"
+    ra-core "^4.16.12"
 
 ra-language-german@^3.13.4:
   version "3.13.5"

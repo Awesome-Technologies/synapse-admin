@@ -26,7 +26,7 @@
     "@mui/styles": "^5.15.10",
     "papaparse": "^5.4.1",
     "ra-language-chinese": "^2.0.10",
-    "ra-language-french": "^4.16.11",
+    "ra-language-french": "^4.16.12",
     "ra-language-german": "^3.13.4",
     "ra-language-italian": "^3.13.1",
     "react": "^18.0.0",
