@@ -29,14 +29,15 @@
     "ra-language-french": "^4.16.12",
     "ra-language-german": "^3.13.4",
     "ra-language-italian": "^3.13.1",
+    "ra-language-farsi": "^4.2.0",
     "react": "^18.0.0",
     "react-admin": "^4.16.11",
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
-    "build": "REACT_APP_VERSION=$(git describe --tags) react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
     "fix": "yarn fix:code && yarn fix:other",
