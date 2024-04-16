@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.15.15",
-    "@mui/material": "^5.15.14",
+    "@mui/material": "^5.15.15",
     "@mui/styles": "^5.15.15",
     "papaparse": "^5.4.1",
     "ra-language-chinese": "^2.0.10",
