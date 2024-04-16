@@ -36,8 +36,8 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
+    "build": "REACT_APP_VERSION=$(git describe --tags) react-scripts build",
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
     "fix": "yarn fix:code && yarn fix:other",
