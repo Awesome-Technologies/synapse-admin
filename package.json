@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.0.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^15.0.2",
     "@testing-library/user-event": "^14.5.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -22,16 +22,16 @@
   },
   "dependencies": {
     "@mui/icons-material": "^5.15.15",
-    "@mui/material": "^5.15.14",
+    "@mui/material": "^5.15.15",
     "@mui/styles": "^5.15.15",
     "papaparse": "^5.4.1",
     "ra-language-chinese": "^2.0.10",
-    "ra-language-french": "^4.16.12",
+    "ra-language-french": "^4.16.15",
     "ra-language-german": "^3.13.4",
     "ra-language-italian": "^3.13.1",
     "ra-language-farsi": "^4.2.0",
     "react": "^18.0.0",
-    "react-admin": "^4.16.11",
+    "react-admin": "^4.16.15",
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.1"
   },
