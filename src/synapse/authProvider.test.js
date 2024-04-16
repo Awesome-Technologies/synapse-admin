@@ -1,5 +1,3 @@
-import { waitFor } from "@testing-library/react";
-
 import authProvider from "./authProvider";
 
 describe("authProvider", () => {
@@ -93,7 +91,7 @@ describe("authProvider", () => {
         method: "POST",
         user: { authenticated: true, token: "Bearer foo" },
       });
-      waitFor(() => expect(localStorage.getItem("access_token")).toBeNull());
+      expect(localStorage.getItem("access_token")).toBeNull();
     });
   });
 

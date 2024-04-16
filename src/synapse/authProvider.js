@@ -2,7 +2,7 @@ import { fetchUtils } from "react-admin";
 
 const authProvider = {
   // called when the user attempts to log in
-  login: ({ base_url, username, password, loginToken }) => {
+  login: async ({ base_url, username, password, loginToken }) => {
     // force homeserver for protection in case the form is manipulated
     base_url = process.env.REACT_APP_SERVER || base_url;
 
@@ -38,15 +38,14 @@ const authProvider = {
     const decoded_base_url = window.decodeURIComponent(base_url);
     const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
 
-    return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
-      localStorage.setItem("home_server", json.home_server);
-      localStorage.setItem("user_id", json.user_id);
-      localStorage.setItem("access_token", json.access_token);
-      localStorage.setItem("device_id", json.device_id);
-    });
+    const { json } = await fetchUtils.fetchJson(login_api_url, options);
+    localStorage.setItem("home_server", json.home_server);
+    localStorage.setItem("user_id", json.user_id);
+    localStorage.setItem("access_token", json.access_token);
+    localStorage.setItem("device_id", json.device_id);
   },
   // called when the user clicks on the logout button
-  logout: () => {
+  logout: async () => {
     console.log("logout");
 
     const logout_api_url =
@@ -62,11 +61,9 @@ const authProvider = {
     };
 
     if (typeof access_token === "string") {
-      fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
-        localStorage.removeItem("access_token");
-      });
+      await fetchUtils.fetchJson(logout_api_url, options);
+      localStorage.removeItem("access_token");
     }
-    return Promise.resolve();
   },
   // called when the API returns an error
   checkError: ({ status }) => {
