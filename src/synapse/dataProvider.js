@@ -348,7 +348,7 @@ function getSearchOrder(order) {
 }
 
 const dataProvider = {
-  getList: (resource, params) => {
+  getList: async (resource, params) => {
     console.log("getList " + resource);
     const {
       user_id,
@@ -383,13 +383,14 @@ const dataProvider = {
     const endpoint_url = homeserver + res.path;
     const url = `${endpoint_url}?${stringify(query)}`;
 
-    return jsonClient(url).then(({ json }) => ({
+    const { json } = await jsonClient(url);
+    return {
       data: json[res.data].map(res.map),
       total: res.total(json, from, perPage),
-    }));
+    };
   },
 
-  getOne: (resource, params) => {
+  getOne: async (resource, params) => {
     console.log("getOne " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -397,14 +398,13 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`).then(
-      ({ json }) => ({
-        data: res.map(json),
-      })
+    const { json } = await jsonClient(
+      `${endpoint_url}/${encodeURIComponent(params.id)}`
     );
+    return { data: res.map(json) };
   },
 
-  getMany: (resource, params) => {
+  getMany: async (resource, params) => {
     console.log("getMany " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -412,17 +412,18 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return Promise.all(
+    const responses = await Promise.all(
       params.ids.map(id =>
         jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`)
       )
-    ).then(responses => ({
+    );
+    return {
       data: responses.map(({ json }) => res.map(json)),
       total: responses.length,
-    }));
+    };
   },
 
-  getManyReference: (resource, params) => {
+  getManyReference: async (resource, params) => {
     console.log("getManyReference " + resource);
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
@@ -442,13 +443,14 @@ const dataProvider = {
     const ref = res["reference"](params.id);
     const endpoint_url = `${homeserver}${ref.endpoint}?${stringify(query)}`;
 
-    return jsonClient(endpoint_url).then(({ headers, json }) => ({
+    const { json } = await jsonClient(endpoint_url);
+    return {
       data: json[res.data].map(res.map),
       total: res.total(json, from, perPage),
-    }));
+    };
   },
 
-  update: (resource, params) => {
+  update: async (resource, params) => {
     console.log("update " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -456,15 +458,17 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
-    }).then(({ json }) => ({
-      data: res.map(json),
-    }));
+    const { json } = await jsonClient(
+      `${endpoint_url}/${encodeURIComponent(params.id)}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      }
+    );
+    return { data: res.map(json) };
   },
 
-  updateMany: (resource, params) => {
+  updateMany: async (resource, params) => {
     console.log("updateMany " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -472,7 +476,7 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    return Promise.all(
+    const responses = await Promise.all(
       params.ids.map(
         id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`),
         {
@@ -480,12 +484,11 @@ const dataProvider = {
           body: JSON.stringify(params.data, filterNullValues),
         }
       )
-    ).then(responses => ({
-      data: responses.map(({ json }) => json),
-    }));
+    );
+    return { data: responses.map(({ json }) => json) };
   },
 
-  create: (resource, params) => {
+  create: async (resource, params) => {
     console.log("create " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -495,15 +498,14 @@ const dataProvider = {
 
     const create = res["create"](params.data);
     const endpoint_url = homeserver + create.endpoint;
-    return jsonClient(endpoint_url, {
+    const { json } = await jsonClient(endpoint_url, {
       method: create.method,
       body: JSON.stringify(create.body, filterNullValues),
-    }).then(({ json }) => ({
-      data: res.map(json),
-    }));
+    });
+    return { data: res.map(json) };
   },
 
-  createMany: (resource, params) => {
+  createMany: async (resource, params) => {
     console.log("createMany " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -511,7 +513,7 @@ const dataProvider = {
     const res = resourceMap[resource];
     if (!("create" in res)) return Promise.reject();
 
-    return Promise.all(
+    const responses = await Promise.all(
       params.ids.map(id => {
         params.data.id = id;
         const cre = res["create"](params.data);
@@ -521,12 +523,11 @@ const dataProvider = {
           body: JSON.stringify(cre.body, filterNullValues),
         });
       })
-    ).then(responses => ({
-      data: responses.map(({ json }) => json),
-    }));
+    );
+    return { data: responses.map(({ json }) => json) };
   },
 
-  delete: (resource, params) => {
+  delete: async (resource, params) => {
     console.log("delete " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -536,24 +537,22 @@ const dataProvider = {
     if ("delete" in res) {
       const del = res["delete"](params);
       const endpoint_url = homeserver + del.endpoint;
-      return jsonClient(endpoint_url, {
+      const { json } = await jsonClient(endpoint_url, {
         method: "method" in del ? del.method : "DELETE",
         body: "body" in del ? JSON.stringify(del.body) : null,
-      }).then(({ json }) => ({
-        data: json,
-      }));
+      });
+      return { data: json };
     } else {
       const endpoint_url = homeserver + res.path;
-      return jsonClient(`${endpoint_url}/${params.id}`, {
+      const { json } = await jsonClient(`${endpoint_url}/${params.id}`, {
         method: "DELETE",
         body: JSON.stringify(params.previousData, filterNullValues),
-      }).then(({ json }) => ({
-        data: json,
-      }));
+      });
+      return { data: json };
     }
   },
 
-  deleteMany: (resource, params) => {
+  deleteMany: async (resource, params) => {
     console.log("deleteMany " + resource);
     const homeserver = localStorage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) return Promise.reject();
@@ -561,7 +560,7 @@ const dataProvider = {
     const res = resourceMap[resource];
 
     if ("delete" in res) {
-      return Promise.all(
+      const responses = await Promise.all(
         params.ids.map(id => {
           const del = res["delete"]({ ...params, id: id });
           const endpoint_url = homeserver + del.endpoint;
@@ -570,21 +569,21 @@ const dataProvider = {
             body: "body" in del ? JSON.stringify(del.body) : null,
           });
         })
-      ).then(responses => ({
+      );
+      return {
         data: responses.map(({ json }) => json),
-      }));
+      };
     } else {
       const endpoint_url = homeserver + res.path;
-      return Promise.all(
+      const responses = await Promise.all(
         params.ids.map(id =>
           jsonClient(`${endpoint_url}/${id}`, {
             method: "DELETE",
             body: JSON.stringify(params.data, filterNullValues),
           })
         )
-      ).then(responses => ({
-        data: responses.map(({ json }) => json),
-      }));
+      );
+      return { data: responses.map(({ json }) => json) };
     }
   },
 };
