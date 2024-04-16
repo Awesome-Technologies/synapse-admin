@@ -8240,6 +8240,11 @@ ra-language-english@^4.16.15:
   dependencies:
     ra-core "^4.16.15"
 
+ra-language-farsi@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/ra-language-farsi/-/ra-language-farsi-4.2.0.tgz#3f602233589a50768b0dcde4d2edf7b3a2aafdd9"
+  integrity sha512-Sx1fX87PY73s+Bgkt3EBt3Na1RAevIk2YiytbuomMjAA2i76Lk59ZWvddLUZtzdZEVHjEJxjv/tgSTeRlf5rww==
+
 ra-language-french@^4.16.15:
   version "4.16.15"
   resolved "https://registry.yarnpkg.com/ra-language-french/-/ra-language-french-4.16.15.tgz#d0f04ad124aa286e5d1298c367cd3ee883ce51f7"

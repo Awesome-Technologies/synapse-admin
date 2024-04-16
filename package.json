@@ -29,6 +29,7 @@
     "ra-language-french": "^4.16.15",
     "ra-language-german": "^3.13.4",
     "ra-language-italian": "^3.13.1",
+    "ra-language-farsi": "^4.2.0",
     "react": "^18.0.0",
     "react-admin": "^4.16.15",
     "react-dom": "^18.0.0",
