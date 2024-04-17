@@ -36,6 +36,13 @@ export const getServerVersion = async baseUrl => {
   return response.json.server_version;
 };
 
+/** Get supported Matrix features */
+export const getSupportedFeatures = async baseUrl => {
+  const versionUrl = `${baseUrl}/_matrix/client/versions`;
+  const response = await fetchUtils.fetchJson(versionUrl, { method: "GET" });
+  return response.json;
+};
+
 /**
  * Get supported login flows
  * @param baseUrl  the base URL of the homeserver

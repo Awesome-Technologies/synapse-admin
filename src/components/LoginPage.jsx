@@ -27,6 +27,7 @@ import { styled } from "@mui/material/styles";
 import LockIcon from "@mui/icons-material/Lock";
 import {
   getServerVersion,
+  getSupportedFeatures,
   getSupportedLoginFlows,
   getWellKnownUrl,
   isValidBaseUrl,
@@ -36,7 +37,7 @@ import {
 const FormBox = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  minHeight: "calc(100vh - 1em)",
+  minHeight: "calc(100vh - 1rem)",
   alignItems: "center",
   justifyContent: "flex-start",
   background: "url(./images/floating-cogs.svg)",
@@ -45,12 +46,12 @@ const FormBox = styled(Box)(({ theme }) => ({
   backgroundSize: "cover",
 
   [`& .card`]: {
-    minWidth: "30em",
-    marginTop: "6em",
-    marginBottom: "6em",
+    width: "30rem",
+    marginTop: "6rem",
+    marginBottom: "6rem",
   },
   [`& .avatar`]: {
-    margin: "1em",
+    margin: "1rem",
     display: "flex",
     justifyContent: "center",
   },
@@ -59,24 +60,31 @@ const FormBox = styled(Box)(({ theme }) => ({
   },
   [`& .hint`]: {
     marginTop: "1em",
+    marginBottom: "1em",
     display: "flex",
     justifyContent: "center",
     color: theme.palette.grey[600],
   },
   [`& .form`]: {
-    padding: "0 1em 1em 1em",
+    padding: "0 1rem 1rem 1rem",
   },
-  [`& .input`]: {
-    marginTop: "1em",
+  [`& .select`]: {
+    marginBottom: "2rem",
   },
   [`& .actions`]: {
-    padding: "0 1em 1em 1em",
+    padding: "0 1rem 1rem 1rem",
   },
   [`& .serverVersion`]: {
     color: theme.palette.grey[500],
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    marginBottom: "1em",
-    marginLeft: "0.5em",
+    marginLeft: "0.5rem",
+  },
+  [`& .matrixVersions`]: {
+    color: theme.palette.grey[500],
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    fontSize: "0.8rem",
+    marginBottom: "1rem",
+    marginLeft: "0.5rem",
   },
 }));
 
@@ -164,6 +172,7 @@ const LoginPage = () => {
   const UserData = ({ formData }) => {
     const form = useFormContext();
     const [serverVersion, setServerVersion] = useState("");
+    const [matrixVersions, setMatrixVersions] = useState("");
 
     const handleUsernameChange = _ => {
       if (formData.base_url || cfg_base_url) return;
@@ -184,6 +193,14 @@ const LoginPage = () => {
           )
         )
         .catch(() => setServerVersion(""));
+
+      getSupportedFeatures(formData.base_url)
+        .then(features =>
+          setMatrixVersions(
+            `${translate("synapseadmin.auth.supports_specs")} ${features.versions.join(", ")}`
+          )
+        )
+        .catch(() => setMatrixVersions(""));
 
       // Set SSO Url
       getSupportedLoginFlows(formData.base_url)
@@ -237,6 +254,7 @@ const LoginPage = () => {
           />
         </Box>
         <Typography className="serverVersion">{serverVersion}</Typography>
+        <Typography className="matrixVersions">{matrixVersions}</Typography>
       </>
     );
   };
@@ -267,7 +285,7 @@ const LoginPage = () => {
               }}
               fullWidth
               disabled={loading}
-              className="input"
+              className="select"
             >
               <MenuItem value="de">Deutsch</MenuItem>
               <MenuItem value="en">English</MenuItem>
