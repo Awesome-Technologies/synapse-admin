@@ -21,7 +21,6 @@ import {
   CircularProgress,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -127,20 +126,6 @@ const LoginPage = () => {
     }
   }
 
-  const renderInput = ({
-    meta: { touched, error } = {},
-    input: { ...inputProps },
-    ...props
-  }) => (
-    <TextField
-      error={!!(touched && error)}
-      helperText={touched && error}
-      {...inputProps}
-      {...props}
-      fullWidth
-    />
-  );
-
   const validateBaseUrl = value => {
     if (!value.match(/^(http|https):\/\//)) {
       return translate("synapseadmin.auth.protocol_error");
@@ -219,7 +204,6 @@ const LoginPage = () => {
           <TextInput
             autoFocus
             name="username"
-            component={renderInput}
             label="ra.auth.username"
             disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
@@ -232,7 +216,6 @@ const LoginPage = () => {
         <Box>
           <PasswordInput
             name="password"
-            component={renderInput}
             label="ra.auth.password"
             type="password"
             disabled={loading || !supportPassAuth}
@@ -245,7 +228,6 @@ const LoginPage = () => {
         <Box>
           <TextInput
             name="base_url"
-            component={renderInput}
             label="synapseadmin.auth.base_url"
             disabled={cfg_base_url || loading}
             resettable
