@@ -1,6 +1,6 @@
 # Builder
 FROM node:lts as builder
-
+LABEL org.opencontainers.image.url=https://github.com/Awesome-Technologies/synapse-admin org.opencontainers.image.source=https://github.com/Awesome-Technologies/synapse-admin
 ARG REACT_APP_SERVER
 
 WORKDIR /src
