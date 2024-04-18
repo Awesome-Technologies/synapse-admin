@@ -4,10 +4,15 @@ LABEL org.opencontainers.image.url=https://github.com/Awesome-Technologies/synap
 
 WORKDIR /src
 
-COPY . /src
-RUN yarn --network-timeout=300000 install --immutable
-RUN yarn build
+COPY .yarn .yarnrc.yml ./
+COPY package.json yarn.lock ./
 
+# Disable telemetry
+RUN yarn config set enableTelemetry 0
+RUN yarn --network-timeout=300000 install --immutable
+
+COPY . /src
+RUN yarn build
 
 # App
 FROM nginx:stable-alpine

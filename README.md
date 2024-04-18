@@ -160,5 +160,6 @@ services:
 
 ## Development
 
+- See https://yarnpkg.com/getting-started/editor-sdks how to setup your IDE
 - Use `yarn test` to run all style, lint and unit tests
 - Use `yarn fix` to fix the coding style
