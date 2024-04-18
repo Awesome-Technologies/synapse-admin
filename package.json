@@ -26,7 +26,8 @@
     "jest-fetch-mock": "^3.0.3",
     "prettier": "^3.2.5",
     "react-test-renderer": "^18.2.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "vite-plugin-version-mark": "^0.0.13"
   },
   "dependencies": {
     "@haleos/ra-language-german": "^1.0.0",
@@ -43,8 +44,8 @@
     "react-dom": "^18.0.0"
   },
   "scripts": {
-    "start": "REACT_APP_VERSION=$(git describe --tags) vite serve",
-    "build": "REACT_APP_VERSION=$(git describe --tags) vite build",
+    "start": "vite serve",
+    "build": "vite build",
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
     "fix": "yarn fix:code && yarn fix:other",
