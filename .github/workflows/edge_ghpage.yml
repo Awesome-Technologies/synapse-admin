@@ -16,7 +16,7 @@ jobs:
           node-version: "18"
       - name: Install and Build 🔧
         run: |
-          yarn install
+          yarn install --immutable
           yarn build
 
       - name: Deploy 🚀
