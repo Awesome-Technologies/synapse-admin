@@ -10,9 +10,12 @@
     "type": "git",
     "url": "https://github.com/Awesome-Technologies/synapse-admin"
   },
+  "packageManager": "yarn@4.1.1",
   "devDependencies": {
+    "@babel/core": "^7.24.4",
     "@babel/preset-env": "^7.24.4",
     "@babel/preset-react": "^7.24.1",
+    "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^15.0.2",
     "@testing-library/user-event": "^14.5.2",
@@ -31,18 +34,30 @@
     "vite-plugin-version-mark": "^0.0.13"
   },
   "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@haleos/ra-language-german": "^1.0.0",
     "@haxqer/ra-language-chinese": "^4.16.2",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
-    "@mui/styles": "^5.15.15",
+    "history": "^5.1.0",
+    "lodash": "^4.17.21",
     "papaparse": "^5.4.1",
+    "query-string": "^7.1.1",
+    "ra-core": "^4.16.15",
+    "ra-i18n-polyglot": "^4.16.15",
+    "ra-language-english": "^4.16.15",
     "ra-language-farsi": "^4.2.0",
     "ra-language-french": "^4.16.15",
     "ra-language-italian": "^3.13.1",
     "react": "^18.0.0",
     "react-admin": "^4.16.15",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "react-hook-form": "^7.43.9",
+    "react-is": "^18.2.0",
+    "react-query": "^3.32.1",
+    "react-router": "^6.1.0",
+    "react-router-dom": "^6.1.0"
   },
   "scripts": {
     "start": "vite serve",
@@ -50,10 +65,10 @@
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
     "fix": "yarn fix:code && yarn fix:other",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.{js,jsx,json,md,scss,yaml,yml}\"",
+    "prettier": "prettier \"**/*.{js,jsx,json,md,scss,yaml,yml}\"",
     "test:code": "jest",
     "test:lint": "eslint --ignore-path .gitignore --ext .js,.jsx .",
-    "test:style": "yarn prettier --list-different",
+    "test:style": "yarn prettier --check",
     "test": "yarn test:style && yarn test:lint && yarn test:code"
   },
   "babel": {
