@@ -292,6 +292,7 @@ const LoginPage = () => {
               <MenuItem value="fr">Français</MenuItem>
               <MenuItem value="it">Italiano</MenuItem>
               <MenuItem value="zh">简体中文</MenuItem>
+              <MenuItem value="fa">Persian(فارسی)</MenuItem>
             </Select>
             <FormDataConsumer>
               {formDataProps => <UserData {...formDataProps} />}

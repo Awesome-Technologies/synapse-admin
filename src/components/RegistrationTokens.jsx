@@ -132,7 +132,7 @@ export const RegistrationTokenEdit = props => (
 );
 
 const resource = {
-  name: "users",
+  name: "registration_tokens",
   icon: RegistrationTokenIcon,
   list: RegistrationTokenList,
   edit: RegistrationTokenEdit,

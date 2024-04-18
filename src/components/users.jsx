@@ -419,7 +419,7 @@ export const UserEdit = props => {
               source="devices[].sessions[0].connections"
               label="resources.connections.name"
             >
-              <Datagrid style={{ width: "100%" }}>
+              <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
                 <TextField source="ip" sortable={false} />
                 <DateField
                   source="last_seen"
@@ -482,6 +482,7 @@ export const UserEdit = props => {
             <Datagrid
               style={{ width: "100%" }}
               rowClick={(id, resource, record) => "/rooms/" + id + "/show"}
+              bulkActionButtons={false}
             >
               <TextField
                 source="id"
@@ -511,7 +512,7 @@ export const UserEdit = props => {
             target="user_id"
             addLabel={false}
           >
-            <Datagrid style={{ width: "100%" }}>
+            <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="kind" sortable={false} />
               <TextField source="app_display_name" sortable={false} />
               <TextField source="app_id" sortable={false} />
