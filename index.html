@@ -119,22 +119,14 @@
         <div class="loader">Loading...</div>
       </div>
     </div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <script type="module" src="/src/index.jsx"></script>
     <footer
       style="position: relative; z-index: 2; height: 2em; margin-top: -2em; line-height: 2em; background-color: #eee; border: 0.5px solid #ddd">
       <a id="copyright" href="https://github.com/Awesome-Technologies/synapse-admin"
         style="margin-left: 1em; color: #888; font-family: Roboto, Helvetica, Arial, sans-serif; font-weight: 100; font-size: 0.8em; text-decoration: none;">
-        Synapse-Admin <b>(%REACT_APP_VERSION%)</b> by Awesome Technologies Innovationslabor GmbH
+        Synapse-Admin <b><span id="version"></span></b> by Awesome Technologies Innovationslabor GmbH
       </a>
     </footer>
   </body>
+  <script>document.getElementById("version").textContent = __SYNAPSE_ADMIN_VERSION__</script>
 </html>
