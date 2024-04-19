@@ -11,7 +11,7 @@ RUN REACT_APP_SERVER=$REACT_APP_SERVER yarn build
 
 
 # App
-FROM nginx:alpine
+FROM nginx:stable-alpine
 
 COPY --from=builder /src/build /app
 
