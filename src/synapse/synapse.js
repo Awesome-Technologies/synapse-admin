@@ -53,3 +53,8 @@ export const getSupportedLoginFlows = async baseUrl => {
   const response = await fetchUtils.fetchJson(loginFlowsUrl, { method: "GET" });
   return response.json.flows;
 };
+
+export const getMediaUrl = media_id => {
+  const baseUrl = localStorage.getItem("base_url");
+  return `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
+};

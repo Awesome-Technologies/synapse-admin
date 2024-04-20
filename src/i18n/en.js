@@ -205,6 +205,10 @@ const en = {
             format: "format",
             formatted_body: "formatted content",
             algorithm: "algorithm",
+            url: "URL",
+            info: {
+              mimetype: "Type",
+            },
           },
         },
       },
@@ -252,6 +256,9 @@ const en = {
         safe_from_quarantine: "Safe from quarantine",
         created_ts: "Created",
         last_access_ts: "Last access",
+      },
+      action: {
+        open: "Open media file in new window",
       },
     },
     delete_media: {

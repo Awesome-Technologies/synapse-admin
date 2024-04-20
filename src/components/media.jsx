@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import get from "lodash/get";
 import {
   BooleanInput,
   Button,
@@ -14,10 +15,12 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
+import { Link } from "react-router-dom";
 import BlockIcon from "@mui/icons-material/Block";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import {
+  Box,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -27,7 +30,9 @@ import {
 import IconCancel from "@mui/icons-material/Cancel";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
 import { alpha, useTheme } from "@mui/material/styles";
+import { getMediaUrl } from "../synapse/synapse";
 
 const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
   const translate = useTranslate();
@@ -332,4 +337,50 @@ export const QuarantineMediaButton = props => {
       )}
     </>
   );
+};
+
+export const ViewMediaButton = ({ media_id, label }) => {
+  const translate = useTranslate();
+  const url = getMediaUrl(media_id);
+  return (
+    <Box style={{ whiteSpace: "pre" }}>
+      <Tooltip title={translate("resources.users_media.action.open")}>
+        <span>
+          <Button
+            component={Link}
+            to={url}
+            target="_blank"
+            rel="noopener"
+            style={{ minWidth: 0, paddingLeft: 0, paddingRight: 0 }}
+          >
+            <FileOpenIcon />
+          </Button>
+        </span>
+      </Tooltip>
+      {label}
+    </Box>
+  );
+};
+
+export const MediaIDField = ({ source }) => {
+  const homeserver = localStorage.getItem("home_server");
+  const record = useRecordContext();
+  if (!record) return null;
+
+  const src = get(record, source)?.toString();
+  if (!src) return null;
+
+  return <ViewMediaButton media_id={`${homeserver}/${src}`} label={src} />;
+};
+
+export const MXCField = ({ source }) => {
+  const record = useRecordContext();
+  if (!record) return null;
+
+  const src = get(record, source)?.toString();
+  if (!src) return null;
+
+  const media_id = src.replace("mxc://", "");
+
+  return <ViewMediaButton media_id={media_id} label={src} />;
 };

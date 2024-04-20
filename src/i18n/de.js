@@ -208,6 +208,9 @@ const de = {
             format: "Nachrichtenformat",
             formatted_body: "Formatierter Nachrichteninhalt",
             algorithm: "Verschlüsselungsalgorithmus",
+            info: {
+              mimetype: "Typ",
+            },
           },
         },
       },
@@ -255,6 +258,9 @@ const de = {
         safe_from_quarantine: "Schutz vor Quarantäne",
         created_ts: "Erstellt",
         last_access_ts: "Letzter Zugriff",
+      },
+      action: {
+        open: "Mediendatei in neuem Fenster öffnen",
       },
     },
     delete_media: {

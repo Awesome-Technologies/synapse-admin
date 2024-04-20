@@ -51,7 +51,11 @@ import { Link } from "react-router-dom";
 import AvatarField from "./AvatarField";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
-import { ProtectMediaButton, QuarantineMediaButton } from "./media";
+import {
+  MediaIDField,
+  ProtectMediaButton,
+  QuarantineMediaButton,
+} from "./media";
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -449,13 +453,13 @@ export const UserEdit = props => {
             sort={{ field: "created_ts", order: "DESC" }}
           >
             <Datagrid style={{ width: "100%" }}>
+              <MediaIDField source="media_id" />
               <DateField source="created_ts" showTime options={date_format} />
               <DateField
                 source="last_access_ts"
                 showTime
                 options={date_format}
               />
-              <TextField source="media_id" />
               <NumberField source="media_length" />
               <TextField source="media_type" />
               <TextField source="upload_name" />

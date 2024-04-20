@@ -15,6 +15,7 @@ import {
   useRecordContext,
   useTranslate,
 } from "react-admin";
+import { MXCField } from "./media";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import ReportIcon from "@mui/icons-material/Warning";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -89,6 +90,8 @@ export const ReportShow = props => {
           <TextField source="event_json.type" />
           <TextField source="event_json.content.msgtype" />
           <TextField source="event_json.content.body" />
+          <TextField source="event_json.content.info.mimetype" />
+          <MXCField source="event_json.content.url" />
           <TextField source="event_json.content.format" />
           <TextField source="event_json.content.formatted_body" />
           <TextField source="event_json.content.algorithm" />
