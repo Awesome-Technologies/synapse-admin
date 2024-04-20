@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import get from "lodash/get";
 import {
   BooleanInput,
   Button,
@@ -14,6 +15,7 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
+import { Link } from "react-router-dom";
 import BlockIcon from "@mui/icons-material/Block";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
@@ -27,6 +29,7 @@ import {
 import IconCancel from "@mui/icons-material/Cancel";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import FileOpenIcon from "@mui/icons-material/FileOpen";
 import { alpha, useTheme } from "@mui/material/styles";
 
 const DeleteMediaDialog = ({ open, loading, onClose, onSubmit }) => {
@@ -332,4 +335,48 @@ export const QuarantineMediaButton = props => {
       )}
     </>
   );
+};
+
+export const ViewMediaButton = ({ content, label }) => {
+  const base_url = localStorage.getItem("base_url");
+  const url = `${base_url}/_matrix/media/v3/download/${content}?allow_redirect=true`;
+
+  return (
+    <div style={{ whiteSpace: "pre" }}>
+      <Button component={Link} to={url} target="_blank" rel="noopener">
+        <FileOpenIcon />
+      </Button>
+      {label}
+    </div>
+  );
+};
+
+export const MediaIDField = ({ source, homeserver }) => {
+  const record = useRecordContext();
+  if (!record) {
+    return null;
+  }
+
+  const src = get(record, source)?.toString();
+  if (!src) {
+    return null;
+  }
+
+  return <ViewMediaButton content={`${homeserver}/${src}`} label={src} />;
+};
+
+export const MXCField = ({ source }) => {
+  const record = useRecordContext();
+  if (!record) {
+    return null;
+  }
+
+  const src = get(record, source)?.toString();
+  if (!src) {
+    return null;
+  }
+
+  const content = src.replace("mxc://", "");
+
+  return <ViewMediaButton content={content} label={src} />;
 };

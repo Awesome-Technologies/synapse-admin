@@ -51,7 +51,11 @@ import { Link } from "react-router-dom";
 import AvatarField from "./AvatarField";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
-import { ProtectMediaButton, QuarantineMediaButton } from "./media";
+import {
+  MediaIDField,
+  ProtectMediaButton,
+  QuarantineMediaButton,
+} from "./media";
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -313,6 +317,7 @@ const UserTitle = () => {
 
 export const UserEdit = props => {
   const translate = useTranslate();
+  const home_server = localStorage.getItem("home_server");
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
@@ -455,7 +460,7 @@ export const UserEdit = props => {
                 showTime
                 options={date_format}
               />
-              <TextField source="media_id" />
+              <MediaIDField source="media_id" homeserver={home_server} />
               <NumberField source="media_length" />
               <TextField source="media_type" />
               <TextField source="upload_name" />

@@ -205,6 +205,10 @@ const en = {
             format: "format",
             formatted_body: "formatted content",
             algorithm: "algorithm",
+            url: "URL",
+            info: {
+              mimetype: "MIME",
+            },
           },
         },
       },
