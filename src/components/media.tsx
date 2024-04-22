@@ -34,16 +34,11 @@ import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import { alpha, useTheme } from "@mui/material/styles";
+import { dateParser } from "./date";
 import { getMediaUrl } from "../synapse/synapse";
 
 const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
   const translate = useTranslate();
-
-  const dateParser = v => {
-    const d = new Date(v);
-    if (isNaN(d)) return 0;
-    return d.getTime();
-  };
 
   const DeleteMediaToolbar = (props: ToolbarProps) => (
     <Toolbar {...props}>

@@ -43,15 +43,7 @@ import {
   RoomDirectoryUnpublishButton,
   RoomDirectoryPublishButton,
 } from "./RoomDirectory";
-
-const date_format = {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-};
+import { date_format } from "./date";
 
 const RoomPagination = () => (
   <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />

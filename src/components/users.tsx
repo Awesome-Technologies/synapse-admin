@@ -57,6 +57,7 @@ import {
   ProtectMediaButton,
   QuarantineMediaButton,
 } from "./media";
+import { date_format } from "./date";
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -67,15 +68,6 @@ const choices_type = [
   { id: "bot", name: "bot" },
   { id: "support", name: "support" },
 ];
-
-const date_format: Intl.DateTimeFormatOptions = {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-};
 
 const UserListActions = () => {
   const { isLoading, total } = useListContext();

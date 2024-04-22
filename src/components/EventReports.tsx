@@ -21,15 +21,7 @@ import { MXCField } from "./media";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import ReportIcon from "@mui/icons-material/Warning";
 import ViewListIcon from "@mui/icons-material/ViewList";
-
-const date_format: Intl.DateTimeFormatOptions = {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-};
+import { date_format } from "./date";
 
 const ReportPagination = () => (
   <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />

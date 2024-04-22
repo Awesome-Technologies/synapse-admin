@@ -29,7 +29,7 @@ import {
   useTranslate,
 } from "react-admin";
 
-import { DATE_FORMAT } from "./date";
+import { date_format } from "./date";
 
 const DestinationPagination = () => (
   <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
@@ -112,8 +112,8 @@ export const DestinationList = (props: ListProps) => {
         bulkActionButtons={false}
       >
         <TextField source="destination" />
-        <DateField source="failure_ts" showTime options={DATE_FORMAT} />
-        <DateField source="retry_last_ts" showTime options={DATE_FORMAT} />
+        <DateField source="failure_ts" showTime options={date_format} />
+        <DateField source="retry_last_ts" showTime options={date_format} />
         <TextField source="retry_interval" />
         <TextField source="last_successful_stream_ordering" />
         <DestinationReconnectButton />
@@ -133,8 +133,8 @@ export const DestinationShow = (props: ShowProps) => {
       <TabbedShowLayout>
         <Tab label="status" icon={<ViewListIcon />}>
           <TextField source="destination" />
-          <DateField source="failure_ts" showTime options={DATE_FORMAT} />
-          <DateField source="retry_last_ts" showTime options={DATE_FORMAT} />
+          <DateField source="failure_ts" showTime options={date_format} />
+          <DateField source="retry_last_ts" showTime options={date_format} />
           <TextField source="retry_interval" />
           <TextField source="last_successful_stream_ordering" />
         </Tab>

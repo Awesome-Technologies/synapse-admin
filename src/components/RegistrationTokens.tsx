@@ -22,40 +22,11 @@ import {
   Toolbar,
 } from "react-admin";
 import RegistrationTokenIcon from "@mui/icons-material/ConfirmationNumber";
-
-const date_format = {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-};
+import { date_format, dateFormatter, dateParser } from "./date";
 
 const validateToken = [regex(/^[A-Za-z0-9._~-]{0,64}$/)];
 const validateUsesAllowed = [number()];
 const validateLength = [number(), maxValue(64)];
-
-const dateParser = v => {
-  const d = new Date(v);
-  if (isNaN(d)) return 0;
-  return d.getTime();
-};
-
-const dateFormatter = v => {
-  if (v === undefined || v === null) return;
-  const d = new Date(v);
-
-  const pad = "00";
-  const year = d.getFullYear().toString();
-  const month = (pad + (d.getMonth() + 1).toString()).slice(-2);
-  const day = (pad + d.getDate().toString()).slice(-2);
-  const hour = (pad + d.getHours().toString()).slice(-2);
-  const minute = (pad + d.getMinutes().toString()).slice(-2);
-
-  // target format yyyy-MM-ddThh:mm
-  return `${year}-${month}-${day}T${hour}:${minute}`;
-};
 
 const registrationTokenFilters = [<BooleanInput source="valid" alwaysOn />];
 
