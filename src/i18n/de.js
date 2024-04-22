@@ -1,7 +1,7 @@
-import germanMessages from "ra-language-german";
+import { formalGermanMessages } from "@haleos/ra-language-german";
 
 const de = {
-  ...germanMessages,
+  ...formalGermanMessages,
   synapseadmin: {
     auth: {
       base_url: "Heimserver URL",

@@ -1435,6 +1435,22 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.1.tgz#16308cea045f0fc777b6ff20a9f25474dd8293d2"
   integrity sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==
 
+"@haleos/ra-language-german@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@haleos/ra-language-german/-/ra-language-german-1.0.0.tgz#5ea48d9f301da678fc5021ec0c2ac2dd241f7702"
+  integrity sha512-dGlNhxQklsqC6l5vjw9lhhesNppeKxvZdZiEpOjmgxoA3+FAffqwILnghicKQhWBzNUjBXwdcL4Cc4RHju3Dgw==
+  dependencies:
+    lodash "^4.17.21"
+    ra-core "^4.11.2"
+    type-fest "^3.12.0"
+
+"@haxqer/ra-language-chinese@^4.16.2":
+  version "4.16.2"
+  resolved "https://registry.yarnpkg.com/@haxqer/ra-language-chinese/-/ra-language-chinese-4.16.2.tgz#2e971a95612de8c1d47ab1257f57044cc4df165f"
+  integrity sha512-Z7TteWplNr0zigBee7tHd8273DG7jKpLA3YTu06WPa/nOxJsGwJDL1FeCr7Jig4kEuAkwW0dGq4P99duqlNhWg==
+  dependencies:
+    ra-core "^4.16.2"
+
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
@@ -8204,7 +8220,7 @@ queue-microtask@^1.2.2:
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-ra-core@^4.16.15:
+ra-core@^4.11.2, ra-core@^4.16.15, ra-core@^4.16.2:
   version "4.16.15"
   resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-4.16.15.tgz#110e7b6b701d09e0e4589ca6f5e742412fd6ee5f"
   integrity sha512-S4bTYXHWCbYqjHVoTw2hmYo0Ny82sLmfMXxMLcFjVDjJ7mspt7Z/96y1t96i32jeYuoRhvXeHsIE3ABndkMWVw==
@@ -8228,11 +8244,6 @@ ra-i18n-polyglot@^4.16.15:
     node-polyglot "^2.2.2"
     ra-core "^4.16.15"
 
-ra-language-chinese@^2.0.10:
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/ra-language-chinese/-/ra-language-chinese-2.0.10.tgz#7c51b4d13cd6cf62cf8b4e945e489ac85bdc0e7f"
-  integrity sha512-k+X6XdkBEZnmpKIJZj9Lb77Lj8LCmterilJTj2ovp3i8/H/dLo9IujASfjFypjHnVUpN7Y63LT19kgPrS6+row==
-
 ra-language-english@^4.16.15:
   version "4.16.15"
   resolved "https://registry.yarnpkg.com/ra-language-english/-/ra-language-english-4.16.15.tgz#73b9121560c5548025d823c82028631c1d7cc783"
@@ -8251,11 +8262,6 @@ ra-language-french@^4.16.15:
   integrity sha512-UxZTg5n+YCnR+/JXveVwtKMl4GYot7QAsv5TfgDjKoYOZGcKtJKvL96ijEKjyYQgTyk2fPZ44C+BQ5LC9/d+Ig==
   dependencies:
     ra-core "^4.16.15"
-
-ra-language-german@^3.13.4:
-  version "3.13.5"
-  resolved "https://registry.yarnpkg.com/ra-language-german/-/ra-language-german-3.13.5.tgz#553385555907713a2ae08ba8f7aabd041b922936"
-  integrity sha512-dGWWJbIP5FUp0axoH+7sZj6011IgifEz55FLij3QSBI4ZusDdH/CL3l4oy+srUXFI+IzoXGGtQPJ7ax3p11cLQ==
 
 ra-language-italian@^3.13.1:
   version "3.13.1"
@@ -9694,6 +9700,11 @@ type-fest@^0.21.3:
   version "0.21.3"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.21.3.tgz#d260a24b0198436e133fa26a524a6d65fa3b2e37"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
+
+type-fest@^3.12.0:
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.13.1.tgz#bb744c1f0678bea7543a2d1ec24e83e68e8c8706"
+  integrity sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==
 
 type-is@~1.6.18:
   version "1.6.18"

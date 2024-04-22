@@ -1,4 +1,4 @@
-import chineseMessages from "ra-language-chinese";
+import chineseMessages from "@haxqer/ra-language-chinese";
 
 const zh = {
   ...chineseMessages,
