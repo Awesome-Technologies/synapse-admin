@@ -389,37 +389,5 @@ const de = {
       helper: { length: "Länge des Tokens, wenn kein Token vorgegeben wird." },
     },
   },
-  ra: {
-    ...germanMessages.ra,
-    action: {
-      ...germanMessages.ra.action,
-      unselect: "Abwählen",
-    },
-    auth: {
-      ...germanMessages.ra.auth,
-      auth_check_error: "Anmeldung fehlgeschlagen",
-    },
-    input: {
-      ...germanMessages.ra.input,
-      password: {
-        ...germanMessages.ra.input.password,
-        toggle_hidden: "Anzeigen",
-        toggle_visible: "Verstecken",
-      },
-    },
-    notification: {
-      ...germanMessages.ra.notification,
-      logged_out: "Abgemeldet",
-    },
-    page: {
-      ...germanMessages.ra.page,
-      empty: "Keine Einträge vorhanden",
-      invite: "",
-    },
-    navigation: {
-      ...germanMessages.ra.navigation,
-      skip_nav: "Zum Inhalt springen",
-    },
-  },
 };
 export default de;
