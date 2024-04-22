@@ -1,4 +1,5 @@
 import fetchMock from "jest-fetch-mock";
+
 import authProvider from "./authProvider";
 
 fetchMock.enableMocks();
@@ -27,17 +28,14 @@ describe("authProvider", () => {
       });
 
       expect(ret).toBe(undefined);
-      expect(fetch).toBeCalledWith(
-        "http://example.com/_matrix/client/r0/login",
-        {
-          body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.password","user":"@user:example.com","password":"secret"}',
-          headers: new Headers({
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          }),
-          method: "POST",
-        }
-      );
+      expect(fetch).toBeCalledWith("http://example.com/_matrix/client/r0/login", {
+        body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.password","user":"@user:example.com","password":"secret"}',
+        headers: new Headers({
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }),
+        method: "POST",
+      });
       expect(localStorage.getItem("base_url")).toEqual("http://example.com");
       expect(localStorage.getItem("user_id")).toEqual("@user:example.com");
       expect(localStorage.getItem("access_token")).toEqual("foobar");
@@ -61,17 +59,14 @@ describe("authProvider", () => {
     });
 
     expect(ret).toBe(undefined);
-    expect(fetch).toHaveBeenCalledWith(
-      "https://example.com/_matrix/client/r0/login",
-      {
-        body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.token","token":"login_token"}',
-        headers: new Headers({
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        }),
-        method: "POST",
-      }
-    );
+    expect(fetch).toHaveBeenCalledWith("https://example.com/_matrix/client/r0/login", {
+      body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.token","token":"login_token"}',
+      headers: new Headers({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }),
+      method: "POST",
+    });
     expect(localStorage.getItem("base_url")).toEqual("https://example.com");
     expect(localStorage.getItem("user_id")).toEqual("@user:example.com");
     expect(localStorage.getItem("access_token")).toEqual("foobar");
@@ -100,21 +95,15 @@ describe("authProvider", () => {
 
   describe("checkError", () => {
     it("should resolve if error.status is not 401 or 403", async () => {
-      await expect(
-        authProvider.checkError({ status: 200 })
-      ).resolves.toBeUndefined();
+      await expect(authProvider.checkError({ status: 200 })).resolves.toBeUndefined();
     });
 
     it("should reject if error.status is 401", async () => {
-      await expect(
-        authProvider.checkError({ status: 401 })
-      ).rejects.toBeUndefined();
+      await expect(authProvider.checkError({ status: 401 })).rejects.toBeUndefined();
     });
 
     it("should reject if error.status is 403", async () => {
-      await expect(
-        authProvider.checkError({ status: 403 })
-      ).rejects.toBeUndefined();
+      await expect(authProvider.checkError({ status: 403 })).rejects.toBeUndefined();
     });
   });
 

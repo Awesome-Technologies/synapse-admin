@@ -1,4 +1,5 @@
 import farsiMessages from "ra-language-farsi";
+
 import { SynapseTranslationMessages } from ".";
 
 const fa: SynapseTranslationMessages = {
@@ -32,10 +33,8 @@ const fa: SynapseTranslationMessages = {
       at_entry: "در هنگام ورود %{entry}: %{message}",
       error: "Error",
       required_field: "فیلد الزامی '%{field}' وجود ندارد",
-      invalid_value:
-        "خطا در خط %{row}. '%{field}' فیلد ممکن است فقط 'درست' یا 'نادرست' باشد",
-      unreasonably_big:
-        "از بارگذاری فایل هایی با حجم غیر منطقی خودداری کنید %{size} مگابایت",
+      invalid_value: "خطا در خط %{row}. '%{field}' فیلد ممکن است فقط 'درست' یا 'نادرست' باشد",
+      unreasonably_big: "از بارگذاری فایل هایی با حجم غیر منطقی خودداری کنید %{size} مگابایت",
       already_in_progress: "یک بارگذاری از قبل در حال انجام است",
       id_exits: "شناسه %{id} موجود است",
     },
@@ -44,8 +43,7 @@ const fa: SynapseTranslationMessages = {
     cards: {
       importstats: {
         header: "وارد کردن کاربران",
-        users_total:
-          "%{smart_count} user in CSV file |||| %{smart_count} users in CSV file",
+        users_total: "%{smart_count} user in CSV file |||| %{smart_count} users in CSV file",
         guest_count: "%{smart_count} guest |||| %{smart_count} guests",
         admin_count: "%{smart_count} admin |||| %{smart_count} admins",
       },
@@ -59,8 +57,7 @@ const fa: SynapseTranslationMessages = {
       ids: {
         header: "شناسنامه ها",
         all_ids_present: "شناسه های موجود در هر ورودی",
-        count_ids_present:
-          "%{smart_count} ورود با شناسه |||| %{smart_count} ورودی با شناسه",
+        count_ids_present: "%{smart_count} ورود با شناسه |||| %{smart_count} ورودی با شناسه",
         mode: {
           ignore: "شناسه ها را در CSV نادیده بگیر و شناسه های جدید ایجاد کن",
           update: "سوابق موجود را به روز کنید",
@@ -69,8 +66,7 @@ const fa: SynapseTranslationMessages = {
       passwords: {
         header: "رمز عبور",
         all_passwords_present: "رمزهای عبور موجود در هر ورودی",
-        count_passwords_present:
-          "%{smart_count} ورود با رمز عبور |||| %{smart_count} ورودی با رمز عبور",
+        count_passwords_present: "%{smart_count} ورود با رمز عبور |||| %{smart_count} ورودی با رمز عبور",
         use_passwords: "از پسوردهای CSV استفاده کنید",
       },
       upload: {
@@ -88,8 +84,7 @@ const fa: SynapseTranslationMessages = {
         successful: "%{smart_count} ورودی ها با موفقیت وارد شدند",
         skipped: "%{smart_count} ورودی ها نادیده گرفته شدند",
         download_skipped: "دانلود رکوردهای نادیده گرفته شده",
-        with_error:
-          "%{smart_count} ورود با خطا ||| %{smart_count} ورودی های دارای خطا",
+        with_error: "%{smart_count} ورود با خطا ||| %{smart_count} ورودی های دارای خطا",
         simulated_only: "اجرا فقط شبیه سازی شد",
       },
     },
@@ -227,8 +222,7 @@ const fa: SynapseTranslationMessages = {
       action: {
         erase: {
           title: "حذف کردن %{id}",
-          content:
-            'آیا مطمئن هستید که می خواهید دستگاه را حذف کنید؟ "%{name}"?',
+          content: 'آیا مطمئن هستید که می خواهید دستگاه را حذف کنید؟ "%{name}"?',
           success: "دستگاه با موفقیت حذف شد.",
           failure: "خطایی رخ داده است.",
         },
@@ -343,8 +337,7 @@ const fa: SynapseTranslationMessages = {
         guest_can_join: "کاربران مهمان ممکن است ملحق شوند",
       },
       action: {
-        title:
-          "اتاق را از فهرست حذف کنید |||| حذف کنید %{smart_count} اتاق ها از دایرکتوری",
+        title: "اتاق را از فهرست حذف کنید |||| حذف کنید %{smart_count} اتاق ها از دایرکتوری",
         content:
           "آیا مطمئنید که می خواهید این اتاق را از فهرست راهنمای حذف کنید؟ |||| آیا مطمئن هستید که می خواهید این موارد را %{smart_count} از راهنمای اتاق ها حذف کنید؟",
         erase: "حذف از فهرست اتاق",

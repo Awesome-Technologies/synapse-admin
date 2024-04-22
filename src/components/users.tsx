@@ -2,11 +2,11 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import DevicesIcon from "@mui/icons-material/Devices";
 import GetAppIcon from "@mui/icons-material/GetApp";
+import UserIcon from "@mui/icons-material/Group";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
-import UserIcon from "@mui/icons-material/Group";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import {
   ArrayInput,
@@ -49,15 +49,12 @@ import {
   useListContext,
 } from "react-admin";
 import { Link } from "react-router-dom";
+
 import AvatarField from "./AvatarField";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
+import { DATE_FORMAT } from "./date";
 import { DeviceRemoveButton } from "./devices";
-import {
-  MediaIDField,
-  ProtectMediaButton,
-  QuarantineMediaButton,
-} from "./media";
-import { date_format } from "./date";
+import { MediaIDField, ProtectMediaButton, QuarantineMediaButton } from "./media";
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },
@@ -87,18 +84,12 @@ UserListActions.defaultProps = {
   onUnselectItems: () => null,
 };
 
-const UserPagination = () => (
-  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
-);
+const UserPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
 const userFilters = [
   <SearchInput source="name" alwaysOn />,
   <BooleanInput source="guests" alwaysOn />,
-  <BooleanInput
-    label="resources.users.fields.show_deactivated"
-    source="deactivated"
-    alwaysOn
-  />,
+  <BooleanInput label="resources.users.fields.show_deactivated" source="deactivated" alwaysOn />,
 ];
 
 const UserBulkActionButtons = () => (
@@ -122,22 +113,13 @@ export const UserList = (props: ListProps) => (
     pagination={<UserPagination />}
   >
     <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
-      <AvatarField
-        source="avatar_src"
-        sx={{ height: "40px", width: "40px" }}
-        sortBy="avatar_url"
-      />
+      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
       <BooleanField source="is_guest" />
       <BooleanField source="admin" />
       <BooleanField source="deactivated" />
-      <DateField
-        source="creation_ts"
-        label="resources.users.fields.creation_ts_ms"
-        showTime
-        options={date_format}
-      />
+      <DateField source="creation_ts" label="resources.users.fields.creation_ts_ms" showTime options={DATE_FORMAT} />
     </Datagrid>
   </List>
 );
@@ -146,11 +128,7 @@ export const UserList = (props: ListProps) => (
 // here only local part of user_id
 // maxLength = 255 - "@" - ":" - localStorage.getItem("home_server").length
 // localStorage.getItem("home_server").length is not valid here
-const validateUser = [
-  required(),
-  maxLength(253),
-  regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id"),
-];
+const validateUser = [required(), maxLength(253), regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id")];
 
 const validateAddress = [required(), maxLength(255)];
 
@@ -177,36 +155,19 @@ export const UserCreate = (props: CreateProps) => (
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />
-      <PasswordInput
-        source="password"
-        autoComplete="new-password"
-        validate={maxLength(512)}
-      />
-      <SelectInput
-        source="user_type"
-        choices={choices_type}
-        translateChoice={false}
-        resettable
-      />
+      <PasswordInput source="password" autoComplete="new-password" validate={maxLength(512)} />
+      <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
       <BooleanInput source="admin" />
       <ArrayInput source="threepids">
         <SimpleFormIterator disableReordering>
-          <SelectInput
-            source="medium"
-            choices={choices_medium}
-            validate={required()}
-          />
+          <SelectInput source="medium" choices={choices_medium} validate={required()} />
           <TextInput source="address" validate={validateAddress} />
         </SimpleFormIterator>
       </ArrayInput>
       <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
         <SimpleFormIterator disableReordering>
           <TextInput source="auth_provider" validate={required()} />
-          <TextInput
-            source="external_id"
-            label="resources.users.fields.id"
-            validate={required()}
-          />
+          <TextInput source="external_id" label="resources.users.fields.id" validate={required()} />
         </SimpleFormIterator>
       </ArrayInput>
     </SimpleForm>
@@ -231,42 +192,19 @@ export const UserEdit = (props: EditProps) => {
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm>
-        <FormTab
-          label={translate("resources.users.name", { smart_count: 1 })}
-          icon={<PersonPinIcon />}
-        >
-          <AvatarField
-            source="avatar_src"
-            sortable={false}
-            sx={{ height: "120px", width: "120px", float: "right" }}
-          />
+        <FormTab label={translate("resources.users.name", { smart_count: 1 })} icon={<PersonPinIcon />}>
+          <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px", float: "right" }} />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
-          <PasswordInput
-            source="password"
-            autoComplete="new-password"
-            helperText="resources.users.helper.password"
-          />
-          <SelectInput
-            source="user_type"
-            choices={choices_type}
-            translateChoice={false}
-            resettable
-          />
+          <PasswordInput source="password" autoComplete="new-password" helperText="resources.users.helper.password" />
+          <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
           <BooleanInput source="admin" />
-          <BooleanInput
-            source="deactivated"
-            helperText="resources.users.helper.deactivate"
-          />
-          <DateField source="creation_ts_ms" showTime options={date_format} />
+          <BooleanInput source="deactivated" helperText="resources.users.helper.deactivate" />
+          <DateField source="creation_ts_ms" showTime options={DATE_FORMAT} />
           <TextField source="consent_version" />
         </FormTab>
 
-        <FormTab
-          label="resources.users.threepid"
-          icon={<ContactMailIcon />}
-          path="threepid"
-        >
+        <FormTab label="resources.users.threepid" icon={<ContactMailIcon />} path="threepid">
           <ArrayInput source="threepids">
             <SimpleFormIterator disableReordering>
               <SelectInput source="medium" choices={choices_medium} />
@@ -275,76 +213,34 @@ export const UserEdit = (props: EditProps) => {
           </ArrayInput>
         </FormTab>
 
-        <FormTab
-          label="synapseadmin.users.tabs.sso"
-          icon={<AssignmentIndIcon />}
-          path="sso"
-        >
+        <FormTab label="synapseadmin.users.tabs.sso" icon={<AssignmentIndIcon />} path="sso">
           <ArrayInput source="external_ids" label={false}>
             <SimpleFormIterator disableReordering>
               <TextInput source="auth_provider" validate={required()} />
-              <TextInput
-                source="external_id"
-                label="resources.users.fields.id"
-                validate={required()}
-              />
+              <TextInput source="external_id" label="resources.users.fields.id" validate={required()} />
             </SimpleFormIterator>
           </ArrayInput>
         </FormTab>
 
-        <FormTab
-          label={translate("resources.devices.name", { smart_count: 2 })}
-          icon={<DevicesIcon />}
-          path="devices"
-        >
-          <ReferenceManyField
-            reference="devices"
-            target="user_id"
-            label={false}
-          >
+        <FormTab label={translate("resources.devices.name", { smart_count: 2 })} icon={<DevicesIcon />} path="devices">
+          <ReferenceManyField reference="devices" target="user_id" label={false}>
             <Datagrid style={{ width: "100%" }}>
               <TextField source="device_id" sortable={false} />
               <TextField source="display_name" sortable={false} />
               <TextField source="last_seen_ip" sortable={false} />
-              <DateField
-                source="last_seen_ts"
-                showTime
-                options={date_format}
-                sortable={false}
-              />
+              <DateField source="last_seen_ts" showTime options={DATE_FORMAT} sortable={false} />
               <DeviceRemoveButton />
             </Datagrid>
           </ReferenceManyField>
         </FormTab>
 
-        <FormTab
-          label="resources.connections.name"
-          icon={<SettingsInputComponentIcon />}
-          path="connections"
-        >
-          <ReferenceField
-            reference="connections"
-            source="id"
-            label={false}
-            link={false}
-          >
-            <ArrayField
-              source="devices[].sessions[0].connections"
-              label="resources.connections.name"
-            >
+        <FormTab label="resources.connections.name" icon={<SettingsInputComponentIcon />} path="connections">
+          <ReferenceField reference="connections" source="id" label={false} link={false}>
+            <ArrayField source="devices[].sessions[0].connections" label="resources.connections.name">
               <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
                 <TextField source="ip" sortable={false} />
-                <DateField
-                  source="last_seen"
-                  showTime
-                  options={date_format}
-                  sortable={false}
-                />
-                <TextField
-                  source="user_agent"
-                  sortable={false}
-                  style={{ width: "100%" }}
-                />
+                <DateField source="last_seen" showTime options={DATE_FORMAT} sortable={false} />
+                <TextField source="user_agent" sortable={false} style={{ width: "100%" }} />
               </Datagrid>
             </ArrayField>
           </ReferenceField>
@@ -365,12 +261,8 @@ export const UserEdit = (props: EditProps) => {
           >
             <Datagrid style={{ width: "100%" }}>
               <MediaIDField source="media_id" />
-              <DateField source="created_ts" showTime options={date_format} />
-              <DateField
-                source="last_access_ts"
-                showTime
-                options={date_format}
-              />
+              <DateField source="created_ts" showTime options={DATE_FORMAT} />
+              <DateField source="last_access_ts" showTime options={DATE_FORMAT} />
               <NumberField source="media_length" />
               <TextField source="media_type" />
               <TextField source="upload_name" />
@@ -382,26 +274,10 @@ export const UserEdit = (props: EditProps) => {
           </ReferenceManyField>
         </FormTab>
 
-        <FormTab
-          label={translate("resources.rooms.name", { smart_count: 2 })}
-          icon={<ViewListIcon />}
-          path="rooms"
-        >
-          <ReferenceManyField
-            reference="joined_rooms"
-            target="user_id"
-            label={false}
-          >
-            <Datagrid
-              style={{ width: "100%" }}
-              rowClick={id => "/rooms/" + id + "/show"}
-              bulkActionButtons={false}
-            >
-              <TextField
-                source="id"
-                sortable={false}
-                label="resources.rooms.fields.room_id"
-              />
+        <FormTab label={translate("resources.rooms.name", { smart_count: 2 })} icon={<ViewListIcon />} path="rooms">
+          <ReferenceManyField reference="joined_rooms" target="user_id" label={false}>
+            <Datagrid style={{ width: "100%" }} rowClick={id => "/rooms/" + id + "/show"} bulkActionButtons={false}>
+              <TextField source="id" sortable={false} label="resources.rooms.fields.room_id" />
               <ReferenceField
                 label="resources.rooms.fields.name"
                 source="id"
@@ -420,11 +296,7 @@ export const UserEdit = (props: EditProps) => {
           icon={<NotificationsIcon />}
           path="pushers"
         >
-          <ReferenceManyField
-            reference="pushers"
-            target="user_id"
-            label={false}
-          >
+          <ReferenceManyField reference="pushers" target="user_id" label={false}>
             <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="kind" sortable={false} />
               <TextField source="app_display_name" sortable={false} />

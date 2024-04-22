@@ -1,10 +1,6 @@
+import { parse as parseCsv, unparse as unparseCsv, ParseResult } from "papaparse";
 import { ChangeEvent, useState } from "react";
-import { useDataProvider, useNotify, RaRecord, Title } from "react-admin";
-import {
-  parse as parseCsv,
-  unparse as unparseCsv,
-  ParseResult,
-} from "papaparse";
+
 import {
   Button,
   Card,
@@ -17,6 +13,8 @@ import {
   NativeSelect,
 } from "@mui/material";
 import { DataProvider, useTranslate } from "ra-core";
+import { useDataProvider, useNotify, RaRecord, Title } from "react-admin";
+
 import { generateRandomMxId, generateRandomPassword } from "../synapse/synapse";
 
 const LOGGING = true;
@@ -121,21 +119,12 @@ const FilePicker = () => {
     }
   };
 
-  const verifyCsv = (
-    { data, meta, errors }: ParseResult<ImportLine>,
-    { setValues, setStats, setError }
-  ) => {
+  const verifyCsv = ({ data, meta, errors }: ParseResult<ImportLine>, { setValues, setStats, setError }) => {
     /* First, verify the presence of required fields */
-    const missingFields = expectedFields.filter(eF =>
-      meta.fields?.find(mF => eF === mF)
-    );
+    const missingFields = expectedFields.filter(eF => meta.fields?.find(mF => eF === mF));
 
     if (missingFields.length > 0) {
-      setError(
-        translate("import_users.error.required_field", {
-          field: missingFields[0],
-        })
-      );
+      setError(translate("import_users.error.required_field", { field: missingFields[0] }));
       return false;
     }
 
@@ -157,7 +146,7 @@ const FilePicker = () => {
       total: data.length,
     };
 
-    var errorMessages = errors.map(e => e.message);
+    const errorMessages = errors.map(e => e.message);
     data.forEach((line, idx) => {
       if (line.user_type === undefined || line.user_type === "") {
         stats.user_types.default++;
@@ -305,10 +294,7 @@ const FilePicker = () => {
          * We do a simple retry loop so that an accidental hit on an existing ID
          * doesn't trip us up.
          */
-        if (LOGGING)
-          console.log(
-            "will check for existence of record " + JSON.stringify(userRecord)
-          );
+        if (LOGGING) console.log("will check for existence of record " + JSON.stringify(userRecord));
         let retries = 0;
         const submitRecord = (recordData: ImportLine) => {
           return dataProvider.getOne("users", { id: recordData.id }).then(
@@ -337,14 +323,7 @@ const FilePicker = () => {
               }
             },
             async () => {
-              if (LOGGING)
-                console.log(
-                  "OK to create record " +
-                    recordData.id +
-                    " (" +
-                    recordData.displayname +
-                    ")."
-                );
+              if (LOGGING) console.log("OK to create record " + recordData.id + " (" + recordData.displayname + ").");
 
               if (!dryRun) {
                 await dataProvider.create("users", { data: recordData });
@@ -429,28 +408,11 @@ const FilePicker = () => {
   const statsCards = stats &&
     !importResults && [
       <Container>
-        <CardHeader
-          title={translate("import_users.cards.importstats.header")}
-        />
+        <CardHeader title={translate("import_users.cards.importstats.header")} />
         <CardContent>
-          <div>
-            {translate(
-              "import_users.cards.importstats.users_total",
-              stats.total
-            )}
-          </div>
-          <div>
-            {translate(
-              "import_users.cards.importstats.guest_count",
-              stats.is_guest
-            )}
-          </div>
-          <div>
-            {translate(
-              "import_users.cards.importstats.admin_count",
-              stats.admin
-            )}
-          </div>
+          <div>{translate("import_users.cards.importstats.users_total", stats.total)}</div>
+          <div>{translate("import_users.cards.importstats.guest_count", stats.is_guest)}</div>
+          <div>{translate("import_users.cards.importstats.admin_count", stats.admin)}</div>
         </CardContent>
       </Container>,
       <Container>
@@ -463,19 +425,9 @@ const FilePicker = () => {
           </div>
           {stats.id > 0 ? (
             <div>
-              <NativeSelect
-                onChange={onUseridModeChanged}
-                value={useridMode}
-                disabled={progress !== null}
-              >
-                <TranslatableOption
-                  value="ignore"
-                  text="import_users.cards.ids.mode.ignore"
-                />
-                <TranslatableOption
-                  value="update"
-                  text="import_users.cards.ids.mode.update"
-                />
+              <NativeSelect onChange={onUseridModeChanged} value={useridMode} disabled={progress !== null}>
+                <TranslatableOption value="ignore" text="import_users.cards.ids.mode.ignore" />
+                <TranslatableOption value="update" text="import_users.cards.ids.mode.update" />
               </NativeSelect>
             </div>
           ) : (
@@ -489,20 +441,13 @@ const FilePicker = () => {
           <div>
             {stats.password === stats.total
               ? translate("import_users.cards.passwords.all_passwords_present")
-              : translate(
-                  "import_users.cards.passwords.count_passwords_present",
-                  stats.password
-                )}
+              : translate("import_users.cards.passwords.count_passwords_present", stats.password)}
           </div>
           {stats.password > 0 ? (
             <div>
               <FormControlLabel
                 control={
-                  <Checkbox
-                    checked={passwordMode}
-                    disabled={progress !== null}
-                    onChange={onPasswordModeChange}
-                  />
+                  <Checkbox checked={passwordMode} disabled={progress !== null} onChange={onPasswordModeChange} />
                 }
                 label={translate("import_users.cards.passwords.use_passwords")}
               />
@@ -519,19 +464,9 @@ const FilePicker = () => {
       <CardHeader title={translate("import_users.cards.conflicts.header")} />
       <CardContent>
         <div>
-          <NativeSelect
-            onChange={onConflictModeChanged}
-            value={conflictMode}
-            disabled={progress !== null}
-          >
-            <TranslatableOption
-              value="stop"
-              text="import_users.cards.conflicts.mode.stop"
-            />
-            <TranslatableOption
-              value="skip"
-              text="import_users.cards.conflicts.mode.skip"
-            />
+          <NativeSelect onChange={onConflictModeChanged} value={conflictMode} disabled={progress !== null}>
+            <TranslatableOption value="stop" text="import_users.cards.conflicts.mode.stop" />
+            <TranslatableOption value="skip" text="import_users.cards.conflicts.mode.skip" />
           </NativeSelect>
         </div>
       </CardContent>
@@ -557,11 +492,7 @@ const FilePicker = () => {
         <a href="./data/example.csv">example.csv</a>
         <br />
         <br />
-        <input
-          type="file"
-          onChange={onFileChange}
-          disabled={progress !== null}
-        />
+        <input type="file" onChange={onFileChange} disabled={progress !== null} />
       </CardContent>
     </Container>
   );
@@ -570,22 +501,13 @@ const FilePicker = () => {
     <CardContent>
       <CardHeader title={translate("import_users.cards.results.header")} />
       <div>
-        {translate(
-          "import_users.cards.results.total",
-          importResults.totalRecordCount
-        )}
+        {translate("import_users.cards.results.total", importResults.totalRecordCount)}
         <br />
-        {translate(
-          "import_users.cards.results.successful",
-          importResults.succeededRecords.length
-        )}
+        {translate("import_users.cards.results.successful", importResults.succeededRecords.length)}
         <br />
         {importResults.skippedRecords.length
           ? [
-              translate(
-                "import_users.cards.results.skipped",
-                importResults.skippedRecords.length
-              ),
+              translate("import_users.cards.results.skipped", importResults.skippedRecords.length),
               <div>
                 <button onClick={downloadSkippedRecords}>
                   {translate("import_users.cards.results.download_skipped")}
@@ -595,19 +517,10 @@ const FilePicker = () => {
             ]
           : ""}
         {importResults.erroredRecords.length
-          ? [
-              translate(
-                "import_users.cards.results.skipped",
-                importResults.erroredRecords.length
-              ),
-              <br />,
-            ]
+          ? [translate("import_users.cards.results.skipped", importResults.erroredRecords.length), <br />]
           : ""}
         <br />
-        {importResults.wasDryRun && [
-          translate("import_users.cards.results.simulated_only"),
-          <br />,
-        ]}
+        {importResults.wasDryRun && [translate("import_users.cards.results.simulated_only"), <br />]}
       </div>
     </CardContent>
   );
@@ -616,13 +529,7 @@ const FilePicker = () => {
     !values || values.length === 0 || importResults ? undefined : (
       <CardActions>
         <FormControlLabel
-          control={
-            <Checkbox
-              checked={dryRun}
-              onChange={onDryRunModeChanged}
-              disabled={progress !== null}
-            />
-          }
+          control={<Checkbox checked={dryRun} onChange={onDryRunModeChanged} disabled={progress !== null} />}
           label={translate("import_users.cards.startImport.simulate_only")}
         />
         <Button size="large" onClick={runImport} disabled={progress !== null}>
@@ -646,10 +553,7 @@ const FilePicker = () => {
 
   const cardContainer = <Card>{allCards}</Card>;
 
-  return [
-    <Title defaultTitle={translate("import_users.title")} />,
-    cardContainer,
-  ];
+  return [<Title defaultTitle={translate("import_users.title")} />, cardContainer];
 };
 
 export const ImportFeature = FilePicker;

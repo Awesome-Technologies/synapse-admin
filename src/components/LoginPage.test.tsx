@@ -1,13 +1,13 @@
+import polyglotI18nProvider from "ra-i18n-polyglot";
+
 import { render, screen } from "@testing-library/react";
 import { AdminContext } from "react-admin";
-import polyglotI18nProvider from "ra-i18n-polyglot";
+
 import LoginPage from "./LoginPage";
 import { AppContext } from "../AppContext";
 import englishMessages from "../i18n/en";
 
-const i18nProvider = polyglotI18nProvider(() => englishMessages, "en", [
-  { locale: "en", name: "English" },
-]);
+const i18nProvider = polyglotI18nProvider(() => englishMessages, "en", [{ locale: "en", name: "English" }]);
 
 describe("LoginForm", () => {
   it("renders with no restriction to homeserver", () => {
@@ -30,9 +30,7 @@ describe("LoginForm", () => {
 
   it("renders with single restricted homeserver", () => {
     render(
-      <AppContext.Provider
-        value={{ restrictBaseUrl: "https://matrix.example.com" }}
-      >
+      <AppContext.Provider value={{ restrictBaseUrl: "https://matrix.example.com" }}>
         <AdminContext i18nProvider={i18nProvider}>
           <LoginPage />
         </AdminContext>
@@ -54,10 +52,7 @@ describe("LoginForm", () => {
     render(
       <AppContext.Provider
         value={{
-          restrictBaseUrl: [
-            "https://matrix.example.com",
-            "https://matrix.example.org",
-          ],
+          restrictBaseUrl: ["https://matrix.example.com", "https://matrix.example.org"],
         }}
       >
         <AdminContext i18nProvider={i18nProvider}>

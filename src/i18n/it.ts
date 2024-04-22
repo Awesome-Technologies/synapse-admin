@@ -1,4 +1,5 @@
 import italianMessages from "ra-language-italian";
+
 import { SynapseTranslationMessages } from ".";
 
 const it: SynapseTranslationMessages = {
@@ -8,8 +9,7 @@ const it: SynapseTranslationMessages = {
       base_url: "URL dell'homeserver",
       welcome: "Benvenuto in Synapse-admin",
       server_version: "Versione di Synapse",
-      username_error:
-        "Per favore inserisci un ID utente completo: '@utente:dominio'",
+      username_error: "Per favore inserisci un ID utente completo: '@utente:dominio'",
       protocol_error: "L'URL deve iniziare per 'http://' o 'https://'",
       url_error: "URL del server Matrix non valido",
       sso_sign_in: "Accedi con SSO",
@@ -33,10 +33,8 @@ const it: SynapseTranslationMessages = {
       at_entry: "Alla voce %{entry}: %{message}",
       error: "Errore",
       required_field: "Il campo '%{field}' non è presente",
-      invalid_value:
-        "Valore non valido alla riga %{row}. '%{field}' Il campo può essere solo 'true' o 'false'",
-      unreasonably_big:
-        "Impossibile caricare un file così grosso (%{size} megabyte)",
+      invalid_value: "Valore non valido alla riga %{row}. '%{field}' Il campo può essere solo 'true' o 'false'",
+      unreasonably_big: "Impossibile caricare un file così grosso (%{size} megabyte)",
       already_in_progress: "Un import è attualmente già in caricamento",
       id_exits: "L'ID %{id} è già presente",
     },
@@ -45,11 +43,9 @@ const it: SynapseTranslationMessages = {
     cards: {
       importstats: {
         header: "Importa utenti",
-        users_total:
-          "%{smart_count} utente nel file CSV |||| %{smart_count} utenti nel file CSV",
+        users_total: "%{smart_count} utente nel file CSV |||| %{smart_count} utenti nel file CSV",
         guest_count: "%{smart_count} ospite |||| %{smart_count} ospiti",
-        admin_count:
-          "%{smart_count} amministratore |||| %{smart_count} amministratori",
+        admin_count: "%{smart_count} amministratore |||| %{smart_count} amministratori",
       },
       conflicts: {
         header: "Strategia di conflitto",
@@ -61,8 +57,7 @@ const it: SynapseTranslationMessages = {
       ids: {
         header: "ID",
         all_ids_present: "ID presenti in ogni voce",
-        count_ids_present:
-          "%{smart_count} voce con ID |||| %{smart_count} voci con ID",
+        count_ids_present: "%{smart_count} voce con ID |||| %{smart_count} voci con ID",
         mode: {
           ignore: "Ignora gli ID nel file CSV e creane di nuovi",
           update: "Aggiorna le voci esistenti",
@@ -71,8 +66,7 @@ const it: SynapseTranslationMessages = {
       passwords: {
         header: "Passwords",
         all_passwords_present: "Password presenti in ogni voce",
-        count_passwords_present:
-          "%{smart_count} voce con password |||| %{smart_count} voci con password",
+        count_passwords_present: "%{smart_count} voce con password |||| %{smart_count} voci con password",
         use_passwords: "Usa le password dal file CSV",
       },
       upload: {
@@ -86,13 +80,11 @@ const it: SynapseTranslationMessages = {
       },
       results: {
         header: "Importa i risultati",
-        total:
-          "%{smart_count} voce in totale |||| %{smart_count} voci in totale",
+        total: "%{smart_count} voce in totale |||| %{smart_count} voci in totale",
         successful: "%{smart_count} voci importate con successo",
         skipped: "%{smart_count} voci ignorate",
         download_skipped: "Scarica le voci ignorate",
-        with_error:
-          "%{smart_count} voce con errori ||| %{smart_count} voci con errori",
+        with_error: "%{smart_count} voce con errori ||| %{smart_count} voci con errori",
         simulated_only: "Il processo era stato solamente simulato",
       },
     },
@@ -126,8 +118,7 @@ const it: SynapseTranslationMessages = {
         user_type: "Tipo d'utente",
       },
       helper: {
-        password:
-          "Cambiando la password l'utente verrà disconnesso da tutte le sessioni attive.",
+        password: "Cambiando la password l'utente verrà disconnesso da tutte le sessioni attive.",
         deactivate: "Devi fornire una password per riattivare l'account.",
         erase: "Constrassegna l'utente come cancellato dal GDPR",
       },
@@ -346,8 +337,7 @@ const it: SynapseTranslationMessages = {
         guest_can_join: "gli utenti ospite possono entrare",
       },
       action: {
-        title:
-          "Cancella stanza dall'elenco |||| Cancella %{smart_count} stanze dall'elenco",
+        title: "Cancella stanza dall'elenco |||| Cancella %{smart_count} stanze dall'elenco",
         content:
           "Sei sicuro di voler rimuovere questa stanza dall'elenco? |||| Sei sicuro di voler rimuovere %{smart_count} stanze dall'elenco?",
         erase: "Rimuovi dall'elenco",

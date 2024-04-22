@@ -1,4 +1,8 @@
 import { useState, useEffect } from "react";
+
+import LockIcon from "@mui/icons-material/Lock";
+import { Avatar, Box, Button, Card, CardActions, CircularProgress, MenuItem, Select, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import {
   Form,
   FormDataConsumer,
@@ -13,19 +17,6 @@ import {
   useLocales,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CircularProgress,
-  MenuItem,
-  Select,
-  Typography,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import LockIcon from "@mui/icons-material/Lock";
 
 import { useAppContext } from "../AppContext";
 import {
@@ -103,9 +94,7 @@ const LoginPage = () => {
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
   const translate = useTranslate();
-  const base_url = allowSingleBaseUrl
-    ? restrictBaseUrl
-    : localStorage.getItem("base_url");
+  const base_url = allowSingleBaseUrl ? restrictBaseUrl : localStorage.getItem("base_url");
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
 
@@ -113,11 +102,7 @@ const LoginPage = () => {
     const ssoToken = loginToken[1];
     console.log("SSO token is", ssoToken);
     // Prevent further requests
-    window.history.replaceState(
-      {},
-      "",
-      window.location.href.replace(loginToken[0], "#").split("#")[0]
-    );
+    window.history.replaceState({}, "", window.location.href.replace(loginToken[0], "#").split("#")[0]);
     const baseUrl = localStorage.getItem("sso_base_url");
     localStorage.removeItem("sso_base_url");
     if (baseUrl) {
@@ -146,9 +131,7 @@ const LoginPage = () => {
   const validateBaseUrl = value => {
     if (!value.match(/^(http|https):\/\//)) {
       return translate("synapseadmin.auth.protocol_error");
-    } else if (
-      !value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)
-    ) {
+    } else if (!value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)) {
       return translate("synapseadmin.auth.url_error");
     } else {
       return undefined;
@@ -189,10 +172,7 @@ const LoginPage = () => {
       const domain = splitMxid(formData.username)?.domain;
       if (domain) {
         getWellKnownUrl(domain).then(url => {
-          if (
-            allowAnyBaseUrl ||
-            (allowMultipleBaseUrls && restrictBaseUrl.includes(url))
-          )
+          if (allowAnyBaseUrl || (allowMultipleBaseUrls && restrictBaseUrl.includes(url)))
             form.setValue("base_url", url);
         });
       }
@@ -205,28 +185,20 @@ const LoginPage = () => {
       if (!isValidBaseUrl(formData.base_url)) return;
 
       getServerVersion(formData.base_url)
-        .then(serverVersion =>
-          setServerVersion(
-            `${translate("synapseadmin.auth.server_version")} ${serverVersion}`
-          )
-        )
+        .then(serverVersion => setServerVersion(`${translate("synapseadmin.auth.server_version")} ${serverVersion}`))
         .catch(() => setServerVersion(""));
 
       getSupportedFeatures(formData.base_url)
         .then(features =>
-          setMatrixVersions(
-            `${translate("synapseadmin.auth.supports_specs")} ${features.versions.join(", ")}`
-          )
+          setMatrixVersions(`${translate("synapseadmin.auth.supports_specs")} ${features.versions.join(", ")}`)
         )
         .catch(() => setMatrixVersions(""));
 
       // Set SSO Url
       getSupportedLoginFlows(formData.base_url)
         .then(loginFlows => {
-          const supportPass =
-            loginFlows.find(f => f.type === "m.login.password") !== undefined;
-          const supportSSO =
-            loginFlows.find(f => f.type === "m.login.sso") !== undefined;
+          const supportPass = loginFlows.find(f => f.type === "m.login.password") !== undefined;
+          const supportSSO = loginFlows.find(f => f.type === "m.login.sso") !== undefined;
           setSupportPassAuth(supportPass);
           setSSOBaseUrl(supportSSO ? formData.base_url : "");
         })
@@ -287,11 +259,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Form
-      defaultValues={{ base_url: base_url }}
-      onSubmit={handleSubmit}
-      mode="onTouched"
-    >
+    <Form defaultValues={{ base_url: base_url }} onSubmit={handleSubmit} mode="onTouched">
       <FormBox>
         <Card className="card">
           <Box className="avatar">
@@ -318,9 +286,7 @@ const LoginPage = () => {
                 </MenuItem>
               ))}
             </Select>
-            <FormDataConsumer>
-              {formDataProps => <UserData {...formDataProps} />}
-            </FormDataConsumer>
+            <FormDataConsumer>{formDataProps => <UserData {...formDataProps} />}</FormDataConsumer>
             <CardActions className="actions">
               <Button
                 variant="contained"

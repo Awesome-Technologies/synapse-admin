@@ -1,13 +1,11 @@
 import { fetchUtils } from "react-admin";
 
 export const splitMxid = mxid => {
-  const re =
-    /^@(?<name>[a-zA-Z0-9._=\-/]+):(?<domain>[a-zA-Z0-9\-.]+\.[a-zA-Z]+)$/;
+  const re = /^@(?<name>[a-zA-Z0-9._=\-/]+):(?<domain>[a-zA-Z0-9\-.]+\.[a-zA-Z]+)$/;
   return re.exec(mxid)?.groups;
 };
 
-export const isValidBaseUrl = baseUrl =>
-  /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/.test(baseUrl);
+export const isValidBaseUrl = baseUrl => /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/.test(baseUrl);
 
 /**
  * Resolve the homeserver URL using the well-known lookup
@@ -77,8 +75,7 @@ export function generateRandomMxId(): string {
  * @returns a new random password as string
  */
 export function generateRandomPassword(length = 20): string {
-  const characters =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$";
+  const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$";
   return Array.from(crypto.getRandomValues(new Uint32Array(length)))
     .map(x => characters[x % characters.length])
     .join("");

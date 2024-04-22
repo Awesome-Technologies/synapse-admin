@@ -1,4 +1,5 @@
 import chineseMessages from "@haxqer/ra-language-chinese";
+
 import { SynapseTranslationMessages } from ".";
 
 const zh: SynapseTranslationMessages = {
@@ -14,8 +15,7 @@ const zh: SynapseTranslationMessages = {
       sso_sign_in: "使用 SSO 登录",
     },
     users: {
-      invalid_user_id:
-        "必须要是一个有效的 Matrix 用户 ID ，例如 @user_id:homeserver",
+      invalid_user_id: "必须要是一个有效的 Matrix 用户 ID ，例如 @user_id:homeserver",
       tabs: { sso: "SSO" },
     },
     rooms: {
@@ -33,8 +33,7 @@ const zh: SynapseTranslationMessages = {
       at_entry: "在条目 %{entry}: %{message}",
       error: "错误",
       required_field: "需要的值 '%{field}' 未被设置。",
-      invalid_value:
-        "第 %{row} 行出现无效值。 '%{field}' 只可以是 'true' 或 'false'。",
+      invalid_value: "第 %{row} 行出现无效值。 '%{field}' 只可以是 'true' 或 'false'。",
       unreasonably_big: "拒绝加载过大的文件： %{size} MB",
       already_in_progress: "一个导入进程已经在运行中",
       id_exits: "ID %{id} 已经存在",
@@ -44,8 +43,7 @@ const zh: SynapseTranslationMessages = {
     cards: {
       importstats: {
         header: "导入用户",
-        users_total:
-          "%{smart_count} 用户在 CSV 文件中 |||| %{smart_count} 用户在 CSV 文件中",
+        users_total: "%{smart_count} 用户在 CSV 文件中 |||| %{smart_count} 用户在 CSV 文件中",
         guest_count: "%{smart_count} 访客 |||| %{smart_count} 访客",
         admin_count: "%{smart_count} 管理员 |||| %{smart_count} 管理员",
       },
@@ -59,8 +57,7 @@ const zh: SynapseTranslationMessages = {
       ids: {
         header: "IDs",
         all_ids_present: "每条记录的 ID",
-        count_ids_present:
-          "%{smart_count} 个含 ID 的记录 |||| %{smart_count} 个含 ID 的记录",
+        count_ids_present: "%{smart_count} 个含 ID 的记录 |||| %{smart_count} 个含 ID 的记录",
         mode: {
           ignore: "忽略 CSV 中的 ID 并创建新的",
           update: "更新已经存在的记录",
@@ -69,8 +66,7 @@ const zh: SynapseTranslationMessages = {
       passwords: {
         header: "密码",
         all_passwords_present: "每条记录的密码",
-        count_passwords_present:
-          "%{smart_count} 个含密码的记录 |||| %{smart_count} 个含密码的记录",
+        count_passwords_present: "%{smart_count} 个含密码的记录 |||| %{smart_count} 个含密码的记录",
         use_passwords: "使用 CSV 中标记的密码",
       },
       upload: {
@@ -88,8 +84,7 @@ const zh: SynapseTranslationMessages = {
         successful: "%{smart_count} 条记录导入成功",
         skipped: "跳过 %{smart_count} 条记录",
         download_skipped: "下载跳过的记录",
-        with_error:
-          "%{smart_count} 条记录出现错误 ||| %{smart_count} 条记录出现错误",
+        with_error: "%{smart_count} 条记录出现错误 ||| %{smart_count} 条记录出现错误",
         simulated_only: "只是一次模拟运行",
       },
     },

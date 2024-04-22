@@ -1,3 +1,4 @@
+import RegistrationTokenIcon from "@mui/icons-material/ConfirmationNumber";
 import {
   BooleanInput,
   Create,
@@ -21,8 +22,8 @@ import {
   TextField,
   Toolbar,
 } from "react-admin";
-import RegistrationTokenIcon from "@mui/icons-material/ConfirmationNumber";
-import { date_format, dateFormatter, dateParser } from "./date";
+
+import { DATE_FORMAT, dateFormatter, dateParser } from "./date";
 
 const validateToken = [regex(/^[A-Za-z0-9._~-]{0,64}$/)];
 const validateUsesAllowed = [number()];
@@ -43,12 +44,7 @@ export const RegistrationTokenList = (props: ListProps) => (
       <NumberField source="uses_allowed" sortable={false} />
       <NumberField source="pending" sortable={false} />
       <NumberField source="completed" sortable={false} />
-      <DateField
-        source="expiry_time"
-        showTime
-        options={date_format}
-        sortable={false}
-      />
+      <DateField source="expiry_time" showTime options={DATE_FORMAT} sortable={false} />
     </Datagrid>
   </List>
 );
@@ -63,23 +59,14 @@ export const RegistrationTokenCreate = (props: CreateProps) => (
         </Toolbar>
       }
     >
-      <TextInput
-        source="token"
-        autoComplete="off"
-        validate={validateToken}
-        resettable
-      />
+      <TextInput source="token" autoComplete="off" validate={validateToken} resettable />
       <NumberInput
         source="length"
         validate={validateLength}
         helperText="resources.registration_tokens.helper.length"
         step={1}
       />
-      <NumberInput
-        source="uses_allowed"
-        validate={validateUsesAllowed}
-        step={1}
-      />
+      <NumberInput source="uses_allowed" validate={validateUsesAllowed} step={1} />
       <DateTimeInput source="expiry_time" parse={dateParser} />
     </SimpleForm>
   </Create>
@@ -91,16 +78,8 @@ export const RegistrationTokenEdit = (props: EditProps) => (
       <TextInput source="token" disabled />
       <NumberInput source="pending" disabled />
       <NumberInput source="completed" disabled />
-      <NumberInput
-        source="uses_allowed"
-        validate={validateUsesAllowed}
-        step={1}
-      />
-      <DateTimeInput
-        source="expiry_time"
-        parse={dateParser}
-        format={dateFormatter}
-      />
+      <NumberInput source="uses_allowed" validate={validateUsesAllowed} step={1} />
+      <DateTimeInput source="expiry_time" parse={dateParser} format={dateFormatter} />
     </SimpleForm>
   </Edit>
 );

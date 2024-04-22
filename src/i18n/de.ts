@@ -1,4 +1,5 @@
 import { formalGermanMessages } from "@haleos/ra-language-german";
+
 import { SynapseTranslationMessages } from ".";
 
 const de: SynapseTranslationMessages = {
@@ -45,11 +46,9 @@ const de: SynapseTranslationMessages = {
     cards: {
       importstats: {
         header: "Benutzer importieren",
-        users_total:
-          "%{smart_count} Benutzer in der CSV Datei |||| %{smart_count} Benutzer in der CSV Datei",
+        users_total: "%{smart_count} Benutzer in der CSV Datei |||| %{smart_count} Benutzer in der CSV Datei",
         guest_count: "%{smart_count} Gast |||| %{smart_count} Gäste",
-        admin_count:
-          "%{smart_count} Server Administrator |||| %{smart_count} Server Administratoren",
+        admin_count: "%{smart_count} Server Administrator |||| %{smart_count} Server Administratoren",
       },
       conflicts: {
         header: "Konfliktstrategie",
@@ -61,8 +60,7 @@ const de: SynapseTranslationMessages = {
       ids: {
         header: "IDs",
         all_ids_present: "IDs in jedem Eintrag vorhanden",
-        count_ids_present:
-          "%{smart_count} Eintrag mit ID |||| %{smart_count} Einträge mit IDs",
+        count_ids_present: "%{smart_count} Eintrag mit ID |||| %{smart_count} Einträge mit IDs",
         mode: {
           ignore: "Ignoriere IDs der CSV-Datei und erstelle neue",
           update: "Aktualisiere existierende Benutzer",
@@ -71,8 +69,7 @@ const de: SynapseTranslationMessages = {
       passwords: {
         header: "Passwörter",
         all_passwords_present: "Passwörter in jedem Eintrag vorhanden",
-        count_passwords_present:
-          "%{smart_count} Eintrag mit Passwort |||| %{smart_count} Einträge mit Passwörtern",
+        count_passwords_present: "%{smart_count} Eintrag mit Passwort |||| %{smart_count} Einträge mit Passwörtern",
         use_passwords: "Verwende Passwörter aus der CSV Datei",
       },
       upload: {
@@ -86,13 +83,11 @@ const de: SynapseTranslationMessages = {
       },
       results: {
         header: "Ergebnis",
-        total:
-          "%{smart_count} Eintrag insgesamt |||| %{smart_count} Einträge insgesamt",
+        total: "%{smart_count} Eintrag insgesamt |||| %{smart_count} Einträge insgesamt",
         successful: "%{smart_count} Einträge erfolgreich importiert",
         skipped: "%{smart_count} Einträge übersprungen",
         download_skipped: "Übersprungene Einträge herunterladen",
-        with_error:
-          "%{smart_count} Eintrag mit Fehlern ||| %{smart_count} Einträge mit Fehlern",
+        with_error: "%{smart_count} Eintrag mit Fehlern ||| %{smart_count} Einträge mit Fehlern",
         simulated_only: "Import-Vorgang war nur simuliert",
       },
     },
@@ -126,10 +121,8 @@ const de: SynapseTranslationMessages = {
         user_type: "Benutzertyp",
       },
       helper: {
-        password:
-          "Durch die Änderung des Passworts wird der Benutzer von allen Sitzungen abgemeldet.",
-        deactivate:
-          "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
+        password: "Durch die Änderung des Passworts wird der Benutzer von allen Sitzungen abgemeldet.",
+        deactivate: "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
       },
       action: {
@@ -360,8 +353,7 @@ const de: SynapseTranslationMessages = {
         guest_can_join: "Gastbenutzer dürfen beitreten",
       },
       action: {
-        title:
-          "Raum aus Verzeichnis löschen |||| %{smart_count} Räume aus Verzeichnis löschen",
+        title: "Raum aus Verzeichnis löschen |||| %{smart_count} Räume aus Verzeichnis löschen",
         content:
           "Möchten Sie den Raum wirklich aus dem Raumverzeichnis löschen? |||| Möchten Sie die %{smart_count} Räume wirklich aus dem Raumverzeichnis löschen?",
         erase: "Lösche aus Verzeichnis",

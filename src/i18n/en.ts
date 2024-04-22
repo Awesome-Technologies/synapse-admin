@@ -1,4 +1,5 @@
 import englishMessages from "ra-language-english";
+
 import { SynapseTranslationMessages } from ".";
 
 const en: SynapseTranslationMessages = {
@@ -34,10 +35,8 @@ const en: SynapseTranslationMessages = {
       at_entry: "At entry %{entry}: %{message}",
       error: "Error",
       required_field: "Required field '%{field}' is not present",
-      invalid_value:
-        "Invalid value on line %{row}. '%{field}' field may only be 'true' or 'false'",
-      unreasonably_big:
-        "Refused to load unreasonably big file of %{size} megabytes",
+      invalid_value: "Invalid value on line %{row}. '%{field}' field may only be 'true' or 'false'",
+      unreasonably_big: "Refused to load unreasonably big file of %{size} megabytes",
       already_in_progress: "An import run is already in progress",
       id_exits: "ID %{id} already present",
     },
@@ -46,8 +45,7 @@ const en: SynapseTranslationMessages = {
     cards: {
       importstats: {
         header: "Import users",
-        users_total:
-          "%{smart_count} user in CSV file |||| %{smart_count} users in CSV file",
+        users_total: "%{smart_count} user in CSV file |||| %{smart_count} users in CSV file",
         guest_count: "%{smart_count} guest |||| %{smart_count} guests",
         admin_count: "%{smart_count} admin |||| %{smart_count} admins",
       },
@@ -61,8 +59,7 @@ const en: SynapseTranslationMessages = {
       ids: {
         header: "IDs",
         all_ids_present: "IDs present on every entry",
-        count_ids_present:
-          "%{smart_count} entry with ID |||| %{smart_count} entries with IDs",
+        count_ids_present: "%{smart_count} entry with ID |||| %{smart_count} entries with IDs",
         mode: {
           ignore: "Ignore IDs in CSV and create new ones",
           update: "Update existing records",
@@ -71,8 +68,7 @@ const en: SynapseTranslationMessages = {
       passwords: {
         header: "Passwords",
         all_passwords_present: "Passwords present on every entry",
-        count_passwords_present:
-          "%{smart_count} entry with password |||| %{smart_count} entries with passwords",
+        count_passwords_present: "%{smart_count} entry with password |||| %{smart_count} entries with passwords",
         use_passwords: "Use passwords from CSV",
       },
       upload: {
@@ -86,13 +82,11 @@ const en: SynapseTranslationMessages = {
       },
       results: {
         header: "Import results",
-        total:
-          "%{smart_count} entry in total |||| %{smart_count} entries in total",
+        total: "%{smart_count} entry in total |||| %{smart_count} entries in total",
         successful: "%{smart_count} entries successfully imported",
         skipped: "%{smart_count} entries skipped",
         download_skipped: "Download skipped records",
-        with_error:
-          "%{smart_count} entry with errors ||| %{smart_count} entries with errors",
+        with_error: "%{smart_count} entry with errors ||| %{smart_count} entries with errors",
         simulated_only: "Run was only simulated",
       },
     },
@@ -217,8 +211,7 @@ const en: SynapseTranslationMessages = {
       action: {
         erase: {
           title: "Delete reported event",
-          content:
-            "Are you sure you want to delete the reported event? This cannot be undone.",
+          content: "Are you sure you want to delete the reported event? This cannot be undone.",
         },
       },
     },
@@ -359,8 +352,7 @@ const en: SynapseTranslationMessages = {
         guest_can_join: "guest users may join",
       },
       action: {
-        title:
-          "Delete room from directory |||| Delete %{smart_count} rooms from directory",
+        title: "Delete room from directory |||| Delete %{smart_count} rooms from directory",
         content:
           "Are you sure you want to remove this room from directory? |||| Are you sure you want to remove these %{smart_count} rooms from directory?",
         erase: "Delete from room directory",

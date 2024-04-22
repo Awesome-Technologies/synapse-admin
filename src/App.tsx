@@ -1,28 +1,25 @@
-import {
-  Admin,
-  CustomRoutes,
-  Resource,
-  resolveBrowserLocale,
-} from "react-admin";
-import polyglotI18nProvider from "ra-i18n-polyglot";
 import { merge } from "lodash";
-import authProvider from "./synapse/authProvider";
-import dataProvider from "./synapse/dataProvider";
-import users from "./components/users";
-import rooms from "./components/rooms";
-import userMediaStats from "./components/statistics";
+import polyglotI18nProvider from "ra-i18n-polyglot";
+
+import { Admin, CustomRoutes, Resource, resolveBrowserLocale } from "react-admin";
+import { Route } from "react-router-dom";
+
 import reports from "./components/EventReports";
+import { ImportFeature } from "./components/ImportFeature";
+import LoginPage from "./components/LoginPage";
+import registrationToken from "./components/RegistrationTokens";
 import roomDirectory from "./components/RoomDirectory";
 import destinations from "./components/destinations";
-import registrationToken from "./components/RegistrationTokens";
-import LoginPage from "./components/LoginPage";
-import { ImportFeature } from "./components/ImportFeature";
-import { Route } from "react-router-dom";
+import rooms from "./components/rooms";
+import userMediaStats from "./components/statistics";
+import users from "./components/users";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
 import frenchMessages from "./i18n/fr";
-import chineseMessages from "./i18n/zh";
 import italianMessages from "./i18n/it";
+import chineseMessages from "./i18n/zh";
+import authProvider from "./synapse/authProvider";
+import dataProvider from "./synapse/dataProvider";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
@@ -33,8 +30,7 @@ const messages = {
   zh: chineseMessages,
 };
 const i18nProvider = polyglotI18nProvider(
-  locale =>
-    messages[locale] ? merge({}, messages.en, messages[locale]) : messages.en,
+  locale => (messages[locale] ? merge({}, messages.en, messages[locale]) : messages.en),
   resolveBrowserLocale(),
   [
     { locale: "en", name: "English" },

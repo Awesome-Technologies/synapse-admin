@@ -1,4 +1,5 @@
 import frenchMessages from "ra-language-french";
+
 import { SynapseTranslationMessages } from ".";
 
 const fr: SynapseTranslationMessages = {
@@ -8,15 +9,13 @@ const fr: SynapseTranslationMessages = {
       base_url: "URL du serveur d’accueil",
       welcome: "Bienvenue sur Synapse-admin",
       server_version: "Version du serveur Synapse",
-      username_error:
-        "Veuillez entrer un nom d'utilisateur complet : « @utilisateur:domaine »",
+      username_error: "Veuillez entrer un nom d'utilisateur complet : « @utilisateur:domaine »",
       protocol_error: "L'URL doit commencer par « http:// » ou « https:// »",
       url_error: "L'URL du serveur Matrix n'est pas valide",
       sso_sign_in: "Se connecter avec l’authentification unique",
     },
     users: {
-      invalid_user_id:
-        "Partie locale d'un identifiant utilisateur Matrix sans le nom du serveur d’accueil.",
+      invalid_user_id: "Partie locale d'un identifiant utilisateur Matrix sans le nom du serveur d’accueil.",
       tabs: { sso: "Authentification unique" },
     },
     rooms: {
@@ -36,8 +35,7 @@ const fr: SynapseTranslationMessages = {
       required_field: "Le champ requis « %{field} » est manquant",
       invalid_value:
         "Valeur non valide à la ligne %{row}. Le champ « %{field} » ne peut être que « true » ou « false »",
-      unreasonably_big:
-        "Refus de charger un fichier trop volumineux de %{size} mégaoctets",
+      unreasonably_big: "Refus de charger un fichier trop volumineux de %{size} mégaoctets",
       already_in_progress: "Un import est déjà en cours",
       id_exits: "L'identifiant %{id} déjà présent",
     },
@@ -49,8 +47,7 @@ const fr: SynapseTranslationMessages = {
         users_total:
           "%{smart_count} utilisateur dans le fichier CSV |||| %{smart_count} utilisateurs dans le fichier CSV",
         guest_count: "%{smart_count} visiteur |||| %{smart_count} visiteurs",
-        admin_count:
-          "%{smart_count} administrateur |||| %{smart_count} administrateurs",
+        admin_count: "%{smart_count} administrateur |||| %{smart_count} administrateurs",
       },
       conflicts: {
         header: "Stratégie de résolution des conflits",
@@ -62,11 +59,9 @@ const fr: SynapseTranslationMessages = {
       ids: {
         header: "Identifiants",
         all_ids_present: "Identifiants présents pour chaque entrée",
-        count_ids_present:
-          "%{smart_count} entrée avec identifiant |||| %{smart_count} entrées avec identifiant",
+        count_ids_present: "%{smart_count} entrée avec identifiant |||| %{smart_count} entrées avec identifiant",
         mode: {
-          ignore:
-            "Ignorer les identifiants dans le ficher CSV et en créer de nouveaux",
+          ignore: "Ignorer les identifiants dans le ficher CSV et en créer de nouveaux",
           update: "Mettre à jour les enregistrements existants",
         },
       },
@@ -88,13 +83,11 @@ const fr: SynapseTranslationMessages = {
       },
       results: {
         header: "Résultats de l'import",
-        total:
-          "%{smart_count} entrée au total |||| %{smart_count} entrées au total",
+        total: "%{smart_count} entrée au total |||| %{smart_count} entrées au total",
         successful: "%{smart_count} entrées importées avec succès",
         skipped: "%{smart_count} entrées ignorées",
         download_skipped: "Télécharger les entrées ignorées",
-        with_error:
-          "%{smart_count} entrée avec des erreurs ||| %{smart_count} entrées avec des erreurs",
+        with_error: "%{smart_count} entrée avec des erreurs ||| %{smart_count} entrées avec des erreurs",
         simulated_only: "L'import était simulé",
       },
     },
@@ -127,8 +120,7 @@ const fr: SynapseTranslationMessages = {
         auth_provider: "Fournisseur d'identité",
       },
       helper: {
-        deactivate:
-          "Vous devrez fournir un mot de passe pour réactiver le compte.",
+        deactivate: "Vous devrez fournir un mot de passe pour réactiver le compte.",
         erase: "Marquer l'utilisateur comme effacé conformément au RGPD",
       },
       action: {
@@ -342,13 +334,11 @@ const fr: SynapseTranslationMessages = {
     room_directory: {
       name: "Répertoire des salons",
       fields: {
-        world_readable:
-          "Tout utilisateur peut avoir un aperçu du salon, sans en devenir membre",
+        world_readable: "Tout utilisateur peut avoir un aperçu du salon, sans en devenir membre",
         guest_can_join: "Les visiteurs peuvent rejoindre le salon",
       },
       action: {
-        title:
-          "Supprimer un salon du répertoire |||| Supprimer %{smart_count} salons du répertoire",
+        title: "Supprimer un salon du répertoire |||| Supprimer %{smart_count} salons du répertoire",
         content:
           "Voulez-vous vraiment supprimer ce salon du répertoire ? |||| Voulez-vous vraiment supprimer ces %{smart_count} salons du répertoire ?",
         erase: "Supprimer du répertoire des salons",
@@ -369,8 +359,7 @@ const fr: SynapseTranslationMessages = {
         length: "Longueur",
       },
       helper: {
-        length:
-          "Longueur du jeton généré aléatoirement si aucun jeton n'est pas spécifié",
+        length: "Longueur du jeton généré aléatoirement si aucun jeton n'est pas spécifié",
       },
     },
   },

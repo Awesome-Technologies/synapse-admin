@@ -25,9 +25,7 @@ const ListActions = () => {
   );
 };
 
-const UserMediaStatsPagination = () => (
-  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
-);
+const UserMediaStatsPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
 const userMediaStatsFilters = [<SearchInput source="search_term" alwaysOn />];
 
@@ -39,15 +37,9 @@ export const UserMediaStatsList = (props: ListProps) => (
     pagination={<UserMediaStatsPagination />}
     sort={{ field: "media_length", order: "DESC" }}
   >
-    <Datagrid
-      rowClick={id => "/users/" + id + "/media"}
-      bulkActionButtons={false}
-    >
+    <Datagrid rowClick={id => "/users/" + id + "/media"} bulkActionButtons={false}>
       <TextField source="user_id" label="resources.users.fields.id" />
-      <TextField
-        source="displayname"
-        label="resources.users.fields.displayname"
-      />
+      <TextField source="displayname" label="resources.users.fields.displayname" />
       <NumberField source="media_count" />
       <NumberField source="media_length" />
     </Datagrid>

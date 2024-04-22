@@ -1,12 +1,6 @@
-import {
-  DataProvider,
-  DeleteParams,
-  Identifier,
-  Options,
-  RaRecord,
-  fetchUtils,
-} from "react-admin";
 import { stringify } from "query-string";
+
+import { DataProvider, DeleteParams, Identifier, Options, RaRecord, fetchUtils } from "react-admin";
 
 // Adds the access token to all requests
 const jsonClient = (url: string, options: Options = {}) => {
@@ -223,16 +217,12 @@ const resourceMap = {
     data: "users",
     total: json => json.total,
     create: (data: RaRecord) => ({
-      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(
-        data.id
-      )}:${localStorage.getItem("home_server")}`,
+      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${localStorage.getItem("home_server")}`,
       body: data,
       method: "PUT",
     }),
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/deactivate/${encodeURIComponent(
-        params.id
-      )}`,
+      endpoint: `/_synapse/admin/v1/deactivate/${encodeURIComponent(params.id)}`,
       body: { erase: true },
       method: "POST",
     }),
@@ -272,9 +262,7 @@ const resourceMap = {
       endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(id)}/devices`,
     }),
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(
-        params.previousData.user_id
-      )}/devices/${params.id}`,
+      endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(params.previousData.user_id)}/devices/${params.id}`,
     }),
   },
   connections: {
@@ -322,9 +310,7 @@ const resourceMap = {
       id: jr,
     }),
     reference: (id: Identifier) => ({
-      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(
-        id
-      )}/joined_rooms`,
+      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/joined_rooms`,
     }),
     data: "joined_rooms",
     total: json => json.total,
@@ -340,9 +326,7 @@ const resourceMap = {
     data: "media",
     total: json => json.total,
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
-        "home_server"
-      )}/${params.id}`,
+      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem("home_server")}/${params.id}`,
     }),
   },
   delete_media: {
@@ -369,15 +353,11 @@ const resourceMap = {
   quarantine_media: {
     map: (qm: UserMedia) => ({ id: qm.media_id }),
     create: (params: UserMedia) => ({
-      endpoint: `/_synapse/admin/v1/media/quarantine/${localStorage.getItem(
-        "home_server"
-      )}/${params.media_id}`,
+      endpoint: `/_synapse/admin/v1/media/quarantine/${localStorage.getItem("home_server")}/${params.media_id}`,
       method: "POST",
     }),
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/unquarantine/${localStorage.getItem(
-        "home_server"
-      )}/${params.id}`,
+      endpoint: `/_synapse/admin/v1/media/unquarantine/${localStorage.getItem("home_server")}/${params.id}`,
       method: "POST",
     }),
   },
@@ -504,15 +484,7 @@ function getSearchOrder(order: "ASC" | "DESC") {
 const dataProvider: DataProvider = {
   getList: async (resource, params) => {
     console.log("getList " + resource);
-    const {
-      user_id,
-      name,
-      guests,
-      deactivated,
-      search_term,
-      destination,
-      valid,
-    } = params.filter;
+    const { user_id, name, guests, deactivated, search_term, destination, valid } = params.filter;
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
@@ -530,8 +502,7 @@ const dataProvider: DataProvider = {
       dir: getSearchOrder(order),
     };
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
@@ -548,32 +519,24 @@ const dataProvider: DataProvider = {
   getOne: async (resource, params) => {
     console.log("getOne " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    const { json } = await jsonClient(
-      `${endpoint_url}/${encodeURIComponent(params.id)}`
-    );
+    const { json } = await jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`);
     return { data: res.map(json) };
   },
 
   getMany: async (resource, params) => {
     console.log("getMany " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homerserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homerserver not set");
 
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    const responses = await Promise.all(
-      params.ids.map(id =>
-        jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`)
-      )
-    );
+    const responses = await Promise.all(params.ids.map(id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`)));
     return {
       data: responses.map(({ json }) => res.map(json)),
       total: responses.length,
@@ -593,12 +556,11 @@ const dataProvider: DataProvider = {
     };
 
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
-    const ref = res["reference"](params.id);
+    const ref = res.reference(params.id);
     const endpoint_url = `${homeserver}${ref.endpoint}?${stringify(query)}`;
 
     const { json } = await jsonClient(endpoint_url);
@@ -611,39 +573,31 @@ const dataProvider: DataProvider = {
   update: async (resource, params) => {
     console.log("update " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
-    const { json } = await jsonClient(
-      `${endpoint_url}/${encodeURIComponent(params.id)}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(params.data, filterNullValues),
-      }
-    );
+    const { json } = await jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`, {
+      method: "PUT",
+      body: JSON.stringify(params.data, filterNullValues),
+    });
     return { data: res.map(json) };
   },
 
   updateMany: async (resource, params) => {
     console.log("updateMany " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
     const endpoint_url = homeserver + res.path;
     const responses = await Promise.all(
-      params.ids.map(
-        id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`),
-        {
-          method: "PUT",
-          body: JSON.stringify(params.data, filterNullValues),
-        }
-      )
+      params.ids.map(id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`), {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      })
     );
     return { data: responses.map(({ json }) => json) };
   },
@@ -651,13 +605,12 @@ const dataProvider: DataProvider = {
   create: async (resource, params) => {
     console.log("create " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
     if (!("create" in res)) return Promise.reject();
 
-    const create = res["create"](params.data);
+    const create = res.create(params.data);
     const endpoint_url = homeserver + create.endpoint;
     const { json } = await jsonClient(endpoint_url, {
       method: create.method,
@@ -666,14 +619,10 @@ const dataProvider: DataProvider = {
     return { data: res.map(json) };
   },
 
-  createMany: async (
-    resource: string,
-    params: { ids: Identifier[]; data: RaRecord }
-  ) => {
+  createMany: async (resource: string, params: { ids: Identifier[]; data: RaRecord }) => {
     console.log("createMany " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
     if (!("create" in res)) throw Error(`Create ${resource} is not allowed`);
@@ -681,7 +630,7 @@ const dataProvider: DataProvider = {
     const responses = await Promise.all(
       params.ids.map(id => {
         params.data.id = id;
-        const cre = res["create"](params.data);
+        const cre = res.create(params.data);
         const endpoint_url = homeserver + cre.endpoint;
         return jsonClient(endpoint_url, {
           method: cre.method,
@@ -695,13 +644,12 @@ const dataProvider: DataProvider = {
   delete: async (resource, params) => {
     console.log("delete " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
     if ("delete" in res) {
-      const del = res["delete"](params);
+      const del = res.delete(params);
       const endpoint_url = homeserver + del.endpoint;
       const { json } = await jsonClient(endpoint_url, {
         method: "method" in del ? del.method : "DELETE",
@@ -721,15 +669,14 @@ const dataProvider: DataProvider = {
   deleteMany: async (resource, params) => {
     console.log("deleteMany " + resource);
     const homeserver = localStorage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap))
-      throw Error("Homeserver not set");
+    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
 
     if ("delete" in res) {
       const responses = await Promise.all(
         params.ids.map(id => {
-          const del = res["delete"]({ ...params, id: id });
+          const del = res.delete({ ...params, id: id });
           const endpoint_url = homeserver + del.endpoint;
           return jsonClient(endpoint_url, {
             method: "method" in del ? del.method : "DELETE",

@@ -29,11 +29,9 @@ import {
   useTranslate,
 } from "react-admin";
 
-import { date_format } from "./date";
+import { DATE_FORMAT } from "./date";
 
-const DestinationPagination = () => (
-  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
-);
+const DestinationPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
 const destinationRowSx = (record: RaRecord) => ({
   backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : "white",
@@ -72,11 +70,7 @@ export const DestinationReconnectButton = () => {
   };
 
   return (
-    <Button
-      label="resources.destinations.action.reconnect"
-      onClick={handleClick}
-      disabled={isLoading}
-    >
+    <Button label="resources.destinations.action.reconnect" onClick={handleClick} disabled={isLoading}>
       <AutorenewIcon />
     </Button>
   );
@@ -106,14 +100,10 @@ export const DestinationList = (props: ListProps) => {
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
     >
-      <Datagrid
-        rowSx={destinationRowSx}
-        rowClick={id => `${id}/show/rooms`}
-        bulkActionButtons={false}
-      >
+      <Datagrid rowSx={destinationRowSx} rowClick={id => `${id}/show/rooms`} bulkActionButtons={false}>
         <TextField source="destination" />
-        <DateField source="failure_ts" showTime options={date_format} />
-        <DateField source="retry_last_ts" showTime options={date_format} />
+        <DateField source="failure_ts" showTime options={DATE_FORMAT} />
+        <DateField source="retry_last_ts" showTime options={DATE_FORMAT} />
         <TextField source="retry_interval" />
         <TextField source="last_successful_stream_ordering" />
         <DestinationReconnectButton />
@@ -125,25 +115,17 @@ export const DestinationList = (props: ListProps) => {
 export const DestinationShow = (props: ShowProps) => {
   const translate = useTranslate();
   return (
-    <Show
-      actions={<DestinationShowActions />}
-      title={<DestinationTitle />}
-      {...props}
-    >
+    <Show actions={<DestinationShowActions />} title={<DestinationTitle />} {...props}>
       <TabbedShowLayout>
         <Tab label="status" icon={<ViewListIcon />}>
           <TextField source="destination" />
-          <DateField source="failure_ts" showTime options={date_format} />
-          <DateField source="retry_last_ts" showTime options={date_format} />
+          <DateField source="failure_ts" showTime options={DATE_FORMAT} />
+          <DateField source="retry_last_ts" showTime options={DATE_FORMAT} />
           <TextField source="retry_interval" />
           <TextField source="last_successful_stream_ordering" />
         </Tab>
 
-        <Tab
-          label={translate("resources.rooms.name", { smart_count: 2 })}
-          icon={<FolderSharedIcon />}
-          path="rooms"
-        >
+        <Tab label={translate("resources.rooms.name", { smart_count: 2 })} icon={<FolderSharedIcon />} path="rooms">
           <ReferenceManyField
             reference="destination_rooms"
             target="destination"
@@ -151,14 +133,8 @@ export const DestinationShow = (props: ShowProps) => {
             pagination={<DestinationPagination />}
             perPage={50}
           >
-            <Datagrid
-              style={{ width: "100%" }}
-              rowClick={id => `/rooms/${id}/show`}
-            >
-              <TextField
-                source="room_id"
-                label="resources.rooms.fields.room_id"
-              />
+            <Datagrid style={{ width: "100%" }} rowClick={id => `/rooms/${id}/show`}>
+              <TextField source="room_id" label="resources.rooms.fields.room_id" />
               <TextField source="stream_ordering" sortable={false} />
               <ReferenceField
                 label="resources.rooms.fields.name"

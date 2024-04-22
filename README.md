@@ -104,10 +104,7 @@ or to a list of homeservers:
 
 ```json
 {
-  "restrictBaseUrl": [
-    "https://your-first-matrix-server.example.com",
-    "https://your-second-matrix-server.example.com"
-  ]
+  "restrictBaseUrl": ["https://your-first-matrix-server.example.com", "https://your-second-matrix-server.example.com"]
 }
 ```
 
@@ -166,5 +163,6 @@ services:
 ## Development
 
 - See https://yarnpkg.com/getting-started/editor-sdks how to setup your IDE
-- Use `yarn test` to run all style, lint and unit tests
+- Use `yarn lint` to run all style and linter checks
+- Use `yarn test` to run all unit tests
 - Use `yarn fix` to fix the coding style

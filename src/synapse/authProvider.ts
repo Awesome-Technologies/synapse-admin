@@ -55,8 +55,7 @@ const authProvider: AuthProvider = {
   logout: async () => {
     console.log("logout");
 
-    const logout_api_url =
-      localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
+    const logout_api_url = localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
     const access_token = localStorage.getItem("access_token");
 
     const options: Options = {
@@ -84,9 +83,7 @@ const authProvider: AuthProvider = {
   checkAuth: () => {
     const access_token = localStorage.getItem("access_token");
     console.log("checkAuth " + access_token);
-    return typeof access_token === "string"
-      ? Promise.resolve()
-      : Promise.reject();
+    return typeof access_token === "string" ? Promise.resolve() : Promise.reject();
   },
   // called when the user navigates to a new location, to check for permissions / roles
   getPermissions: () => Promise.resolve(),

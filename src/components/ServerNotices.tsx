@@ -1,4 +1,8 @@
 import { useState } from "react";
+
+import IconCancel from "@mui/icons-material/Cancel";
+import MessageIcon from "@mui/icons-material/Message";
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import {
   Button,
   RaRecord,
@@ -17,26 +21,13 @@ import {
   useUnselectAll,
 } from "react-admin";
 import { useMutation } from "react-query";
-import MessageIcon from "@mui/icons-material/Message";
-import IconCancel from "@mui/icons-material/Cancel";
-import {
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
 
 const ServerNoticeDialog = ({ open, onClose, onSubmit }) => {
   const translate = useTranslate();
 
-  const ServerNoticeToolbar = (
-    props: ToolbarProps & { pristine?: boolean }
-  ) => (
+  const ServerNoticeToolbar = (props: ToolbarProps & { pristine?: boolean }) => (
     <Toolbar {...props}>
-      <SaveButton
-        label="resources.servernotices.action.send"
-        disabled={props.pristine}
-      />
+      <SaveButton label="resources.servernotices.action.send" disabled={props.pristine} />
       <Button label="ra.action.cancel" onClick={onClose}>
         <IconCancel />
       </Button>
@@ -45,13 +36,9 @@ const ServerNoticeDialog = ({ open, onClose, onSubmit }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>
-        {translate("resources.servernotices.action.send")}
-      </DialogTitle>
+      <DialogTitle>{translate("resources.servernotices.action.send")}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {translate("resources.servernotices.helper.send")}
-        </DialogContentText>
+        <DialogContentText>{translate("resources.servernotices.helper.send")}</DialogContentText>
         <SimpleForm toolbar={<ServerNoticeToolbar />} onSubmit={onSubmit}>
           <TextInput
             source="body"
@@ -96,18 +83,10 @@ export const ServerNoticeButton = () => {
 
   return (
     <>
-      <Button
-        label="resources.servernotices.send"
-        onClick={handleDialogOpen}
-        disabled={isLoading}
-      >
+      <Button label="resources.servernotices.send" onClick={handleDialogOpen} disabled={isLoading}>
         <MessageIcon />
       </Button>
-      <ServerNoticeDialog
-        open={open}
-        onClose={handleDialogClose}
-        onSubmit={handleSend}
-      />
+      <ServerNoticeDialog open={open} onClose={handleDialogClose} onSubmit={handleSend} />
     </>
   );
 };
@@ -142,18 +121,10 @@ export const ServerNoticeBulkButton = () => {
 
   return (
     <>
-      <Button
-        label="resources.servernotices.send"
-        onClick={openDialog}
-        disabled={isLoading}
-      >
+      <Button label="resources.servernotices.send" onClick={openDialog} disabled={isLoading}>
         <MessageIcon />
       </Button>
-      <ServerNoticeDialog
-        open={open}
-        onClose={closeDialog}
-        onSubmit={sendNotices}
-      />
+      <ServerNoticeDialog open={open} onClose={closeDialog} onSubmit={sendNotices} />
     </>
   );
 };

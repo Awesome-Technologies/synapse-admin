@@ -1,4 +1,4 @@
-export const date_format: Intl.DateTimeFormatOptions = {
+export const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
@@ -12,9 +12,7 @@ export const dateParser = (v: string | number | Date): number => {
   return d.getTime();
 };
 
-export const dateFormatter = (
-  v: string | number | Date | undefined | null
-): string => {
+export const dateFormatter = (v: string | number | Date | undefined | null): string => {
   if (v === undefined || v === null) return "";
   const d = new Date(v);
 

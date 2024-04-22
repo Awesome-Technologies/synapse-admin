@@ -1,4 +1,5 @@
 import fetchMock from "jest-fetch-mock";
+
 import dataProvider from "./dataProvider";
 
 fetchMock.enableMocks();
@@ -45,8 +46,8 @@ describe("dataProvider", () => {
       filter: { author_id: 12 },
     });
 
-    expect(users["data"][0]["id"]).toEqual("user_id1");
-    expect(users["total"]).toEqual(200);
+    expect(users.data[0].id).toEqual("user_id1");
+    expect(users.total).toEqual(200);
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
@@ -74,8 +75,8 @@ describe("dataProvider", () => {
 
     const user = await dataProvider.getOne("users", { id: "user_id1" });
 
-    expect(user["data"]["id"]).toEqual("user_id1");
-    expect(user["data"]["displayname"]).toEqual("User");
+    expect(user.data.id).toEqual("user_id1");
+    expect(user.data.displayname).toEqual("User");
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 });

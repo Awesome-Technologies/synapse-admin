@@ -1,5 +1,6 @@
-import { RecordContextProvider } from "react-admin";
 import { render, screen } from "@testing-library/react";
+import { RecordContextProvider } from "react-admin";
+
 import AvatarField from "./AvatarField";
 
 describe("AvatarField", () => {

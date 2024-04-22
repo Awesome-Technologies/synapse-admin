@@ -1,3 +1,14 @@
+import EventIcon from "@mui/icons-material/Event";
+import FastForwardIcon from "@mui/icons-material/FastForward";
+import UserIcon from "@mui/icons-material/Group";
+import HttpsIcon from "@mui/icons-material/Https";
+import NoEncryptionIcon from "@mui/icons-material/NoEncryption";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import RoomIcon from "@mui/icons-material/ViewList";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 import {
   BooleanField,
   BulkDeleteButton,
@@ -26,28 +37,16 @@ import {
   useRecordContext,
   useTranslate,
 } from "react-admin";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import FastForwardIcon from "@mui/icons-material/FastForward";
-import HttpsIcon from "@mui/icons-material/Https";
-import NoEncryptionIcon from "@mui/icons-material/NoEncryption";
-import PageviewIcon from "@mui/icons-material/Pageview";
-import UserIcon from "@mui/icons-material/Group";
-import ViewListIcon from "@mui/icons-material/ViewList";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import EventIcon from "@mui/icons-material/Event";
-import RoomIcon from "@mui/icons-material/ViewList";
+
 import {
   RoomDirectoryBulkUnpublishButton,
   RoomDirectoryBulkPublishButton,
   RoomDirectoryUnpublishButton,
   RoomDirectoryPublishButton,
 } from "./RoomDirectory";
-import { date_format } from "./date";
+import { DATE_FORMAT } from "./date";
 
-const RoomPagination = () => (
-  <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />
-);
+const RoomPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
 const RoomTitle = () => {
   const record = useRecordContext();
@@ -66,11 +65,7 @@ const RoomTitle = () => {
 
 const RoomShowActions = () => {
   const record = useRecordContext();
-  const publishButton = record.public ? (
-    <RoomDirectoryUnpublishButton />
-  ) : (
-    <RoomDirectoryPublishButton />
-  );
+  const publishButton = record.public ? <RoomDirectoryUnpublishButton /> : <RoomDirectoryPublishButton />;
   // FIXME: refresh after (un)publish
   return (
     <TopToolbar>
@@ -99,42 +94,19 @@ export const RoomShow = (props: ShowProps) => {
           </ReferenceField>
         </Tab>
 
-        <Tab
-          label="synapseadmin.rooms.tabs.detail"
-          icon={<PageviewIcon />}
-          path="detail"
-        >
+        <Tab label="synapseadmin.rooms.tabs.detail" icon={<PageviewIcon />} path="detail">
           <TextField source="joined_members" />
           <TextField source="joined_local_members" />
           <TextField source="joined_local_devices" />
           <TextField source="state_events" />
           <TextField source="version" />
-          <TextField
-            source="encryption"
-            emptyText={translate("resources.rooms.enums.unencrypted")}
-          />
+          <TextField source="encryption" emptyText={translate("resources.rooms.enums.unencrypted")} />
         </Tab>
 
-        <Tab
-          label="synapseadmin.rooms.tabs.members"
-          icon={<UserIcon />}
-          path="members"
-        >
-          <ReferenceManyField
-            reference="room_members"
-            target="room_id"
-            label={false}
-          >
-            <Datagrid
-              style={{ width: "100%" }}
-              rowClick={id => "/users/" + id}
-              bulkActionButtons={false}
-            >
-              <TextField
-                source="id"
-                sortable={false}
-                label="resources.users.fields.id"
-              />
+        <Tab label="synapseadmin.rooms.tabs.members" icon={<UserIcon />} path="members">
+          <ReferenceManyField reference="room_members" target="room_id" label={false}>
+            <Datagrid style={{ width: "100%" }} rowClick={id => "/users/" + id} bulkActionButtons={false}>
+              <TextField source="id" sortable={false} label="resources.users.fields.id" />
               <ReferenceField
                 label="resources.users.fields.displayname"
                 source="id"
@@ -148,11 +120,7 @@ export const RoomShow = (props: ShowProps) => {
           </ReferenceManyField>
         </Tab>
 
-        <Tab
-          label="synapseadmin.rooms.tabs.permission"
-          icon={<VisibilityIcon />}
-          path="permission"
-        >
+        <Tab label="synapseadmin.rooms.tabs.permission" icon={<VisibilityIcon />} path="permission">
           <BooleanField source="federatable" />
           <BooleanField source="public" />
           <SelectField
@@ -203,41 +171,20 @@ export const RoomShow = (props: ShowProps) => {
           />
         </Tab>
 
-        <Tab
-          label={translate("resources.room_state.name", { smart_count: 2 })}
-          icon={<EventIcon />}
-          path="state"
-        >
-          <ReferenceManyField
-            reference="room_state"
-            target="room_id"
-            label={false}
-          >
+        <Tab label={translate("resources.room_state.name", { smart_count: 2 })} icon={<EventIcon />} path="state">
+          <ReferenceManyField reference="room_state" target="room_id" label={false}>
             <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="type" sortable={false} />
-              <DateField
-                source="origin_server_ts"
-                showTime
-                options={date_format}
-                sortable={false}
-              />
+              <DateField source="origin_server_ts" showTime options={DATE_FORMAT} sortable={false} />
               <TextField source="content" sortable={false} />
-              <ReferenceField
-                source="sender"
-                reference="users"
-                sortable={false}
-              >
+              <ReferenceField source="sender" reference="users" sortable={false}>
                 <TextField source="id" />
               </ReferenceField>
             </Datagrid>
           </ReferenceManyField>
         </Tab>
 
-        <Tab
-          label="resources.forward_extremities.name"
-          icon={<FastForwardIcon />}
-          path="forward_extremities"
-        >
+        <Tab label="resources.forward_extremities.name" icon={<FastForwardIcon />} path="forward_extremities">
           <Box
             sx={{
               fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -246,19 +193,10 @@ export const RoomShow = (props: ShowProps) => {
           >
             {translate("resources.rooms.helper.forward_extremities")}
           </Box>
-          <ReferenceManyField
-            reference="forward_extremities"
-            target="room_id"
-            label={false}
-          >
+          <ReferenceManyField reference="forward_extremities" target="room_id" label={false}>
             <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="id" sortable={false} />
-              <DateField
-                source="received_ts"
-                showTime
-                options={date_format}
-                sortable={false}
-              />
+              <DateField source="received_ts" showTime options={DATE_FORMAT} sortable={false} />
               <NumberField source="depth" sortable={false} />
               <TextField source="state_group" sortable={false} />
             </Datagrid>
@@ -304,12 +242,7 @@ export const RoomList = (props: ListProps) => {
       <DatagridConfigurable
         rowClick="show"
         bulkActionButtons={<RoomBulkActionButtons />}
-        omit={[
-          "joined_local_members",
-          "state_events",
-          "version",
-          "federatable",
-        ]}
+        omit={["joined_local_members", "state_events", "version", "federatable"]}
       >
         <BooleanField
           source="is_encrypted"
@@ -322,12 +255,7 @@ export const RoomList = (props: ListProps) => {
             [`& [data-testid="false"]`]: { color: theme.palette.error.main },
           }}
         />
-        <FunctionField
-          source="name"
-          render={record =>
-            record["name"] || record["canonical_alias"] || record["id"]
-          }
-        />
+        <FunctionField source="name" render={record => record["name"] || record["canonical_alias"] || record["id"]} />
         <TextField source="joined_members" />
         <TextField source="joined_local_members" />
         <TextField source="state_events" />

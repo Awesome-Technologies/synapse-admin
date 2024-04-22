@@ -17,5 +17,7 @@ jobs:
           node-version: "18"
       - name: Install dependencies
         run: yarn --immutable
+      - name: Run checks
+        run: yarn lint
       - name: Run tests
         run: yarn test
