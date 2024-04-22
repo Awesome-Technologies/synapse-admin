@@ -6,6 +6,7 @@ import {
   resolveBrowserLocale,
 } from "react-admin";
 import polyglotI18nProvider from "ra-i18n-polyglot";
+import merge from "lodash/merge";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
 import users from "./components/users";
@@ -33,7 +34,8 @@ const messages = {
   zh: chineseMessages,
 };
 const i18nProvider = polyglotI18nProvider(
-  locale => (messages[locale] ? messages[locale] : messages.en),
+  locale =>
+    messages[locale] ? merge({}, messages.en, messages[locale]) : messages.en,
   resolveBrowserLocale(),
   [
     { locale: "en", name: "English" },
