@@ -34,7 +34,15 @@ const messages = {
 };
 const i18nProvider = polyglotI18nProvider(
   locale => (messages[locale] ? messages[locale] : messages.en),
-  resolveBrowserLocale()
+  resolveBrowserLocale(),
+  [
+    { locale: "en", name: "English" },
+    { locale: "de", name: "Deutsch" },
+    { locale: "fr", name: "Français" },
+    { locale: "it", name: "Italiano" },
+    { locale: "fa", name: "Persian(فارسی)" },
+    { locale: "zh", name: "简体中文" },
+  ]
 );
 
 const App = () => (

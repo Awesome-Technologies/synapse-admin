@@ -10,6 +10,7 @@ import {
   useTranslate,
   PasswordInput,
   TextInput,
+  useLocales,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import {
@@ -94,6 +95,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [supportPassAuth, setSupportPassAuth] = useState(true);
   const [locale, setLocale] = useLocaleState();
+  const locales = useLocales();
   const translate = useTranslate();
   const base_url = localStorage.getItem("base_url");
   const cfg_base_url = process.env.REACT_APP_SERVER;
@@ -280,19 +282,16 @@ const LoginPage = () => {
           <Box className="form">
             <Select
               value={locale}
-              onChange={e => {
-                setLocale(e.target.value);
-              }}
+              onChange={e => setLocale(e.target.value)}
               fullWidth
               disabled={loading}
               className="select"
             >
-              <MenuItem value="de">Deutsch</MenuItem>
-              <MenuItem value="en">English</MenuItem>
-              <MenuItem value="fr">Français</MenuItem>
-              <MenuItem value="it">Italiano</MenuItem>
-              <MenuItem value="zh">简体中文</MenuItem>
-              <MenuItem value="fa">Persian(فارسی)</MenuItem>
+              {locales.map(l => (
+                <MenuItem key={l.locale} value={l.locale}>
+                  {l.name}
+                </MenuItem>
+              ))}
             </Select>
             <FormDataConsumer>
               {formDataProps => <UserData {...formDataProps} />}
