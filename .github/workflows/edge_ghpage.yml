@@ -20,7 +20,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           yarn install --immutable
-          yarn build
+          yarn build --base=/synapse-admin
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.6.0
