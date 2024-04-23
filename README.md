@@ -116,7 +116,7 @@ services:
   synapse-admin:
     ...
     volumes:
-      ./config.json:/app/config.json
+      ./config.json:/app/config.json:ro
     ...
 ```
 
