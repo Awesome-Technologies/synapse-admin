@@ -12,7 +12,7 @@ RUN yarn build
 # App
 FROM nginx:stable-alpine
 
-COPY --from=builder /src/build /app
+COPY --from=builder /src/dist /app
 
 RUN rm -rf /usr/share/nginx/html \
  && ln -s /app /usr/share/nginx/html

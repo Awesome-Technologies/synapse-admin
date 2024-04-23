@@ -21,8 +21,7 @@ jobs:
       - run: yarn build
       - run: |
           version=`git describe --dirty --tags || echo unknown`
-          mkdir -p dist
-          cp -r build synapse-admin-$version
+          cp -r dist synapse-admin-$version
           tar chvzf dist/synapse-admin-$version.tar.gz synapse-admin-$version
       - uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564
         with:
