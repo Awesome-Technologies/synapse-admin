@@ -364,19 +364,19 @@ const fa = {
       },
       action: { reconnect: "دوباره وصل شوید" },
     },
-  },
-  registration_tokens: {
-    name: "توکن های ثبت نام",
-    fields: {
-      token: "توکن",
-      valid: "توکن معتبر",
-      uses_allowed: "موارد استفاده مجاز",
-      pending: "انتظار",
-      completed: "تکمیل شد",
-      expiry_time: "زمان انقضا",
-      length: "طول",
+    registration_tokens: {
+      name: "توکن های ثبت نام",
+      fields: {
+        token: "توکن",
+        valid: "توکن معتبر",
+        uses_allowed: "موارد استفاده مجاز",
+        pending: "انتظار",
+        completed: "تکمیل شد",
+        expiry_time: "زمان انقضا",
+        length: "طول",
+      },
+      helper: { length: "طول توکن در صورت عدم ارائه توکن." },
     },
-    helper: { length: "طول توکن در صورت عدم ارائه توکن." },
   },
 };
 export default fa;

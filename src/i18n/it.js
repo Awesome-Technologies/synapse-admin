@@ -367,19 +367,19 @@ const it = {
       },
       action: { reconnect: "Riconnetti" },
     },
-  },
-  registration_tokens: {
-    name: "Token di registrazione",
-    fields: {
-      token: "Token",
-      valid: "Token valido",
-      uses_allowed: "Usi permessi",
-      pending: "In attesa",
-      completed: "Completato",
-      expiry_time: "Data della scadenza",
-      length: "Lunghezza",
+    registration_tokens: {
+      name: "Token di registrazione",
+      fields: {
+        token: "Token",
+        valid: "Token valido",
+        uses_allowed: "Usi permessi",
+        pending: "In attesa",
+        completed: "Completato",
+        expiry_time: "Data della scadenza",
+        length: "Lunghezza",
+      },
+      helper: { length: "Lunghezza del token se non viene dato alcun token." },
     },
-    helper: { length: "Lunghezza del token se non viene dato alcun token." },
   },
 };
 export default it;

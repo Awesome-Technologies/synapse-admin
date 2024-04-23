@@ -356,21 +356,21 @@ const fr = {
         send_failure: "Une erreur s'est produite",
       },
     },
-  },
-  registration_tokens: {
-    name: "Jetons d'inscription",
-    fields: {
-      token: "Jeton",
-      valid: "Jeton valide",
-      uses_allowed: "Nombre d'inscription autorisées",
-      pending: "Nombre d'inscription en cours",
-      completed: "Nombre d'inscription accomplie",
-      expiry_time: "Date d'expiration",
-      length: "Longueur",
-    },
-    helper: {
-      length:
-        "Longueur du jeton généré aléatoirement si aucun jeton n'est pas spécifié",
+    registration_tokens: {
+      name: "Jetons d'inscription",
+      fields: {
+        token: "Jeton",
+        valid: "Jeton valide",
+        uses_allowed: "Nombre d'inscription autorisées",
+        pending: "Nombre d'inscription en cours",
+        completed: "Nombre d'inscription accomplie",
+        expiry_time: "Date d'expiration",
+        length: "Longueur",
+      },
+      helper: {
+        length:
+          "Longueur du jeton généré aléatoirement si aucun jeton n'est pas spécifié",
+      },
     },
   },
 };
