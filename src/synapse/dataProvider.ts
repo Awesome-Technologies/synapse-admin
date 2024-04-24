@@ -201,6 +201,21 @@ interface DestinationRoom {
   stream_ordering: number;
 }
 
+export interface DeleteMediaParams {
+  before_ts: string;
+  size_gt: number;
+  keep_profiles: boolean;
+}
+
+export interface DeleteMediaResult {
+  deleted_media: Identifier[];
+  total: number;
+}
+
+export interface SynapseDataProvider extends DataProvider {
+  deleteMedia: (params: DeleteMediaParams) => Promise<DeleteMediaResult>;
+}
+
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
@@ -327,16 +342,6 @@ const resourceMap = {
     total: json => json.total,
     delete: (params: DeleteParams) => ({
       endpoint: `/_synapse/admin/v1/media/${localStorage.getItem("home_server")}/${params.id}`,
-    }),
-  },
-  delete_media: {
-    delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem(
-        "home_server"
-      )}/delete?before_ts=${params.meta.before_ts}&size_gt=${
-        params.meta.size_gt
-      }&keep_profiles=${params.meta.keep_profiles}`,
-      method: "POST",
     }),
   },
   protect_media: {
@@ -481,7 +486,7 @@ function getSearchOrder(order: "ASC" | "DESC") {
   }
 }
 
-const dataProvider: DataProvider = {
+const dataProvider: SynapseDataProvider = {
   getList: async (resource, params) => {
     console.log("getList " + resource);
     const { user_id, name, guests, deactivated, search_term, destination, valid } = params.filter;
@@ -699,6 +704,28 @@ const dataProvider: DataProvider = {
       );
       return { data: responses.map(({ json }) => json) };
     }
+  },
+
+  // Custom methods (https://marmelab.com/react-admin/DataProviders.html#adding-custom-methods)
+
+  /**
+   * Delete media by date or size
+   *
+   * @link https://matrix-org.github.io/synapse/latest/admin_api/media_admin_api.html#delete-local-media-by-date-or-size
+   *
+   * @param before_ts Unix timestamp in milliseconds. Files that were last used before this timestamp will be deleted. It is the timestamp of last access, not the timestamp when the file was created.
+   * @param size_gt   Size of the media in bytes. Files that are larger will be deleted.
+   * @param keep_profiles Switch to also delete files that are still used in image data (e.g user profile, room avatar). If false these files will be deleted.
+   * @returns
+   */
+  deleteMedia: async ({ before_ts, size_gt = 0, keep_profiles = true }) => {
+    const homeserver = localStorage.getItem("home_server"); // TODO only required for synapse < 1.78.0
+    const endpoint = `/_synapse/admin/v1/media/${homeserver}/delete?before_ts=${before_ts}&size_gt=${size_gt}&keep_profiles=${keep_profiles}`;
+
+    const base_url = localStorage.getItem("base_url");
+    const endpoint_url = base_url + endpoint;
+    const { json } = await jsonClient(endpoint_url, { method: "POST" });
+    return json as DeleteMediaResult;
   },
 };
 

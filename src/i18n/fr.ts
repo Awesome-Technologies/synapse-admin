@@ -92,6 +92,22 @@ const fr: SynapseTranslationMessages = {
       },
     },
   },
+  delete_media: {
+    name: "Media",
+    fields: {
+      before_ts: "Dernier accès avant",
+      size_gt: "Plus grand que (en octets)",
+      keep_profiles: "Conserver les images de profil",
+    },
+    action: {
+      send: "Supprimer le média",
+      send_success: "Requête envoyée avec succès",
+      send_failure: "Une erreur s'est produite",
+    },
+    helper: {
+      send: "Cette API supprime les médias locaux du disque de votre propre serveur. Cela inclut toutes les vignettes locales et les copies des médias téléchargés. Cette API n'affectera pas les médias qui ont été téléversés dans des dépôts de médias externes.",
+    },
+  },
   resources: {
     users: {
       name: "Utilisateur |||| Utilisateurs",
@@ -241,22 +257,6 @@ const fr: SynapseTranslationMessages = {
         safe_from_quarantine: "Protection contre la mise en quarantaine",
         created_ts: "Date de création",
         last_access_ts: "Dernier accès",
-      },
-    },
-    delete_media: {
-      name: "Media",
-      fields: {
-        before_ts: "Dernier accès avant",
-        size_gt: "Plus grand que (en octets)",
-        keep_profiles: "Conserver les images de profil",
-      },
-      action: {
-        send: "Supprimer le média",
-        send_success: "Requête envoyée avec succès",
-        send_failure: "Une erreur s'est produite",
-      },
-      helper: {
-        send: "Cette API supprime les médias locaux du disque de votre propre serveur. Cela inclut toutes les vignettes locales et les copies des médias téléchargés. Cette API n'affectera pas les médias qui ont été téléversés dans des dépôts de médias externes.",
       },
     },
     protect_media: {

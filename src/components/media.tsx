@@ -21,15 +21,18 @@ import {
   Toolbar,
   ToolbarProps,
   useCreate,
+  useDataProvider,
   useDelete,
   useNotify,
   useRecordContext,
   useRefresh,
   useTranslate,
 } from "react-admin";
+import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 
 import { dateParser } from "./date";
+import { DeleteMediaParams, SynapseDataProvider } from "../synapse/dataProvider";
 import { getMediaUrl } from "../synapse/synapse";
 
 const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
@@ -37,7 +40,7 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
 
   const DeleteMediaToolbar = (props: ToolbarProps) => (
     <Toolbar {...props}>
-      <SaveButton label="resources.delete_media.action.send" icon={<DeleteSweepIcon />} />
+      <SaveButton label="delete_media.action.send" icon={<DeleteSweepIcon />} />
       <Button label="ra.action.cancel" onClick={onClose}>
         <IconCancel />
       </Button>
@@ -46,21 +49,21 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{translate("resources.delete_media.action.send")}</DialogTitle>
+      <DialogTitle>{translate("delete_media.action.send")}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{translate("resources.delete_media.helper.send")}</DialogContentText>
+        <DialogContentText>{translate("delete_media.helper.send")}</DialogContentText>
         <SimpleForm toolbar={<DeleteMediaToolbar />} onSubmit={onSubmit}>
           <DateTimeInput
             fullWidth
             source="before_ts"
-            label="resources.delete_media.fields.before_ts"
+            label="delete_media.fields.before_ts"
             defaultValue={0}
             parse={dateParser}
           />
           <NumberInput
             fullWidth
             source="size_gt"
-            label="resources.delete_media.fields.size_gt"
+            label="delete_media.fields.size_gt"
             defaultValue={0}
             min={0}
             step={1024}
@@ -68,7 +71,7 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
           <BooleanInput
             fullWidth
             source="keep_profiles"
-            label="resources.delete_media.fields.keep_profiles"
+            label="delete_media.fields.keep_profiles"
             defaultValue={true}
           />
         </SimpleForm>
@@ -81,34 +84,30 @@ export const DeleteMediaButton = (props: ButtonProps) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const notify = useNotify();
-  const [deleteOne, { isLoading }] = useDelete();
+  const dataProvider = useDataProvider<SynapseDataProvider>();
+  const { mutate: deleteMedia, isLoading } = useMutation(
+    (values: DeleteMediaParams) => dataProvider.deleteMedia(values),
+    {
+      onSuccess: () => {
+        notify("delete_media.action.send_success");
+        closeDialog();
+      },
+      onError: () => {
+        notify("delete_media.action.send_failure", {
+          type: "error",
+        });
+      },
+    }
+  );
 
   const openDialog = () => setOpen(true);
   const closeDialog = () => setOpen(false);
-
-  const deleteMedia = (values: { before_ts: string; size_gt: number; keep_profiles: boolean }) => {
-    deleteOne(
-      "delete_media",
-      // needs meta.before_ts, meta.size_gt and meta.keep_profiles
-      { meta: values },
-      {
-        onSuccess: () => {
-          notify("resources.delete_media.action.send_success");
-          closeDialog();
-        },
-        onError: () =>
-          notify("resources.delete_media.action.send_failure", {
-            type: "error",
-          }),
-      }
-    );
-  };
 
   return (
     <>
       <Button
         {...props}
-        label="resources.delete_media.action.send"
+        label="delete_media.action.send"
         onClick={openDialog}
         disabled={isLoading}
         sx={{

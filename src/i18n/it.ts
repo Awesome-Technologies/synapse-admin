@@ -89,6 +89,22 @@ const it: SynapseTranslationMessages = {
       },
     },
   },
+  delete_media: {
+    name: "Media",
+    fields: {
+      before_ts: "ultimo accesso effettuato prima",
+      size_gt: "Più grande di (in byte)",
+      keep_profiles: "Mantieni le immagini del profilo",
+    },
+    action: {
+      send: "Cancella media",
+      send_success: "Richiesta inviata con successo.",
+      send_failure: "C'è stato un errore.",
+    },
+    helper: {
+      send: "Questa API cancella i media locali dal disco del tuo server. Questo include anche ogni miniatura e copia del media scaricato. Questa API non inciderà sui media che sono stati caricati nei repository esterni.",
+    },
+  },
   resources: {
     users: {
       name: "Utente |||| Utenti",
@@ -240,22 +256,6 @@ const it: SynapseTranslationMessages = {
         safe_from_quarantine: "Protetto dalla quarantena",
         created_ts: "Creato",
         last_access_ts: "Ultimo accesso",
-      },
-    },
-    delete_media: {
-      name: "Media",
-      fields: {
-        before_ts: "ultimo accesso effettuato prima",
-        size_gt: "Più grande di (in byte)",
-        keep_profiles: "Mantieni le immagini del profilo",
-      },
-      action: {
-        send: "Cancella media",
-        send_success: "Richiesta inviata con successo.",
-        send_failure: "C'è stato un errore.",
-      },
-      helper: {
-        send: "Questa API cancella i media locali dal disco del tuo server. Questo include anche ogni miniatura e copia del media scaricato. Questa API non inciderà sui media che sono stati caricati nei repository esterni.",
       },
     },
     protect_media: {

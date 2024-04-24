@@ -89,6 +89,22 @@ const zh: SynapseTranslationMessages = {
       },
     },
   },
+  delete_media: {
+    name: "媒体文件",
+    fields: {
+      before_ts: "最后访问时间",
+      size_gt: "大于 (字节)",
+      keep_profiles: "保留头像",
+    },
+    action: {
+      send: "删除媒体",
+      send_success: "请求发送成功。",
+      send_failure: "出现了一个错误。",
+    },
+    helper: {
+      send: "这个API会删除您硬盘上的本地媒体。包含了任何的本地缓存和下载的媒体备份。这个API不会影响上传到外部媒体存储库上的媒体文件。",
+    },
+  },
   resources: {
     users: {
       name: "用户",
@@ -222,22 +238,6 @@ const zh: SynapseTranslationMessages = {
         safe_from_quarantine: "取消隔离",
         created_ts: "创建",
         last_access_ts: "上一次访问",
-      },
-    },
-    delete_media: {
-      name: "媒体文件",
-      fields: {
-        before_ts: "最后访问时间",
-        size_gt: "大于 (字节)",
-        keep_profiles: "保留头像",
-      },
-      action: {
-        send: "删除媒体",
-        send_success: "请求发送成功。",
-        send_failure: "出现了一个错误。",
-      },
-      helper: {
-        send: "这个API会删除您硬盘上的本地媒体。包含了任何的本地缓存和下载的媒体备份。这个API不会影响上传到外部媒体存储库上的媒体文件。",
       },
     },
     pushers: {

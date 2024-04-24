@@ -87,6 +87,22 @@ interface SynapseTranslationMessages extends TranslationMessages {
       };
     };
   };
+  delete_media: {
+    name: string;
+    fields: {
+      before_ts: string;
+      size_gt: string;
+      keep_profiles: string;
+    };
+    action: {
+      send: string;
+      send_success: string;
+      send_failure: string;
+    };
+    helper: {
+      send: string;
+    };
+  };
   resources: {
     users: {
       name: string;
@@ -250,22 +266,6 @@ interface SynapseTranslationMessages extends TranslationMessages {
       };
       action?: {
         open: string;
-      };
-    };
-    delete_media: {
-      name: string;
-      fields: {
-        before_ts: string;
-        size_gt: string;
-        keep_profiles: string;
-      };
-      action: {
-        send: string;
-        send_success: string;
-        send_failure: string;
-      };
-      helper: {
-        send: string;
       };
     };
     protect_media?: {
