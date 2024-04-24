@@ -77,7 +77,8 @@ You have three options:
       hostname: synapse-admin
       build:
         context: https://github.com/Awesome-Technologies/synapse-admin.git
-        # args:
+        args:
+          - BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
         #   - NODE_OPTIONS="--max_old_space_size=1024"
       ports:
         - "8080:80"
