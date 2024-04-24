@@ -6,6 +6,8 @@ lib/
 node_modules/
 electron_app/
 karma-reports/
+.pnp.cjs
+.pnp.loader.mjs
 .idea/
 .tmp/
 config.json*

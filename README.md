@@ -80,6 +80,7 @@ You have three options:
         args:
           - BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
         #   - NODE_OPTIONS="--max_old_space_size=1024"
+        #   - BASE_PATH="/synapse-admin"
       ports:
         - "8080:80"
       restart: unless-stopped
@@ -123,7 +124,13 @@ services:
 
 ### Serving Synapse-Admin on a different path
 
-We do not support directly changing the path where Synapse-Admin is served. Instead please use a reverse proxy if you need to move Synapse-Admin to a different base path. If you want to serve multiple applications with different paths on the same domain, you need a reverse proxy anyway.
+The path prefix where synapse-admin is served can only be changed during the build step.
+
+If you downloaded the source code, use `yarn build --base=/my-prefix` to set a path prefix.
+
+If you want to build your own Docker container, use the `BASE_PATH` argument.
+
+We do not support directly changing the path where Synapse-Admin is served in the pre-built Docker container. Instead please use a reverse proxy if you need to move Synapse-Admin to a different base path. If you want to serve multiple applications with different paths on the same domain, you need a reverse proxy anyway.
 
 Example for Traefik:
 
@@ -139,20 +146,17 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      - "traefik.http.middlewares.admin.redirectregex.regex:^(.*)/admin/?"
-      - "traefik.http.middlewares.admin.redirectregex.replacement:$${1}/admin/"
-      - "traefik.http.middlewares.admin_path.replacepathregex.regex:^/admin/(.*)"
-      - "traefik.http.middlewares.admin_path.replacepathregex.replacement:/$1"
 
   synapse-admin:
     image: awesometechnologies/synapse-admin:latest
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.synapse-admin.priority=3"
       - "traefik.http.routers.synapse-admin.rule=Host(`example.com`)&&PathPrefix(`/admin`)"
       - "traefik.http.routers.synapse-admin.middlewares=admin,admin_path"
+      - "traefik.http.middlewares.admin.redirectregex.regex=^(.*)/admin/?"
+      - "traefik.http.middlewares.admin.redirectregex.replacement=$${1}/admin/"
+      - "traefik.http.middlewares.admin_path.stripprefix.prefixes=/admin"
 ```
 
 ## Screenshots

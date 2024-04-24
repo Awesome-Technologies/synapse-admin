@@ -1,6 +1,8 @@
 # Builder
 FROM node:lts as builder
 LABEL org.opencontainers.image.url=https://github.com/Awesome-Technologies/synapse-admin org.opencontainers.image.source=https://github.com/Awesome-Technologies/synapse-admin
+# Base path for synapse admin
+ARG BASE_PATH=./
 
 WORKDIR /src
 
@@ -13,7 +15,7 @@ COPY package.json .yarnrc.yml yarn.lock ./
 RUN yarn config set enableTelemetry 0 && yarn install --immutable --network-timeout=300000
 
 COPY . /src
-RUN yarn build
+RUN yarn build --base=$BASE_PATH
 
 # App
 FROM nginx:stable-alpine

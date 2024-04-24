@@ -10,11 +10,12 @@ services:
     # replace the context definition with this:
     # context: https://github.com/Awesome-Technologies/synapse-admin.git
 
-    # args:
-    #   - BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
-    # if you're building on an architecture other than amd64, make sure
-    # to define a maximum ram for node. otherwise the build will fail.
-    #   - NODE_OPTIONS="--max_old_space_size=1024"
+    #  args:
+    #    - BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
+    #    if you're building on an architecture other than amd64, make sure
+    #    to define a maximum ram for node. otherwise the build will fail.
+    #    - NODE_OPTIONS="--max_old_space_size=1024"
+    #    - BASE_PATH="/synapse-admin"
     ports:
       - "8080:80"
     restart: unless-stopped
