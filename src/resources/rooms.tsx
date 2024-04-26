@@ -43,8 +43,8 @@ import {
   RoomDirectoryBulkPublishButton,
   RoomDirectoryUnpublishButton,
   RoomDirectoryPublishButton,
-} from "./RoomDirectory";
-import { DATE_FORMAT } from "./date";
+} from "./room_directory";
+import { DATE_FORMAT } from "../components/date";
 
 const RoomPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 

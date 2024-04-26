@@ -4,20 +4,20 @@ import polyglotI18nProvider from "ra-i18n-polyglot";
 import { Admin, CustomRoutes, Resource, resolveBrowserLocale } from "react-admin";
 import { Route } from "react-router-dom";
 
-import reports from "./components/EventReports";
 import { ImportFeature } from "./components/ImportFeature";
-import LoginPage from "./components/LoginPage";
-import registrationToken from "./components/RegistrationTokens";
-import roomDirectory from "./components/RoomDirectory";
-import destinations from "./components/destinations";
-import rooms from "./components/rooms";
-import userMediaStats from "./components/statistics";
-import users from "./components/users";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
 import frenchMessages from "./i18n/fr";
 import italianMessages from "./i18n/it";
 import chineseMessages from "./i18n/zh";
+import LoginPage from "./pages/LoginPage";
+import destinations from "./resources/destinations";
+import registrationToken from "./resources/registration_tokens";
+import reports from "./resources/reports";
+import roomDirectory from "./resources/room_directory";
+import rooms from "./resources/rooms";
+import userMediaStats from "./resources/user_media_statistics";
+import users from "./resources/users";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
 

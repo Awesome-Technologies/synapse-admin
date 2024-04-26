@@ -21,8 +21,8 @@ import {
   useTranslate,
 } from "react-admin";
 
-import { DATE_FORMAT } from "./date";
-import { MXCField } from "./media";
+import { DATE_FORMAT } from "../components/date";
+import { MXCField } from "../components/media";
 
 const ReportPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 

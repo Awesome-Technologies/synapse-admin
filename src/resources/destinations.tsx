@@ -29,7 +29,7 @@ import {
   useTranslate,
 } from "react-admin";
 
-import { DATE_FORMAT } from "./date";
+import { DATE_FORMAT } from "../components/date";
 
 const DestinationPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 

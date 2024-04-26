@@ -50,11 +50,11 @@ import {
 } from "react-admin";
 import { Link } from "react-router-dom";
 
-import AvatarField from "./AvatarField";
-import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
-import { DATE_FORMAT } from "./date";
-import { DeviceRemoveButton } from "./devices";
-import { MediaIDField, ProtectMediaButton, QuarantineMediaButton } from "./media";
+import AvatarField from "../components/AvatarField";
+import { ServerNoticeButton, ServerNoticeBulkButton } from "../components/ServerNotices";
+import { DATE_FORMAT } from "../components/date";
+import { DeviceRemoveButton } from "../components/devices";
+import { MediaIDField, ProtectMediaButton, QuarantineMediaButton } from "../components/media";
 
 const choices_medium = [
   { id: "email", name: "resources.users.email" },

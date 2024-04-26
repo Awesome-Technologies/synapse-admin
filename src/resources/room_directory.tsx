@@ -27,7 +27,7 @@ import {
 } from "react-admin";
 import { useMutation } from "react-query";
 
-import AvatarField from "./AvatarField";
+import AvatarField from "../components/AvatarField";
 
 const RoomDirectoryPagination = () => <Pagination rowsPerPageOptions={[100, 500, 1000, 2000]} />;
 

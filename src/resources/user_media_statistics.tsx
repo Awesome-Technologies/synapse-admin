@@ -13,7 +13,7 @@ import {
   useListContext,
 } from "react-admin";
 
-import { DeleteMediaButton } from "./media";
+import { DeleteMediaButton } from "../components/media";
 
 const ListActions = () => {
   const { isLoading, total } = useListContext();
