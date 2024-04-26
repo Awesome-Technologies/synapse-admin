@@ -15,8 +15,8 @@ export const isValidBaseUrl = baseUrl => /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{
 export const getWellKnownUrl = async domain => {
   const wellKnownUrl = `https://${domain}/.well-known/matrix/client`;
   try {
-    const json = await fetchUtils.fetchJson(wellKnownUrl, { method: "GET" });
-    return json["m.homeserver"].base_url;
+    const response = await fetchUtils.fetchJson(wellKnownUrl, { method: "GET" });
+    return response.json["m.homeserver"].base_url;
   } catch {
     // if there is no .well-known entry, return the domain itself
     return `https://${domain}`;
