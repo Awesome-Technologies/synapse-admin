@@ -154,47 +154,6 @@ const validateUser = [
 
 const validateAddress = [required(), maxLength(255)];
 
-export function generateRandomUser() {
-  const homeserver = localStorage.getItem("home_server");
-  const user_id =
-    "@" +
-    Array(8)
-      .fill("0123456789abcdefghijklmnopqrstuvwxyz")
-      .map(
-        x =>
-          x[
-            Math.floor(
-              (crypto.getRandomValues(new Uint32Array(1))[0] /
-                (0xffffffff + 1)) *
-                x.length
-            )
-          ]
-      )
-      .join("") +
-    ":" +
-    homeserver;
-
-  const password = Array(20)
-    .fill(
-      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$"
-    )
-    .map(
-      x =>
-        x[
-          Math.floor(
-            (crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1)) *
-              x.length
-          )
-        ]
-    )
-    .join("");
-
-  return {
-    id: user_id,
-    password: password,
-  };
-}
-
 const UserEditActions = () => {
   const record = useRecordContext();
   const translate = useTranslate();

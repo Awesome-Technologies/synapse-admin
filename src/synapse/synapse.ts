@@ -58,3 +58,28 @@ export const getMediaUrl = media_id => {
   const baseUrl = localStorage.getItem("base_url");
   return `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
 };
+
+/**
+ * Generate a random MXID for current homeserver
+ * @returns full MXID as string
+ */
+export function generateRandomMxId(): string {
+  const homeserver = localStorage.getItem("home_server");
+  const characters = "0123456789abcdefghijklmnopqrstuvwxyz";
+  const localpart = Array.from(crypto.getRandomValues(new Uint32Array(8)))
+    .map(x => characters[x % characters.length])
+    .join("");
+  return `@${localpart}:${homeserver}`;
+}
+
+/**
+ * Generate a random user password
+ * @returns a new random password as string
+ */
+export function generateRandomPassword(length = 20): string {
+  const characters =
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$";
+  return Array.from(crypto.getRandomValues(new Uint32Array(length)))
+    .map(x => characters[x % characters.length])
+    .join("");
+}

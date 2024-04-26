@@ -17,7 +17,7 @@ import {
   NativeSelect,
 } from "@mui/material";
 import { DataProvider, useTranslate } from "ra-core";
-import { generateRandomUser } from "./users";
+import { generateRandomMxId, generateRandomPassword } from "../synapse/synapse";
 
 const LOGGING = true;
 
@@ -270,38 +270,16 @@ const FilePicker = () => {
     try {
       setProgress({ done: entriesDone, limit: entriesCount });
       for (const entry of data) {
-        let userRecord = {};
-        let overwriteData = {};
+        const userRecord = { ...entry };
         // No need to do a bunch of cryptographic random number getting if
         // we are using neither a generated password nor a generated user id.
-        if (
-          useridMode === "ignore" ||
-          entry.id === undefined ||
-          entry.password === undefined ||
-          passwordMode === false
-        ) {
-          overwriteData = generateRandomUser();
-          // Ignoring IDs or the entry lacking an ID means we keep the
-          // ID field in the overwrite data.
-          if (!(useridMode === "ignore" || entry.id === undefined)) {
-            delete overwriteData.id;
-          }
-
-          // Not using passwords from the csv or this entry lacking a password
-          // means we keep the password field in the overwrite data.
-          if (
-            !(
-              passwordMode === false ||
-              entry.password === undefined ||
-              entry.password === ""
-            )
-          ) {
-            delete overwriteData.password;
-          }
+        if (useridMode === "ignore" || userRecord.id === undefined) {
+          userRecord.id = generateRandomMxId();
+        }
+        if (passwordMode === false || entry.password === undefined) {
+          userRecord.password = generateRandomPassword();
         }
         /* TODO record update stats (especially admin no -> yes, deactivated x -> !x, ... */
-        Object.assign(userRecord, entry);
-        Object.assign(userRecord, overwriteData);
 
         /* For these modes we will consider the ID that's in the record.
          * If the mode is "stop", we will not continue adding more records, and
@@ -346,9 +324,8 @@ const FilePicker = () => {
                   })
                 );
               } else {
-                const overwriteData = generateRandomUser();
                 const newRecordData = Object.assign({}, recordData, {
-                  id: overwriteData.id,
+                  id: generateRandomMxId(),
                 });
                 retries++;
                 if (retries > 512) {
