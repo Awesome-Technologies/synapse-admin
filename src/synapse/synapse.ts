@@ -1,26 +1,56 @@
+import type { paths } from "@matrix-org/spec/client-server";
+import createClient, { Middleware } from "openapi-fetch";
+
 import { fetchUtils } from "react-admin";
 
-export const splitMxid = mxid => {
+const throwOnError: Middleware = {
+  async onResponse(res) {
+    if (res.status >= 400) {
+      const body = await res.clone().text();
+      throw new Error(body);
+    }
+    return undefined;
+  },
+};
+
+export const useSynapse = (baseUrl: string) => {
+  const client = createClient<paths>({ baseUrl: baseUrl });
+  client.use(throwOnError);
+
+  return {
+    getWellKnownUrl: async () => {
+      const { data } = await client.GET("/.well-known/matrix/client");
+      return data ? data["m.homeserver"].base_url : baseUrl;
+    },
+    getSupportedFeatures: async () => (await client.GET("/_matrix/client/versions")).data,
+    getSupportedLoginFlows: async () => (await client.GET("/_matrix/client/v3/login")).data?.flows,
+  };
+};
+
+export const splitMxid = (mxid: string) => {
   const re = /^@(?<name>[a-zA-Z0-9._=\-/]+):(?<domain>[a-zA-Z0-9\-.]+\.[a-zA-Z]+)$/;
   return re.exec(mxid)?.groups;
 };
 
-export const isValidBaseUrl = baseUrl => /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/.test(baseUrl);
+export const isValidBaseUrl = (baseUrl: string | object | null | undefined) =>
+  typeof baseUrl === "string" ? /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?$/.test(baseUrl) : false;
 
 /**
  * Resolve the homeserver URL using the well-known lookup
  * @param domain  the domain part of an MXID
  * @returns homeserver base URL
  */
-export const getWellKnownUrl = async domain => {
-  const wellKnownUrl = `https://${domain}/.well-known/matrix/client`;
+export const getWellKnownUrl = async (domain: string): Promise<string> => {
+  const client = createClient<paths>({ baseUrl: `https://${domain}` });
   try {
-    const response = await fetchUtils.fetchJson(wellKnownUrl, { method: "GET" });
-    return response.json["m.homeserver"].base_url;
-  } catch {
-    // if there is no .well-known entry, return the domain itself
-    return `https://${domain}`;
+    const { data, error } = await client.GET("/.well-known/matrix/client");
+    if (error) throw new Error(error);
+    else return data["m.homeserver"].base_url;
+  } catch (e) {
+    console.warn(e);
   }
+  // if there is no .well-known entry, return the domain itself
+  return `https://${domain}`;
 };
 
 /**
@@ -28,17 +58,18 @@ export const getWellKnownUrl = async domain => {
  * @param base_url  the base URL of the homeserver
  * @returns server version
  */
-export const getServerVersion = async baseUrl => {
+export const getServerVersion = async (baseUrl: string) => {
   const versionUrl = `${baseUrl}/_synapse/admin/v1/server_version`;
   const response = await fetchUtils.fetchJson(versionUrl, { method: "GET" });
-  return response.json.server_version;
+  const data = response.json as { server_version: string };
+  return data.server_version;
 };
 
 /** Get supported Matrix features */
-export const getSupportedFeatures = async baseUrl => {
-  const versionUrl = `${baseUrl}/_matrix/client/versions`;
-  const response = await fetchUtils.fetchJson(versionUrl, { method: "GET" });
-  return response.json;
+export const getSupportedFeatures = async (baseUrl: string) => {
+  const client = createClient<paths>({ baseUrl: baseUrl });
+  const { data } = await client.GET("/_matrix/client/versions");
+  return data;
 };
 
 /**
@@ -46,13 +77,13 @@ export const getSupportedFeatures = async baseUrl => {
  * @param baseUrl  the base URL of the homeserver
  * @returns array of supported login flows
  */
-export const getSupportedLoginFlows = async baseUrl => {
-  const loginFlowsUrl = `${baseUrl}/_matrix/client/r0/login`;
-  const response = await fetchUtils.fetchJson(loginFlowsUrl, { method: "GET" });
-  return response.json.flows;
+export const getSupportedLoginFlows = async (baseUrl: string) => {
+  const client = createClient<paths>({ baseUrl: baseUrl });
+  const { data } = await client.GET("/_matrix/client/v3/login");
+  return data?.flows;
 };
 
-export const getMediaUrl = media_id => {
+export const getMediaUrl = (media_id: string) => {
   const baseUrl = localStorage.getItem("base_url");
   return `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
 };

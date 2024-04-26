@@ -21,7 +21,7 @@ const LOGGING = true;
 
 const expectedFields = ["id", "displayname"].sort();
 
-function TranslatableOption({ value, text }) {
+function TranslatableOption({ value, text }: { value: string; text: string }) {
   const translate = useTranslate();
   return <option value={value}>{translate(text)}</option>;
 }
@@ -81,7 +81,7 @@ const FilePicker = () => {
 
   const dataProvider = useDataProvider();
 
-  const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (progress !== null) return;
 
     setValues([]);
@@ -106,11 +106,11 @@ const FilePicker = () => {
         skipEmptyLines: true /* especially for a final EOL in the csv file */,
         complete: result => {
           if (result.errors) {
-            setError(result.errors.map(e => e.toString()));
+            setError(result.errors.map(e => String(e)));
           }
           /* Papaparse is very lenient, we may be able to salvage
            * the data in the file. */
-          verifyCsv(result, { setValues, setStats, setError });
+          verifyCsv(result, setValues, setStats, setError);
         },
       });
     } catch {
@@ -119,7 +119,12 @@ const FilePicker = () => {
     }
   };
 
-  const verifyCsv = ({ data, meta, errors }: ParseResult<ImportLine>, { setValues, setStats, setError }) => {
+  const verifyCsv = (
+    { data, meta, errors }: ParseResult<ImportLine>,
+    setValues: (values: ImportLine[]) => void,
+    setStats: (stats: ChangeStats | null) => void,
+    setError: (error: string | string[] | null) => void
+  ) => {
     /* First, verify the presence of required fields */
     const missingFields = expectedFields.filter(eF => meta.fields?.find(mF => eF === mF));
 
@@ -206,29 +211,23 @@ const FilePicker = () => {
     return true;
   };
 
-  const runImport = async () => {
+  const runImport = () => {
     if (progress !== null) {
       notify("import_users.errors.already_in_progress");
       return;
     }
 
-    const results = await doImport(
-      dataProvider,
-      values,
-      conflictMode,
-      passwordMode,
-      useridMode,
-      dryRun,
-      setProgress,
-      setError
+    void doImport(dataProvider, values, conflictMode, passwordMode, useridMode, dryRun, setProgress, setError).then(
+      results => {
+        setImportResults(results);
+        // offer CSV download of skipped or errored records
+        // (so that the user doesn't have to filter out successful
+        // records manually when fixing stuff in the CSV)
+        setSkippedRecords(unparseCsv(results.skippedRecords));
+        if (LOGGING) console.log("Skipped records:");
+        if (LOGGING) console.log(skippedRecords);
+      }
     );
-    setImportResults(results);
-    // offer CSV download of skipped or errored records
-    // (so that the user doesn't have to filter out successful
-    // records manually when fixing stuff in the CSV)
-    setSkippedRecords(unparseCsv(results.skippedRecords));
-    if (LOGGING) console.log("Skipped records:");
-    if (LOGGING) console.log(skippedRecords);
   };
 
   // XXX every single one of the requests will restart the activity indicator
@@ -370,7 +369,7 @@ const FilePicker = () => {
     element.click();
   };
 
-  const onConflictModeChanged = async (e: ChangeEvent<HTMLSelectElement>) => {
+  const onConflictModeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
     if (progress !== null) {
       return;
     }
@@ -387,7 +386,7 @@ const FilePicker = () => {
     setPasswordMode(e.target.checked);
   };
 
-  const onUseridModeChanged = async (e: ChangeEvent<HTMLSelectElement>) => {
+  const onUseridModeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
     if (progress !== null) {
       return;
     }

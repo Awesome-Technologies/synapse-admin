@@ -19,14 +19,13 @@ import {
 import { useFormContext } from "react-hook-form";
 
 import { useAppContext } from "../AppContext";
-import {
-  getServerVersion,
-  getSupportedFeatures,
-  getSupportedLoginFlows,
-  getWellKnownUrl,
-  isValidBaseUrl,
-  splitMxid,
-} from "../synapse/synapse";
+import { getServerVersion, getWellKnownUrl, isValidBaseUrl, splitMxid, useSynapse } from "../synapse/synapse";
+
+interface UserDataFields {
+  base_url: string;
+  username: string;
+  password: string;
+}
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -115,20 +114,14 @@ const LoginPage = () => {
       console.log("Base URL is:", baseUrl);
       console.log("SSO Token is:", ssoToken);
       console.log("Let's try token login...");
-      login(auth).catch(error => {
-        alert(
-          typeof error === "string"
-            ? error
-            : typeof error === "undefined" || !error.message
-              ? "ra.auth.sign_in_error"
-              : error.message
-        );
+      login(auth).catch((error: Error | string | undefined) => {
+        alert(typeof error === "string" ? error : !error?.message ? "ra.auth.sign_in_error" : error.message);
         console.error(error);
       });
     }
   }
 
-  const validateBaseUrl = value => {
+  const validateBaseUrl = (value: string) => {
     if (!value.match(/^(http|https):\/\//)) {
       return translate("synapseadmin.auth.protocol_error");
     } else if (!value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)) {
@@ -140,16 +133,11 @@ const LoginPage = () => {
 
   const handleSubmit = auth => {
     setLoading(true);
-    login(auth).catch(error => {
+    login(auth).catch((error: Error | string | undefined) => {
       setLoading(false);
-      notify(
-        typeof error === "string"
-          ? error
-          : typeof error === "undefined" || !error.message
-            ? "ra.auth.sign_in_error"
-            : error.message,
-        { type: "warning" }
-      );
+      notify(typeof error === "string" ? error : !error?.message ? "ra.auth.sign_in_error" : error.message, {
+        type: "warning",
+      });
     });
   };
 
@@ -161,7 +149,7 @@ const LoginPage = () => {
     window.location.href = ssoFullUrl;
   };
 
-  const UserData = ({ formData }) => {
+  const UserData = ({ formData }: { formData: UserDataFields }) => {
     const form = useFormContext();
     const [serverVersion, setServerVersion] = useState("");
     const [matrixVersions, setMatrixVersions] = useState("");
@@ -171,7 +159,7 @@ const LoginPage = () => {
       // check if username is a full qualified userId then set base_url accordingly
       const domain = splitMxid(formData.username)?.domain;
       if (domain) {
-        getWellKnownUrl(domain).then(url => {
+        void getWellKnownUrl(domain).then(url => {
           if (allowAnyBaseUrl || (allowMultipleBaseUrls && restrictBaseUrl.includes(url)))
             form.setValue("base_url", url);
         });
@@ -183,22 +171,25 @@ const LoginPage = () => {
         form.setValue("base_url", restrictBaseUrl[0]);
       }
       if (!isValidBaseUrl(formData.base_url)) return;
+      const synapseClient = useSynapse(formData.base_url);
 
       getServerVersion(formData.base_url)
         .then(serverVersion => setServerVersion(`${translate("synapseadmin.auth.server_version")} ${serverVersion}`))
         .catch(() => setServerVersion(""));
 
-      getSupportedFeatures(formData.base_url)
+      synapseClient
+        .getSupportedFeatures()
         .then(features =>
-          setMatrixVersions(`${translate("synapseadmin.auth.supports_specs")} ${features.versions.join(", ")}`)
+          setMatrixVersions(`${translate("synapseadmin.auth.supports_specs")} ${features?.versions.join(", ")}`)
         )
         .catch(() => setMatrixVersions(""));
 
       // Set SSO Url
-      getSupportedLoginFlows(formData.base_url)
+      synapseClient
+        .getSupportedLoginFlows()
         .then(loginFlows => {
-          const supportPass = loginFlows.find(f => f.type === "m.login.password") !== undefined;
-          const supportSSO = loginFlows.find(f => f.type === "m.login.sso") !== undefined;
+          const supportPass = loginFlows?.find(f => f.type === "m.login.password") !== undefined;
+          const supportSSO = loginFlows?.find(f => f.type === "m.login.sso") !== undefined;
           setSupportPassAuth(supportPass);
           setSSOBaseUrl(supportSSO ? formData.base_url : "");
         })
@@ -286,7 +277,7 @@ const LoginPage = () => {
                 </MenuItem>
               ))}
             </Select>
-            <FormDataConsumer>{formDataProps => <UserData {...formDataProps} />}</FormDataConsumer>
+            <FormDataConsumer<UserDataFields>>{formDataProps => <UserData {...formDataProps} />}</FormDataConsumer>
             <CardActions className="actions">
               <Button
                 variant="contained"

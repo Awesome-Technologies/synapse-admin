@@ -5,6 +5,7 @@ import { Admin, CustomRoutes, Resource, resolveBrowserLocale } from "react-admin
 import { Route } from "react-router-dom";
 
 import { ImportFeature } from "./components/ImportFeature";
+import { SynapseTranslationMessages } from "./i18n";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
 import frenchMessages from "./i18n/fr";
@@ -30,7 +31,7 @@ const messages = {
   zh: chineseMessages,
 };
 const i18nProvider = polyglotI18nProvider(
-  locale => (messages[locale] ? merge({}, messages.en, messages[locale]) : messages.en),
+  locale => (messages[locale] ? (merge({}, messages.en, messages[locale]) as SynapseTranslationMessages) : messages.en),
   resolveBrowserLocale(),
   [
     { locale: "en", name: "English" },

@@ -113,7 +113,7 @@ export const UserList = (props: ListProps) => (
     pagination={<UserPagination />}
   >
     <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
-      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
+      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
       <BooleanField source="is_guest" />
@@ -195,7 +195,7 @@ export const UserEdit = (props: EditProps) => {
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm>
         <FormTab label={translate("resources.users.name", { smart_count: 1 })} icon={<PersonPinIcon />}>
-          <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px", float: "right" }} />
+          <AvatarField source="avatar_src" sx={{ height: "120px", width: "120px", float: "right" }} />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
           <PasswordInput source="password" autoComplete="new-password" helperText="resources.users.helper.password" />

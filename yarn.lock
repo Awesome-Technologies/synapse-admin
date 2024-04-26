@@ -1220,6 +1220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@matrix-org/spec@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@matrix-org/spec@npm:1.10.1"
+  checksum: 10c0/2901e745cf379770fb4ec5b89d141ccd3e5331d899f6f41958a3e91f75d64e4caa79ed06d33931d26fbffd23c430f63708e2b4989f3b22c8b12df470a6678711
+  languageName: node
+  linkType: hard
+
 "@mui/base@npm:5.0.0-beta.40":
   version: 5.0.0-beta.40
   resolution: "@mui/base@npm:5.0.0-beta.40"
@@ -6398,6 +6405,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openapi-fetch@npm:^0.9.5":
+  version: 0.9.5
+  resolution: "openapi-fetch@npm:0.9.5"
+  dependencies:
+    openapi-typescript-helpers: "npm:^0.0.8"
+  checksum: 10c0/57e01b9b9a3d58106d94f294ef17bbf95e166de67212a6cbc158d087591ffd3af2c3347ee563d43a3c9a23401cc6677f53cfa59befc23388b88b1ab650d2723b
+  languageName: node
+  linkType: hard
+
+"openapi-typescript-helpers@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "openapi-typescript-helpers@npm:0.0.8"
+  checksum: 10c0/b31a326c67d65f947732e32126f79976ecc67597f911f7ed43ea9ea23b1e2df7a012026327b6e39df5897a70781f9c57f9fcdd86f8a05c0f67ab2b23ee5d708a
+  languageName: node
+  linkType: hard
+
 "optionator@npm:^0.9.3":
   version: 0.9.3
   resolution: "optionator@npm:0.9.3"
@@ -7726,6 +7749,7 @@ __metadata:
     "@eslint/js": "npm:^9.6.0"
     "@haleos/ra-language-german": "npm:^1.0.0"
     "@haxqer/ra-language-chinese": "npm:^4.16.2"
+    "@matrix-org/spec": "npm:^1.10.1"
     "@mui/icons-material": "npm:^5.15.16"
     "@mui/material": "npm:^5.16.0"
     "@testing-library/dom": "npm:^10.0.0"
@@ -7752,6 +7776,7 @@ __metadata:
     jest-environment-jsdom: "npm:^29.7.0"
     jest-fetch-mock: "npm:^3.0.3"
     lodash: "npm:^4.17.21"
+    openapi-fetch: "npm:^0.9.5"
     papaparse: "npm:^5.4.1"
     prettier: "npm:^3.2.5"
     query-string: "npm:^7.1.1"

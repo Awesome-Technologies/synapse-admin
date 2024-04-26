@@ -35,7 +35,13 @@ import { dateParser } from "./date";
 import { DeleteMediaParams, SynapseDataProvider } from "../synapse/dataProvider";
 import { getMediaUrl } from "../synapse/synapse";
 
-const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
+interface DeleteMediaDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (params: DeleteMediaParams) => void;
+}
+
+const DeleteMediaDialog = ({ open, onClose, onSubmit }: DeleteMediaDialogProps) => {
   const translate = useTranslate();
 
   const DeleteMediaToolbar = (props: ToolbarProps) => (
@@ -53,6 +59,7 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
       <DialogContent>
         <DialogContentText>{translate("delete_media.helper.send")}</DialogContentText>
         <SimpleForm toolbar={<DeleteMediaToolbar />} onSubmit={onSubmit}>
+          {/* TODO: Use MUI form (does not require a record) */}
           <DateTimeInput
             fullWidth
             source="before_ts"

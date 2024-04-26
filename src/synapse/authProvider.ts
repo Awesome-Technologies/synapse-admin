@@ -45,11 +45,18 @@ const authProvider: AuthProvider = {
     const decoded_base_url = window.decodeURIComponent(base_url);
     const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
 
-    const { json } = await fetchUtils.fetchJson(login_api_url, options);
-    localStorage.setItem("home_server", json.home_server);
-    localStorage.setItem("user_id", json.user_id);
-    localStorage.setItem("access_token", json.access_token);
-    localStorage.setItem("device_id", json.device_id);
+    interface LoginResponse {
+      home_server: string;
+      user_id: string;
+      access_token: string;
+      device_id: string;
+    }
+    const response = await fetchUtils.fetchJson(login_api_url, options);
+    const data = response.json as LoginResponse;
+    localStorage.setItem("home_server", data.home_server);
+    localStorage.setItem("user_id", data.user_id);
+    localStorage.setItem("access_token", data.access_token);
+    localStorage.setItem("device_id", data.device_id);
   },
   // called when the user clicks on the logout button
   logout: async () => {

@@ -49,10 +49,12 @@
     "@emotion/styled": "^11.3.0",
     "@haleos/ra-language-german": "^1.0.0",
     "@haxqer/ra-language-chinese": "^4.16.2",
+    "@matrix-org/spec": "^1.10.1",
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.16.0",
     "history": "^5.1.0",
     "lodash": "^4.17.21",
+    "openapi-fetch": "^0.9.5",
     "papaparse": "^5.4.1",
     "query-string": "^7.1.1",
     "ra-core": "^4.16.17",
@@ -91,8 +93,8 @@
     ],
     "extends": [
       "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:@typescript-eslint/stylistic",
+      "plugin:@typescript-eslint/recommended-type-checked",
+      "plugin:@typescript-eslint/stylistic-type-checked",
       "plugin:import/typescript",
       "plugin:yaml/recommended"
     ],

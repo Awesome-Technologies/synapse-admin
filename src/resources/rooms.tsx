@@ -36,6 +36,7 @@ import {
   TopToolbar,
   useRecordContext,
   useTranslate,
+  RaRecord,
 } from "react-admin";
 
 import {
@@ -53,7 +54,7 @@ const RoomTitle = () => {
   const translate = useTranslate();
   let name = "";
   if (record) {
-    name = record.name !== "" ? record.name : record.id;
+    name = String(record.name !== "" ? record.name : record.id);
   }
 
   return (
@@ -255,7 +256,10 @@ export const RoomList = (props: ListProps) => {
             [`& [data-testid="false"]`]: { color: theme.palette.error.main },
           }}
         />
-        <FunctionField source="name" render={record => record["name"] || record["canonical_alias"] || record["id"]} />
+        <FunctionField
+          source="name"
+          render={(record: RaRecord) => String(record.name ?? record.canonical_alias ?? record.id)}
+        />
         <TextField source="joined_members" />
         <TextField source="joined_local_members" />
         <TextField source="state_events" />

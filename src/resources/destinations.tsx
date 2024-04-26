@@ -46,13 +46,13 @@ export const DestinationReconnectButton = () => {
   const [handleReconnect, { isLoading }] = useDelete();
 
   // Reconnect is not required if no error has occurred. (`failure_ts`)
-  if (!record || !record.failure_ts) return null;
+  if (!record?.failure_ts) return null;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     // Prevents redirection to the detail page when clicking in the list
     e.stopPropagation();
 
-    handleReconnect(
+    void handleReconnect(
       "destinations",
       { id: record.id },
       {

@@ -14,7 +14,7 @@ export const DeviceRemoveButton = (props: DeleteWithConfirmButtonProps) => {
       redirect={false}
       translateOptions={{
         id: record.id,
-        name: record.display_name ? record.display_name : record.id,
+        name: String(record.display_name ?? record.id),
       }}
     />
   );

@@ -1,9 +1,11 @@
 import italianMessages from "ra-language-italian";
 
+import { TranslationMessages } from "ra-core";
+
 import { SynapseTranslationMessages } from ".";
 
 const it: SynapseTranslationMessages = {
-  ...italianMessages,
+  ...(italianMessages as TranslationMessages),
   synapseadmin: {
     auth: {
       base_url: "URL dell'homeserver",

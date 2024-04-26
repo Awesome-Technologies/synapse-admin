@@ -40,6 +40,7 @@ const ServerNoticeDialog = ({ open, onClose, onSubmit }) => {
       <DialogContent>
         <DialogContentText>{translate("resources.servernotices.helper.send")}</DialogContentText>
         <SimpleForm toolbar={<ServerNoticeToolbar />} onSubmit={onSubmit}>
+          {/* TODO: Use MUI form (does not require a record) */}
           <TextInput
             source="body"
             label="resources.servernotices.fields.body"
