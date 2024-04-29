@@ -6787,6 +6787,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-is@npm:^18.3.1":
+  version: 18.3.1
+  resolution: "react-is@npm:18.3.1"
+  checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
+  languageName: node
+  linkType: hard
+
 "react-query@npm:^3.32.1":
   version: 3.39.3
   resolution: "react-query@npm:3.39.3"
@@ -7610,7 +7617,7 @@ __metadata:
     react-admin: "npm:^4.16.15"
     react-dom: "npm:^18.0.0"
     react-hook-form: "npm:^7.43.9"
-    react-is: "npm:^18.2.0"
+    react-is: "npm:^18.3.1"
     react-query: "npm:^3.32.1"
     react-router: "npm:^6.1.0"
     react-router-dom: "npm:^6.1.0"
