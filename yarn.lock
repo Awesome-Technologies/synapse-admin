@@ -6684,12 +6684,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-language-french@npm:^4.16.15":
-  version: 4.16.15
-  resolution: "ra-language-french@npm:4.16.15"
+"ra-language-french@npm:^4.16.16":
+  version: 4.16.16
+  resolution: "ra-language-french@npm:4.16.16"
   dependencies:
-    ra-core: "npm:^4.16.15"
-  checksum: 10c0/e33e60d654516f7b6c339aa90b7c9000bed178cd941c3c1fbe2647720061a616183630809f9a244af74903a370d3f76fa863f186007d45ae3370bfbb5fd7a9df
+    ra-core: "npm:^4.16.16"
+  checksum: 10c0/664fe1b989d8c5cb7dd680ef4df7f9b41c63a3edc0060bafea71da203850dc1fb8acd67b7f4825125786a36614a854bd8945d54991bd8f84ec761caadc096eae
   languageName: node
   linkType: hard
 
@@ -7654,7 +7654,7 @@ __metadata:
     ra-i18n-polyglot: "npm:^4.16.15"
     ra-language-english: "npm:^4.16.16"
     ra-language-farsi: "npm:^4.2.0"
-    ra-language-french: "npm:^4.16.15"
+    ra-language-french: "npm:^4.16.16"
     ra-language-italian: "npm:^3.13.1"
     react: "npm:^18.0.0"
     react-admin: "npm:^4.16.15"
