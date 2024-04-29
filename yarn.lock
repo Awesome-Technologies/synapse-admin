@@ -7838,6 +7838,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ra-core@npm:^4.16.16":
+  version: 4.16.16
+  resolution: "ra-core@npm:4.16.16"
+  dependencies:
+    clsx: "npm:^1.1.1"
+    date-fns: "npm:^2.19.0"
+    eventemitter3: "npm:^4.0.7"
+    inflection: "npm:~1.12.0"
+    jsonexport: "npm:^3.2.0"
+    lodash: "npm:~4.17.5"
+    prop-types: "npm:^15.6.1"
+    query-string: "npm:^7.1.1"
+    react-is: "npm:^17.0.2"
+    react-query: "npm:^3.32.1"
+  peerDependencies:
+    history: ^5.1.0
+    react: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-hook-form: ^7.43.9
+    react-router: ^6.1.0
+    react-router-dom: ^6.1.0
+  checksum: 10c0/178c163928aa41a2a1f59f114f33787aa8c2fdecc12466c65b1f49195ca54d5180ce193d3edf82934aff95839a2942858921a46e19d367f0b29f3448623c790e
+  languageName: node
+  linkType: hard
+
 "ra-i18n-polyglot@npm:^4.16.15":
   version: 4.16.15
   resolution: "ra-i18n-polyglot@npm:4.16.15"
@@ -7854,6 +7879,15 @@ __metadata:
   dependencies:
     ra-core: "npm:^4.16.15"
   checksum: 10c0/60bc1ee51f43d556a0a582b1ce10e7dddb01f30b0436470dceb63b3aead5286fda2ec828c2ca7d71f90bdf7f3117dfe4d078a50ebc335ece3bcf8ad8b34eac7b
+  languageName: node
+  linkType: hard
+
+"ra-language-english@npm:^4.16.16":
+  version: 4.16.16
+  resolution: "ra-language-english@npm:4.16.16"
+  dependencies:
+    ra-core: "npm:^4.16.16"
+  checksum: 10c0/01ad5219730a67702c2eca311a54308344663792847cbfb3efda320818566106e56dbbf940618f6ad5d8eed4d8a02960a26e8408730afe0948a9056eabc9a85f
   languageName: node
   linkType: hard
 
@@ -8886,7 +8920,7 @@ __metadata:
     query-string: "npm:^7.1.1"
     ra-core: "npm:^4.16.15"
     ra-i18n-polyglot: "npm:^4.16.15"
-    ra-language-english: "npm:^4.16.15"
+    ra-language-english: "npm:^4.16.16"
     ra-language-farsi: "npm:^4.2.0"
     ra-language-french: "npm:^4.16.15"
     ra-language-italian: "npm:^3.13.1"

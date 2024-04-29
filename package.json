@@ -46,7 +46,7 @@
     "query-string": "^7.1.1",
     "ra-core": "^4.16.15",
     "ra-i18n-polyglot": "^4.16.15",
-    "ra-language-english": "^4.16.15",
+    "ra-language-english": "^4.16.16",
     "ra-language-farsi": "^4.2.0",
     "ra-language-french": "^4.16.15",
     "ra-language-italian": "^3.13.1",
