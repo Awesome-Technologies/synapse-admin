@@ -87,4 +87,11 @@ interface SynapseTranslationMessages extends TranslationMessages {
       };
     };
   };
+  resources: {
+    users: {
+      fields: {
+        locked?: string; // TODO: fa, zh
+      };
+    };
+  };
 }
