@@ -16,15 +16,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
       - run: yarn install --immutable
       - run: yarn build
       - run: |
           version=`git describe --dirty --tags || echo unknown`
-          mkdir -p dist
-          cp -r build synapse-admin-$version
+          cp -r dist synapse-admin-$version
           tar chvzf dist/synapse-admin-$version.tar.gz synapse-admin-$version
-      - uses: softprops/action-gh-release@3198ee18f814cdf787321b4a32a26ddbf37acc52
+      - uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564
         with:
           files: dist/*.tar.gz
         env:

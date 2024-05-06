@@ -64,11 +64,6 @@ You have three options:
 - download dependencies: `yarn install`
 - start web server: `yarn start`
 
-You can fix the homeserver, so that the user can no longer define it himself.
-Either you define it at startup (e.g. `REACT_APP_SERVER=https://yourmatrixserver.example.com yarn start`)
-or by editing it in the [.env](.env) file. See also the
-[documentation](https://create-react-app.dev/docs/adding-custom-environment-variables/).
-
 #### Steps for 3)
 
 - run the Docker container from the public docker registry: `docker run -p 8080:80 awesometechnologies/synapse-admin` or use the [docker-compose.yml](docker-compose.yml): `docker-compose up -d`
@@ -76,19 +71,16 @@ or by editing it in the [.env](.env) file. See also the
   > note: if you're building on an architecture other than amd64 (for example a raspberry pi), make sure to define a maximum ram for node. otherwise the build will fail.
 
   ```yml
-  version: "3"
-
   services:
     synapse-admin:
       container_name: synapse-admin
       hostname: synapse-admin
       build:
         context: https://github.com/Awesome-Technologies/synapse-admin.git
-        # args:
+        args:
+          - BUILDKIT_CONTEXT_KEEP_GIT_DIR=1
         #   - NODE_OPTIONS="--max_old_space_size=1024"
-        #   # see #266, PUBLIC_URL must be without surrounding quotation marks
-        #   - PUBLIC_URL=/synapse-admin
-        #   - REACT_APP_SERVER="https://matrix.example.com"
+        #   - BASE_PATH="/synapse-admin"
       ports:
         - "8080:80"
       restart: unless-stopped
@@ -96,11 +88,81 @@ or by editing it in the [.env](.env) file. See also the
 
 - browse to http://localhost:8080
 
+### Restricting available homeserver
+
+You can restrict the homeserver(s), so that the user can no longer define it himself.
+
+Edit `config.json` to restrict either to a single homeserver:
+
+```json
+{
+  "restrictBaseUrl": "https://your-matrixs-erver.example.com"
+}
+```
+
+or to a list of homeservers:
+
+```json
+{
+  "restrictBaseUrl": ["https://your-first-matrix-server.example.com", "https://your-second-matrix-server.example.com"]
+}
+```
+
+The `config.json` can be injected into a Docker container using a bind mount.
+
+```yml
+services:
+  synapse-admin:
+    ...
+    volumes:
+      ./config.json:/app/config.json:ro
+    ...
+```
+
+### Serving Synapse-Admin on a different path
+
+The path prefix where synapse-admin is served can only be changed during the build step.
+
+If you downloaded the source code, use `yarn build --base=/my-prefix` to set a path prefix.
+
+If you want to build your own Docker container, use the `BASE_PATH` argument.
+
+We do not support directly changing the path where Synapse-Admin is served in the pre-built Docker container. Instead please use a reverse proxy if you need to move Synapse-Admin to a different base path. If you want to serve multiple applications with different paths on the same domain, you need a reverse proxy anyway.
+
+Example for Traefik:
+
+`docker-compose.yml`
+
+```yml
+services:
+  traefik:
+    image: traefik:mimolette
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  synapse-admin:
+    image: awesometechnologies/synapse-admin:latest
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.synapse-admin.rule=Host(`example.com`)&&PathPrefix(`/admin`)"
+      - "traefik.http.routers.synapse-admin.middlewares=admin,admin_path"
+      - "traefik.http.middlewares.admin.redirectregex.regex=^(.*)/admin/?"
+      - "traefik.http.middlewares.admin.redirectregex.replacement=$${1}/admin/"
+      - "traefik.http.middlewares.admin_path.stripprefix.prefixes=/admin"
+```
+
 ## Screenshots
 
 ![Screenshots](./screenshots.jpg)
 
 ## Development
 
-- Use `yarn test` to run all style, lint and unit tests
+- See https://yarnpkg.com/getting-started/editor-sdks how to setup your IDE
+- Use `yarn lint` to run all style and linter checks
+- Use `yarn test` to run all unit tests
 - Use `yarn fix` to fix the coding style
