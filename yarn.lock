@@ -1249,7 +1249,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:^5.0.1, @mui/icons-material@npm:^5.15.15":
+"@mui/core-downloads-tracker@npm:^5.15.16":
+  version: 5.15.16
+  resolution: "@mui/core-downloads-tracker@npm:5.15.16"
+  checksum: 10c0/74e89bdc1ef103be01338792aeef3b916549f34b6816fa51ab8bdfbc8b96504ead36d98bd3b3585818362fb55274297cb69994bd1717ff0ec4e87b172859e369
+  languageName: node
+  linkType: hard
+
+"@mui/icons-material@npm:^5.0.1":
   version: 5.15.15
   resolution: "@mui/icons-material@npm:5.15.15"
   dependencies:
@@ -1265,7 +1272,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.0.2, @mui/material@npm:^5.15.15":
+"@mui/icons-material@npm:^5.15.16":
+  version: 5.15.16
+  resolution: "@mui/icons-material@npm:5.15.16"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.9"
+  peerDependencies:
+    "@mui/material": ^5.0.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/bc5b627298e4df75eb03f564c7eb6e84a9ed31073b328f52934ff0880c159b088c86693671dc0dd2000e16f0a737ca3d179b9b42f3d785c0ddfee9551e7d2fb9
+  languageName: node
+  linkType: hard
+
+"@mui/material@npm:^5.0.2":
   version: 5.15.15
   resolution: "@mui/material@npm:5.15.15"
   dependencies:
@@ -1295,6 +1318,39 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/ed463112556e45ffa6cd1045eb08c412e9b9d80f049be069b557fa41703be437ab9cd7ae0816adf8bcbef73d11f9cd1df2ae82502d4b905fa483642ac01e1b62
+  languageName: node
+  linkType: hard
+
+"@mui/material@npm:^5.15.16":
+  version: 5.15.16
+  resolution: "@mui/material@npm:5.15.16"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.9"
+    "@mui/base": "npm:5.0.0-beta.40"
+    "@mui/core-downloads-tracker": "npm:^5.15.16"
+    "@mui/system": "npm:^5.15.15"
+    "@mui/types": "npm:^7.2.14"
+    "@mui/utils": "npm:^5.15.14"
+    "@types/react-transition-group": "npm:^4.4.10"
+    clsx: "npm:^2.1.0"
+    csstype: "npm:^3.1.3"
+    prop-types: "npm:^15.8.1"
+    react-is: "npm:^18.2.0"
+    react-transition-group: "npm:^4.4.5"
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 10c0/0ca3a4b40b57577528b548b4d16569d01ae5c498c84e6508f18c76d278d896480ce4a88603e3d7230a18ef6be85cb29abfbf44e9ec1d094c5220c89be1c5b1c9
   languageName: node
   linkType: hard
 
@@ -6614,7 +6670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@npm:^4.11.2, ra-core@npm:^4.16.15, ra-core@npm:^4.16.2":
+"ra-core@npm:^4.11.2, ra-core@npm:^4.16.2":
   version: 4.16.15
   resolution: "ra-core@npm:4.16.15"
   dependencies:
@@ -6639,9 +6695,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@npm:^4.16.16":
-  version: 4.16.16
-  resolution: "ra-core@npm:4.16.16"
+"ra-core@npm:^4.16.17":
+  version: 4.16.17
+  resolution: "ra-core@npm:4.16.17"
   dependencies:
     clsx: "npm:^1.1.1"
     date-fns: "npm:^2.19.0"
@@ -6660,35 +6716,26 @@ __metadata:
     react-hook-form: ^7.43.9
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
-  checksum: 10c0/178c163928aa41a2a1f59f114f33787aa8c2fdecc12466c65b1f49195ca54d5180ce193d3edf82934aff95839a2942858921a46e19d367f0b29f3448623c790e
+  checksum: 10c0/164f50f8d541e77773e92daa79ae51db7a395a92d99f5f38e96012e67a5022241012f6b1c44a29d090b8ab764e618820eb541cfe4e053620e547d360e8f4601d
   languageName: node
   linkType: hard
 
-"ra-i18n-polyglot@npm:^4.16.15":
-  version: 4.16.15
-  resolution: "ra-i18n-polyglot@npm:4.16.15"
+"ra-i18n-polyglot@npm:^4.16.17":
+  version: 4.16.17
+  resolution: "ra-i18n-polyglot@npm:4.16.17"
   dependencies:
     node-polyglot: "npm:^2.2.2"
-    ra-core: "npm:^4.16.15"
-  checksum: 10c0/3fdc5fb453e3869356609d83f3be96a7b048dc4d9ce39a2504a3ddaa9dc6ab841fe656d422b04a6fcf834b6ccd94436577a07ba5d65cba06283e8e0ce7ada438
+    ra-core: "npm:^4.16.17"
+  checksum: 10c0/e2c65262a2986d000db49a0e94e155b8d9e92fcd7d4ac2e714ace8caaf2513bd1d026fee4f4cdcd5c2c09c41c4b92dbc1fc98a9e49692d650ff36a1fb0e7fef2
   languageName: node
   linkType: hard
 
-"ra-language-english@npm:^4.16.15":
-  version: 4.16.15
-  resolution: "ra-language-english@npm:4.16.15"
+"ra-language-english@npm:^4.16.17":
+  version: 4.16.17
+  resolution: "ra-language-english@npm:4.16.17"
   dependencies:
-    ra-core: "npm:^4.16.15"
-  checksum: 10c0/60bc1ee51f43d556a0a582b1ce10e7dddb01f30b0436470dceb63b3aead5286fda2ec828c2ca7d71f90bdf7f3117dfe4d078a50ebc335ece3bcf8ad8b34eac7b
-  languageName: node
-  linkType: hard
-
-"ra-language-english@npm:^4.16.16":
-  version: 4.16.16
-  resolution: "ra-language-english@npm:4.16.16"
-  dependencies:
-    ra-core: "npm:^4.16.16"
-  checksum: 10c0/01ad5219730a67702c2eca311a54308344663792847cbfb3efda320818566106e56dbbf940618f6ad5d8eed4d8a02960a26e8408730afe0948a9056eabc9a85f
+    ra-core: "npm:^4.16.17"
+  checksum: 10c0/2b198ed50225f8985cc68de0eb92bf3b71b1a6bcf4f108ba89fe88e5c13cb4a4d2812fa02aa1fedd53cd029e4b549ab274956d284606368e14a79e82cccf2e95
   languageName: node
   linkType: hard
 
@@ -6701,12 +6748,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-language-french@npm:^4.16.16":
-  version: 4.16.16
-  resolution: "ra-language-french@npm:4.16.16"
+"ra-language-french@npm:^4.16.17":
+  version: 4.16.17
+  resolution: "ra-language-french@npm:4.16.17"
   dependencies:
-    ra-core: "npm:^4.16.16"
-  checksum: 10c0/664fe1b989d8c5cb7dd680ef4df7f9b41c63a3edc0060bafea71da203850dc1fb8acd67b7f4825125786a36614a854bd8945d54991bd8f84ec761caadc096eae
+    ra-core: "npm:^4.16.17"
+  checksum: 10c0/dea25adcd5b8587495e032aa0e8f99d6a9a3e8f47427840723c560b02cc2c8b8ccc917cba293e5bce7b3e353ac50bda20c3f00159192e5513668959289a1868a
   languageName: node
   linkType: hard
 
@@ -6717,9 +6764,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-ui-materialui@npm:^4.16.15":
-  version: 4.16.15
-  resolution: "ra-ui-materialui@npm:4.16.15"
+"ra-ui-materialui@npm:^4.16.17":
+  version: 4.16.17
+  resolution: "ra-ui-materialui@npm:4.16.17"
   dependencies:
     autosuggest-highlight: "npm:^3.1.1"
     clsx: "npm:^1.1.1"
@@ -6745,30 +6792,30 @@ __metadata:
     react-is: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
-  checksum: 10c0/eb7fc4aa27b050c057cf396ec199c099bec4e0a5bc7f3d7d2a6c4345b76a475a0c6bb086209b6aa6e5b41ba622850bcfd9f90bf96880f69a5f638a6094e65f6d
+  checksum: 10c0/27337cbf3d7a00c225750952869f31fa764ececf45c2fb587e445dfbee69c79fd1da13de30d48b8214c59e4306ab49b8d69e6bb63a00dd14a6c10be7ac7826ed
   languageName: node
   linkType: hard
 
-"react-admin@npm:^4.16.15":
-  version: 4.16.15
-  resolution: "react-admin@npm:4.16.15"
+"react-admin@npm:^4.16.17":
+  version: 4.16.17
+  resolution: "react-admin@npm:4.16.17"
   dependencies:
     "@emotion/react": "npm:^11.4.1"
     "@emotion/styled": "npm:^11.3.0"
     "@mui/icons-material": "npm:^5.0.1"
     "@mui/material": "npm:^5.0.2"
     history: "npm:^5.1.0"
-    ra-core: "npm:^4.16.15"
-    ra-i18n-polyglot: "npm:^4.16.15"
-    ra-language-english: "npm:^4.16.15"
-    ra-ui-materialui: "npm:^4.16.15"
+    ra-core: "npm:^4.16.17"
+    ra-i18n-polyglot: "npm:^4.16.17"
+    ra-language-english: "npm:^4.16.17"
+    ra-ui-materialui: "npm:^4.16.17"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.1.0"
     react-router-dom: "npm:^6.1.0"
   peerDependencies:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/806f6bd3cbbc37f555186c882b015ef809cfb6fbf920eee41e70bbdbcebf0031659a1a52343a57aded32a60f7410373bbc634af9766bca7294a30293172e82ec
+  checksum: 10c0/7e4cf3a2af1829eb75e1c25366e89ec7379291cec2f067112d9b2d9703feb26b704f361e7d4299ae81e5629fd366ccf322c7962a1fff9bfa49574c20a298bc18
   languageName: node
   linkType: hard
 
@@ -7653,8 +7700,8 @@ __metadata:
     "@eslint/js": "npm:^9.1.1"
     "@haleos/ra-language-german": "npm:^1.0.0"
     "@haxqer/ra-language-chinese": "npm:^4.16.2"
-    "@mui/icons-material": "npm:^5.15.15"
-    "@mui/material": "npm:^5.15.15"
+    "@mui/icons-material": "npm:^5.15.16"
+    "@mui/material": "npm:^5.15.16"
     "@testing-library/dom": "npm:^10.0.0"
     "@testing-library/jest-dom": "npm:^6.0.0"
     "@testing-library/react": "npm:^15.0.2"
@@ -7682,14 +7729,14 @@ __metadata:
     papaparse: "npm:^5.4.1"
     prettier: "npm:^3.2.5"
     query-string: "npm:^7.1.1"
-    ra-core: "npm:^4.16.15"
-    ra-i18n-polyglot: "npm:^4.16.15"
-    ra-language-english: "npm:^4.16.16"
+    ra-core: "npm:^4.16.17"
+    ra-i18n-polyglot: "npm:^4.16.17"
+    ra-language-english: "npm:^4.16.17"
     ra-language-farsi: "npm:^4.2.0"
-    ra-language-french: "npm:^4.16.16"
+    ra-language-french: "npm:^4.16.17"
     ra-language-italian: "npm:^3.13.1"
     react: "npm:^18.3.1"
-    react-admin: "npm:^4.16.15"
+    react-admin: "npm:^4.16.17"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.43.9"
     react-is: "npm:^18.3.1"
