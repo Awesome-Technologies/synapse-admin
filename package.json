@@ -54,7 +54,7 @@
     "history": "^5.1.0",
     "lodash": "^4.17.21",
     "papaparse": "^5.4.1",
-    "query-string": "^7.1.1",
+    "query-string": "^9.0.0",
     "ra-core": "^4.16.15",
     "ra-i18n-polyglot": "^4.16.15",
     "ra-language-english": "^4.16.16",
