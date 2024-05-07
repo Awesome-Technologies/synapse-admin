@@ -206,6 +206,7 @@ const de: SynapseTranslationMessages = {
             info: {
               mimetype: "Typ",
             },
+            url: "URL",
           },
         },
       },
