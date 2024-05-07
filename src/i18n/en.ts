@@ -103,6 +103,7 @@ const en: SynapseTranslationMessages = {
         name: "Name",
         is_guest: "Guest",
         admin: "Server Administrator",
+        locked: "Locked",
         deactivated: "Deactivated",
         erased: "Erased",
         guests: "Show guests",
