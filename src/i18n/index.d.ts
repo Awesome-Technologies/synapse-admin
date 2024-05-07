@@ -100,6 +100,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
         is_guest: string;
         admin: string;
         deactivated: string;
+        erased?: string; // TODO: fa, fr, it, zh
         guests: string;
         show_deactivated: string;
         user_id: string;
