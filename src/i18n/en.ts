@@ -105,6 +105,7 @@ const en: SynapseTranslationMessages = {
         admin: "Server Administrator",
         locked: "Locked",
         deactivated: "Deactivated",
+        erased: "Erased",
         guests: "Show guests",
         show_deactivated: "Show deactivated users",
         user_id: "Search user",
