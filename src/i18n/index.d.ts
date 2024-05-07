@@ -87,4 +87,303 @@ interface SynapseTranslationMessages extends TranslationMessages {
       };
     };
   };
+  resources: {
+    users: {
+      name: string;
+      email: string;
+      msisdn: string;
+      threepid: string;
+      fields: {
+        avatar: string;
+        id: string;
+        name: string;
+        is_guest: string;
+        admin: string;
+        deactivated: string;
+        guests: string;
+        show_deactivated: string;
+        user_id: string;
+        displayname: string;
+        password: string;
+        avatar_url: string;
+        avatar_src: string;
+        medium: string;
+        threepids: string;
+        address: string;
+        creation_ts_ms: string;
+        consent_version: string;
+        auth_provider?: string;
+        user_type?: string;
+      };
+      helper: {
+        password?: string;
+        deactivate: string;
+        erase: string;
+      };
+      action: {
+        erase: string;
+      };
+    };
+    rooms: {
+      name: string;
+      fields: {
+        room_id: string;
+        name: string;
+        canonical_alias: string;
+        joined_members: string;
+        joined_local_members: string;
+        joined_local_devices?: string;
+        state_events: string;
+        version: string;
+        is_encrypted: string;
+        encryption: string;
+        federatable: string;
+        public: string;
+        creator: string;
+        join_rules: string;
+        guest_access: string;
+        history_visibility: string;
+        topic?: string;
+        avatar?: string;
+      };
+      helper?: {
+        forward_extremities: string;
+      };
+      enums: {
+        join_rules: {
+          public: string;
+          knock: string;
+          invite: string;
+          private: string;
+        };
+        guest_access: {
+          can_join: string;
+          forbidden: string;
+        };
+        history_visibility: {
+          invited: string;
+          joined: string;
+          shared: string;
+          world_readable: string;
+        };
+        unencrypted: string;
+      };
+      action?: {
+        erase: {
+          title: string;
+          content: string;
+        };
+      };
+    };
+    reports: {
+      name: string;
+      fields: {
+        id: string;
+        received_ts: string;
+        user_id: string;
+        name: string;
+        score: string;
+        reason: string;
+        event_id: string;
+        event_json: {
+          origin: string;
+          origin_server_ts: string;
+          type: string;
+          content: {
+            msgtype: string;
+            body: string;
+            format: string;
+            formatted_body: string;
+            algorithm: string;
+            url?: string;
+            info?: {
+              mimetype: string;
+            };
+          };
+        };
+      };
+      action?: {
+        erase: {
+          title: string;
+          content: string;
+        };
+      };
+    };
+    connections: {
+      name: string;
+      fields: {
+        last_seen: string;
+        ip: string;
+        user_agent: string;
+      };
+    };
+    devices: {
+      name: string;
+      fields: {
+        device_id: string;
+        display_name: string;
+        last_seen_ts: string;
+        last_seen_ip: string;
+      };
+      action: {
+        erase: {
+          title: string;
+          content: string;
+          success: string;
+          failure: string;
+        };
+      };
+    };
+    users_media: {
+      name: string;
+      fields: {
+        media_id: string;
+        media_length: string;
+        media_type: string;
+        upload_name: string;
+        quarantined_by: string;
+        safe_from_quarantine: string;
+        created_ts: string;
+        last_access_ts: string;
+      };
+      action?: {
+        open: string;
+      };
+    };
+    delete_media: {
+      name: string;
+      fields: {
+        before_ts: string;
+        size_gt: string;
+        keep_profiles: string;
+      };
+      action: {
+        send: string;
+        send_success: string;
+        send_failure: string;
+      };
+      helper: {
+        send: string;
+      };
+    };
+    protect_media?: {
+      action: {
+        create: string;
+        delete: string;
+        none: string;
+        send_success: string;
+        send_failure: string;
+      };
+    };
+    quarantine_media?: {
+      action: {
+        name: string;
+        create: string;
+        delete: string;
+        none: string;
+        send_success: string;
+        send_failure: string;
+      };
+    };
+    pushers: {
+      name: string;
+      fields: {
+        app: string;
+        app_display_name: string;
+        app_id: string;
+        device_display_name: string;
+        kind: string;
+        lang: string;
+        profile_tag: string;
+        pushkey: string;
+        data: {
+          url: string;
+        };
+      };
+    };
+    servernotices: {
+      name: string;
+      send: string;
+      fields: {
+        body: string;
+      };
+      action: {
+        send: string;
+        send_success: string;
+        send_failure: string;
+      };
+      helper: {
+        send: string;
+      };
+    };
+    user_media_statistics: {
+      name: string;
+      fields: {
+        media_count: string;
+        media_length: string;
+      };
+    };
+    forward_extremities?: {
+      name: string;
+      fields: {
+        id: string;
+        received_ts: string;
+        depth: string;
+        state_group: string;
+      };
+    };
+    room_state?: {
+      name: string;
+      fields: {
+        type: string;
+        content: string;
+        origin_server_ts: string;
+        sender: string;
+      };
+    };
+    room_directory?: {
+      name: string;
+      fields: {
+        world_readable: string;
+        guest_can_join: string;
+      };
+      action: {
+        title: string;
+        content: string;
+        erase: string;
+        create: string;
+        send_success: string;
+        send_failure: string;
+      };
+    };
+    destinations?: {
+      name: string;
+      fields: {
+        destination: string;
+        failure_ts: string;
+        retry_last_ts: string;
+        retry_interval: string;
+        last_successful_stream_ordering: string;
+        stream_ordering: string;
+      };
+      action: {
+        reconnect: string;
+      };
+    };
+    registration_tokens?: {
+      name: string;
+      fields: {
+        token: string;
+        valid: string;
+        uses_allowed: string;
+        pending: string;
+        completed: string;
+        expiry_time: string;
+        length: string;
+      };
+      helper: {
+        length: string;
+      };
+    };
+  };
 }
