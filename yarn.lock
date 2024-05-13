@@ -1249,6 +1249,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/core-downloads-tracker@npm:^5.15.17":
+  version: 5.15.17
+  resolution: "@mui/core-downloads-tracker@npm:5.15.17"
+  checksum: 10c0/cd409e35b2d07fe08ef886b66f0d39d2441226ccc93446958cb2aa6253a99180712c73704e6eeea74467b857a3d28dab1d8d21efaf34b2f3538d632544b9c6fd
+  languageName: node
+  linkType: hard
+
 "@mui/icons-material@npm:^5.0.1, @mui/icons-material@npm:^5.15.16":
   version: 5.15.16
   resolution: "@mui/icons-material@npm:5.15.16"
@@ -1265,7 +1272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.0.2, @mui/material@npm:^5.15.16":
+"@mui/material@npm:^5.0.2":
   version: 5.15.16
   resolution: "@mui/material@npm:5.15.16"
   dependencies:
@@ -1295,6 +1302,39 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/0ca3a4b40b57577528b548b4d16569d01ae5c498c84e6508f18c76d278d896480ce4a88603e3d7230a18ef6be85cb29abfbf44e9ec1d094c5220c89be1c5b1c9
+  languageName: node
+  linkType: hard
+
+"@mui/material@npm:^5.15.17":
+  version: 5.15.17
+  resolution: "@mui/material@npm:5.15.17"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.9"
+    "@mui/base": "npm:5.0.0-beta.40"
+    "@mui/core-downloads-tracker": "npm:^5.15.17"
+    "@mui/system": "npm:^5.15.15"
+    "@mui/types": "npm:^7.2.14"
+    "@mui/utils": "npm:^5.15.14"
+    "@types/react-transition-group": "npm:^4.4.10"
+    clsx: "npm:^2.1.0"
+    csstype: "npm:^3.1.3"
+    prop-types: "npm:^15.8.1"
+    react-is: "npm:^18.2.0"
+    react-transition-group: "npm:^4.4.5"
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 10c0/0213695c7aab8542cc069a03908d584814c0a4d6c33618afa0e691774583f33979b1424a290626b723165b450eea5277bc9291b778e9827d8bf8ebf2fdfe7bf7
   languageName: node
   linkType: hard
 
@@ -7572,7 +7612,7 @@ __metadata:
     "@haleos/ra-language-german": "npm:^1.0.0"
     "@haxqer/ra-language-chinese": "npm:^4.16.2"
     "@mui/icons-material": "npm:^5.15.16"
-    "@mui/material": "npm:^5.15.16"
+    "@mui/material": "npm:^5.15.17"
     "@testing-library/dom": "npm:^10.0.0"
     "@testing-library/jest-dom": "npm:^6.0.0"
     "@testing-library/react": "npm:^15.0.2"
