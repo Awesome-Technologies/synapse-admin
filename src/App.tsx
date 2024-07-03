@@ -50,6 +50,7 @@ const App = () => (
     authProvider={authProvider}
     dataProvider={dataProvider}
     i18nProvider={i18nProvider}
+    darkTheme={{ palette: { mode: "dark" } }}
   >
     <CustomRoutes>
       <Route path="/import_users" element={<ImportFeature />} />
