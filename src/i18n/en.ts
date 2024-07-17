@@ -86,7 +86,7 @@ const en: SynapseTranslationMessages = {
         successful: "%{smart_count} entries successfully imported",
         skipped: "%{smart_count} entries skipped",
         download_skipped: "Download skipped records",
-        with_error: "%{smart_count} entry with errors ||| %{smart_count} entries with errors",
+        with_error: "%{smart_count} entry with errors |||| %{smart_count} entries with errors",
         simulated_only: "Run was only simulated",
       },
     },

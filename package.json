@@ -61,6 +61,7 @@
     "ra-language-farsi": "^4.2.0",
     "ra-language-french": "^4.16.17",
     "ra-language-italian": "^3.13.1",
+    "ra-language-russian": "^4.14.2",
     "react": "^18.3.1",
     "react-admin": "^4.16.17",
     "react-dom": "^18.3.1",
