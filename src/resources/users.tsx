@@ -140,7 +140,7 @@ const UserEditActions = () => {
 
   return (
     <TopToolbar>
-      {!record.deactivated && <ServerNoticeButton />}
+      {!record?.deactivated && <ServerNoticeButton />}
       <DeleteButton
         label="resources.users.action.erase"
         confirmTitle={translate("resources.users.helper.erase", {
