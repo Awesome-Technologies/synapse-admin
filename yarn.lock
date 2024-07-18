@@ -812,10 +812,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:^9.6.0":
-  version: 9.6.0
-  resolution: "@eslint/js@npm:9.6.0"
-  checksum: 10c0/83967a7e59f2e958c9bbb3acd0929cad00d59d927ad786ed8e0d30b07f983c6bea3af6f4ad32da32145db40b7a741a816ba339bdd8960fc7fc8231716d943b7f
+"@eslint/js@npm:^9.7.0":
+  version: 9.7.0
+  resolution: "@eslint/js@npm:9.7.0"
+  checksum: 10c0/73fc10666f6f4aed6f58e407e09f42ceb0d42fa60c52701c64ea9f59a81a6a8ad5caecdfd423d03088481515fe7ec17eb461acb4ef1ad70b649b6eae465b3164
   languageName: node
   linkType: hard
 
@@ -7746,7 +7746,7 @@ __metadata:
   dependencies:
     "@emotion/react": "npm:^11.4.1"
     "@emotion/styled": "npm:^11.3.0"
-    "@eslint/js": "npm:^9.6.0"
+    "@eslint/js": "npm:^9.7.0"
     "@haleos/ra-language-german": "npm:^1.0.0"
     "@haxqer/ra-language-chinese": "npm:^4.16.2"
     "@matrix-org/spec": "npm:^1.10.1"

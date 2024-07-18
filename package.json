@@ -12,7 +12,7 @@
   },
   "packageManager": "yarn@4.1.1",
   "devDependencies": {
-    "@eslint/js": "^9.6.0",
+    "@eslint/js": "^9.7.0",
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^15.0.2",
