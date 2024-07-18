@@ -27,6 +27,7 @@ import {
   useNotify,
   useRefresh,
   useTranslate,
+  DateFieldProps,
 } from "react-admin";
 
 import { DATE_FORMAT } from "../components/date";
@@ -92,6 +93,14 @@ const DestinationTitle = () => {
   );
 };
 
+const RetryDateField = (props: DateFieldProps) => {
+  const record = useRecordContext(props);
+  if (props.source && get(record, props.source) === 0) {
+    return <DateField {...props} record={{...record, [props.source]: null}} />
+  }
+  return <DateField {...props} />
+}
+
 export const DestinationList = (props: ListProps) => {
   return (
     <List
@@ -103,7 +112,7 @@ export const DestinationList = (props: ListProps) => {
       <Datagrid rowSx={destinationRowSx} rowClick={id => `${id}/show/rooms`} bulkActionButtons={false}>
         <TextField source="destination" />
         <DateField source="failure_ts" showTime options={DATE_FORMAT} />
-        <DateField source="retry_last_ts" showTime options={DATE_FORMAT} />
+        <RetryDateField source="retry_last_ts" showTime options={DATE_FORMAT} />
         <TextField source="retry_interval" />
         <TextField source="last_successful_stream_ordering" />
         <DestinationReconnectButton />
