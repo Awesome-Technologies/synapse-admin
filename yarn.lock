@@ -6746,7 +6746,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@npm:^4.11.2, ra-core@npm:^4.16.17, ra-core@npm:^4.16.2":
+"ra-core@npm:^4.11.2, ra-core@npm:^4.16.2":
   version: 4.16.17
   resolution: "ra-core@npm:4.16.17"
   dependencies:
@@ -6771,22 +6771,47 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-i18n-polyglot@npm:^4.16.17":
-  version: 4.16.17
-  resolution: "ra-i18n-polyglot@npm:4.16.17"
+"ra-core@npm:^4.16.20":
+  version: 4.16.20
+  resolution: "ra-core@npm:4.16.20"
   dependencies:
-    node-polyglot: "npm:^2.2.2"
-    ra-core: "npm:^4.16.17"
-  checksum: 10c0/e2c65262a2986d000db49a0e94e155b8d9e92fcd7d4ac2e714ace8caaf2513bd1d026fee4f4cdcd5c2c09c41c4b92dbc1fc98a9e49692d650ff36a1fb0e7fef2
+    clsx: "npm:^1.1.1"
+    date-fns: "npm:^2.19.0"
+    eventemitter3: "npm:^4.0.7"
+    inflection: "npm:~1.12.0"
+    jsonexport: "npm:^3.2.0"
+    lodash: "npm:~4.17.5"
+    prop-types: "npm:^15.6.1"
+    query-string: "npm:^7.1.1"
+    react-is: "npm:^17.0.2"
+    react-query: "npm:^3.32.1"
+  peerDependencies:
+    history: ^5.1.0
+    react: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
+    react-hook-form: ^7.43.9
+    react-router: ^6.1.0
+    react-router-dom: ^6.1.0
+  checksum: 10c0/0aa593f0eb7f33eb2a1cf6809e88fe0743f6609b7c9128a4dff8bc74c9702b370730a1840c7842bffe67ae0ce65bffe5506d9e4897f9a21a546acb859257819c
   languageName: node
   linkType: hard
 
-"ra-language-english@npm:^4.16.17":
-  version: 4.16.17
-  resolution: "ra-language-english@npm:4.16.17"
+"ra-i18n-polyglot@npm:^4.16.20":
+  version: 4.16.20
+  resolution: "ra-i18n-polyglot@npm:4.16.20"
   dependencies:
-    ra-core: "npm:^4.16.17"
-  checksum: 10c0/2b198ed50225f8985cc68de0eb92bf3b71b1a6bcf4f108ba89fe88e5c13cb4a4d2812fa02aa1fedd53cd029e4b549ab274956d284606368e14a79e82cccf2e95
+    node-polyglot: "npm:^2.2.2"
+    ra-core: "npm:^4.16.20"
+  checksum: 10c0/ba1c303737e5bc7ea22fa37ad4f49f2728a65e82336f054c368ac89a2e4dc27b2fcb64aa7d813d8d34370a5dde7eb9ae5b01caeec4f215d18bb41428fafda0d0
+  languageName: node
+  linkType: hard
+
+"ra-language-english@npm:^4.16.20":
+  version: 4.16.20
+  resolution: "ra-language-english@npm:4.16.20"
+  dependencies:
+    ra-core: "npm:^4.16.20"
+  checksum: 10c0/b827009338defb12621f5968dd80babf8bce2ac0947bed2dcd76a3486847948c3595e4d758b340e0e84a58cbbc46dc87da878cbcdc5215004b00ea11600853fa
   languageName: node
   linkType: hard
 
@@ -6799,12 +6824,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-language-french@npm:^4.16.17":
-  version: 4.16.17
-  resolution: "ra-language-french@npm:4.16.17"
+"ra-language-french@npm:^4.16.20":
+  version: 4.16.20
+  resolution: "ra-language-french@npm:4.16.20"
   dependencies:
-    ra-core: "npm:^4.16.17"
-  checksum: 10c0/dea25adcd5b8587495e032aa0e8f99d6a9a3e8f47427840723c560b02cc2c8b8ccc917cba293e5bce7b3e353ac50bda20c3f00159192e5513668959289a1868a
+    ra-core: "npm:^4.16.20"
+  checksum: 10c0/3a2bd2bcc31d4ec3c401c761601c77109d9741cf24398e2eb5e30b53df6bcc9f99d3bf96c43814d0de9cc74f4417f8e904203689e442c2b20a27a7103643ea1f
   languageName: node
   linkType: hard
 
@@ -6824,9 +6849,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-ui-materialui@npm:^4.16.17":
-  version: 4.16.17
-  resolution: "ra-ui-materialui@npm:4.16.17"
+"ra-ui-materialui@npm:^4.16.20":
+  version: 4.16.20
+  resolution: "ra-ui-materialui@npm:4.16.20"
   dependencies:
     autosuggest-highlight: "npm:^3.1.1"
     clsx: "npm:^1.1.1"
@@ -6852,30 +6877,30 @@ __metadata:
     react-is: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
-  checksum: 10c0/27337cbf3d7a00c225750952869f31fa764ececf45c2fb587e445dfbee69c79fd1da13de30d48b8214c59e4306ab49b8d69e6bb63a00dd14a6c10be7ac7826ed
+  checksum: 10c0/d57ef6bec4390d3e1e9980d027f031f3e06b7761ab5a37f963ada125a1a434320adc6e6014ac8140995d1c205083f80b2a09fb20ef95a3f429e844baf2edb502
   languageName: node
   linkType: hard
 
-"react-admin@npm:^4.16.17":
-  version: 4.16.17
-  resolution: "react-admin@npm:4.16.17"
+"react-admin@npm:^4.16.20":
+  version: 4.16.20
+  resolution: "react-admin@npm:4.16.20"
   dependencies:
     "@emotion/react": "npm:^11.4.1"
     "@emotion/styled": "npm:^11.3.0"
     "@mui/icons-material": "npm:^5.0.1"
     "@mui/material": "npm:^5.0.2"
     history: "npm:^5.1.0"
-    ra-core: "npm:^4.16.17"
-    ra-i18n-polyglot: "npm:^4.16.17"
-    ra-language-english: "npm:^4.16.17"
-    ra-ui-materialui: "npm:^4.16.17"
+    ra-core: "npm:^4.16.20"
+    ra-i18n-polyglot: "npm:^4.16.20"
+    ra-language-english: "npm:^4.16.20"
+    ra-ui-materialui: "npm:^4.16.20"
     react-hook-form: "npm:^7.43.9"
     react-router: "npm:^6.1.0"
     react-router-dom: "npm:^6.1.0"
   peerDependencies:
     react: ^16.9.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.9.0 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/7e4cf3a2af1829eb75e1c25366e89ec7379291cec2f067112d9b2d9703feb26b704f361e7d4299ae81e5629fd366ccf322c7962a1fff9bfa49574c20a298bc18
+  checksum: 10c0/c65bbf75e8fbc8d35c159f9bb65f10a2444cfba46118c1e233960a337ce1b9967089e47a6813d328069ff7b268b13df24a987b39dcbe5300b9d738c17d8338ad
   languageName: node
   linkType: hard
 
@@ -7801,15 +7826,15 @@ __metadata:
     papaparse: "npm:^5.4.1"
     prettier: "npm:^3.3.3"
     query-string: "npm:^7.1.1"
-    ra-core: "npm:^4.16.17"
-    ra-i18n-polyglot: "npm:^4.16.17"
-    ra-language-english: "npm:^4.16.17"
+    ra-core: "npm:^4.16.20"
+    ra-i18n-polyglot: "npm:^4.16.20"
+    ra-language-english: "npm:^4.16.20"
     ra-language-farsi: "npm:^4.2.0"
-    ra-language-french: "npm:^4.16.17"
+    ra-language-french: "npm:^4.16.20"
     ra-language-italian: "npm:^3.13.1"
     ra-language-russian: "npm:^4.14.2"
     react: "npm:^18.3.1"
-    react-admin: "npm:^4.16.17"
+    react-admin: "npm:^4.16.20"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.52.1"
     react-is: "npm:^18.3.1"
