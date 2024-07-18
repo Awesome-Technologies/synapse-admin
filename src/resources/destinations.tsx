@@ -87,7 +87,7 @@ const DestinationTitle = () => {
   const translate = useTranslate();
   return (
     <span>
-      {translate("resources.destinations.name", 1)} {record.destination}
+      {translate("resources.destinations.name", 1)} {record?.destination}
     </span>
   );
 };
