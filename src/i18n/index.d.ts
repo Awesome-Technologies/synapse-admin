@@ -120,6 +120,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
         erased?: string; // TODO: fa, fr, it, zh
         guests: string;
         show_deactivated: string;
+        show_locked?: string; // TODO: de, fa, fr, it, zh
         user_id: string;
         displayname: string;
         password: string;

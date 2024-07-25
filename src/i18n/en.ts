@@ -124,6 +124,7 @@ const en: SynapseTranslationMessages = {
         erased: "Erased",
         guests: "Show guests",
         show_deactivated: "Show deactivated users",
+        show_locked: "Show locked users",
         user_id: "Search user",
         displayname: "Displayname",
         password: "Password",
