@@ -1,9 +1,11 @@
+import { get } from "lodash";
 import { MouseEvent } from "react";
 
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import { blue } from "@mui/material/colors";
 import {
   Button,
   Datagrid,
@@ -27,14 +29,26 @@ import {
   useNotify,
   useRefresh,
   useTranslate,
+  useTheme,
+  DateFieldProps,
 } from "react-admin";
 
 import { DATE_FORMAT } from "../components/date";
 
 const DestinationPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
-const destinationRowSx = (record: RaRecord) => ({
-  backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : "white",
+const destinationRowSxLight = (record: RaRecord) => ({
+  backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : undefined,
+});
+
+const destinationRowSxDark = (record: RaRecord) => ({
+  backgroundColor: record.retry_last_ts > 0 ? "#ffcccc" : undefined,
+  "& > td": {
+    color: record.retry_last_ts > 0 ? "black" : "white",
+    "& > button": {
+      color: blue[600],
+    },
+  },
 });
 
 const destinationFilters = [<SearchInput source="destination" alwaysOn />];
@@ -92,7 +106,17 @@ const DestinationTitle = () => {
   );
 };
 
+const RetryDateField = (props: DateFieldProps) => {
+  const record = useRecordContext(props);
+  if (props.source && get(record, props.source) === 0) {
+    return <DateField {...props} record={{ ...record, [props.source]: null }} />;
+  }
+  return <DateField {...props} />;
+};
+
 export const DestinationList = (props: ListProps) => {
+  const [theme] = useTheme();
+  const destinationRowSx = theme === "light" ? destinationRowSxLight : destinationRowSxDark;
   return (
     <List
       {...props}
@@ -103,7 +127,7 @@ export const DestinationList = (props: ListProps) => {
       <Datagrid rowSx={destinationRowSx} rowClick={id => `${id}/show/rooms`} bulkActionButtons={false}>
         <TextField source="destination" />
         <DateField source="failure_ts" showTime options={DATE_FORMAT} />
-        <DateField source="retry_last_ts" showTime options={DATE_FORMAT} />
+        <RetryDateField source="retry_last_ts" showTime options={DATE_FORMAT} />
         <TextField source="retry_interval" />
         <TextField source="last_successful_stream_ordering" />
         <DestinationReconnectButton />
