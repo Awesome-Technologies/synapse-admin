@@ -27,6 +27,7 @@ import {
   isValidBaseUrl,
   splitMxid,
 } from "../synapse/synapse";
+import storage from "../storage";
 
 const FormBox = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -94,7 +95,7 @@ const LoginPage = () => {
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
   const translate = useTranslate();
-  const base_url = allowSingleBaseUrl ? restrictBaseUrl : localStorage.getItem("base_url");
+  const base_url = allowSingleBaseUrl ? restrictBaseUrl : storage.getItem("base_url");
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
 
@@ -103,8 +104,8 @@ const LoginPage = () => {
     console.log("SSO token is", ssoToken);
     // Prevent further requests
     window.history.replaceState({}, "", window.location.href.replace(loginToken[0], "#").split("#")[0]);
-    const baseUrl = localStorage.getItem("sso_base_url");
-    localStorage.removeItem("sso_base_url");
+    const baseUrl = storage.getItem("sso_base_url");
+    storage.removeItem("sso_base_url");
     if (baseUrl) {
       const auth = {
         base_url: baseUrl,
@@ -154,7 +155,7 @@ const LoginPage = () => {
   };
 
   const handleSSO = () => {
-    localStorage.setItem("sso_base_url", ssoBaseUrl);
+    storage.setItem("sso_base_url", ssoBaseUrl);
     const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
       window.location.href
     )}`;

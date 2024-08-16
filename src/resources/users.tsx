@@ -128,8 +128,8 @@ export const UserList = (props: ListProps) => (
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
 // here only local part of user_id
-// maxLength = 255 - "@" - ":" - localStorage.getItem("home_server").length
-// localStorage.getItem("home_server").length is not valid here
+// maxLength = 255 - "@" - ":" - storage.getItem("home_server").length
+// storage.getItem("home_server").length is not valid here
 const validateUser = [required(), maxLength(253), regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id")];
 
 const validateAddress = [required(), maxLength(255)];

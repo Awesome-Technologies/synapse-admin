@@ -1,5 +1,7 @@
 import { AuthProvider, Options, fetchUtils } from "react-admin";
 
+import storage from "../storage";
+
 const authProvider: AuthProvider = {
   // called when the user attempts to log in
   login: async ({
@@ -19,7 +21,7 @@ const authProvider: AuthProvider = {
       body: JSON.stringify(
         Object.assign(
           {
-            device_id: localStorage.getItem("device_id"),
+            device_id: storage.getItem("device_id"),
             initial_device_display_name: "Synapse Admin",
           },
           loginToken
@@ -40,23 +42,23 @@ const authProvider: AuthProvider = {
     // server, since the admin might want to access the admin API via some
     // private address
     base_url = base_url.replace(/\/+$/g, "");
-    localStorage.setItem("base_url", base_url);
+    storage.setItem("base_url", base_url);
 
     const decoded_base_url = window.decodeURIComponent(base_url);
     const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
 
     const { json } = await fetchUtils.fetchJson(login_api_url, options);
-    localStorage.setItem("home_server", json.home_server);
-    localStorage.setItem("user_id", json.user_id);
-    localStorage.setItem("access_token", json.access_token);
-    localStorage.setItem("device_id", json.device_id);
+    storage.setItem("home_server", json.home_server);
+    storage.setItem("user_id", json.user_id);
+    storage.setItem("access_token", json.access_token);
+    storage.setItem("device_id", json.device_id);
   },
   // called when the user clicks on the logout button
   logout: async () => {
     console.log("logout");
 
-    const logout_api_url = localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
-    const access_token = localStorage.getItem("access_token");
+    const logout_api_url = storage.getItem("base_url") + "/_matrix/client/r0/logout";
+    const access_token = storage.getItem("access_token");
 
     const options: Options = {
       method: "POST",
@@ -68,7 +70,7 @@ const authProvider: AuthProvider = {
 
     if (typeof access_token === "string") {
       await fetchUtils.fetchJson(logout_api_url, options);
-      localStorage.removeItem("access_token");
+      storage.removeItem("access_token");
     }
   },
   // called when the API returns an error
@@ -81,7 +83,7 @@ const authProvider: AuthProvider = {
   },
   // called when the user navigates to a new location, to check for authentication
   checkAuth: () => {
-    const access_token = localStorage.getItem("access_token");
+    const access_token = storage.getItem("access_token");
     console.log("checkAuth " + access_token);
     return typeof access_token === "string" ? Promise.resolve() : Promise.reject();
   },

@@ -34,6 +34,7 @@ import { Link } from "react-router-dom";
 import { dateParser } from "./date";
 import { DeleteMediaParams, SynapseDataProvider } from "../synapse/dataProvider";
 import { getMediaUrl } from "../synapse/synapse";
+import storage from "../storage";
 
 const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
   const translate = useTranslate();
@@ -339,7 +340,7 @@ export const ViewMediaButton = ({ media_id, label }) => {
 };
 
 export const MediaIDField = ({ source }) => {
-  const homeserver = localStorage.getItem("home_server");
+  const homeserver = storage.getItem("home_server");
   const record = useRecordContext();
   if (!record) return null;
 

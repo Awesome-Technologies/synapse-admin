@@ -1,5 +1,7 @@
 import { fetchUtils } from "react-admin";
 
+import storage from "../storage";
+
 export const splitMxid = mxid => {
   const re = /^@(?<name>[a-zA-Z0-9._=\-/]+):(?<domain>[a-zA-Z0-9\-.]+\.[a-zA-Z]+)$/;
   return re.exec(mxid)?.groups;
@@ -53,7 +55,7 @@ export const getSupportedLoginFlows = async baseUrl => {
 };
 
 export const getMediaUrl = media_id => {
-  const baseUrl = localStorage.getItem("base_url");
+  const baseUrl = storage.getItem("base_url");
   return `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
 };
 
@@ -62,7 +64,7 @@ export const getMediaUrl = media_id => {
  * @returns full MXID as string
  */
 export function generateRandomMxId(): string {
-  const homeserver = localStorage.getItem("home_server");
+  const homeserver = storage.getItem("home_server");
   const characters = "0123456789abcdefghijklmnopqrstuvwxyz";
   const localpart = Array.from(crypto.getRandomValues(new Uint32Array(8)))
     .map(x => characters[x % characters.length])

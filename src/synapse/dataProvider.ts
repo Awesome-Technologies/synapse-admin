@@ -2,9 +2,11 @@ import { stringify } from "query-string";
 
 import { DataProvider, DeleteParams, Identifier, Options, RaRecord, fetchUtils } from "react-admin";
 
+import storage from "../storage";
+
 // Adds the access token to all requests
 const jsonClient = (url: string, options: Options = {}) => {
-  const token = localStorage.getItem("access_token");
+  const token = storage.getItem("access_token");
   console.log("httpClient " + url);
   if (token != null) {
     options.user = {
@@ -16,7 +18,7 @@ const jsonClient = (url: string, options: Options = {}) => {
 };
 
 const mxcUrlToHttp = (mxcUrl: string) => {
-  const homeserver = localStorage.getItem("base_url");
+  const homeserver = storage.getItem("base_url");
   const re = /^mxc:\/\/([^/]+)\/(\w+)/;
   const ret = re.exec(mxcUrl);
   console.log("mxcClient " + ret);
@@ -232,7 +234,7 @@ const resourceMap = {
     data: "users",
     total: json => json.total,
     create: (data: RaRecord) => ({
-      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${localStorage.getItem("home_server")}`,
+      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${storage.getItem("home_server")}`,
       body: data,
       method: "PUT",
     }),
@@ -341,7 +343,7 @@ const resourceMap = {
     data: "media",
     total: json => json.total,
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/${localStorage.getItem("home_server")}/${params.id}`,
+      endpoint: `/_synapse/admin/v1/media/${storage.getItem("home_server")}/${params.id}`,
     }),
   },
   protect_media: {
@@ -358,11 +360,11 @@ const resourceMap = {
   quarantine_media: {
     map: (qm: UserMedia) => ({ id: qm.media_id }),
     create: (params: UserMedia) => ({
-      endpoint: `/_synapse/admin/v1/media/quarantine/${localStorage.getItem("home_server")}/${params.media_id}`,
+      endpoint: `/_synapse/admin/v1/media/quarantine/${storage.getItem("home_server")}/${params.media_id}`,
       method: "POST",
     }),
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/unquarantine/${localStorage.getItem("home_server")}/${params.id}`,
+      endpoint: `/_synapse/admin/v1/media/unquarantine/${storage.getItem("home_server")}/${params.id}`,
       method: "POST",
     }),
   },
@@ -506,7 +508,7 @@ const dataProvider: SynapseDataProvider = {
       order_by: field,
       dir: getSearchOrder(order),
     };
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -523,7 +525,7 @@ const dataProvider: SynapseDataProvider = {
 
   getOne: async (resource, params) => {
     console.log("getOne " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -535,7 +537,7 @@ const dataProvider: SynapseDataProvider = {
 
   getMany: async (resource, params) => {
     console.log("getMany " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homerserver not set");
 
     const res = resourceMap[resource];
@@ -560,7 +562,7 @@ const dataProvider: SynapseDataProvider = {
       dir: getSearchOrder(order),
     };
 
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -577,7 +579,7 @@ const dataProvider: SynapseDataProvider = {
 
   update: async (resource, params) => {
     console.log("update " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -592,7 +594,7 @@ const dataProvider: SynapseDataProvider = {
 
   updateMany: async (resource, params) => {
     console.log("updateMany " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -609,7 +611,7 @@ const dataProvider: SynapseDataProvider = {
 
   create: async (resource, params) => {
     console.log("create " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -626,7 +628,7 @@ const dataProvider: SynapseDataProvider = {
 
   createMany: async (resource: string, params: { ids: Identifier[]; data: RaRecord }) => {
     console.log("createMany " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -648,7 +650,7 @@ const dataProvider: SynapseDataProvider = {
 
   delete: async (resource, params) => {
     console.log("delete " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -673,7 +675,7 @@ const dataProvider: SynapseDataProvider = {
 
   deleteMany: async (resource, params) => {
     console.log("deleteMany " + resource);
-    const homeserver = localStorage.getItem("base_url");
+    const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
     const res = resourceMap[resource];
@@ -719,10 +721,10 @@ const dataProvider: SynapseDataProvider = {
    * @returns
    */
   deleteMedia: async ({ before_ts, size_gt = 0, keep_profiles = true }) => {
-    const homeserver = localStorage.getItem("home_server"); // TODO only required for synapse < 1.78.0
+    const homeserver = storage.getItem("home_server"); // TODO only required for synapse < 1.78.0
     const endpoint = `/_synapse/admin/v1/media/${homeserver}/delete?before_ts=${before_ts}&size_gt=${size_gt}&keep_profiles=${keep_profiles}`;
 
-    const base_url = localStorage.getItem("base_url");
+    const base_url = storage.getItem("base_url");
     const endpoint_url = base_url + endpoint;
     const { json } = await jsonClient(endpoint_url, { method: "POST" });
     return json as DeleteMediaResult;
