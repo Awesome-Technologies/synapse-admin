@@ -65,9 +65,6 @@ const UserListActions = () => {
   return (
     <TopToolbar>
       <ExportButton disabled={isLoading || total === 0} maxResults={10000} />
-      <Button component={Link} to="/import_users" label="CSV Import">
-        <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
-      </Button>
     </TopToolbar>
   );
 };
