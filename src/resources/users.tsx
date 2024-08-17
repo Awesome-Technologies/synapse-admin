@@ -14,13 +14,10 @@ import {
   Button,
   Datagrid,
   DateField,
-  Create,
-  CreateProps,
   Edit,
   EditProps,
   List,
   ListProps,
-  SimpleForm,
   SimpleFormIterator,
   TabbedForm,
   FormTab,
@@ -36,13 +33,10 @@ import {
   SelectInput,
   BulkDeleteButton,
   DeleteButton,
-  maxLength,
-  regex,
   required,
   useRecordContext,
   useTranslate,
   Pagination,
-  CreateButton,
   ExportButton,
   TopToolbar,
   NumberField,
@@ -70,7 +64,6 @@ const UserListActions = () => {
   const { isLoading, total } = useListContext();
   return (
     <TopToolbar>
-      <CreateButton />
       <ExportButton disabled={isLoading || total === 0} maxResults={10000} />
       <Button component={Link} to="/import_users" label="CSV Import">
         <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
@@ -126,14 +119,6 @@ export const UserList = (props: ListProps) => (
   </List>
 );
 
-// https://matrix.org/docs/spec/appendices#user-identifiers
-// here only local part of user_id
-// maxLength = 255 - "@" - ":" - storage.getItem("home_server").length
-// storage.getItem("home_server").length is not valid here
-const validateUser = [required(), maxLength(253), regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id")];
-
-const validateAddress = [required(), maxLength(255)];
-
 const UserEditActions = () => {
   const record = useRecordContext();
   const translate = useTranslate();
@@ -151,30 +136,6 @@ const UserEditActions = () => {
     </TopToolbar>
   );
 };
-
-export const UserCreate = (props: CreateProps) => (
-  <Create {...props}>
-    <SimpleForm>
-      <TextInput source="id" autoComplete="off" validate={validateUser} />
-      <TextInput source="displayname" validate={maxLength(256)} />
-      <PasswordInput source="password" autoComplete="new-password" validate={maxLength(512)} />
-      <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
-      <BooleanInput source="admin" />
-      <ArrayInput source="threepids">
-        <SimpleFormIterator disableReordering>
-          <SelectInput source="medium" choices={choices_medium} validate={required()} />
-          <TextInput source="address" validate={validateAddress} />
-        </SimpleFormIterator>
-      </ArrayInput>
-      <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
-        <SimpleFormIterator disableReordering>
-          <TextInput source="auth_provider" validate={required()} />
-          <TextInput source="external_id" label="resources.users.fields.id" validate={required()} />
-        </SimpleFormIterator>
-      </ArrayInput>
-    </SimpleForm>
-  </Create>
-);
 
 const UserTitle = () => {
   const record = useRecordContext();
@@ -323,7 +284,6 @@ const resource: ResourceProps = {
   icon: UserIcon,
   list: UserList,
   edit: UserEdit,
-  create: UserCreate,
 };
 
 export default resource;
