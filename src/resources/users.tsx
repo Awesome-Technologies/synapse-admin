@@ -31,7 +31,6 @@ import {
   ResourceProps,
   SearchInput,
   SelectInput,
-  BulkDeleteButton,
   DeleteButton,
   required,
   useRecordContext,
@@ -85,11 +84,6 @@ const userFilters = [
 const UserBulkActionButtons = () => (
   <>
     <ServerNoticeBulkButton />
-    <BulkDeleteButton
-      label="resources.users.action.erase"
-      confirmTitle="resources.users.helper.erase"
-      mutationMode="pessimistic"
-    />
   </>
 );
 
@@ -123,13 +117,6 @@ const UserEditActions = () => {
   return (
     <TopToolbar>
       {!record?.deactivated && <ServerNoticeButton />}
-      <DeleteButton
-        label="resources.users.action.erase"
-        confirmTitle={translate("resources.users.helper.erase", {
-          smart_count: 1,
-        })}
-        mutationMode="pessimistic"
-      />
     </TopToolbar>
   );
 };
