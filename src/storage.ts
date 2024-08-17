@@ -1,3 +1,3 @@
-const storage = localStorage;
+const storage = sessionStorage;
 
 export default storage;
