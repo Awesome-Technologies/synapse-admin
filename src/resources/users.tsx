@@ -58,18 +58,13 @@ const choices_type = [
   { id: "support", name: "support" },
 ];
 
-const UserListActions = () => {
+const UserListActions = ({ selectedIds = [], onUnselectItems = () => null }) => {
   const { isLoading, total } = useListContext();
   return (
     <TopToolbar>
       <ExportButton disabled={isLoading || total === 0} maxResults={10000} />
     </TopToolbar>
   );
-};
-
-UserListActions.defaultProps = {
-  selectedIds: [],
-  onUnselectItems: () => null,
 };
 
 const UserPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
