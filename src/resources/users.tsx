@@ -37,6 +37,8 @@ import {
   TopToolbar,
   NumberField,
   useListContext,
+  Toolbar,
+  SaveButton,
 } from "react-admin";
 import { Link } from "react-router-dom";
 
@@ -118,6 +120,12 @@ const UserEditActions = () => {
   );
 };
 
+const UserEditToolbar = props => (
+  <Toolbar {...props}>
+    <SaveButton />
+  </Toolbar>
+);
+
 const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
@@ -135,7 +143,7 @@ export const UserEdit = (props: EditProps) => {
   const translate = useTranslate();
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
-      <TabbedForm>
+      <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab label={translate("resources.users.name", { smart_count: 1 })} icon={<PersonPinIcon />}>
           <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px", float: "right" }} />
           <TextInput source="id" disabled />
