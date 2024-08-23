@@ -23,7 +23,6 @@ import {
   FormTab,
   BooleanField,
   BooleanInput,
-  PasswordInput,
   TextField,
   TextInput,
   ReferenceField,
@@ -143,7 +142,6 @@ export const UserEdit = (props: EditProps) => {
           <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px", float: "right" }} />
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
-          <PasswordInput source="password" autoComplete="new-password" helperText="resources.users.helper.password" />
           <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
           <BooleanInput source="admin" />
           <BooleanInput source="locked" />
