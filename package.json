@@ -1,6 +1,6 @@
 {
   "name": "synapse-admin",
-  "version": "0.10.3-tim-1",
+  "version": "0.10.3-tim-2",
   "description": "Admin GUI for the Matrix.org server Synapse",
   "type": "module",
   "author": "Awesome Technologies Innovationslabor GmbH",
