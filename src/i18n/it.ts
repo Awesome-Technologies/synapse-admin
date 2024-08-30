@@ -141,6 +141,7 @@ const it: SynapseTranslationMessages = {
       },
       action: {
         erase: "Cancella i dati dell'utente",
+        erase_admin_error: "Non è consentito eliminare il proprio utente.",
       },
     },
     rooms: {

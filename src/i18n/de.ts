@@ -142,6 +142,7 @@ const de: SynapseTranslationMessages = {
         password: "Durch die Änderung des Passworts wird der Benutzer von allen Sitzungen abgemeldet.",
         deactivate: "Sie müssen ein Passwort angeben, um ein Konto wieder zu aktivieren.",
         erase: "DSGVO konformes Löschen der Benutzerdaten",
+        erase_admin_error: "Das Löschen des eigenen Benutzers ist nicht erlaubt",
       },
       action: {
         erase: "Lösche Benutzerdaten",

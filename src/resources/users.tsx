@@ -8,6 +8,8 @@ import PermMediaIcon from "@mui/icons-material/PermMedia";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import { useEffect, useState } from "react";
+import { Alert, ownerDocument } from "@mui/material";
 import {
   ArrayInput,
   ArrayField,
@@ -42,11 +44,15 @@ import {
   useRecordContext,
   useTranslate,
   Pagination,
+  SaveButton,
   CreateButton,
   ExportButton,
   TopToolbar,
+  Toolbar,
   NumberField,
   useListContext,
+  useNotify,
+  ToolbarClasses,
 } from "react-admin";
 import { Link } from "react-router-dom";
 
@@ -92,16 +98,47 @@ const userFilters = [
   <BooleanInput label="resources.users.fields.show_deactivated" source="deactivated" alwaysOn />,
 ];
 
-const UserBulkActionButtons = () => (
-  <>
+const UserPreventSelfDelete: React.FC<{ children: React.ReactNode, ownUserIsSelected: boolean }> = (props) => {
+  const ownUserIsSelected = props.ownUserIsSelected;
+  const notify = useNotify();
+  const translate = useTranslate();
+
+  const handleDeleteClick = (ev: React.MouseEvent<HTMLDivElement>) => {
+    if (ownUserIsSelected) {
+      notify(<Alert severity="error">{translate("resources.users.helper.erase_admin_error")}</Alert>)
+      ev.stopPropagation();
+    }
+  };
+
+  return <div onClickCapture={handleDeleteClick}>
+    {props.children}
+  </div>
+};
+
+const UserBulkActionButtons = () => {
+  const record = useListContext();
+  const [ ownUserIsSelected, setOwnUserIsSelected ] = useState(false);
+  const selectedIds = record.selectedIds;
+  const ownUserId = localStorage.getItem("user_id");
+  const notify = useNotify();
+  const translate = useTranslate();
+
+  useEffect(() => {
+    setOwnUserIsSelected(selectedIds.includes(ownUserId));
+  }, [ selectedIds ]);
+
+
+  return <>
     <ServerNoticeBulkButton />
-    <BulkDeleteButton
-      label="resources.users.action.erase"
-      confirmTitle="resources.users.helper.erase"
-      mutationMode="pessimistic"
-    />
+    <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+      <BulkDeleteButton
+        label="resources.users.action.erase"
+        confirmTitle="resources.users.helper.erase"
+        mutationMode="pessimistic"
+      />
+    </UserPreventSelfDelete>
   </>
-);
+};
 
 export const UserList = (props: ListProps) => (
   <List
@@ -137,17 +174,24 @@ const validateAddress = [required(), maxLength(255)];
 const UserEditActions = () => {
   const record = useRecordContext();
   const translate = useTranslate();
+  const ownUserId = localStorage.getItem("user_id");
+  let ownUserIsSelected = false;
+  if (record && record.id) {
+    ownUserIsSelected = record.id === ownUserId;
+  }
 
   return (
     <TopToolbar>
       {!record?.deactivated && <ServerNoticeButton />}
-      <DeleteButton
-        label="resources.users.action.erase"
-        confirmTitle={translate("resources.users.helper.erase", {
-          smart_count: 1,
-        })}
-        mutationMode="pessimistic"
-      />
+      <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+        <DeleteButton
+          label="resources.users.action.erase"
+          confirmTitle={translate("resources.users.helper.erase", {
+            smart_count: 1,
+          })}
+          mutationMode="pessimistic"
+        />
+      </UserPreventSelfDelete>
     </TopToolbar>
   );
 };
@@ -189,11 +233,44 @@ const UserTitle = () => {
   );
 };
 
+const UserEditToolbar = () => {
+  const record = useRecordContext();
+  const ownUserId = localStorage.getItem("user_id");
+  let ownUserIsSelected = false;
+  if (record && record.id) {
+    ownUserIsSelected = record.id === ownUserId;
+  }
+
+  return <>
+   <div className={ToolbarClasses.defaultToolbar}>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+          <SaveButton />
+          <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+            <DeleteButton />
+          </UserPreventSelfDelete>
+      </Toolbar>
+    </div>
+  </>
+};
+
+const UserBooleanInput = (props) => {
+  const record = useRecordContext();
+  const ownUserId = localStorage.getItem("user_id");
+  const isOwnUser = false;
+  let ownUserIsSelected = false;
+  if (record && (record.id === ownUserId)) {
+    ownUserIsSelected = true;
+  }
+
+  return <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}><BooleanInput {...props} disabled={ownUserIsSelected} /></UserPreventSelfDelete>
+}
+
 export const UserEdit = (props: EditProps) => {
   const translate = useTranslate();
+
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
-      <TabbedForm>
+      <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab label={translate("resources.users.name", { smart_count: 1 })} icon={<PersonPinIcon />}>
           <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px", float: "right" }} />
           <TextInput source="id" disabled />
@@ -202,7 +279,7 @@ export const UserEdit = (props: EditProps) => {
           <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
           <BooleanInput source="admin" />
           <BooleanInput source="locked" />
-          <BooleanInput source="deactivated" helperText="resources.users.helper.deactivate" />
+          <UserBooleanInput source="deactivated" helperText="resources.users.helper.deactivate" />
           <BooleanInput source="erased" disabled />
           <DateField source="creation_ts_ms" showTime options={DATE_FORMAT} />
           <TextField source="consent_version" />

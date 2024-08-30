@@ -134,6 +134,7 @@ const zh: SynapseTranslationMessages = {
       helper: {
         deactivate: "您必须提供一串密码来激活账户。",
         erase: "将用户标记为根据 GDPR 的要求抹除了",
+        erase_admin_error: "不允许删除自己的用户",
       },
       action: {
         erase: "抹除用户信息",
