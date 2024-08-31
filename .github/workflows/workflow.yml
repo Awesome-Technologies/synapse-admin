@@ -53,9 +53,6 @@ jobs:
     container: ghcr.io/${{ github.repository }} # as this job depends on the build-publish and build-publish always publishes the latest tag
     steps:
       - uses: actions/checkout@v4
-      - name: Configure
-        run: |
-          mv /app/ ./public
       - name: Upload
         run: |
           wget -O bunny-upload.tar.gz https://github.com/etkecc/bunny-upload/releases/download/${{ env.bunny_version }}/bunny-upload_Linux_x86_64.tar.gz
