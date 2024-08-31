@@ -139,6 +139,7 @@ const fr: SynapseTranslationMessages = {
       helper: {
         deactivate: "Vous devrez fournir un mot de passe pour réactiver le compte.",
         erase: "Marquer l'utilisateur comme effacé conformément au RGPD",
+        erase_admin_error: "La suppression de son propre utilisateur n'est pas autorisée.",
       },
       action: {
         erase: "Effacer les données de l'utilisateur",

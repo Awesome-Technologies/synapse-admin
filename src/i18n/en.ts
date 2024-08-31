@@ -141,6 +141,7 @@ const en: SynapseTranslationMessages = {
         password: "Changing password will log user out of all sessions.",
         deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
+        erase_admin_error: "Deleting own user is not allowed.",
       },
       action: {
         erase: "Erase user data",
