@@ -9,6 +9,18 @@
 
 This project is built using [react-admin](https://marmelab.com/react-admin/).
 
+## Fork differences
+
+With [Awesome-Technologies/synapse-admin](https://github.com/Awesome-Technologies/synapse-admin) as the upstream, this
+fork is intended to be a more feature-rich version of the original project. The main goal is to provide a more
+user-friendly interface for managing Synapse homeservers.
+
+The following changes are already implemented:
+
+* [Prevent admins from deleting themselves](https://github.com/etkecc/synapse-admin/pull/1)
+
+_the list will be updated as new changes are added_
+
 ## Usage
 
 ### Supported Synapse
