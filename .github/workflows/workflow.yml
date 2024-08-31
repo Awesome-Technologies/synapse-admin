@@ -1,10 +1,11 @@
-name:
+name: CI
 on:
   push:
     branches: [ "main" ]
 env:
   upstream_version: v0.10.3
   etke_version: etke1
+  bunny_version: v0.1.0
 permissions:
   checks: write
   contents: write
@@ -44,3 +45,21 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  build-deploy:
+    name: Build and Release
+    needs: build-publish
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{ github.repository }} # as this job depends on the build-publish and build-publish always publishes the latest tag
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: |
+          cp ./config.json /app/config.json
+          mv /app ./public
+      - name: Upload
+        run: |
+          wget -O bunny-upload.tar.gz https://github.com/etkecc/bunny-upload/releases/download/${{ env.bunny_version }}/bunny-upload_Linux_x86_64.tar.gz
+          tar -xzf bunny-upload.tar.gz
+          echo "${{ secrets.BUNNY_CONFIG }}" > bunny-config.yaml
+          ./bunny-upload -c bunny-config.yaml

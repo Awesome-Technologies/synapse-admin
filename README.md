@@ -11,6 +11,12 @@ This project is built using [react-admin](https://marmelab.com/react-admin/).
 
 ## Fork differences
 
+### Available via CDN
+
+On [admin.etke.cc](https://admin.etke.cc) you can find the latest version of this fork.
+
+### Changes
+
 With [Awesome-Technologies/synapse-admin](https://github.com/Awesome-Technologies/synapse-admin) as the upstream, this
 fork is intended to be a more feature-rich version of the original project. The main goal is to provide a more
 user-friendly interface for managing Synapse homeservers.
