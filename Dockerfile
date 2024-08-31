@@ -1,6 +1,6 @@
 # Builder
 FROM node:lts as builder
-LABEL org.opencontainers.image.url=https://github.com/Awesome-Technologies/synapse-admin org.opencontainers.image.source=https://github.com/Awesome-Technologies/synapse-admin
+LABEL org.opencontainers.image.url=https://github.com/etkecc/synapse-admin org.opencontainers.image.source=https://github.com/etkecc/synapse-admin
 # Base path for synapse admin
 ARG BASE_PATH=./
 

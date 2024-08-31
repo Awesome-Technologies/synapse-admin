@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     react(),
     vitePluginVersionMark({
-      command: "git describe --tags",
+      command: "git describe --tags || git rev-parse --short HEAD",
       ifMeta: true,
       ifLog: true,
       ifGlobal: true,
