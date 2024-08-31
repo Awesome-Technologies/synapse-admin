@@ -15,6 +15,7 @@ jobs:
     name: Build and Publish
     runs-on: self-hosted
     steps:
+      - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to ghcr.io
