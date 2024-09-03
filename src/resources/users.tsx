@@ -235,7 +235,7 @@ const UserTitle = () => {
       {translate("resources.users.name", {
         smart_count: 1,
       })}{" "}
-      {record ? `"${record.displayname}"` : ""}
+      {record ? ( record.displayname ? `"${record.displayname}"` : `"${record.name}"`) : ""}
     </span>
   );
 };
