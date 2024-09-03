@@ -4,7 +4,7 @@ on:
     branches: [ "main" ]
 env:
   upstream_version: v0.10.3
-  etke_version: etke6
+  etke_version: etke7
   bunny_version: v0.1.0
   base_path: ./
 permissions:
@@ -46,34 +46,32 @@ jobs:
         with:
           name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
           path: dist/
-      - name: Debug
-        run: ls -lah dist/
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v1
-  #     - name: Login to ghcr.io
-  #       uses: docker/login-action@v3
-  #       with:
-  #         registry: ghcr.io
-  #         username: ${{ github.actor }}
-  #         password: ${{ secrets.GITHUB_TOKEN }}
-  #     - name: Extract metadata (tags, labels) for Docker
-  #       id: meta
-  #       uses: docker/metadata-action@v5
-  #       with:
-  #         images: |
-  #           ghcr.io/${{ github.repository }}
-  #           registry.etke.cc/${{ github.repository }}
-  #         tags: |
-  #           type=raw,value=latest,enable=${{ github.ref_name == 'main' }}
-  #           type=raw,value=${{ env.upstream_version }}-${{ env.etke_version }},enable=${{ github.ref_name == 'main' }}
-  #     - name: Build and push
-  #       uses: docker/build-push-action@v6
-  #       with:
-  #         platforms: linux/amd64,linux/arm64
-  #         context: .
-  #         push: true
-  #         tags: ${{ steps.meta.outputs.tags }}
-  #         labels: ${{ steps.meta.outputs.labels }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+            registry.etke.cc/${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref_name == 'main' }}
+            type=raw,value=${{ env.upstream_version }}-${{ env.etke_version }},enable=${{ github.ref_name == 'main' }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
   #
   # build-deploy:
   #   name: Build and Release

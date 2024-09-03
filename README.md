@@ -29,6 +29,8 @@ The following changes are already implemented:
 * [Add ability to toggle whether to show locked users](https://github.com/Awesome-Technologies/synapse-admin/pull/573)
 * [Fix user's display name in header on user's page](https://github.com/etkecc/synapse-admin/pull/9)
 * [Fix footer overlapping content](https://github.com/Awesome-Technologies/synapse-admin/issues/574)
+* Switch from nginx to [SWS](https://static-web-server.net/) for serving the app, reducing the size of the Docker image
+by 340%
 
 _the list will be updated as new changes are added_
 
