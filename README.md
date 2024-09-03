@@ -24,6 +24,7 @@ user-friendly interface for managing Synapse homeservers.
 The following changes are already implemented:
 
 * [Prevent admins from deleting themselves](https://github.com/etkecc/synapse-admin/pull/1)
+* [Fix user's default tab not being shown](https://github.com/etkecc/synapse-admin/pull/8)
 
 _the list will be updated as new changes are added_
 
