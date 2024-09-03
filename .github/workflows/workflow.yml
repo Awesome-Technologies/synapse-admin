@@ -43,6 +43,7 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
@@ -79,6 +80,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
