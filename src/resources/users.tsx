@@ -98,6 +98,7 @@ const userFilters = [
   <SearchInput source="name" alwaysOn />,
   <BooleanInput source="guests" alwaysOn />,
   <BooleanInput label="resources.users.fields.show_deactivated" source="deactivated" alwaysOn />,
+  <BooleanInput label="resources.users.fields.show_locked" source="locked" alwaysOn />,
 ];
 
 const UserPreventSelfDelete: React.FC<{ children: React.ReactNode, ownUserIsSelected: boolean }> = (props) => {
@@ -150,7 +151,7 @@ export const UserList = (props: ListProps) => (
   <List
     {...props}
     filters={userFilters}
-    filterDefaultValues={{ guests: true, deactivated: false }}
+    filterDefaultValues={{ guests: true, deactivated: false, locked: false }}
     sort={{ field: "name", order: "ASC" }}
     actions={<UserListActions />}
     pagination={<UserPagination />}
