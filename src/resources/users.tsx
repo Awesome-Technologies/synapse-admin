@@ -53,6 +53,8 @@ import {
   useListContext,
   useNotify,
   ToolbarClasses,
+  Identifier,
+  RaRecord,
 } from "react-admin";
 import { Link } from "react-router-dom";
 
@@ -140,6 +142,10 @@ const UserBulkActionButtons = () => {
   </>
 };
 
+const usersRowClick = (id: Identifier, resource: string, record: RaRecord): string => {
+  return `/users/${id}`;
+};
+
 export const UserList = (props: ListProps) => (
   <List
     {...props}
@@ -149,7 +155,7 @@ export const UserList = (props: ListProps) => (
     actions={<UserListActions />}
     pagination={<UserPagination />}
   >
-    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
+    <Datagrid rowClick={usersRowClick} bulkActionButtons={<UserBulkActionButtons />}>
       <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
