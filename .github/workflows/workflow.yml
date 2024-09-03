@@ -37,6 +37,7 @@ jobs:
           compression-level: 0
           overwrite: true
           include-hidden-files: true
+
   docker:
     name: Docker
     needs: build
@@ -72,17 +73,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  #
-  # build-deploy:
-  #   name: Build and Release
-  #   needs: build-publish
-  #   runs-on: ubuntu-latest
-  #   container: ghcr.io/${{ github.repository }} # as this job depends on the build-publish and build-publish always publishes the latest tag
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Upload
-  #       run: |
-  #         wget -O bunny-upload.tar.gz https://github.com/etkecc/bunny-upload/releases/download/${{ env.bunny_version }}/bunny-upload_Linux_x86_64.tar.gz
-  #         tar -xzf bunny-upload.tar.gz
-  #         echo "${{ secrets.BUNNY_CONFIG }}" > bunny-config.yaml
-  #         ./bunny-upload -c bunny-config.yaml
+
+  cdn:
+    name: CDN
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
+          path: dist/
+      - name: Upload
+        run: |
+          wget -O bunny-upload.tar.gz https://github.com/etkecc/bunny-upload/releases/download/${{ env.bunny_version }}/bunny-upload_Linux_x86_64.tar.gz
+          tar -xzf bunny-upload.tar.gz
+          echo "${{ secrets.BUNNY_CONFIG }}" > bunny-config.yaml
+          ./bunny-upload -c bunny-config.yaml
