@@ -18,9 +18,8 @@ COPY . /src
 RUN yarn build --base=$BASE_PATH
 
 # App
-FROM nginx:stable-alpine
+FROM ghcr.io/static-web-server/static-web-server:2
+
+ENV SERVER_ROOT /app
 
 COPY --from=builder /src/dist /app
-
-RUN rm -rf /usr/share/nginx/html \
- && ln -s /app /usr/share/nginx/html
