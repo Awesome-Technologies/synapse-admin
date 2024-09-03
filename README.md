@@ -27,6 +27,7 @@ The following changes are already implemented:
 * [Fix user's default tab not being shown](https://github.com/etkecc/synapse-admin/pull/8)
 * [Add identifier when authorizing with password](https://github.com/Awesome-Technologies/synapse-admin/pull/601)
 * [Add ability to toggle whether to show locked users](https://github.com/Awesome-Technologies/synapse-admin/pull/573)
+* [Fix user's display name in header on user's page](https://github.com/etkecc/synapse-admin/pull/9)
 
 _the list will be updated as new changes are added_
 
