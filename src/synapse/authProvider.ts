@@ -31,7 +31,10 @@ const authProvider: AuthProvider = {
               }
             : {
                 type: "m.login.password",
-                user: username,
+                identifier: {
+                  type: "m.id.user",
+                  user: username,
+                },
                 password: password,
               }
         )
