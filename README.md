@@ -31,6 +31,7 @@ The following changes are already implemented:
 * [Fix footer overlapping content](https://github.com/Awesome-Technologies/synapse-admin/issues/574)
 * Switch from nginx to [SWS](https://static-web-server.net/) for serving the app, reducing the size of the Docker image
 * [Fix redirect URL after user creation](https://github.com/etkecc/synapse-admin/pull/16)
+* [Display actual Synapse errors](https://github.com/etkecc/synapse-admin/pull/17)
 
 _the list will be updated as new changes are added_
 

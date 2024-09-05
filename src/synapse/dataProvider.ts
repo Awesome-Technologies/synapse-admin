@@ -1,11 +1,12 @@
 import { stringify } from "query-string";
 
-import { DataProvider, DeleteParams, Identifier, Options, RaRecord, fetchUtils } from "react-admin";
+import { DataProvider, DeleteParams, HttpError, Identifier, Options, RaRecord, fetchUtils } from "react-admin";
 
 import storage from "../storage";
+import { MatrixError, displayError } from "../components/error";
 
 // Adds the access token to all requests
-const jsonClient = (url: string, options: Options = {}) => {
+const jsonClient = async (url: string, options: Options = {}) => {
   const token = storage.getItem("access_token");
   console.log("httpClient " + url);
   if (token != null) {
@@ -14,7 +15,17 @@ const jsonClient = (url: string, options: Options = {}) => {
       token: `Bearer ${token}`,
     };
   }
-  return fetchUtils.fetchJson(url, options);
+  try {
+    const response = await fetchUtils.fetchJson(url, options);
+    return response;
+  } catch (err: any) {
+    const error = err as HttpError;
+    const errorStatus = error.status;
+    const errorBody = error.body as MatrixError;
+    const errMsg = !!errorBody?.errcode ? displayError(errorBody.errcode, errorStatus, errorBody.error) : displayError("M_INVALID", errorStatus, error.message);
+
+    return Promise.reject(new HttpError(errMsg, errorStatus, errorBody));
+  }
 };
 
 const mxcUrlToHttp = (mxcUrl: string) => {
