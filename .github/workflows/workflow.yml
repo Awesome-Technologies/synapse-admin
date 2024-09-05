@@ -27,7 +27,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable --network-timeout=300000
       - name: Set version into manifest.json
-        run: sed -i 's|"icons"|"version": "${{ env.upstream_version }}-${{ env.etke_version }}",\n  "icons"|g' public/manifest.json
+        run: |
+          sed -i 's|"icons"|"version": "${{ env.upstream_version }}-${{ env.etke_version }}",\n  "icons"|g' public/manifest.json
       - name: Build
         run: yarn build --base=${{ env.base_path }}
       - uses: actions/upload-artifact@v4
