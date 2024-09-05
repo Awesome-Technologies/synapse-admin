@@ -204,7 +204,9 @@ const UserEditActions = () => {
 };
 
 export const UserCreate = (props: CreateProps) => (
-  <Create {...props}>
+ <Create { ...props} redirect={(resource, id, data) => {
+    return `users/${id}`;
+  }}>
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />

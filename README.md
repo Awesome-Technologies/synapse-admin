@@ -30,7 +30,7 @@ The following changes are already implemented:
 * [Fix user's display name in header on user's page](https://github.com/etkecc/synapse-admin/pull/9)
 * [Fix footer overlapping content](https://github.com/Awesome-Technologies/synapse-admin/issues/574)
 * Switch from nginx to [SWS](https://static-web-server.net/) for serving the app, reducing the size of the Docker image
-by 340%
+* [Fix redirect URL after user creation](https://github.com/etkecc/synapse-admin/pull/16)
 
 _the list will be updated as new changes are added_
 
