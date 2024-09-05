@@ -33,6 +33,7 @@ The following changes are already implemented:
 * [Fix redirect URL after user creation](https://github.com/etkecc/synapse-admin/pull/16)
 * [Display actual Synapse errors](https://github.com/etkecc/synapse-admin/pull/17)
 * [Fix base_url being undefined on unsuccessful login](https://github.com/etkecc/synapse-admin/pull/18)
+* [Put the version into manifest.json](https://github.com/Awesome-Technologies/synapse-admin/issues/507) (CI only)
 
 _the list will be updated as new changes are added_
 

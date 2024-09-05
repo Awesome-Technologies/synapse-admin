@@ -4,7 +4,7 @@ on:
     branches: [ "main" ]
 env:
   upstream_version: v0.10.3
-  etke_version: etke10
+  etke_version: etke11
   bunny_version: v0.1.0
   base_path: ./
 permissions:
@@ -26,6 +26,8 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: yarn install --immutable --network-timeout=300000
+      - name: Set version into manifest.json
+        run: sed -i 's|"icons"|"version": "${{ env.upstream_version }}-${{ env.etke_version }}",\n  "icons"|g' public/manifest.json
       - name: Build
         run: yarn build --base=${{ env.base_path }}
       - uses: actions/upload-artifact@v4
