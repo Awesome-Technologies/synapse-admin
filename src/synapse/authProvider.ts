@@ -48,7 +48,7 @@ const authProvider: AuthProvider = {
     if (!base_url) {
       // there is some kind of bug with base_url being present in the form, but not submitted
       // ref: https://github.com/etkecc/synapse-admin/issues/14
-      localStorage.removeItem("base_url")
+      storage.removeItem("base_url")
       throw new Error("Homeserver URL is required.");
     }
     base_url = base_url.replace(/\/+$/g, "");

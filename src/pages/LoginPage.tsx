@@ -168,7 +168,9 @@ const LoginPage = () => {
     const [matrixVersions, setMatrixVersions] = useState("");
 
     const handleUsernameChange = () => {
-      if (formData.base_url || allowSingleBaseUrl) return;
+      if (formData.base_url || allowSingleBaseUrl) {
+        return;
+      }
       // check if username is a full qualified userId then set base_url accordingly
       const domain = splitMxid(formData.username)?.domain;
       if (domain) {
@@ -180,6 +182,9 @@ const LoginPage = () => {
     };
 
     useEffect(() => {
+      if (!formData.base_url) {
+        form.setValue("base_url", "");
+      }
       if (formData.base_url === "" && allowMultipleBaseUrls) {
         form.setValue("base_url", restrictBaseUrl[0]);
       }

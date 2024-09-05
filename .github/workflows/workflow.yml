@@ -4,7 +4,7 @@ on:
     branches: [ "main" ]
 env:
   upstream_version: v0.10.3
-  etke_version: etke9
+  etke_version: etke10
   bunny_version: v0.1.0
   base_path: ./
 permissions:
