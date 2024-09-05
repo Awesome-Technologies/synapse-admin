@@ -125,6 +125,7 @@ const de: SynapseTranslationMessages = {
         erased: "Gelöscht",
         guests: "Zeige Gäste",
         show_deactivated: "Zeige deaktivierte Benutzer",
+        show_locked: "Zeige gesperrte Benutzer",
         user_id: "Suche Benutzer",
         displayname: "Anzeigename",
         password: "Passwort",

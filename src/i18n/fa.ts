@@ -120,6 +120,7 @@ const fa: SynapseTranslationMessages = {
         deactivated: "غیرفعال",
         guests: "نمایش مهمانان",
         show_deactivated: "نمایش کاربران غیرفعال شده",
+        show_locked: "نمایش کاربران قفل شده",
         user_id: "جستجوی کاربر",
         displayname: "نام نمایشی",
         password: "رمز عبور",

@@ -124,6 +124,7 @@ const fr: SynapseTranslationMessages = {
         deactivated: "Désactivé",
         guests: "Afficher les visiteurs",
         show_deactivated: "Afficher les utilisateurs désactivés",
+        show_locked: "Afficher les utilisateurs verrouillés",
         user_id: "Rechercher un utilisateur",
         displayname: "Nom d'affichage",
         password: "Mot de passe",

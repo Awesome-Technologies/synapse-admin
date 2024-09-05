@@ -133,6 +133,7 @@ const ru: SynapseTranslationMessages = {
         erased: "Удалён",
         guests: "Показывать гостей",
         show_deactivated: "Показывать деактивированных",
+        show_locked: "Показывать заблокированных",
         user_id: "Поиск пользователя",
         displayname: "Отображаемое имя",
         password: "Пароль",
