@@ -41,7 +41,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.16.1",
-    "vite": "^5.3.4",
+    "vite": "^5.4.3",
     "vite-plugin-version-mark": "^0.1.0"
   },
   "dependencies": {
