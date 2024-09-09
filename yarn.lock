@@ -1549,6 +1549,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.55.4":
+  version: 5.55.4
+  resolution: "@tanstack/query-core@npm:5.55.4"
+  checksum: 10c0/c463b582b8c7c24fddd8da9c6fd311805df48bbfbdf9feae5662cd6e3d1df3eba47a1fc0c6e7f3feed6e0add2e363fbfcaad25e931b1bda6da6aabdccf3e5898
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.8.4":
+  version: 5.55.4
+  resolution: "@tanstack/react-query@npm:5.55.4"
+  dependencies:
+    "@tanstack/query-core": "npm:5.55.4"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10c0/b81f4e2942aa4e978278816e7939ac4df500cc38e052fd24c48e6ee5eddb89809b546e8536b50558f65ad679635ac0763ddfa3c14e73d60cfcf0646d5e57fd2a
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^10.0.0":
   version: 10.0.0
   resolution: "@testing-library/dom@npm:10.0.0"
@@ -2963,6 +2981,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 10c0/0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
+  languageName: node
+  linkType: hard
+
 "date-now@npm:^0.1.4":
   version: 0.1.4
   resolution: "date-now@npm:0.1.4"
@@ -3876,6 +3901,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventemitter3@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "eventemitter3@npm:5.0.1"
+  checksum: 10c0/4ba5c00c506e6c786b4d6262cfbce90ddc14c10d4667e5c83ae993c9de88aa856033994dd2b35b83e8dc1170e224e66a319fa80adc4c32adcd2379bbc75da814
+  languageName: node
+  linkType: hard
+
 "execa@npm:^5.0.0":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
@@ -4555,6 +4587,13 @@ __metadata:
   version: 4.0.0
   resolution: "indent-string@npm:4.0.0"
   checksum: 10c0/1e1904ddb0cb3d6cce7cd09e27a90184908b7a5d5c21b92e232c93579d314f0b83c246ffb035493d0504b1e9147ba2c9b21df0030f48673fba0496ecd698161f
+  languageName: node
+  linkType: hard
+
+"inflection@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "inflection@npm:3.0.0"
+  checksum: 10c0/6f7016bc4d037fb8f07c8707edc622772d26467e97af02341fb5b891ca35cde7968726dd5c9b18275202aed17b169e053bc6ed1b3adf541c800c4ffa20236d7c
   languageName: node
   linkType: hard
 
@@ -6663,6 +6702,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ra-core@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "ra-core@npm:5.1.4"
+  dependencies:
+    "@tanstack/react-query": "npm:^5.8.4"
+    clsx: "npm:^2.1.1"
+    date-fns: "npm:^3.6.0"
+    eventemitter3: "npm:^5.0.1"
+    hotscript: "npm:^1.0.12"
+    inflection: "npm:^3.0.0"
+    jsonexport: "npm:^3.2.0"
+    lodash: "npm:~4.17.5"
+    query-string: "npm:^7.1.3"
+    react-error-boundary: "npm:^4.0.13"
+    react-is: "npm:^18.2.0"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+    react-hook-form: ^7.52.0
+    react-router: ^6.22.0
+    react-router-dom: ^6.22.0
+  checksum: 10c0/44b55e9c2f6956618bb1c5cd8aae9cd924abe1593fa12f16a76341bda3b05c072cbd14188b98bc6eb4a0336ca11b1ee3f49f8f31d50f5b27042d5683041c1c60
+  languageName: node
+  linkType: hard
+
 "ra-i18n-polyglot@npm:^4.16.20":
   version: 4.16.20
   resolution: "ra-i18n-polyglot@npm:4.16.20"
@@ -6679,6 +6743,15 @@ __metadata:
   dependencies:
     ra-core: "npm:^4.16.20"
   checksum: 10c0/b827009338defb12621f5968dd80babf8bce2ac0947bed2dcd76a3486847948c3595e4d758b340e0e84a58cbbc46dc87da878cbcdc5215004b00ea11600853fa
+  languageName: node
+  linkType: hard
+
+"ra-language-english@npm:^5.1.4":
+  version: 5.1.4
+  resolution: "ra-language-english@npm:5.1.4"
+  dependencies:
+    ra-core: "npm:^5.1.4"
+  checksum: 10c0/ef7769b71163d6153ff777ecc722c36503664601615a1378eeb376c0914905b21d121d98fa120dd7602e492157ff4b3d7752075514ac56348fa7950d64b10ac6
   languageName: node
   linkType: hard
 
@@ -6807,6 +6880,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-error-boundary@npm:^4.0.13":
+  version: 4.0.13
+  resolution: "react-error-boundary@npm:4.0.13"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 10c0/6f3e0e4d7669f680ccf49c08c9571519c6e31f04dcfc30a765a7136c7e6fbbbe93423dd5a9fce12107f8166e54133e9dd5c2079a00c7a38201ac811f7a28b8e7
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:^7.43.9, react-hook-form@npm:^7.52.1":
   version: 7.52.1
   resolution: "react-hook-form@npm:7.52.1"
@@ -6816,7 +6900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0, react-is@npm:^18.3.1":
+"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.0.0, react-is@npm:^18.2.0, react-is@npm:^18.3.1":
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
@@ -7671,7 +7755,7 @@ __metadata:
     query-string: "npm:^7.1.3"
     ra-core: "npm:^4.16.20"
     ra-i18n-polyglot: "npm:^4.16.20"
-    ra-language-english: "npm:^4.16.20"
+    ra-language-english: "npm:^5.1.4"
     ra-language-farsi: "npm:^4.2.0"
     ra-language-french: "npm:^4.16.20"
     ra-language-italian: "npm:^3.13.1"
