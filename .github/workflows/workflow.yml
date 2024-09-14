@@ -108,12 +108,11 @@ jobs:
           path: dist/
       - name: Prepare release
         run: |
-          TAG=$(git describe --tags --abbrev=0 || echo "latest")
-          mv dist synapse-admin-$TAG
-          tar chvzf synapse-admin-$TAG.tar.gz synapse-admin-$TAG
+          mv dist synapse-admin
+          tar chvzf synapse-admin.tar.gz synapse-admin
       - uses: softprops/action-gh-release@v2
         with:
-          files: synapse-admin-$TAG.tar.gz
+          files: synapse-admin.tar.gz
           generate_release_notes: true
           make_latest: "true"
           draft: false
