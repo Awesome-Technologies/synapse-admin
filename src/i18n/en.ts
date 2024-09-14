@@ -198,6 +198,11 @@ const en: SynapseTranslationMessages = {
           title: "Delete room",
           content:
             "Are you sure you want to delete the room? This cannot be undone. All messages and shared media in the room will be deleted from the server!",
+          fields: {
+            block: "Block and prevent users from joining the room",
+          },
+          success: "Room/s successfully deleted.",
+          failure: "The room/s could not be deleted.",
         },
       },
     },

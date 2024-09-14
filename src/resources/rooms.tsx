@@ -36,6 +36,7 @@ import {
   TopToolbar,
   useRecordContext,
   useTranslate,
+  useListContext,
 } from "react-admin";
 
 import {
@@ -45,6 +46,7 @@ import {
   RoomDirectoryPublishButton,
 } from "./room_directory";
 import { DATE_FORMAT } from "../components/date";
+import DeleteRoomButton from "../components/DeleteRoomButton";
 
 const RoomPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
@@ -70,8 +72,8 @@ const RoomShowActions = () => {
   return (
     <TopToolbar>
       {publishButton}
-      <DeleteButton
-        mutationMode="pessimistic"
+      <DeleteRoomButton
+        selectedIds={[record.id]}
         confirmTitle="resources.rooms.action.erase.title"
         confirmContent="resources.rooms.action.erase.content"
       />
@@ -207,17 +209,20 @@ export const RoomShow = (props: ShowProps) => {
   );
 };
 
-const RoomBulkActionButtons = () => (
-  <>
-    <RoomDirectoryBulkPublishButton />
-    <RoomDirectoryBulkUnpublishButton />
-    <BulkDeleteButton
-      confirmTitle="resources.rooms.action.erase.title"
-      confirmContent="resources.rooms.action.erase.content"
-      mutationMode="pessimistic"
-    />
-  </>
-);
+const RoomBulkActionButtons = () => {
+  const record = useListContext();
+  return (
+    <>
+      <RoomDirectoryBulkPublishButton />
+      <RoomDirectoryBulkUnpublishButton />
+      <DeleteRoomButton
+        selectedIds={record.selectedIds}
+        confirmTitle="resources.rooms.action.erase.title"
+        confirmContent="resources.rooms.action.erase.content"
+      />
+    </>
+  );
+};
 
 const roomFilters = [<SearchInput source="search_term" alwaysOn />];
 

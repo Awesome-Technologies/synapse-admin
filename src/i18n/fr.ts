@@ -196,6 +196,11 @@ const fr: SynapseTranslationMessages = {
           title: "Supprimer le salon",
           content:
             "Voulez-vous vraiment supprimer le salon ? Cette opération ne peut être annulée. Tous les messages et médias partagés du salon seront supprimés du serveur !",
+            fields: {
+              block: "Bloquer et empêcher les utilisateurs de rejoindre la salle",
+            },
+          success: "Salle/s supprimées avec succès.",
+          failure: "La/les salle/s n'ont pas pu être supprimées.",
         },
       },
     },

@@ -199,6 +199,11 @@ const de: SynapseTranslationMessages = {
           title: "Raum löschen",
           content:
             "Sind Sie sicher dass Sie den Raum löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden. Alle Nachrichten und Medien, die der Raum beinhaltet werden vom Server gelöscht!",
+          fields: {
+            block: "Benutzer blockieren und daran hindern, dem Raum beizutreten",
+          },
+          success: "Raum/Räume erfolgreich gelöscht.",
+          failure: "Der/die Raum/Räume konnten nicht gelöscht werden.",
         },
       },
     },

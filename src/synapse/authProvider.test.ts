@@ -2,6 +2,7 @@ import fetchMock from "jest-fetch-mock";
 
 import authProvider from "./authProvider";
 import storage from "../storage";
+import { HttpError } from "ra-core";
 
 fetchMock.enableMocks();
 
@@ -104,7 +105,7 @@ describe("authProvider", () => {
     });
 
     it("should reject if error.status is 403", async () => {
-      await expect(authProvider.checkError({ status: 403 })).rejects.toBeUndefined();
+      await expect(authProvider.checkError(new HttpError("test-error", 403, {errcode: "test-errcode", error: "test-error"}))).rejects.toBeDefined();
     });
   });
 

@@ -192,6 +192,11 @@ interface SynapseTranslationMessages extends TranslationMessages {
         erase: {
           title: string;
           content: string;
+          fields: {
+            block: string;
+          },
+          success: string;
+          failure: string;
         };
       };
     };

@@ -35,6 +35,7 @@ The following changes are already implemented:
 * [Fix base_url being undefined on unsuccessful login](https://github.com/etkecc/synapse-admin/pull/18)
 * [Put the version into manifest.json](https://github.com/Awesome-Technologies/synapse-admin/issues/507) (CI only)
 * [Federation page improvements](https://github.com/Awesome-Technologies/synapse-admin/pull/583) (using theme colors)
+* [Add UI option to block deleted rooms from being rejoined](https://github.com/etkecc/synapse-admin/pull/26)
 
 _the list will be updated as new changes are added_
 
