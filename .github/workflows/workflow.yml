@@ -3,8 +3,6 @@ on:
   push:
     branches: [ "main" ]
 env:
-  upstream_version: v0.10.3
-  etke_version: etke13
   bunny_version: v0.1.0
   base_path: ./
 permissions:
@@ -28,13 +26,14 @@ jobs:
         run: yarn install --immutable --network-timeout=300000
       - name: Set version into manifest.json
         run: |
-          sed -i 's|"icons"|"version": "${{ env.upstream_version }}-${{ env.etke_version }}",\n  "icons"|g' public/manifest.json
+          TAG=$(git describe --tags --abbrev=0 || echo "latest")
+          sed -i "s|\"icons\"|\"version\": \"$TAG\",\\n  \"icons\"|g" public/manifest.json
       - name: Build
         run: yarn build --base=${{ env.base_path }}
       - uses: actions/upload-artifact@v4
         with:
           path: dist/
-          name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
+          name: dist
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
@@ -49,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
+          name: dist
           path: dist/
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -68,7 +67,7 @@ jobs:
             registry.etke.cc/${{ github.repository }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref_name == 'main' }}
-            type=raw,value=${{ env.upstream_version }}-${{ env.etke_version }},enable=${{ github.ref_name == 'main' }}
+            type=semver,pattern={{raw}}
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -86,7 +85,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dist-${{ env.upstream_version }}-${{ env.etke_version }}
+          name: dist
           path: dist/
       - name: Upload
         run: |
