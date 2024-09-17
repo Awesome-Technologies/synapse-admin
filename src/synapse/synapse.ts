@@ -73,6 +73,26 @@ export function generateRandomMxId(): string {
 }
 
 /**
+ * Return the full MXID from an arbitrary input
+ * @param input  the input string
+ * @returns full MXID as string
+ */
+export function returnMXID(input: string): string {
+  const homeserver = storage.getItem("home_server");
+
+  // Check if the input already looks like a valid MXID (i.e., starts with "@" and contains ":")
+  const mxidPattern = /^@[^@:]+:[^@:]+$/;
+  if (mxidPattern.test(input)) {
+    return input; // Already a valid MXID
+  }
+
+  // If input is not a valid MXID, assume it's a localpart and construct the MXID
+  const localpart = input.startsWith('@') ? input.slice(1) : input;
+  return `@${localpart}:${homeserver}`;
+}
+
+
+/**
  * Generate a random user password
  * @returns a new random password as string
  */

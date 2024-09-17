@@ -15,7 +15,7 @@ import {
 import { DataProvider, useTranslate } from "ra-core";
 import { useDataProvider, useNotify, RaRecord, Title } from "react-admin";
 
-import { generateRandomMxId, generateRandomPassword } from "../synapse/synapse";
+import { generateRandomMxId, generateRandomPassword, returnMXID } from "../synapse/synapse";
 
 const LOGGING = true;
 
@@ -74,7 +74,7 @@ const FilePicker = () => {
 
   const [conflictMode, setConflictMode] = useState("stop");
   const [passwordMode, setPasswordMode] = useState(true);
-  const [useridMode, setUseridMode] = useState("ignore");
+  const [useridMode, setUseridMode] = useState("update");
 
   const translate = useTranslate();
   const notify = useNotify();
@@ -266,12 +266,15 @@ const FilePicker = () => {
         const userRecord = { ...entry };
         // No need to do a bunch of cryptographic random number getting if
         // we are using neither a generated password nor a generated user id.
-        if (useridMode === "ignore" || userRecord.id === undefined) {
+        if (useridMode === "ignore" || userRecord.id === undefined || userRecord.id === "") {
           userRecord.id = generateRandomMxId();
         }
-        if (passwordMode === false || entry.password === undefined) {
+        if (passwordMode === false || entry.password === undefined || entry.password === "") {
           userRecord.password = generateRandomPassword();
         }
+        // we want to ensure that the ID is always full MXID, otherwise randomly-generated MXIDs will be in the full
+        // form, but the ones from the CSV will be localpart-only.
+        userRecord.id = returnMXID(userRecord.id);
         /* TODO record update stats (especially admin no -> yes, deactivated x -> !x, ... */
 
         /* For these modes we will consider the ID that's in the record.

@@ -37,6 +37,7 @@ The following changes are already implemented:
 * [Federation page improvements](https://github.com/Awesome-Technologies/synapse-admin/pull/583) (using theme colors)
 * [Add UI option to block deleted rooms from being rejoined](https://github.com/etkecc/synapse-admin/pull/26)
 * [Fix required fields check on Bulk registration CSV upload](https://github.com/etkecc/synapse-admin/pull/32)
+* [Fix requests with invalid MXIDs on Bulk registration](https://github.com/etkecc/synapse-admin/pull/33)
 
 _the list will be updated as new changes are added_
 

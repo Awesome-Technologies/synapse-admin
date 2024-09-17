@@ -3,6 +3,7 @@ import { stringify } from "query-string";
 import { DataProvider, DeleteParams, HttpError, Identifier, Options, RaRecord, fetchUtils } from "react-admin";
 
 import storage from "../storage";
+import { returnMXID } from "./synapse.ts"
 import { MatrixError, displayError } from "../components/error";
 
 // Adds the access token to all requests
@@ -234,7 +235,7 @@ const resourceMap = {
     path: "/_synapse/admin/v2/users",
     map: (u: User) => ({
       ...u,
-      id: u.name,
+      id: returnMXID(u.name),
       avatar_src: u.avatar_url ? mxcUrlToHttp(u.avatar_url) : undefined,
       is_guest: !!u.is_guest,
       admin: !!u.admin,
@@ -245,12 +246,12 @@ const resourceMap = {
     data: "users",
     total: json => json.total,
     create: (data: RaRecord) => ({
-      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${storage.getItem("home_server")}`,
+      endpoint: `/_synapse/admin/v2/users/${encodeURIComponent(returnMXID(data.id))}`,
       body: data,
       method: "PUT",
     }),
     delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/deactivate/${encodeURIComponent(params.id)}`,
+      endpoint: `/_synapse/admin/v1/deactivate/${encodeURIComponent(returnMXID(params.id))}`,
       body: { erase: true },
       method: "POST",
     }),
@@ -349,7 +350,7 @@ const resourceMap = {
       id: um.media_id,
     }),
     reference: (id: Identifier) => ({
-      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/media`,
+      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(id))}/media`,
     }),
     data: "media",
     total: json => json.total,
@@ -384,7 +385,7 @@ const resourceMap = {
     create: (data: RaServerNotice) => ({
       endpoint: "/_synapse/admin/v1/send_server_notice",
       body: {
-        user_id: data.id,
+        user_id: returnMXID(data.id),
         content: {
           msgtype: "m.text",
           body: data.body,
@@ -397,7 +398,7 @@ const resourceMap = {
     path: "/_synapse/admin/v1/statistics/users/media",
     map: (usms: UserMediaStatistic) => ({
       ...usms,
-      id: usms.user_id,
+      id: returnMXID(usms.user_id),
     }),
     data: "users",
     total: json => json.total,
