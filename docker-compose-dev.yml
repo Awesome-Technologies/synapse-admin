@@ -1,0 +1,20 @@
+services:
+  synapse:
+    image: ghcr.io/element-hq/synapse:latest
+    entrypoint: python
+    command: "-m synapse.app.homeserver -c /config/homeserver.yaml"
+    ports:
+    - "8008:8008"
+    volumes:
+    - ./testdata/synapse:/config
+    - ./testdata/synapse.data:/media-store
+
+  postgres:
+    image: postgres:alpine
+    volumes:
+    - ./testdata/postgres.data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: synapse
+      POSTGRES_PASSWORD: synapse
+      POSTGRES_DB: synapse
+      POSTGRES_INITDB_ARGS: "--lc-collate C --lc-ctype C --encoding UTF8"

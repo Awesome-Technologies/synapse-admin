@@ -39,6 +39,17 @@ The following changes are already implemented:
 
 _the list will be updated as new changes are added_
 
+### Development
+
+`just run-dev` to start the development stack (depending on your system speed, you may want to re-run this command if
+   user creation fails)
+
+After that open `http://localhost:5173` in your browser, login using the following credentials:
+
+* Login: admin
+* Password: admin
+* Homeserver URL: http://localhost:8008
+
 ## Usage
 
 ### Supported Synapse

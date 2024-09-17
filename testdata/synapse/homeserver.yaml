@@ -1,0 +1,191 @@
+account_threepid_delegates:
+  msisdn: ''
+alias_creation_rules:
+- action: allow
+  alias: '*'
+  room_id: '*'
+  user_id: '*'
+allow_guest_access: false
+allow_public_rooms_over_federation: true
+allow_public_rooms_without_auth: true
+app_service_config_files: []
+autocreate_auto_join_rooms: true
+background_updates: null
+caches:
+  global_factor: 0.5
+  per_cache_factors: null
+cas_config: null
+database:
+  args:
+    cp_max: 10
+    cp_min: 5
+    database: synapse
+    host: postgres
+    password: synapse
+    port: 5432
+    user: synapse
+  name: psycopg2
+  txn_limit: 0
+default_room_version: '10'
+disable_msisdn_registration: true
+email:
+enable_media_repo: true
+enable_metrics: false
+enable_registration: false
+enable_registration_captcha: false
+enable_registration_without_verification: false
+enable_room_list_search: true
+encryption_enabled_by_default_for_room_type: 'off'
+event_cache_size: 100K
+federation_rr_transactions_per_room_per_second: 50
+form_secret: sLKKoFMsQUZgLAW0vU1PQQ8ca1POGMDheurGtKW0uJ20iGqtxR9O7JQ6Knvs44Wi
+include_profile_data_on_invite: true
+instance_map: {}
+limit_profile_requests_to_users_who_share_rooms: false
+limit_remote_rooms: null
+listeners:
+- bind_addresses:
+  - '::'
+  port: 8008
+  resources:
+  - compress: false
+    names:
+    - client
+  tls: false
+  type: http
+  x_forwarded: true
+log_config: /config/synapse.log.config
+macaroon_secret_key: Lg8DxGGfy95J367eVJZHLxmqP9XtN4FKdKxWpPvBS3mhviq9at8sw7KHRPkGmyqE
+manhole_settings: null
+max_spider_size: 10M
+max_upload_size: 1024M
+media_retention:
+  local_media_lifetime: 30d
+  remote_media_lifetime: 7d
+media_storage_providers: []
+media_store_path: /media-store
+metrics_flags: null
+modules: []
+oembed: null
+oidc_providers: null
+old_signing_keys: null
+opentracing: null
+password_config:
+  enabled: true
+  localdb_enabled: true
+  pepper: zfvnYqxe3GTkdJ9BlfZiAqy2zMsjOg02uBTEiWLp2hjQGqlDw33pTSTplE6HoWlF
+  policy: null
+pid_file: /homeserver.pid
+presence:
+  enabled: true
+public_baseurl: http://synapse:8008/
+push:
+  include_content: true
+rc_admin_redaction:
+  burst_count: 50
+  per_second: 1
+rc_federation:
+  concurrent: 3
+  reject_limit: 50
+  sleep_delay: 500
+  sleep_limit: 10
+  window_size: 1000
+rc_invites:
+  per_issuer:
+    burst_count: 10
+    per_second: 0.3
+  per_room:
+    burst_count: 10
+    per_second: 0.3
+  per_user:
+    burst_count: 5
+    per_second: 0.003
+rc_joins:
+  local:
+    burst_count: 10
+    per_second: 0.1
+  remote:
+    burst_count: 10
+    per_second: 0.01
+rc_login:
+  account:
+    burst_count: 3
+    per_second: 0.17
+  address:
+    burst_count: 3
+    per_second: 0.17
+  failed_attempts:
+    burst_count: 3
+    per_second: 0.17
+rc_message:
+  burst_count: 10
+  per_second: 0.2
+rc_registration:
+  burst_count: 3
+  per_second: 0.17
+recaptcha_private_key: ''
+recaptcha_public_key: ''
+redaction_retention_period: 5m
+redis:
+  enabled: false
+  host: null
+  password: null
+  port: 6379
+registration_requires_token: false
+registration_shared_secret: jBUKJozByo8s3bvKtYFpB350ZAnxGlzXsDpAZkgOFJuQfKAFHhqbc2dw8D54u4T9
+report_stats: false
+require_auth_for_profile_requests: false
+retention:
+  enabled: true
+  purge_jobs:
+  - interval: 12h
+room_list_publication_rules:
+- action: allow
+  alias: '*'
+  room_id: '*'
+  user_id: '*'
+room_prejoin_state: null
+saml2_config:
+  sp_config: null
+  user_mapping_provider:
+    config: null
+server_name: synapse
+signing_key_path: /config/synapse.signing.key
+spam_checker: []
+sso: null
+stats: null
+stream_writers: {}
+templates: null
+tls_certificate_path: null
+tls_private_key_path: null
+trusted_key_servers:
+- server_name: matrix.org
+turn_allow_guests: false
+ui_auth: null
+url_preview_accept_language:
+- en-US
+- en
+url_preview_enabled: true
+url_preview_ip_range_blacklist:
+- 127.0.0.0/8
+- 10.0.0.0/8
+- 172.16.0.0/12
+- 192.168.0.0/16
+- 100.64.0.0/10
+- 192.0.0.0/24
+- 169.254.0.0/16
+- 192.88.99.0/24
+- 198.18.0.0/15
+- 192.0.2.0/24
+- 198.51.100.0/24
+- 203.0.113.0/24
+- 224.0.0.0/4
+- ::1/128
+- fe80::/10
+- fc00::/7
+- 2001:db8::/32
+- ff00::/8
+- fec0::/10
+user_directory: null
+user_ips_max_age: 5m
+
