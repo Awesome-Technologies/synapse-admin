@@ -139,6 +139,7 @@ const zh: SynapseTranslationMessages = {
       },
       action: {
         erase: "抹除用户信息",
+        erase_avatar: "抹掉头像",
       },
     },
     rooms: {

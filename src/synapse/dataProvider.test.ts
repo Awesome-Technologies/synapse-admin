@@ -18,7 +18,7 @@ describe("dataProvider", () => {
       JSON.stringify({
         users: [
           {
-            name: "user_id1",
+            name: "@user_id1:provider",
             password_hash: "password_hash1",
             is_guest: 0,
             admin: 0,
@@ -27,7 +27,7 @@ describe("dataProvider", () => {
             displayname: "User One",
           },
           {
-            name: "user_id2",
+            name: "@user_id2:provider",
             password_hash: "password_hash2",
             is_guest: 0,
             admin: 1,
@@ -47,7 +47,7 @@ describe("dataProvider", () => {
       filter: { author_id: 12 },
     });
 
-    expect(users.data[0].id).toEqual("user_id1");
+    expect(users.data[0].id).toEqual("@user_id1:provider");
     expect(users.total).toEqual(200);
     expect(fetch).toHaveBeenCalledTimes(1);
   });
@@ -55,7 +55,7 @@ describe("dataProvider", () => {
   it("fetches one user", async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify({
-        name: "user_id1",
+        name: "@user_id1:provider",
         password: "user_password",
         displayname: "User",
         threepids: [
@@ -74,9 +74,9 @@ describe("dataProvider", () => {
       })
     );
 
-    const user = await dataProvider.getOne("users", { id: "user_id1" });
+    const user = await dataProvider.getOne("users", { id: "@user_id1:provider" });
 
-    expect(user.data.id).toEqual("user_id1");
+    expect(user.data.id).toEqual("@user_id1:provider");
     expect(user.data.displayname).toEqual("User");
     expect(fetch).toHaveBeenCalledTimes(1);
   });

@@ -147,6 +147,7 @@ const de: SynapseTranslationMessages = {
       },
       action: {
         erase: "Lösche Benutzerdaten",
+        erase_avatar: "Avatar löschen"
       },
     },
     rooms: {

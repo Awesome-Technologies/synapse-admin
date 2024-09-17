@@ -101,7 +101,7 @@ describe("authProvider", () => {
     });
 
     it("should reject if error.status is 401", async () => {
-      await expect(authProvider.checkError({ status: 401 })).rejects.toBeUndefined();
+      await expect(authProvider.checkError(new HttpError("test-error", 401, {errcode: "test-errcode", error: "test-error"}))).rejects.toBeDefined();
     });
 
     it("should reject if error.status is 403", async () => {

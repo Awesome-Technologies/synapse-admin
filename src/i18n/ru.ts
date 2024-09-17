@@ -155,6 +155,7 @@ const ru: SynapseTranslationMessages = {
       },
       action: {
         erase: "Удалить данные пользователя",
+        erase_avatar: "Удалить аватар",
       },
     },
     rooms: {

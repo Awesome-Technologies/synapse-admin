@@ -144,6 +144,7 @@ const fr: SynapseTranslationMessages = {
       },
       action: {
         erase: "Effacer les données de l'utilisateur",
+        erase_avatar: "Effacer l'avatar",
       },
     },
     rooms: {

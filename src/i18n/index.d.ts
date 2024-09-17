@@ -142,6 +142,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
       };
       action: {
         erase: string;
+        erase_avatar: string;
       };
     };
     rooms: {

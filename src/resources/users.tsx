@@ -55,6 +55,8 @@ import {
   ToolbarClasses,
   Identifier,
   RaRecord,
+  ImageInput,
+  ImageField,
 } from "react-admin";
 import { Link } from "react-router-dom";
 
@@ -101,26 +103,24 @@ const userFilters = [
   <BooleanInput label="resources.users.fields.show_locked" source="locked" alwaysOn />,
 ];
 
-const UserPreventSelfDelete: React.FC<{ children: React.ReactNode, ownUserIsSelected: boolean }> = (props) => {
+const UserPreventSelfDelete: React.FC<{ children: React.ReactNode; ownUserIsSelected: boolean }> = props => {
   const ownUserIsSelected = props.ownUserIsSelected;
   const notify = useNotify();
   const translate = useTranslate();
 
   const handleDeleteClick = (ev: React.MouseEvent<HTMLDivElement>) => {
     if (ownUserIsSelected) {
-      notify(<Alert severity="error">{translate("resources.users.helper.erase_admin_error")}</Alert>)
+      notify(<Alert severity="error">{translate("resources.users.helper.erase_admin_error")}</Alert>);
       ev.stopPropagation();
     }
   };
 
-  return <div onClickCapture={handleDeleteClick}>
-    {props.children}
-  </div>
+  return <div onClickCapture={handleDeleteClick}>{props.children}</div>;
 };
 
 const UserBulkActionButtons = () => {
   const record = useListContext();
-  const [ ownUserIsSelected, setOwnUserIsSelected ] = useState(false);
+  const [ownUserIsSelected, setOwnUserIsSelected] = useState(false);
   const selectedIds = record.selectedIds;
   const ownUserId = localStorage.getItem("user_id");
   const notify = useNotify();
@@ -128,19 +128,20 @@ const UserBulkActionButtons = () => {
 
   useEffect(() => {
     setOwnUserIsSelected(selectedIds.includes(ownUserId));
-  }, [ selectedIds ]);
+  }, [selectedIds]);
 
-
-  return <>
-    <ServerNoticeBulkButton />
-    <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
-      <BulkDeleteButton
-        label="resources.users.action.erase"
-        confirmTitle="resources.users.helper.erase"
-        mutationMode="pessimistic"
-      />
-    </UserPreventSelfDelete>
-  </>
+  return (
+    <>
+      <ServerNoticeBulkButton />
+      <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+        <BulkDeleteButton
+          label="resources.users.action.erase"
+          confirmTitle="resources.users.helper.erase"
+          mutationMode="pessimistic"
+        />
+      </UserPreventSelfDelete>
+    </>
+  );
 };
 
 const usersRowClick = (id: Identifier, resource: string, record: RaRecord): string => {
@@ -204,9 +205,12 @@ const UserEditActions = () => {
 };
 
 export const UserCreate = (props: CreateProps) => (
- <Create { ...props} redirect={(resource, id, data) => {
-    return `users/${id}`;
-  }}>
+  <Create
+    {...props}
+    redirect={(resource, id, data) => {
+      return `users/${id}`;
+    }}
+  >
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />
@@ -237,7 +241,7 @@ const UserTitle = () => {
       {translate("resources.users.name", {
         smart_count: 1,
       })}{" "}
-      {record ? ( record.displayname ? `"${record.displayname}"` : `"${record.name}"`) : ""}
+      {record ? (record.displayname ? `"${record.displayname}"` : `"${record.name}"`) : ""}
     </span>
   );
 };
@@ -250,29 +254,34 @@ const UserEditToolbar = () => {
     ownUserIsSelected = record.id === ownUserId;
   }
 
-  return <>
-   <div className={ToolbarClasses.defaultToolbar}>
-      <Toolbar sx={{ justifyContent: "space-between" }}>
+  return (
+    <>
+      <div className={ToolbarClasses.defaultToolbar}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <SaveButton />
           <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
             <DeleteButton />
           </UserPreventSelfDelete>
-      </Toolbar>
-    </div>
-  </>
+        </Toolbar>
+      </div>
+    </>
+  );
 };
 
-const UserBooleanInput = (props) => {
+const UserBooleanInput = props => {
   const record = useRecordContext();
   const ownUserId = localStorage.getItem("user_id");
-  const isOwnUser = false;
   let ownUserIsSelected = false;
-  if (record && (record.id === ownUserId)) {
+  if (record && record.id === ownUserId) {
     ownUserIsSelected = true;
   }
 
-  return <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}><BooleanInput {...props} disabled={ownUserIsSelected} /></UserPreventSelfDelete>
-}
+  return (
+    <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+      <BooleanInput {...props} disabled={ownUserIsSelected} />
+    </UserPreventSelfDelete>
+  );
+};
 
 export const UserEdit = (props: EditProps) => {
   const translate = useTranslate();
@@ -281,7 +290,11 @@ export const UserEdit = (props: EditProps) => {
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab label={translate("resources.users.name", { smart_count: 1 })} icon={<PersonPinIcon />}>
-          <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px", float: "right" }} />
+          <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px" }} />
+          <BooleanInput source="avatar_erase" label="resources.users.action.erase_avatar" />
+          <ImageInput source="avatar_file" label="resources.users.fields.avatar" accept="image/*">
+            <ImageField source="src" title="Avatar"  />
+          </ImageInput>
           <TextInput source="id" disabled />
           <TextInput source="displayname" />
           <PasswordInput source="password" autoComplete="new-password" helperText="resources.users.helper.password" />
