@@ -115,7 +115,7 @@ const UserPreventSelfDelete: React.FC<{ children: React.ReactNode; ownUserIsSele
       notify(<Alert severity="error">{translate("resources.users.helper.erase_admin_error")}</Alert>);
       ev.stopPropagation();
     } else if (asManagedUserIsSelected) {
-      notify(<Alert severity="error">{translate("resources.users.helper.erase_managed_user_error")}</Alert>);
+      notify(<Alert severity="error">{translate("resources.users.helper.modify_managed_user_error")}</Alert>);
       ev.stopPropagation();
     }
   };
@@ -308,7 +308,7 @@ const UserPasswordInput = props => {
   }
 
   return (
-      <PasswordInput {...props} helperText="resources.users.helper.erase_managed_user_error" disabled={asManagedUserIsSelected} />
+      <PasswordInput {...props} helperText="resources.users.helper.modify_managed_user_error" disabled={asManagedUserIsSelected} />
   );
 };
 

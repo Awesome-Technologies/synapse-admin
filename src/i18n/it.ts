@@ -143,7 +143,7 @@ const it: SynapseTranslationMessages = {
       action: {
         erase: "Cancella i dati dell'utente",
         erase_admin_error: "Non è consentito eliminare il proprio utente.",
-        erase_managed_user_error: "Non è consentito eliminare un utente gestito.",
+        modify_managed_user_error: "La modifica di un utente gestito dal sistema non è consentita.",
       },
     },
     rooms: {
