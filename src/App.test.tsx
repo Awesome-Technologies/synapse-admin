@@ -1,4 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import fetchMock from "jest-fetch-mock";
+fetchMock.enableMocks();
 
 import App from "./App";
 

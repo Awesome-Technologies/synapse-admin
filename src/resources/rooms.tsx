@@ -67,6 +67,9 @@ const RoomTitle = () => {
 
 const RoomShowActions = () => {
   const record = useRecordContext();
+  if (!record) {
+    return null;
+  }
   const publishButton = record?.public ? <RoomDirectoryUnpublishButton /> : <RoomDirectoryPublishButton />;
   // FIXME: refresh after (un)publish
   return (

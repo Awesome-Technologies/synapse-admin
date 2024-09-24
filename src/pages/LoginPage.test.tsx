@@ -8,14 +8,17 @@ import { AppContext } from "../AppContext";
 import englishMessages from "../i18n/en";
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, "en", [{ locale: "en", name: "English" }]);
+import { act } from "@testing-library/react";
 
 describe("LoginForm", () => {
-  it("renders with no restriction to homeserver", () => {
-    render(
-      <AdminContext i18nProvider={i18nProvider}>
-        <LoginPage />
-      </AdminContext>
-    );
+  it("renders with no restriction to homeserver", async () => {
+    await act(async () => {
+      render(
+        <AdminContext i18nProvider={i18nProvider}>
+          <LoginPage />
+        </AdminContext>
+      );
+    });
 
     screen.getByText(englishMessages.synapseadmin.auth.welcome);
     screen.getByRole("combobox", { name: "" });

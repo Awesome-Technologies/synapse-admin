@@ -4,6 +4,14 @@ import { SynapseTranslationMessages } from ".";
 
 const de: SynapseTranslationMessages = {
   ...formalGermanMessages,
+  ra: {
+    ...formalGermanMessages.ra,
+    navigation: {
+      ...formalGermanMessages.ra.navigation,
+      no_filtered_results: "Keine Ergebnisse",
+      clear_filters: "Alle Filter entfernen",
+    },
+  },
   synapseadmin: {
     auth: {
       base_url: "Heimserver URL",

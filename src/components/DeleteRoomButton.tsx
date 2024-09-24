@@ -74,7 +74,6 @@ const DeleteRoomButton: React.FC<DeleteRoomButtonProps> = (props) => {
           <DialogContentText>{translate(props.confirmContent)}</DialogContentText>
           <SimpleForm toolbar={false}>
             <BooleanInput
-              fullWidth
               source="block"
               value={block}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setBlock(event.target.checked)}

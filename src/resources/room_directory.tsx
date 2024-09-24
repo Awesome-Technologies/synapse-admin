@@ -25,7 +25,7 @@ import {
   useRefresh,
   useUnselectAll,
 } from "react-admin";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import AvatarField from "../components/AvatarField";
 
@@ -70,27 +70,25 @@ export const RoomDirectoryBulkPublishButton = (props: ButtonProps) => {
   const refresh = useRefresh();
   const unselectAllRooms = useUnselectAll("rooms");
   const dataProvider = useDataProvider();
-  const { mutate, isLoading } = useMutation(
-    () =>
+  const { mutate, isPending } = useMutation({
+    mutationFn: () =>
       dataProvider.createMany("room_directory", {
         ids: selectedIds,
         data: {},
       }),
-    {
-      onSuccess: () => {
-        notify("resources.room_directory.action.send_success");
-        unselectAllRooms();
-        refresh();
-      },
-      onError: () =>
-        notify("resources.room_directory.action.send_failure", {
-          type: "error",
-        }),
-    }
-  );
+    onSuccess: () => {
+      notify("resources.room_directory.action.send_success");
+      unselectAllRooms();
+      refresh();
+    },
+    onError: () =>
+      notify("resources.room_directory.action.send_failure", {
+        type: "error",
+      }),
+  });
 
   return (
-    <Button {...props} label="resources.room_directory.action.create" onClick={mutate} disabled={isLoading}>
+    <Button {...props} label="resources.room_directory.action.create" onClick={mutate} disabled={isPending}>
       <RoomDirectoryIcon />
     </Button>
   );
@@ -101,6 +99,10 @@ export const RoomDirectoryPublishButton = (props: ButtonProps) => {
   const notify = useNotify();
   const refresh = useRefresh();
   const [create, { isLoading }] = useCreate();
+
+  if (!record) {
+    return null;
+  }
 
   const handleSend = () => {
     create(

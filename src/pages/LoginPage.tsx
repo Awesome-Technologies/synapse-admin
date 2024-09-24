@@ -222,7 +222,6 @@ const LoginPage = () => {
             disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             resettable
-            fullWidth
             validate={required()}
           />
         </Box>
@@ -234,7 +233,6 @@ const LoginPage = () => {
             autoComplete="current-password"
             disabled={loading || !supportPassAuth}
             resettable
-            fullWidth
             validate={required()}
           />
         </Box>
@@ -247,7 +245,6 @@ const LoginPage = () => {
             disabled={loading}
             readOnly={allowSingleBaseUrl}
             resettable={allowAnyBaseUrl}
-            fullWidth
             validate={[required(), validateBaseUrl]}
           >
             {allowMultipleBaseUrls &&
@@ -280,9 +277,9 @@ const LoginPage = () => {
           <Box className="hint">{translate("synapseadmin.auth.welcome")}</Box>
           <Box className="form">
             <Select
+              fullWidth
               value={locale}
               onChange={e => setLocale(e.target.value)}
-              fullWidth
               disabled={loading}
               className="select"
             >
