@@ -61,6 +61,7 @@ import {
 import { Link } from "react-router-dom";
 
 import AvatarField from "../components/AvatarField";
+import { isASManaged } from "../components/mxid";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "../components/ServerNotices";
 import { DATE_FORMAT } from "../components/date";
 import { DeviceRemoveButton } from "../components/devices";
@@ -103,14 +104,18 @@ const userFilters = [
   <BooleanInput label="resources.users.fields.show_locked" source="locked" alwaysOn />,
 ];
 
-const UserPreventSelfDelete: React.FC<{ children: React.ReactNode; ownUserIsSelected: boolean }> = props => {
+const UserPreventSelfDelete: React.FC<{ children: React.ReactNode; ownUserIsSelected: boolean; asManagedUserIsSelected: boolean }> = props => {
   const ownUserIsSelected = props.ownUserIsSelected;
+  const asManagedUserIsSelected = props.asManagedUserIsSelected;
   const notify = useNotify();
   const translate = useTranslate();
 
   const handleDeleteClick = (ev: React.MouseEvent<HTMLDivElement>) => {
     if (ownUserIsSelected) {
       notify(<Alert severity="error">{translate("resources.users.helper.erase_admin_error")}</Alert>);
+      ev.stopPropagation();
+    } else if (asManagedUserIsSelected) {
+      notify(<Alert severity="error">{translate("resources.users.helper.erase_managed_user_error")}</Alert>);
       ev.stopPropagation();
     }
   };
@@ -121,6 +126,7 @@ const UserPreventSelfDelete: React.FC<{ children: React.ReactNode; ownUserIsSele
 const UserBulkActionButtons = () => {
   const record = useListContext();
   const [ownUserIsSelected, setOwnUserIsSelected] = useState(false);
+  const [asManagedUserIsSelected, setAsManagedUserIsSelected] = useState(false);
   const selectedIds = record.selectedIds;
   const ownUserId = localStorage.getItem("user_id");
   const notify = useNotify();
@@ -128,12 +134,13 @@ const UserBulkActionButtons = () => {
 
   useEffect(() => {
     setOwnUserIsSelected(selectedIds.includes(ownUserId));
+    setAsManagedUserIsSelected(selectedIds.some(id => isASManaged(id)));
   }, [selectedIds]);
 
   return (
     <>
       <ServerNoticeBulkButton />
-      <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+      <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected} asManagedUserIsSelected={asManagedUserIsSelected}>
         <BulkDeleteButton
           label="resources.users.action.erase"
           confirmTitle="resources.users.helper.erase"
@@ -184,14 +191,16 @@ const UserEditActions = () => {
   const translate = useTranslate();
   const ownUserId = localStorage.getItem("user_id");
   let ownUserIsSelected = false;
+  let asManagedUserIsSelected = false;
   if (record && record.id) {
     ownUserIsSelected = record.id === ownUserId;
+    asManagedUserIsSelected = isASManaged(record.id);
   }
 
   return (
     <TopToolbar>
       {!record?.deactivated && <ServerNoticeButton />}
-      <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+      <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected} asManagedUserIsSelected={asManagedUserIsSelected}>
         <DeleteButton
           label="resources.users.action.erase"
           confirmTitle={translate("resources.users.helper.erase", {
@@ -236,12 +245,16 @@ export const UserCreate = (props: CreateProps) => (
 const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
+  let username = record ? (record.displayname ? `"${record.displayname}"` : `"${record.name}"`) : ""
+  if (isASManaged(record?.id)) {
+    username += " 🤖";
+  }
   return (
     <span>
       {translate("resources.users.name", {
         smart_count: 1,
       })}{" "}
-      {record ? (record.displayname ? `"${record.displayname}"` : `"${record.name}"`) : ""}
+      {username}
     </span>
   );
 };
@@ -250,8 +263,10 @@ const UserEditToolbar = () => {
   const record = useRecordContext();
   const ownUserId = localStorage.getItem("user_id");
   let ownUserIsSelected = false;
+  let asManagedUserIsSelected = false;
   if (record && record.id) {
     ownUserIsSelected = record.id === ownUserId;
+    asManagedUserIsSelected = isASManaged(record.id);
   }
 
   return (
@@ -259,7 +274,7 @@ const UserEditToolbar = () => {
       <div className={ToolbarClasses.defaultToolbar}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <SaveButton />
-          <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
+          <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected} asManagedUserIsSelected={asManagedUserIsSelected}>
             <DeleteButton />
           </UserPreventSelfDelete>
         </Toolbar>
@@ -272,14 +287,28 @@ const UserBooleanInput = props => {
   const record = useRecordContext();
   const ownUserId = localStorage.getItem("user_id");
   let ownUserIsSelected = false;
-  if (record && record.id === ownUserId) {
-    ownUserIsSelected = true;
+  let asManagedUserIsSelected = false;
+  if (record) {
+    ownUserIsSelected = record.id === ownUserId;
+    asManagedUserIsSelected = isASManaged(record.id);
   }
 
   return (
-    <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected}>
-      <BooleanInput {...props} disabled={ownUserIsSelected} />
+    <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected} asManagedUserIsSelected={asManagedUserIsSelected}>
+      <BooleanInput {...props} disabled={ownUserIsSelected || asManagedUserIsSelected} />
     </UserPreventSelfDelete>
+  );
+};
+
+const UserPasswordInput = props => {
+  const record = useRecordContext();
+  let asManagedUserIsSelected = false;
+  if (record) {
+    asManagedUserIsSelected = isASManaged(record.id);
+  }
+
+  return (
+      <PasswordInput {...props} helperText="resources.users.helper.erase_managed_user_error" disabled={asManagedUserIsSelected} />
   );
 };
 
@@ -301,10 +330,10 @@ export const UserEdit = (props: EditProps) => {
           </ImageInput>
           <TextInput source="id" readOnly />
           <TextInput source="displayname" />
-          <PasswordInput source="password" autoComplete="new-password" helperText="resources.users.helper.password" />
+          <UserPasswordInput source="password" autoComplete="new-password" helperText="resources.users.helper.password" />
           <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
           <BooleanInput source="admin" />
-          <BooleanInput source="locked" />
+          <UserBooleanInput source="locked" />
           <UserBooleanInput source="deactivated" helperText="resources.users.helper.deactivate" />
           <BooleanInput source="erased" disabled />
           <DateField source="creation_ts_ms" showTime options={DATE_FORMAT} />
@@ -331,7 +360,7 @@ export const UserEdit = (props: EditProps) => {
 
         <FormTab label={translate("resources.devices.name", { smart_count: 2 })} icon={<DevicesIcon />} path="devices">
           <ReferenceManyField reference="devices" target="user_id" label={false}>
-            <Datagrid style={{ width: "100%" }}>
+            <Datagrid style={{ width: "100%" }} bulkActionButtons="">
               <TextField source="device_id" sortable={false} />
               <TextField source="display_name" sortable={false} />
               <TextField source="last_seen_ip" sortable={false} />
