@@ -34,6 +34,7 @@ The following changes are already implemented:
 * [Expose user avatar URL field in the UI](https://github.com/etkecc/synapse-admin/pull/27)
 * [Upgrade react-admin to v5](https://github.com/etkecc/synapse-admin/pull/40)
 * [Restrict actions on specific users](https://github.com/etkecc/synapse-admin/pull/42)
+* [Add `Contact support` menu item](https://github.com/etkecc/synapse-admin/pull/45)
 
 _the list will be updated as new changes are added_
 
