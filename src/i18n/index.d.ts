@@ -139,6 +139,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
         deactivate: string;
         erase: string;
         erase_admin_error: string;
+        modify_managed_user_error: string;
       };
       action: {
         erase: string;

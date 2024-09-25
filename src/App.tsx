@@ -4,6 +4,7 @@ import polyglotI18nProvider from "ra-i18n-polyglot";
 import { Admin, CustomRoutes, Resource, resolveBrowserLocale } from "react-admin";
 import { Route } from "react-router-dom";
 
+import { AdminLayout } from "./components/AdminLayout";
 import { ImportFeature } from "./components/ImportFeature";
 import germanMessages from "./i18n/de";
 import englishMessages from "./i18n/en";
@@ -49,6 +50,7 @@ const App = () => (
   <Admin
     disableTelemetry
     requireAuth
+    layout={AdminLayout}
     loginPage={LoginPage}
     authProvider={authProvider}
     dataProvider={dataProvider}

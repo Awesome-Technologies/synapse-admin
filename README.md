@@ -212,6 +212,16 @@ Example for [mautrix-telegram](https://github.com/mautrix/telegram)
 }
 ```
 
+### Providing support URL
+
+Synapse-Admin provides a support link in the main menu - `Contact support`. By default, the link points to the GitHub issues page of the project. You can change this link by providing a `supportURL` in the `config.json`.
+
+```json
+{
+  "supportURL": "https://example.com/support"
+}
+```
+
 ## Screenshots
 
 ![Screenshots](./screenshots.jpg)
