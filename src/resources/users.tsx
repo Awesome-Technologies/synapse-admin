@@ -244,6 +244,10 @@ export const UserCreate = (props: CreateProps) => (
 
 const UserTitle = () => {
   const record = useRecordContext();
+  if (!record) {
+    return null;
+  }
+
   const translate = useTranslate();
   let username = record ? (record.displayname ? `"${record.displayname}"` : `"${record.name}"`) : ""
   if (isASManaged(record?.id)) {
@@ -360,7 +364,7 @@ export const UserEdit = (props: EditProps) => {
 
         <FormTab label={translate("resources.devices.name", { smart_count: 2 })} icon={<DevicesIcon />} path="devices">
           <ReferenceManyField reference="devices" target="user_id" label={false}>
-            <Datagrid style={{ width: "100%" }} bulkActionButtons="">
+            <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
               <TextField source="device_id" sortable={false} />
               <TextField source="display_name" sortable={false} />
               <TextField source="last_seen_ip" sortable={false} />

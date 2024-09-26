@@ -22,6 +22,7 @@ import userMediaStats from "./resources/user_media_statistics";
 import users from "./resources/users";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
@@ -46,37 +47,41 @@ const i18nProvider = polyglotI18nProvider(
   ]
 );
 
+const queryClient = new QueryClient();
+
 const App = () => (
-  <Admin
-    disableTelemetry
-    requireAuth
-    layout={AdminLayout}
-    loginPage={LoginPage}
-    authProvider={authProvider}
-    dataProvider={dataProvider}
-    i18nProvider={i18nProvider}
-  >
-    <CustomRoutes>
-      <Route path="/import_users" element={<ImportFeature />} />
-    </CustomRoutes>
-    <Resource {...users} />
-    <Resource {...rooms} />
-    <Resource {...userMediaStats} />
-    <Resource {...reports} />
-    <Resource {...roomDirectory} />
-    <Resource {...destinations} />
-    <Resource {...registrationToken} />
-    <Resource name="connections" />
-    <Resource name="devices" />
-    <Resource name="room_members" />
-    <Resource name="users_media" />
-    <Resource name="joined_rooms" />
-    <Resource name="pushers" />
-    <Resource name="servernotices" />
-    <Resource name="forward_extremities" />
-    <Resource name="room_state" />
-    <Resource name="destination_rooms" />
-  </Admin>
+  <QueryClientProvider client={queryClient}>
+    <Admin
+      disableTelemetry
+      requireAuth
+      layout={AdminLayout}
+      loginPage={LoginPage}
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+      i18nProvider={i18nProvider}
+    >
+      <CustomRoutes>
+        <Route path="/import_users" element={<ImportFeature />} />
+      </CustomRoutes>
+      <Resource {...users} />
+      <Resource {...rooms} />
+      <Resource {...userMediaStats} />
+      <Resource {...reports} />
+      <Resource {...roomDirectory} />
+      <Resource {...destinations} />
+      <Resource {...registrationToken} />
+      <Resource name="connections" />
+      <Resource name="devices" />
+      <Resource name="room_members" />
+      <Resource name="users_media" />
+      <Resource name="joined_rooms" />
+      <Resource name="pushers" />
+      <Resource name="servernotices" />
+      <Resource name="forward_extremities" />
+      <Resource name="room_state" />
+      <Resource name="destination_rooms" />
+    </Admin>
+  </QueryClientProvider>
 );
 
 export default App;
