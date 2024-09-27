@@ -16,7 +16,7 @@ const resourceName = "rooms";
 const DeleteRoomButton: React.FC<DeleteRoomButtonProps> = (props) => {
   const translate = useTranslate();
   const [open, setOpen] = useState(false);
-  const [block, setBlock] = useState(true);
+  const [block, setBlock] = useState(false);
 
   const notify = useNotify();
   const redirect = useRedirect();
@@ -78,7 +78,7 @@ const DeleteRoomButton: React.FC<DeleteRoomButtonProps> = (props) => {
               value={block}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setBlock(event.target.checked)}
               label="resources.rooms.action.erase.fields.block"
-              defaultValue={true}
+              defaultValue={false}
             />
           </SimpleForm>
         </DialogContent>
