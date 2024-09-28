@@ -60,6 +60,7 @@ The following changes are already implemented:
 * [Upgrade react-admin to v5](https://github.com/etkecc/synapse-admin/pull/40)
 * [Restrict actions on specific users](https://github.com/etkecc/synapse-admin/pull/42)
 * [Add `Contact support` menu item](https://github.com/etkecc/synapse-admin/pull/45)
+* [Provide options to delete media and redact events on user erase](https://github.com/etkecc/synapse-admin/pull/49)
 
 _the list will be updated as new changes are added_
 
@@ -136,7 +137,7 @@ Synapse-Admin provides a support link in the main menu - `Contact support`. By d
 
 ### Supported Synapse
 
-It needs at least [Synapse](https://github.com/element-hq/synapse) v1.93.0 for all functions to work as expected!
+It needs at least [Synapse](https://github.com/element-hq/synapse) v1.116.0 for all functions to work as expected!
 
 You get your server version with the request `/_synapse/admin/v1/server_version`.
 See also [Synapse version API](https://element-hq.github.io/synapse/latest/admin_api/version_api.html).

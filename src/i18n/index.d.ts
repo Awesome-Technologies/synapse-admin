@@ -138,12 +138,15 @@ interface SynapseTranslationMessages extends TranslationMessages {
         password?: string;
         deactivate: string;
         erase: string;
+        erase_text: string;
         erase_admin_error: string;
         modify_managed_user_error: string;
       };
       action: {
         erase: string;
         erase_avatar: string;
+        delete_media: string;
+        redact_events: string;
       };
     };
     rooms: {

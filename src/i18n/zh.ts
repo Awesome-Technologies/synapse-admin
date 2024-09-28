@@ -143,12 +143,15 @@ const zh: SynapseTranslationMessages = {
       helper: {
         deactivate: "您必须提供一串密码来激活账户。",
         erase: "将用户标记为根据 GDPR 的要求抹除了",
+        erase_text: "这意味着用户发送的信息对于发送信息时在房间内的任何人来说都是可见的，但对于之后加入房间的用户来说则是隐藏的。",
         erase_admin_error: "不允许删除自己的用户",
         modify_managed_user_error: "不允许修改系统管理的用户。",
       },
       action: {
         erase: "抹除用户信息",
         erase_avatar: "抹掉头像",
+        delete_media: "删除用户上传的所有媒体",
+        redact_events: "重新编辑用户（-s）发送的所有事件",
       },
     },
     rooms: {

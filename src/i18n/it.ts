@@ -139,11 +139,15 @@ const it: SynapseTranslationMessages = {
         password: "Cambiando la password l'utente verrà disconnesso da tutte le sessioni attive.",
         deactivate: "Devi fornire una password per riattivare l'account.",
         erase: "Constrassegna l'utente come cancellato dal GDPR",
+        erase_text: "Ciò significa che i messaggi inviati dall'utente (o dagli utenti) saranno ancora visibili da chiunque si trovasse nella stanza al momento dell'invio, ma saranno nascosti agli utenti che si uniranno alla stanza in seguito.",
+        erase_admin_error: "Non è consentito eliminare il proprio utente.",
+        modify_managed_user_error: "La modifica di un utente gestito dal sistema non è consentita.",
       },
       action: {
         erase: "Cancella i dati dell'utente",
-        erase_admin_error: "Non è consentito eliminare il proprio utente.",
-        modify_managed_user_error: "La modifica di un utente gestito dal sistema non è consentita.",
+        erase_avatar: "Cancella l'avatar dell'utente",
+        delete_media: "Elimina tutti i media caricati dall'utente(-s)",
+        redact_events: "Ridurre tutti gli eventi inviati dall'utente(-s)",
       },
     },
     rooms: {

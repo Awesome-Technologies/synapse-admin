@@ -140,12 +140,15 @@ const fr: SynapseTranslationMessages = {
       helper: {
         deactivate: "Vous devrez fournir un mot de passe pour réactiver le compte.",
         erase: "Marquer l'utilisateur comme effacé conformément au RGPD",
+        erase_text: "Cela signifie que les messages envoyés par le(s) utilisateur(s) seront toujours visibles par toute personne qui se trouvait dans la salle au moment où ces messages ont été envoyés, mais qu'ils seront cachés aux utilisateurs qui rejoindront la salle par la suite.",
         erase_admin_error: "La suppression de son propre utilisateur n'est pas autorisée.",
         modify_managed_user_error: "La modification d'un utilisateur géré par le système n'est pas autorisée.",
       },
       action: {
         erase: "Effacer les données de l'utilisateur",
         erase_avatar: "Effacer l'avatar",
+        delete_media: "Supprimer tous les médias téléchargés par le(s) utilisateur(s)",
+        redact_events: "Expurger tous les événements envoyés par l'utilisateur(-s)",
       },
     },
     rooms: {

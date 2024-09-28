@@ -56,6 +56,12 @@ const filterUndefined = (obj: Record<string, any>) => {
   return Object.fromEntries(Object.entries(obj).filter(([key, value]) => value !== undefined));
 };
 
+interface Action {
+  endpoint: string;
+  method?: string;
+  body?: Record<string, any>;
+}
+
 interface Room {
   room_id: string;
   name?: string;
@@ -282,6 +288,24 @@ const resourceMap = {
       body: { erase: true },
       method: "POST",
     }),
+    afterDelete: (params: DeleteParams) => {
+      let actions : Action[] = [];
+      if (params.meta?.deleteMedia) {
+        actions.push({
+          endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/media`,
+          method: "DELETE",
+        });
+      }
+
+      if (params.meta?.redactEvents) {
+        actions.push({
+          endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/redact`,
+          method: "POST",
+        });
+      }
+
+      return actions;
+    },
   },
   rooms: {
     path: "/_synapse/admin/v1/rooms",
@@ -702,6 +726,17 @@ const baseDataProvider: SynapseDataProvider = {
         method: "method" in del ? del.method : "DELETE",
         body: "body" in del ? JSON.stringify(del.body) : null,
       });
+
+      if ("afterDelete" in res) {
+        const del = res.afterDelete(params);
+        del.map(async action => {
+          const endpoint_url = homeserver + action.endpoint;
+          return jsonClient(endpoint_url, {
+            method: "method" in action ? action.method : "DELETE",
+            body: "body" in action ? JSON.stringify(action.body) : null,
+          });
+        });
+      }
       return { data: json };
     } else {
       const endpoint_url = homeserver + res.path;
@@ -714,7 +749,7 @@ const baseDataProvider: SynapseDataProvider = {
   },
 
   deleteMany: async (resource, params) => {
-    console.log("deleteMany " + resource);
+    console.log("deleteMany " + resource, "params", params);
     const homeserver = storage.getItem("base_url");
     if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
@@ -731,6 +766,22 @@ const baseDataProvider: SynapseDataProvider = {
           });
         })
       );
+
+      if ("afterDelete" in res) {
+        await Promise.all(
+          params.ids.map(id => {
+            const del = res.afterDelete({ ...params, id: id });
+            del.map(async action => {
+              const endpoint_url = homeserver + action.endpoint;
+              return jsonClient(endpoint_url, {
+                method: "method" in action ? action.method : "DELETE",
+                body: "body" in action ? JSON.stringify(action.body) : null,
+              });
+            });
+          })
+        );
+      }
+
       return {
         data: responses.map(({ json }) => json),
       };

@@ -36,7 +36,6 @@ import {
   ResourceProps,
   SearchInput,
   SelectInput,
-  BulkDeleteButton,
   DeleteButton,
   maxLength,
   regex,
@@ -61,6 +60,7 @@ import {
 import { Link } from "react-router-dom";
 
 import AvatarField from "../components/AvatarField";
+import DeleteUserButton from "../components/DeleteUserButton";
 import { isASManaged } from "../components/mxid";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "../components/ServerNotices";
 import { DATE_FORMAT } from "../components/date";
@@ -141,10 +141,10 @@ const UserBulkActionButtons = () => {
     <>
       <ServerNoticeBulkButton />
       <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected} asManagedUserIsSelected={asManagedUserIsSelected}>
-        <BulkDeleteButton
-          label="resources.users.action.erase"
+        <DeleteUserButton
+          selectedIds={selectedIds}
           confirmTitle="resources.users.helper.erase"
-          mutationMode="pessimistic"
+          confirmContent="resources.users.helper.erase_text"
         />
       </UserPreventSelfDelete>
     </>
@@ -200,15 +200,15 @@ const UserEditActions = () => {
   return (
     <TopToolbar>
       {!record?.deactivated && <ServerNoticeButton />}
+      {record && record.id && (
       <UserPreventSelfDelete ownUserIsSelected={ownUserIsSelected} asManagedUserIsSelected={asManagedUserIsSelected}>
-        <DeleteButton
-          label="resources.users.action.erase"
-          confirmTitle={translate("resources.users.helper.erase", {
-            smart_count: 1,
-          })}
-          mutationMode="pessimistic"
+        <DeleteUserButton
+          selectedIds={[record?.id]}
+          confirmTitle="resources.users.helper.erase"
+          confirmContent="resources.users.helper.erase_text"
         />
       </UserPreventSelfDelete>
+      )}
     </TopToolbar>
   );
 };

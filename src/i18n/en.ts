@@ -142,12 +142,15 @@ const en: SynapseTranslationMessages = {
         password: "Changing password will log user out of all sessions.",
         deactivate: "You must provide a password to re-activate an account.",
         erase: "Mark the user as GDPR-erased",
+        erase_text: "This means messages sent by the user(-s) will still be visible by anyone who was in the room when these messages were sent, but hidden from users joining the room afterward.",
         erase_admin_error: "Deleting own user is not allowed.",
         modify_managed_user_error: "Modifying a system-managed user is not allowed.",
       },
       action: {
         erase: "Erase user data",
-        erase_avatar: "Erase avatar"
+        erase_avatar: "Erase avatar",
+        delete_media: "Delete all media uploaded by the user(-s)",
+        redact_events: "Redact all events sent by the user(-s)",
       },
     },
     rooms: {
