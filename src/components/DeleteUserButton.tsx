@@ -35,6 +35,12 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = (props) => {
       { ids: recordIds, meta: values },
       {
         onSuccess: () => {
+          notify("ra.notification.deleted", {
+            messageArgs: {
+              smart_count: recordIds.length,
+            },
+            type: 'info' as NotificationType,
+          });
           handleDialogClose();
           unselectAll();
           redirect("/users");

@@ -1,6 +1,7 @@
 import {
   DataProvider,
   DeleteParams,
+  DeleteManyParams,
   HttpError,
   Identifier,
   Options,
@@ -288,24 +289,6 @@ const resourceMap = {
       body: { erase: true },
       method: "POST",
     }),
-    afterDelete: (params: DeleteParams) => {
-      let actions : Action[] = [];
-      if (params.meta?.deleteMedia) {
-        actions.push({
-          endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/media`,
-          method: "DELETE",
-        });
-      }
-
-      if (params.meta?.redactEvents) {
-        actions.push({
-          endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/redact`,
-          method: "POST",
-        });
-      }
-
-      return actions;
-    },
   },
   rooms: {
     path: "/_synapse/admin/v1/rooms",
@@ -726,17 +709,6 @@ const baseDataProvider: SynapseDataProvider = {
         method: "method" in del ? del.method : "DELETE",
         body: "body" in del ? JSON.stringify(del.body) : null,
       });
-
-      if ("afterDelete" in res) {
-        const del = res.afterDelete(params);
-        del.map(async action => {
-          const endpoint_url = homeserver + action.endpoint;
-          return jsonClient(endpoint_url, {
-            method: "method" in action ? action.method : "DELETE",
-            body: "body" in action ? JSON.stringify(action.body) : null,
-          });
-        });
-      }
       return { data: json };
     } else {
       const endpoint_url = homeserver + res.path;
@@ -766,21 +738,6 @@ const baseDataProvider: SynapseDataProvider = {
           });
         })
       );
-
-      if ("afterDelete" in res) {
-        await Promise.all(
-          params.ids.map(id => {
-            const del = res.afterDelete({ ...params, id: id });
-            del.map(async action => {
-              const endpoint_url = homeserver + action.endpoint;
-              return jsonClient(endpoint_url, {
-                method: "method" in action ? action.method : "DELETE",
-                body: "body" in action ? JSON.stringify(action.body) : null,
-              });
-            });
-          })
-        );
-      }
 
       return {
         data: responses.map(({ json }) => json),
@@ -857,6 +814,39 @@ const dataProvider = withLifecycleCallbacks(baseDataProvider, [
         });
         params.data.avatar_url = reponse.content_uri;
       }
+      return params;
+    },
+    beforeDelete: async (params: DeleteParams<any>, dataProvider: DataProvider) => {
+      if (params.meta?.deleteMedia) {
+        const base_url = storage.getItem("base_url");
+        const endpoint_url = `${base_url}/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/media`;
+        await jsonClient(endpoint_url, { method: "DELETE" });
+      }
+
+      if (params.meta?.redactEvents) {
+        const base_url = storage.getItem("base_url");
+        const endpoint_url = `${base_url}/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/redact`;
+        await jsonClient(endpoint_url, { method: "POST" });
+      }
+
+      return params;
+    },
+    beforeDeleteMany: async (params: DeleteManyParams<any>, dataProvider: DataProvider) => {
+      await Promise.all(
+        params.ids.map(async id => {
+          if (params.meta?.deleteMedia) {
+            const base_url = storage.getItem("base_url");
+            const endpoint_url = `${base_url}/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(id))}/media`;
+            await jsonClient(endpoint_url, { method: "DELETE" });
+          }
+
+          if (params.meta?.redactEvents) {
+            const base_url = storage.getItem("base_url");
+            const endpoint_url = `${base_url}/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(id))}/redact`;
+            await jsonClient(endpoint_url, { method: "POST" });
+          }
+        })
+      );
       return params;
     },
   },
