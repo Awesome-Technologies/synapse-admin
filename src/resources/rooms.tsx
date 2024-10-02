@@ -47,6 +47,7 @@ import {
 } from "./room_directory";
 import { DATE_FORMAT } from "../components/date";
 import DeleteRoomButton from "../components/DeleteRoomButton";
+import AvatarField from "../components/AvatarField";
 
 const RoomPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
@@ -90,6 +91,11 @@ export const RoomShow = (props: ShowProps) => {
     <Show {...props} actions={<RoomShowActions />} title={<RoomTitle />}>
       <TabbedShowLayout>
         <Tab label="synapseadmin.rooms.tabs.basic" icon={<ViewListIcon />}>
+          <AvatarField
+            source="avatar"
+            sx={{ height: "120px", width: "120px" }}
+            label="resources.rooms.fields.avatar"
+          />
           <TextField source="room_id" />
           <TextField source="name" />
           <TextField source="topic" />

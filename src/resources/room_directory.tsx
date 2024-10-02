@@ -26,8 +26,8 @@ import {
   useUnselectAll,
 } from "react-admin";
 import { useMutation } from "@tanstack/react-query";
-
 import AvatarField from "../components/AvatarField";
+
 
 const RoomDirectoryPagination = () => <Pagination rowsPerPageOptions={[100, 500, 1000, 2000]} />;
 
@@ -144,7 +144,6 @@ export const RoomDirectoryList = () => (
     >
       <AvatarField
         source="avatar_src"
-        sortable={false}
         sx={{ height: "40px", width: "40px" }}
         label="resources.rooms.fields.avatar"
       />

@@ -96,8 +96,13 @@ const authProvider: AuthProvider = {
     };
 
     if (typeof access_token === "string") {
-      await fetchUtils.fetchJson(logout_api_url, options);
-      storage.removeItem("access_token");
+      try {
+        await fetchUtils.fetchJson(logout_api_url, options);
+      } catch (err) {
+        console.log("Error logging out", err);
+      } finally {
+        storage.removeItem("access_token");
+      }
     }
   },
   // called when the API returns an error

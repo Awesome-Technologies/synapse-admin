@@ -1,4 +1,4 @@
-import EqualizerIcon from "@mui/icons-material/Equalizer";
+import PermMediaIcon from "@mui/icons-material/PermMedia";
 import {
   Datagrid,
   ExportButton,
@@ -48,7 +48,7 @@ export const UserMediaStatsList = (props: ListProps) => (
 
 const resource: ResourceProps = {
   name: "user_media_statistics",
-  icon: EqualizerIcon,
+  icon: PermMediaIcon,
   list: UserMediaStatsList,
 };
 

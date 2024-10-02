@@ -42,17 +42,6 @@ const jsonClient = async (url: string, options: Options = {}) => {
   }
 };
 
-const mxcUrlToHttp = (mxcUrl: string) => {
-  const homeserver = storage.getItem("base_url");
-  const re = /^mxc:\/\/([^/]+)\/(\w+)/;
-  const ret = re.exec(mxcUrl);
-  console.log("mxcClient " + ret);
-  if (ret == null) return null;
-  const serverName = ret[1];
-  const mediaId = ret[2];
-  return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
-};
-
 const filterUndefined = (obj: Record<string, any>) => {
   return Object.fromEntries(Object.entries(obj).filter(([key, value]) => value !== undefined));
 };
@@ -267,10 +256,10 @@ export interface SynapseDataProvider extends DataProvider {
 const resourceMap = {
   users: {
     path: "/_synapse/admin/v2/users",
-    map: (u: User) => ({
+    map: async (u: User) => ({
       ...u,
       id: returnMXID(u.name),
-      avatar_src: u.avatar_url ? mxcUrlToHttp(u.avatar_url) : undefined,
+      avatar_src: u.avatar_url ? u.avatar_url : undefined,
       is_guest: !!u.is_guest,
       admin: !!u.admin,
       deactivated: !!u.deactivated,
@@ -458,7 +447,7 @@ const resourceMap = {
       id: rd.room_id,
       public: !!rd.public,
       guest_access: !!rd.guest_access,
-      avatar_src: rd.avatar_url ? mxcUrlToHttp(rd.avatar_url) : undefined,
+      avatar_src: rd.avatar_url ? rd.avatar_url : undefined,
     }),
     data: "chunk",
     total: json => json.total_room_count_estimate,
@@ -564,8 +553,10 @@ const baseDataProvider: SynapseDataProvider = {
     const url = `${endpoint_url}?${new URLSearchParams(filterUndefined(query)).toString()}`;
 
     const { json } = await jsonClient(url);
+    const formattedData = await json[res.data].map(res.map);
+
     return {
-      data: json[res.data].map(res.map),
+      data: formattedData,
       total: res.total(json, from, perPage),
     };
   },

@@ -56,6 +56,7 @@ import {
   RaRecord,
   ImageInput,
   ImageField,
+  FunctionField,
 } from "react-admin";
 import { Link } from "react-router-dom";
 
@@ -88,11 +89,6 @@ const UserListActions = () => {
       </Button>
     </TopToolbar>
   );
-};
-
-UserListActions.defaultProps = {
-  selectedIds: [],
-  onUnselectItems: () => null,
 };
 
 const UserPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
@@ -165,7 +161,7 @@ export const UserList = (props: ListProps) => (
     pagination={<UserPagination />}
   >
     <Datagrid rowClick={usersRowClick} bulkActionButtons={<UserBulkActionButtons />}>
-      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
+      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
       <BooleanField source="is_guest" />
@@ -323,14 +319,19 @@ export const UserEdit = (props: EditProps) => {
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />} mutationMode="pessimistic">
       <TabbedForm toolbar={<UserEditToolbar />}>
         <FormTab label={translate("resources.users.name", { smart_count: 1 })} icon={<PersonPinIcon />}>
-          <AvatarField source="avatar_src" sortable={false} sx={{ height: "120px", width: "120px" }} />
+          <AvatarField source="avatar_src" sx={{ height: "120px", width: "120px" }} />
           <BooleanInput source="avatar_erase" label="resources.users.action.erase_avatar" />
           <ImageInput
             source="avatar_file"
             label="resources.users.fields.avatar"
             accept={{ "image/*": [".png", ".jpg"] }}
           >
-            <ImageField source="src" title="Avatar" />
+            <ImageField source="src" title="Avatar" sx={{ '& img': {
+              width: "120px !important",
+              height: "120px !important",
+              objectFit: "cover !important",
+              borderRadius: '50% !important',
+            }}} />
           </ImageInput>
           <TextInput source="id" readOnly />
           <TextInput source="displayname" />
@@ -404,8 +405,8 @@ export const UserEdit = (props: EditProps) => {
               <DateField source="created_ts" showTime options={DATE_FORMAT} />
               <DateField source="last_access_ts" showTime options={DATE_FORMAT} />
               <NumberField source="media_length" />
-              <TextField source="media_type" />
-              <TextField source="upload_name" />
+              <TextField source="media_type" sx={{ display: "block", width: 200, wordBreak: "break-word" }} />
+              <FunctionField source="upload_name" render={record => decodeURIComponent(record.upload_name)} />
               <TextField source="quarantined_by" />
               <QuarantineMediaButton label="resources.quarantine_media.action.name" />
               <ProtectMediaButton label="resources.users_media.fields.safe_from_quarantine" />

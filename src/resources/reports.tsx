@@ -22,7 +22,7 @@ import {
 } from "react-admin";
 
 import { DATE_FORMAT } from "../components/date";
-import { MXCField } from "../components/media";
+import { ReportMediaContent } from "../components/media";
 
 const ReportPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
@@ -62,7 +62,7 @@ export const ReportShow = (props: ShowProps) => {
           <TextField source="event_json.content.msgtype" />
           <TextField source="event_json.content.body" />
           <TextField source="event_json.content.info.mimetype" />
-          <MXCField source="event_json.content.url" />
+          <ReportMediaContent source="event_json.content.url" />
           <TextField source="event_json.content.format" />
           <TextField source="event_json.content.formatted_body" />
           <TextField source="event_json.content.algorithm" />

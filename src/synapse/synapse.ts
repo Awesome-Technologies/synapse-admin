@@ -54,11 +54,6 @@ export const getSupportedLoginFlows = async baseUrl => {
   return response.json.flows;
 };
 
-export const getMediaUrl = media_id => {
-  const baseUrl = storage.getItem("base_url");
-  return `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
-};
-
 /**
  * Generate a random MXID for current homeserver
  * @returns full MXID as string
