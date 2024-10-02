@@ -825,8 +825,8 @@ const dataProvider = withLifecycleCallbacks(baseDataProvider, [
 
       if (params.meta?.redactEvents) {
         const base_url = storage.getItem("base_url");
-        const endpoint_url = `${base_url}/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(params.id))}/redact`;
-        await jsonClient(endpoint_url, { method: "POST" });
+        const endpoint_url = `${base_url}/_synapse/admin/v1/user/${encodeURIComponent(returnMXID(params.id))}/redact`;
+        await jsonClient(endpoint_url, { method: "POST", body: JSON.stringify({ rooms: [] }) });
       }
 
       return params;
@@ -842,8 +842,8 @@ const dataProvider = withLifecycleCallbacks(baseDataProvider, [
 
           if (params.meta?.redactEvents) {
             const base_url = storage.getItem("base_url");
-            const endpoint_url = `${base_url}/_synapse/admin/v1/users/${encodeURIComponent(returnMXID(id))}/redact`;
-            await jsonClient(endpoint_url, { method: "POST" });
+            const endpoint_url = `${base_url}/_synapse/admin/v1/user/${encodeURIComponent(returnMXID(id))}/redact`;
+            await jsonClient(endpoint_url, { method: "POST", body: JSON.stringify({ rooms: [] }) });
           }
         })
       );
