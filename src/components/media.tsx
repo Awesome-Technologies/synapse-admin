@@ -314,7 +314,16 @@ export const QuarantineMediaButton = (props: ButtonProps) => {
   );
 };
 
-export const ViewMediaButton = ({ mxcURL, label }) => {
+export const ViewMediaButton = ({ mxcURL, label, mimetype }) => {
+    if (!mimetype.startsWith("image/")) {
+      return (
+        <>
+          <Box style={{ whiteSpace: "pre" }}>
+            {label}
+          </Box>
+        </>
+      );
+    }
   const translate = useTranslate();
 
   const openFileInNewTab = (blobURL: string) => {
@@ -367,7 +376,7 @@ export const MediaIDField = ({ source }) => {
 
   const mxcURL = `mxc://${homeserver}/${mediaID}`;
 
-  return <ViewMediaButton mxcURL={mxcURL} label={mediaID} />;
+  return <ViewMediaButton mxcURL={mxcURL} label={mediaID} mimetype={record.media_type}/>;
 };
 
 export const ReportMediaContent = ({ source }) => {
@@ -381,5 +390,5 @@ export const ReportMediaContent = ({ source }) => {
     return null;
   }
 
-  return <ViewMediaButton mxcURL={mxcURL} label={mxcURL} />;
+  return <ViewMediaButton mxcURL={mxcURL} label={mxcURL} mimetype={record.media_type}/>;
 };
