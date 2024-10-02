@@ -314,42 +314,24 @@ export const QuarantineMediaButton = (props: ButtonProps) => {
   );
 };
 
-export const ViewMediaButton = ({ mxcURL, uploadName, label }) => {
+export const ViewMediaButton = ({ mxcURL, label }) => {
   const translate = useTranslate();
 
-  const [open, setOpen] = useState(false);
-  const [blobURL, setBlobURL] = useState("");
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    if (blobURL) {
-      URL.revokeObjectURL(blobURL);
-    }
-  };
-
-  const forceDownload = (url: string, filename: string) => {
+  const openFileInNewTab = (blobURL: string) => {
     const anchorElement = document.createElement("a");
-    anchorElement.href = url;
-    anchorElement.download = filename;
+    anchorElement.href = blobURL;
+    anchorElement.target = "_blank";
     document.body.appendChild(anchorElement);
     anchorElement.click();
     document.body.removeChild(anchorElement);
-    URL.revokeObjectURL(blobURL);
+    setTimeout(() => URL.revokeObjectURL(blobURL), 10);
   };
 
-  const handleFile = async () => {
+  const previewFile = async () => {
     const response = await fetchAuthenticatedMedia(mxcURL, "original");
     const blob = await response.blob();
     const blobURL = URL.createObjectURL(blob);
-    setBlobURL(blobURL);
-
-    const mimeType = blob.type;
-    if (!mimeType.startsWith("image/")) {
-      forceDownload(blobURL, uploadName);
-    } else {
-      handleOpen();
-    }
+    openFileInNewTab(blobURL);
   };
 
   return (
@@ -358,7 +340,7 @@ export const ViewMediaButton = ({ mxcURL, uploadName, label }) => {
         <Tooltip title={translate("resources.users_media.action.open")}>
           <span>
           <Button
-              onClick={() => handleFile()}
+              onClick={() => previewFile()}
               style={{ minWidth: 0, paddingLeft: 0, paddingRight: 0 }}
             >
               <FileOpenIcon />
@@ -367,38 +349,6 @@ export const ViewMediaButton = ({ mxcURL, uploadName, label }) => {
         </Tooltip>
         {label}
       </Box>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="image-modal-title"
-        aria-describedby="image-modal-description"
-        style={{ maxWidth: "100%", maxHeight: "100%" }}
-      >
-        <DialogTitle id="image-modal-title">
-          <Typography>{uploadName}</Typography>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={(theme) => ({
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: theme.palette.grey[500],
-            })}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <Link href={blobURL} target="_blank">
-            <img src={blobURL} alt={uploadName}
-              style={{ maxWidth: "100%", maxHeight: "/calc(100vh - 64px)", objectFit: "contain" }}
-            />
-            <br />
-            <ZoomInIcon />
-          </Link>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };
@@ -416,9 +366,8 @@ export const MediaIDField = ({ source }) => {
   }
 
   const mxcURL = `mxc://${homeserver}/${mediaID}`;
-  const uploadName = decodeURIComponent(get(record, "upload_name")?.toString());
 
-  return <ViewMediaButton mxcURL={mxcURL} uploadName={uploadName} label={mediaID} />;
+  return <ViewMediaButton mxcURL={mxcURL} label={mediaID} />;
 };
 
 export const ReportMediaContent = ({ source }) => {
@@ -432,7 +381,5 @@ export const ReportMediaContent = ({ source }) => {
     return null;
   }
 
-  const uploadName = decodeURIComponent(record.event_json.content.body);
-
-  return <ViewMediaButton mxcURL={mxcURL} uploadName={uploadName} label={mxcURL} />;
+  return <ViewMediaButton mxcURL={mxcURL} label={mxcURL} />;
 };
