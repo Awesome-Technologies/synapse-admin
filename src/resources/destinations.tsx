@@ -4,6 +4,7 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import ErrorIcon from '@mui/icons-material/Error';
 import {
   Button,
   Datagrid,
@@ -21,6 +22,7 @@ import {
   Tab,
   TabbedShowLayout,
   TextField,
+  FunctionField,
   TopToolbar,
   useRecordContext,
   useDelete,
@@ -34,13 +36,6 @@ import { DATE_FORMAT } from "../components/date";
 import { get } from "lodash";
 
 const DestinationPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
-
-const destinationRowSx = (record: RaRecord) => ({
-  backgroundColor: record.retry_last_ts > 0 ? "warning.light" : "primary.contrastText",
-  "& .MuiButtonBase-root": {
-    color: "primary.dark",
-  },
-});
 
 const destinationFilters = [<SearchInput source="destination" alwaysOn />];
 
@@ -105,7 +100,22 @@ const RetryDateField = (props: DateFieldProps) => {
   return <DateField {...props} />;
 };
 
+
+const destinationFieldRender = (record: RaRecord) => {
+  if (record.retry_last_ts > 0) {
+    return (
+      <>
+        <ErrorIcon fontSize="inherit" color="error" sx={{verticalAlign: "middle"}}/>
+
+        {record.destination}
+      </>
+    );
+  }
+  return <> {record.destination} </>;
+}
+
 export const DestinationList = (props: ListProps) => {
+  const record = useRecordContext(props);
   return (
     <List
       {...props}
@@ -113,8 +123,8 @@ export const DestinationList = (props: ListProps) => {
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
     >
-      <Datagrid rowSx={destinationRowSx} rowClick={id => `${id}/show/rooms`} bulkActionButtons={false}>
-        <TextField source="destination" />
+      <Datagrid rowClick={id => `${id}/show/rooms`} bulkActionButtons={false}>
+        <FunctionField source="destination" render={destinationFieldRender} />
         <DateField source="failure_ts" showTime options={DATE_FORMAT} />
         <RetryDateField source="retry_last_ts" showTime options={DATE_FORMAT} />
         <TextField source="retry_interval" />
