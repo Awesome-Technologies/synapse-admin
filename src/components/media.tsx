@@ -1,7 +1,6 @@
 import { get } from "lodash";
 import { useState } from "react";
 
-import Typography from "@mui/material/Typography";
 import BlockIcon from "@mui/icons-material/Block";
 import IconCancel from "@mui/icons-material/Cancel";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -9,10 +8,9 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import { Box, Dialog, DialogContent, DialogContentText, DialogTitle, Tooltip, Link } from "@mui/material";
+import DownloadIcon from '@mui/icons-material/Download';
+import DownloadingIcon from '@mui/icons-material/Downloading';
+import { Grid2 as Grid, Box, Dialog, DialogContent, DialogContentText, DialogTitle, Tooltip, Link } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
 import {
   BooleanInput,
@@ -314,17 +312,10 @@ export const QuarantineMediaButton = (props: ButtonProps) => {
   );
 };
 
-export const ViewMediaButton = ({ mxcURL, label, mimetype }) => {
-    if (!mimetype.startsWith("image/")) {
-      return (
-        <>
-          <Box style={{ whiteSpace: "pre" }}>
-            {label}
-          </Box>
-        </>
-      );
-    }
+export const ViewMediaButton = ({ mxcURL, label, uploadName, mimetype }) => {
   const translate = useTranslate();
+  const [loading, setLoading] = useState(false);
+  const isImage = mimetype && mimetype.startsWith("image/");
 
   const openFileInNewTab = (blobURL: string) => {
     const anchorElement = document.createElement("a");
@@ -336,27 +327,54 @@ export const ViewMediaButton = ({ mxcURL, label, mimetype }) => {
     setTimeout(() => URL.revokeObjectURL(blobURL), 10);
   };
 
-  const previewFile = async () => {
+  const downloadFile = async (blobURL: string) => {
+    console.log("downloadFile", blobURL, uploadName);
+    const anchorElement = document.createElement("a");
+    anchorElement.href = blobURL;
+    anchorElement.download = uploadName;
+    document.body.appendChild(anchorElement);
+    anchorElement.click();
+    document.body.removeChild(anchorElement);
+    setTimeout(() => URL.revokeObjectURL(blobURL), 10);;
+  };
+
+  const handleFile = async (preview: boolean) => {
+    setLoading(true);
     const response = await fetchAuthenticatedMedia(mxcURL, "original");
     const blob = await response.blob();
     const blobURL = URL.createObjectURL(blob);
-    openFileInNewTab(blobURL);
+    if (preview) {
+      openFileInNewTab(blobURL);
+    } else {
+      downloadFile(blobURL);
+    }
+    setLoading(false);
   };
 
   return (
     <>
-      <Box style={{ whiteSpace: "pre" }}>
+      <Box display="flex" alignItems="center">
         <Tooltip title={translate("resources.users_media.action.open")}>
           <span>
-          <Button
-              onClick={() => previewFile()}
-              style={{ minWidth: 0, paddingLeft: 0, paddingRight: 0 }}
-            >
-              <FileOpenIcon />
-            </Button>
+            {isImage && (
+              <Button
+                disabled={loading}
+                onClick={() => handleFile(true)}
+                style={{ minWidth: 0, padding: 0, marginRight: 8 }}
+              >
+                {loading ? <DownloadingIcon /> : <FileOpenIcon />}
+              </Button>
+            )}
           </span>
         </Tooltip>
-        {label}
+        <Button
+          disabled={loading}
+          onClick={() => handleFile(false)}
+          style={{ minWidth: 0, padding: 0, marginRight: 8 }}
+        >
+        {loading ? <DownloadingIcon /> : <DownloadIcon />}
+        </Button>
+        <span>{label}</span>
       </Box>
     </>
   );
@@ -374,9 +392,10 @@ export const MediaIDField = ({ source }) => {
     return null;
   }
 
+  const uploadName = decodeURIComponent(get(record, "upload_name")?.toString());
   const mxcURL = `mxc://${homeserver}/${mediaID}`;
 
-  return <ViewMediaButton mxcURL={mxcURL} label={mediaID} mimetype={record.media_type}/>;
+  return <ViewMediaButton mxcURL={mxcURL} label={mediaID} uploadName={uploadName} mimetype={record.media_type}/>;
 };
 
 export const ReportMediaContent = ({ source }) => {
@@ -390,5 +409,7 @@ export const ReportMediaContent = ({ source }) => {
     return null;
   }
 
-  return <ViewMediaButton mxcURL={mxcURL} label={mxcURL} mimetype={record.media_type}/>;
+  const uploadName = decodeURIComponent(get(record, "event_json.content.body")?.toString());
+
+  return <ViewMediaButton mxcURL={mxcURL} label={mxcURL} uploadName={uploadName} mimetype={record.media_type}/>;
 };
