@@ -159,7 +159,7 @@ const UserEditActions = () => {
 export const UserCreate = (props: CreateProps) => (
   <Create
     {...props}
-    redirect={(resource: string, id: Identifier) => {
+    redirect={(resource: string | undefined, id: Identifier | undefined) => {
       return `${resource}/${id}`;
     }}
   >
