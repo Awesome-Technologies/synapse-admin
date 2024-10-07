@@ -88,7 +88,7 @@ const LoginPage = () => {
   const notify = useNotify();
   const { restrictBaseUrl } = useAppContext();
   const allowSingleBaseUrl = typeof restrictBaseUrl === "string";
-  const allowMultipleBaseUrls = Array.isArray(restrictBaseUrl);
+  const allowMultipleBaseUrls = (Array.isArray(restrictBaseUrl) && restrictBaseUrl.length > 0 && restrictBaseUrl[0] !== "" && restrictBaseUrl[0] !== null);
   const allowAnyBaseUrl = !(allowSingleBaseUrl || allowMultipleBaseUrls);
   const [loading, setLoading] = useState(false);
   const [supportPassAuth, setSupportPassAuth] = useState(true);
