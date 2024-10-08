@@ -47,6 +47,7 @@ import {
   TopToolbar,
   NumberField,
   useListContext,
+  Identifier,
 } from "react-admin";
 import { Link } from "react-router-dom";
 
@@ -112,7 +113,10 @@ export const UserList = (props: ListProps) => (
     actions={<UserListActions />}
     pagination={<UserPagination />}
   >
-    <Datagrid rowClick="edit" bulkActionButtons={<UserBulkActionButtons />}>
+    <Datagrid
+      rowClick={(id: Identifier, resource: string) => `/${resource}/${id}`}
+      bulkActionButtons={<UserBulkActionButtons />}
+    >
       <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
@@ -153,7 +157,12 @@ const UserEditActions = () => {
 };
 
 export const UserCreate = (props: CreateProps) => (
-  <Create {...props}>
+  <Create
+    {...props}
+    redirect={(resource: string | undefined, id: Identifier | undefined) => {
+      return `${resource}/${id}`;
+    }}
+  >
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />
