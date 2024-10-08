@@ -1,12 +1,11 @@
 import { get } from "lodash";
 import { Avatar, AvatarProps } from "@mui/material";
-import { useRecordContext } from "react-admin";
+import { FieldProps, useRecordContext } from "react-admin";
 import { useState, useEffect, useCallback } from "react";
 import { fetchAuthenticatedMedia } from "../utils/fetchMedia";
 
-const AvatarField = ({ source, ...rest }: AvatarProps & { source: string, label?: string }) => {
+const AvatarField = ({ source, ...rest }: AvatarProps & FieldProps) => {
   const { alt, classes, sizes, sx, variant } = rest;
-
   const record = useRecordContext(rest);
   const mxcURL = get(record, source)?.toString();
 

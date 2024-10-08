@@ -25,11 +25,15 @@ run-dev:
 stop-dev:
     @docker-compose -f docker-compose-dev.yml stop
 
-
+# register a user in the dev stack
 register-user localpart password *admin:
 	docker-compose exec synapse register_new_matrix_user {{ if admin == "1" {"--admin"} else {"--no-admin"} }} -u {{ localpart }} -p {{ password }} -c /config/homeserver.yaml http://localhost:8008
 
-
+# run yarn {fix,lint,test} commands
+test:
+    @-yarn run fix
+    @-yarn run lint
+    @-yarn run test
 
 # run the app in a production mode
 run-prod: build

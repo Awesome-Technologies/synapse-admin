@@ -51,6 +51,7 @@ import {
   NumberField,
   useListContext,
   useNotify,
+  Identifier,
   ToolbarClasses,
   RaRecord,
   ImageInput,
@@ -146,10 +147,6 @@ const UserBulkActionButtons = () => {
   );
 };
 
-const usersRowClick = (id: Identifier, resource: string, record: RaRecord): string => {
-  return `/users/${id}`;
-};
-
 export const UserList = (props: ListProps) => (
   <List
     {...props}
@@ -159,7 +156,10 @@ export const UserList = (props: ListProps) => (
     actions={<UserListActions />}
     pagination={<UserPagination />}
   >
-    <Datagrid rowClick={usersRowClick} bulkActionButtons={<UserBulkActionButtons />}>
+    <Datagrid
+      rowClick={(id: Identifier, resource: string) => `/${resource}/${id}`}
+      bulkActionButtons={<UserBulkActionButtons />}
+    >
       <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
@@ -211,9 +211,7 @@ const UserEditActions = () => {
 export const UserCreate = (props: CreateProps) => (
   <Create
     {...props}
-    redirect={(resource: string | undefined, id: Identifier | undefined) => {
-      return `users/${id}`;
-    }}
+    redirect={(resource: string | undefined, id: Identifier | undefined) => `${resource}/${id}`}
   >
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
