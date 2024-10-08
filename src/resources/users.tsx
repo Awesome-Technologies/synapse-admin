@@ -52,7 +52,6 @@ import {
   useListContext,
   useNotify,
   ToolbarClasses,
-  Identifier,
   RaRecord,
   ImageInput,
   ImageField,
@@ -161,7 +160,7 @@ export const UserList = (props: ListProps) => (
     pagination={<UserPagination />}
   >
     <Datagrid rowClick={usersRowClick} bulkActionButtons={<UserBulkActionButtons />}>
-      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} />
+      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
       <TextField source="id" sortBy="name" />
       <TextField source="displayname" />
       <BooleanField source="is_guest" />
@@ -212,7 +211,7 @@ const UserEditActions = () => {
 export const UserCreate = (props: CreateProps) => (
   <Create
     {...props}
-    redirect={(resource, id, data) => {
+    redirect={(resource: string | undefined, id: Identifier | undefined) => {
       return `users/${id}`;
     }}
   >
