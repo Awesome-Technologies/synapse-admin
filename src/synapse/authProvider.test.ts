@@ -30,7 +30,17 @@ describe("authProvider", () => {
 
       expect(ret).toBe(undefined);
       expect(fetch).toBeCalledWith("http://example.com/_matrix/client/r0/login", {
-        body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.password","user":"@user:example.com","password":"secret"}',
+        body: JSON.stringify({
+          device_id: null,
+          initial_device_display_name: "Synapse Admin",
+          type: "m.login.password",
+          user: "@user:example.com",
+          password: "secret",
+          identifier: {
+            type: "m.id.user",
+            user: "@user:example.com",
+          }
+        }),
         headers: new Headers({
           Accept: "application/json",
           "Content-Type": "application/json",
