@@ -7,7 +7,7 @@ This project is built using [react-admin](https://marmelab.com/react-admin/).
 <!-- vim-markdown-toc GFM -->
 
 * [Fork differences](#fork-differences)
-  * [Available via CDN](#available-via-cdn)
+  * [Availability](#availability)
   * [Changes](#changes)
   * [Development](#development)
 * [Configuration](#configuration)
@@ -33,9 +33,11 @@ With [Awesome-Technologies/synapse-admin](https://github.com/Awesome-Technologie
 fork is intended to be a more feature-rich version of the original project. The main goal is to provide a more
 user-friendly interface for managing Synapse homeservers.
 
-### Available via CDN
+### Availability
 
-On [admin.etke.cc](https://admin.etke.cc) you can find the latest version of this fork.
+* As a core/default component on [etke.cc](https://etke.cc/?utm_source=github&utm_medium=readme&utm_campaign=synapse-admin)
+* Via CDN on [admin.etke.cc](https://admin.etke.cc)
+* As a component in [Matrix-Docker-Ansible-Deploy Playbook](https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-playbook-synapse-admin.md)
 
 ### Changes
 
