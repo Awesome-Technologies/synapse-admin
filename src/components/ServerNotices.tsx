@@ -20,7 +20,7 @@ import {
   useTranslate,
   useUnselectAll,
 } from "react-admin";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const ServerNoticeDialog = ({ open, onClose, onSubmit }) => {
   const translate = useTranslate();
@@ -100,28 +100,26 @@ export const ServerNoticeBulkButton = () => {
   const unselectAllUsers = useUnselectAll("users");
   const dataProvider = useDataProvider();
 
-  const { mutate: sendNotices, isLoading } = useMutation(
-    data =>
+  const { mutate: sendNotices, isPending } = useMutation({
+    mutationFn: (data) =>
       dataProvider.createMany("servernotices", {
         ids: selectedIds,
         data: data,
       }),
-    {
-      onSuccess: () => {
-        notify("resources.servernotices.action.send_success");
-        unselectAllUsers();
-        closeDialog();
-      },
-      onError: () =>
-        notify("resources.servernotices.action.send_failure", {
-          type: "error",
-        }),
-    }
-  );
+    onSuccess: () => {
+      notify("resources.servernotices.action.send_success");
+      unselectAllUsers();
+      closeDialog();
+    },
+    onError: () =>
+      notify("resources.servernotices.action.send_failure", {
+        type: "error",
+      }),
+  });
 
   return (
     <>
-      <Button label="resources.servernotices.send" onClick={openDialog} disabled={isLoading}>
+      <Button label="resources.servernotices.send" onClick={openDialog} disabled={isPending}>
         <MessageIcon />
       </Button>
       <ServerNoticeDialog open={open} onClose={closeDialog} onSubmit={sendNotices} />

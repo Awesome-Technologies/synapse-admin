@@ -28,7 +28,7 @@ import {
   useRefresh,
   useTranslate,
 } from "react-admin";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 import { dateParser } from "./date";
@@ -86,20 +86,18 @@ export const DeleteMediaButton = (props: ButtonProps) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const dataProvider = useDataProvider<SynapseDataProvider>();
-  const { mutate: deleteMedia, isLoading } = useMutation(
-    (values: DeleteMediaParams) => dataProvider.deleteMedia(values),
-    {
-      onSuccess: () => {
-        notify("delete_media.action.send_success");
-        closeDialog();
-      },
-      onError: () => {
-        notify("delete_media.action.send_failure", {
-          type: "error",
-        });
-      },
-    }
-  );
+  const { mutate: deleteMedia, isPending } = useMutation({
+    mutationFn: (values: DeleteMediaParams) => dataProvider.deleteMedia(values),
+    onSuccess: () => {
+      notify("delete_media.action.send_success");
+      closeDialog();
+    },
+    onError: () => {
+      notify("delete_media.action.send_failure", {
+        type: "error",
+      });
+    },
+  });
 
   const openDialog = () => setOpen(true);
   const closeDialog = () => setOpen(false);
@@ -110,7 +108,7 @@ export const DeleteMediaButton = (props: ButtonProps) => {
         {...props}
         label="delete_media.action.send"
         onClick={openDialog}
-        disabled={isLoading}
+        disabled={isPending}
         sx={{
           color: theme.palette.error.main,
           "&:hover": {
