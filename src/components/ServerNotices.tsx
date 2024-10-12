@@ -43,7 +43,6 @@ const ServerNoticeDialog = ({ open, onClose, onSubmit }) => {
           <TextInput
             source="body"
             label="resources.servernotices.fields.body"
-            fullWidth
             multiline
             rows="4"
             resettable

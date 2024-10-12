@@ -55,14 +55,12 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
         <DialogContentText>{translate("delete_media.helper.send")}</DialogContentText>
         <SimpleForm toolbar={<DeleteMediaToolbar />} onSubmit={onSubmit}>
           <DateTimeInput
-            fullWidth
             source="before_ts"
             label="delete_media.fields.before_ts"
             defaultValue={0}
             parse={dateParser}
           />
           <NumberInput
-            fullWidth
             source="size_gt"
             label="delete_media.fields.size_gt"
             defaultValue={0}
@@ -70,7 +68,6 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
             step={1024}
           />
           <BooleanInput
-            fullWidth
             source="keep_profiles"
             label="delete_media.fields.keep_profiles"
             defaultValue={true}
