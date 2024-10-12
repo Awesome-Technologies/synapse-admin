@@ -100,6 +100,10 @@ export const RoomDirectoryPublishButton = (props: ButtonProps) => {
   const refresh = useRefresh();
   const [create, { isLoading }] = useCreate();
 
+  if (!record) {
+    return;
+  }
+
   const handleSend = () => {
     create(
       "room_directory",

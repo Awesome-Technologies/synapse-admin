@@ -63,6 +63,10 @@ export const ServerNoticeButton = () => {
   const handleDialogOpen = () => setOpen(true);
   const handleDialogClose = () => setOpen(false);
 
+  if (!record) {
+    return;
+  }
+
   const handleSend = (values: Partial<RaRecord>) => {
     create(
       "servernotices",
