@@ -23,13 +23,13 @@ describe("authProvider", () => {
         })
       );
 
-      const ret: undefined = await authProvider.login({
+      const ret = await authProvider.login({
         base_url: "http://example.com",
         username: "@user:example.com",
         password: "secret",
       });
 
-      expect(ret).toBe(undefined);
+      expect(ret).toEqual({redirectTo: "/"});
       expect(fetch).toBeCalledWith("http://example.com/_matrix/client/r0/login", {
         body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.password","identifier":{"type":"m.id.user","user":"@user:example.com"},"password":"secret"}',
         headers: new Headers({
@@ -55,12 +55,12 @@ describe("authProvider", () => {
       })
     );
 
-    const ret: undefined = await authProvider.login({
+    const ret = await authProvider.login({
       base_url: "https://example.com/",
       loginToken: "login_token",
     });
 
-    expect(ret).toBe(undefined);
+    expect(ret).toEqual({redirectTo: "/"});
     expect(fetch).toHaveBeenCalledWith("https://example.com/_matrix/client/r0/login", {
       body: '{"device_id":null,"initial_device_display_name":"Synapse Admin","type":"m.login.token","token":"login_token"}',
       headers: new Headers({

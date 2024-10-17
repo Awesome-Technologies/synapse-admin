@@ -10,14 +10,16 @@ const authProvider: AuthProvider = {
     username,
     password,
     loginToken,
+    accessToken,
   }: {
     base_url: string;
     username: string;
     password: string;
     loginToken: string;
+    accessToken: string;
   }) => {
     console.log("login ");
-    const options: Options = {
+    let options: Options = {
       method: "POST",
       body: JSON.stringify(
         Object.assign(
@@ -55,11 +57,30 @@ const authProvider: AuthProvider = {
     storage.setItem("base_url", base_url);
 
     const decoded_base_url = window.decodeURIComponent(base_url);
-    const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
+    let login_api_url = decoded_base_url + (accessToken ? "/_matrix/client/v3/account/whoami" : "/_matrix/client/r0/login");
 
     let response;
+
     try {
+      if (accessToken) {
+        // this a login with an already obtained access token, let's just validate it
+        options = {
+          headers: new Headers({
+            Accept: 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          }),
+        };
+      }
+
       response = await fetchUtils.fetchJson(login_api_url, options);
+      const json = response.json;
+      storage.setItem("home_server", accessToken ? base_url : json.home_server);
+      storage.setItem("user_id", json.user_id);
+      storage.setItem("access_token", accessToken ? accessToken : json.access_token);
+      storage.setItem("device_id", json.device_id);
+      storage.setItem("login_type", accessToken ? "accessToken" : "credentials");
+
+      return Promise.resolve({redirectTo: "/"});
     } catch(err) {
       const error = err as HttpError;
       const errorStatus = error.status;
@@ -71,14 +92,8 @@ const authProvider: AuthProvider = {
           errMsg,
           errorStatus,
         )
-    );
+      );
     }
-
-    const json = response.json;
-    storage.setItem("home_server", json.home_server);
-    storage.setItem("user_id", json.user_id);
-    storage.setItem("access_token", json.access_token);
-    storage.setItem("device_id", json.device_id);
   },
   // called when the user clicks on the logout button
   logout: async () => {
@@ -102,6 +117,7 @@ const authProvider: AuthProvider = {
         console.log("Error logging out", err);
       } finally {
         storage.removeItem("access_token");
+        storage.removeItem("login_type");
       }
     }
   },

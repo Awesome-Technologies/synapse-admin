@@ -65,6 +65,7 @@ The following changes are already implemented:
 * [Provide options to delete media and redact events on user erase](https://github.com/etkecc/synapse-admin/pull/49)
 * [Authenticated Media support](https://github.com/etkecc/synapse-admin/pull/51)
 * [Better media preview/download](https://github.com/etkecc/synapse-admin/pull/53)
+* [Login with access token](https://github.com/etkecc/synapse-admin/pull/58)
 
 _the list will be updated as new changes are added_
 

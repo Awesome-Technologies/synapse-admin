@@ -13,6 +13,14 @@ const fr: SynapseTranslationMessages = {
       protocol_error: "L'URL doit commencer par « http:// » ou « https:// »",
       url_error: "L'URL du serveur Matrix n'est pas valide",
       sso_sign_in: "Se connecter avec l’authentification unique",
+      credentials: "Identifiants",
+      access_token: "Jeton d'accès",
+      logout_acces_token_dialog: {
+        title: "Vous utilisez un jeton d'accès Matrix existant.",
+        content: "Voulez-vous détruire cette session (qui pourrait être utilisée ailleurs, par exemple dans un client Matrix) ou simplement vous déconnecter du panneau d'administration?",
+        confirm: "Détruire la session",
+        cancel: "Se déconnecter simplement du panneau d'administration",
+      },
     },
     users: {
       invalid_user_id: "Partie locale d'un identifiant utilisateur Matrix sans le nom du serveur d’accueil.",
@@ -201,9 +209,9 @@ const fr: SynapseTranslationMessages = {
           title: "Supprimer le salon",
           content:
             "Voulez-vous vraiment supprimer le salon ? Cette opération ne peut être annulée. Tous les messages et médias partagés du salon seront supprimés du serveur !",
-            fields: {
-              block: "Bloquer et empêcher les utilisateurs de rejoindre la salle",
-            },
+          fields: {
+            block: "Bloquer et empêcher les utilisateurs de rejoindre la salle",
+          },
           success: "Salle/s supprimées avec succès.",
           failure: "La/les salle/s n'ont pas pu être supprimées.",
         },

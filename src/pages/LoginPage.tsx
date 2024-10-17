@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 
 import LockIcon from "@mui/icons-material/Lock";
-import { Avatar, Box, Button, Card, CardActions, CircularProgress, MenuItem, Select, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Avatar, Box, Button, Card, CardActions, CircularProgress, MenuItem, Select, Tab, Tabs, Typography } from "@mui/material";
 import {
   Form,
   FormDataConsumer,
@@ -17,7 +16,7 @@ import {
   useLocales,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-
+import LoginFormBox from "../components/LoginFormBox";
 import { useAppContext } from "../AppContext";
 import {
   getServerVersion,
@@ -29,66 +28,18 @@ import {
 } from "../synapse/synapse";
 import storage from "../storage";
 
-const FormBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  minHeight: "calc(100vh - 1rem)",
-  alignItems: "center",
-  justifyContent: "flex-start",
-  background: "url(./images/floating-cogs.svg)",
-  backgroundColor: "#f9f9f9",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-
-  [`& .card`]: {
-    width: "30rem",
-    marginTop: "6rem",
-    marginBottom: "6rem",
-  },
-  [`& .avatar`]: {
-    margin: "1rem",
-    display: "flex",
-    justifyContent: "center",
-  },
-  [`& .icon`]: {
-    backgroundColor: theme.palette.grey[500],
-  },
-  [`& .hint`]: {
-    marginTop: "1em",
-    marginBottom: "1em",
-    display: "flex",
-    justifyContent: "center",
-    color: theme.palette.grey[600],
-  },
-  [`& .form`]: {
-    padding: "0 1rem 1rem 1rem",
-  },
-  [`& .select`]: {
-    marginBottom: "2rem",
-  },
-  [`& .actions`]: {
-    padding: "0 1rem 1rem 1rem",
-  },
-  [`& .serverVersion`]: {
-    color: theme.palette.grey[500],
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    marginLeft: "0.5rem",
-  },
-  [`& .matrixVersions`]: {
-    color: theme.palette.grey[500],
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    fontSize: "0.8rem",
-    marginBottom: "1rem",
-    marginLeft: "0.5rem",
-  },
-}));
+export type LoginMethod = "credentials" | "accessToken";
 
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
   const { restrictBaseUrl } = useAppContext();
   const allowSingleBaseUrl = typeof restrictBaseUrl === "string";
-  const allowMultipleBaseUrls = (Array.isArray(restrictBaseUrl) && restrictBaseUrl.length > 0 && restrictBaseUrl[0] !== "" && restrictBaseUrl[0] !== null);
+  const allowMultipleBaseUrls =
+    Array.isArray(restrictBaseUrl) &&
+    restrictBaseUrl.length > 0 &&
+    restrictBaseUrl[0] !== "" &&
+    restrictBaseUrl[0] !== null;
   const allowAnyBaseUrl = !(allowSingleBaseUrl || allowMultipleBaseUrls);
   const [loading, setLoading] = useState(false);
   const [supportPassAuth, setSupportPassAuth] = useState(true);
@@ -98,8 +49,13 @@ const LoginPage = () => {
   const base_url = allowSingleBaseUrl ? restrictBaseUrl : storage.getItem("base_url");
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
+  const [loginMethod, setLoginMethod] = useState<LoginMethod>("credentials");
 
-  if (loginToken) {
+  useEffect(() => {
+    if (!loginToken) {
+      return;
+    }
+
     const ssoToken = loginToken[1];
     console.log("SSO token is", ssoToken);
     // Prevent further requests
@@ -127,7 +83,7 @@ const LoginPage = () => {
         console.error(error);
       });
     }
-  }
+  }, [loginToken]);
 
   const validateBaseUrl = value => {
     if (!value.match(/^(http|https):\/\//)) {
@@ -213,29 +169,53 @@ const LoginPage = () => {
 
     return (
       <>
-        <Box>
-          <TextInput
-            autoFocus
-            source="username"
-            label="ra.auth.username"
-            autoComplete="username"
-            disabled={loading || !supportPassAuth}
-            onBlur={handleUsernameChange}
-            resettable
-            validate={required()}
-          />
-        </Box>
-        <Box>
-          <PasswordInput
-            source="password"
-            label="ra.auth.password"
-            type="password"
-            autoComplete="current-password"
-            disabled={loading || !supportPassAuth}
-            resettable
-            validate={required()}
-          />
-        </Box>
+        <Tabs
+          value={loginMethod}
+          onChange={(_, newValue) => setLoginMethod(newValue as LoginMethod)}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label={translate("synapseadmin.auth.credentials")} value="credentials" />
+          <Tab label={translate("synapseadmin.auth.access_token")} value="accessToken" />
+        </Tabs>
+        {loginMethod === "credentials" ? (
+          <>
+            <Box>
+              <TextInput
+                autoFocus
+                source="username"
+                label="ra.auth.username"
+                autoComplete="username"
+                disabled={loading || !supportPassAuth}
+                onBlur={handleUsernameChange}
+                resettable
+                validate={required()}
+              />
+            </Box>
+            <Box>
+              <PasswordInput
+                source="password"
+                label="ra.auth.password"
+                type="password"
+                autoComplete="current-password"
+                disabled={loading || !supportPassAuth}
+                resettable
+                validate={required()}
+              />
+            </Box>
+          </>
+        ) : (
+          <Box>
+            <TextInput
+              source="accessToken"
+              label="synapseadmin.auth.access_token"
+              disabled={loading}
+              resettable
+              validate={required()}
+            />
+          </Box>
+        )}
         <Box>
           <TextInput
             source="base_url"
@@ -263,7 +243,7 @@ const LoginPage = () => {
 
   return (
     <Form defaultValues={{ base_url: base_url }} onSubmit={handleSubmit} mode="onTouched">
-      <FormBox>
+      <LoginFormBox>
         <Card className="card">
           <Box className="avatar">
             {loading ? (
@@ -312,7 +292,7 @@ const LoginPage = () => {
             </CardActions>
           </Box>
         </Card>
-      </FormBox>
+      </LoginFormBox>
       <Notification />
     </Form>
   );

@@ -22,6 +22,14 @@ const ru: SynapseTranslationMessages = {
       protocol_error: "Адрес должен начинаться с 'http://' или 'https://'",
       url_error: "Неверный адрес сервера Matrix",
       sso_sign_in: "Вход через SSO",
+      credentials: "Учетные данные",
+      access_token: "Токен доступа",
+      logout_acces_token_dialog: {
+        title: "Вы используете существующий токен доступа Matrix.",
+        content: "Вы хотите завершить эту сессию (которая может быть использована в другом месте, например, в клиенте Matrix) или просто выйти из панели администрирования?",
+        confirm: "Завершить сессию",
+        cancel: "Просто выйти из панели администрирования",
+      },
     },
     users: {
       invalid_user_id: "Локальная часть ID пользователя Matrix без адреса домашнего сервера.",
@@ -87,7 +95,7 @@ const ru: SynapseTranslationMessages = {
         header: "Загрузить CSV файл",
         explanation:
           "Здесь вы можете загрузить файл со значениями, разделёнными запятыми, которые будут использованы для создания или обновления данных пользователей. \
-          В файле должны быть поля 'id' и 'displayname'. Вы можете скачать и изменить файл-образец отсюда: ",
+        В файле должны быть поля 'id' и 'displayname'. Вы можете скачать и изменить файл-образец отсюда: ",
       },
       startImport: {
         simulate_only: "Только симулировать",
@@ -122,10 +130,10 @@ const ru: SynapseTranslationMessages = {
     helper: {
       send: "Это API удаляет локальные файлы с вашего собственного сервера, включая локальные миниатюры и копии скачанных файлов. \
       Данный API не затрагивает файлы, загруженные во внешние хранилища.",
-    },
-  },
-  resources: {
-    users: {
+      },
+      },
+      resources: {
+      users: {
       name: "Пользователь |||| Пользователи",
       email: "Почта",
       msisdn: "Телефон",
@@ -169,258 +177,258 @@ const ru: SynapseTranslationMessages = {
         delete_media: "Удаление всех медиафайлов, загруженных пользователем (-ами)",
         redact_events: "Удаление всех событий, отправленных пользователем (-ами)",
       },
-    },
-    rooms: {
-      name: "Комната |||| Комнаты",
-      fields: {
-        room_id: "ID комнаты",
-        name: "Название",
-        canonical_alias: "Псевдоним",
-        joined_members: "Участники",
-        joined_local_members: "Локальные участники",
-        joined_local_devices: "Локальные устройства",
-        state_events: "События состояния / Сложность",
-        version: "Версия",
-        is_encrypted: "Зашифровано",
-        encryption: "Шифрование",
-        federatable: "Федерация",
-        public: "Отображается в каталоге комнат",
-        creator: "Создатель",
-        join_rules: "Правила входа",
-        guest_access: "Гостевой доступ",
-        history_visibility: "Видимость истории",
-        topic: "Тема",
-        avatar: "Аватар",
       },
-      helper: {
-        forward_extremities:
-          "Оконечности — это события-листья в конце ориентированного ациклического графа (DAG) в комнате, т.е. события без дочерних элементов. \
+      rooms: {
+        name: "Комната |||| Комнаты",
+        fields: {
+          room_id: "ID комнаты",
+          name: "Название",
+          canonical_alias: "Псевдоним",
+          joined_members: "Участники",
+          joined_local_members: "Локальные участники",
+          joined_local_devices: "Локальные устройства",
+          state_events: "События состояния / Сложность",
+          version: "Версия",
+          is_encrypted: "Зашифровано",
+          encryption: "Шифрование",
+          federatable: "Федерация",
+          public: "Отображается в каталоге комнат",
+          creator: "Создатель",
+          join_rules: "Правила входа",
+          guest_access: "Гостевой доступ",
+          history_visibility: "Видимость истории",
+          topic: "Тема",
+          avatar: "Аватар",
+        },
+        helper: {
+          forward_extremities:
+            "Оконечности — это события-листья в конце ориентированного ациклического графа (DAG) в комнате, т.е. события без дочерних элементов. \
           Чем больше их в комнате, тем больше Synapse работает над разрешением состояния (это дорогостоящая операция). \
           Хотя Synapse старается не допускать существования слишком большого числа таких событий в комнате, из-за ошибок они иногда снова появляются. \
           Если в комнате >10 оконечностей, стоит найти комнату-виновника и попробовать удалить их с помощью SQL-запросов из #1760.",
-      },
-      enums: {
-        join_rules: {
-          public: "Для всех",
-          knock: "Надо постучать",
-          invite: "По приглашению",
-          private: "Приватная",
         },
-        guest_access: {
-          can_join: "Гости могут войти",
-          forbidden: "Гости не могут войти",
-        },
-        history_visibility: {
-          invited: "С момента приглашения",
-          joined: "С момента входа",
-          shared: "С момента открытия доступа",
-          world_readable: "Для всех",
-        },
-        unencrypted: "Без шифрования",
-      },
-      action: {
-        erase: {
-          title: "Удалить комнату",
-          content:
-            "Действительно удалить эту комнату? Это действие будет невозможно отменить. Все сообщения и файлы в комнате будут удалены с сервера!",
-          fields: {
-            block: "Заблокировать и запретить пользователям присоединяться к комнате",
+        enums: {
+          join_rules: {
+            public: "Для всех",
+            knock: "Надо постучать",
+            invite: "По приглашению",
+            private: "Приватная",
           },
-          success: "Комната/ы успешно удалены",
-          failure: "Комната/ы не могут быть удалены.",
+          guest_access: {
+            can_join: "Гости могут войти",
+            forbidden: "Гости не могут войти",
+          },
+          history_visibility: {
+            invited: "С момента приглашения",
+            joined: "С момента входа",
+            shared: "С момента открытия доступа",
+            world_readable: "Для всех",
+          },
+          unencrypted: "Без шифрования",
+        },
+        action: {
+          erase: {
+            title: "Удалить комнату",
+            content:
+              "Действительно удалить эту комнату? Это действие будет невозможно отменить. Все сообщения и файлы в комнате будут удалены с сервера!",
+            fields: {
+              block: "Заблокировать и запретить пользователям присоединяться к комнате",
+            },
+            success: "Комната/ы успешно удалены",
+            failure: "Комната/ы не могут быть удалены.",
+          },
         },
       },
-    },
-    reports: {
-      name: "Жалоба |||| Жалобы",
-      fields: {
-        id: "ID",
-        received_ts: "Дата и время жалобы",
-        user_id: "Автор жалобы",
-        name: "Название комнаты",
-        score: "Баллы",
-        reason: "Причина",
-        event_id: "ID события",
-        event_json: {
-          origin: "Исходнный сервер",
-          origin_server_ts: "Дата и время отправки",
-          type: "Тип события",
-          content: {
-            msgtype: "Тип содержимого",
-            body: "Содержимое",
-            format: "Формат",
-            formatted_body: "Форматированное содержимое",
-            algorithm: "Алгоритм",
-            url: "Ссылка",
-            info: {
-              mimetype: "Тип",
+      reports: {
+        name: "Жалоба |||| Жалобы",
+        fields: {
+          id: "ID",
+          received_ts: "Дата и время жалобы",
+          user_id: "Автор жалобы",
+          name: "Название комнаты",
+          score: "Баллы",
+          reason: "Причина",
+          event_id: "ID события",
+          event_json: {
+            origin: "Исходнный сервер",
+            origin_server_ts: "Дата и время отправки",
+            type: "Тип события",
+            content: {
+              msgtype: "Тип содержимого",
+              body: "Содержимое",
+              format: "Формат",
+              formatted_body: "Форматированное содержимое",
+              algorithm: "Алгоритм",
+              url: "Ссылка",
+              info: {
+                mimetype: "Тип",
+              },
             },
           },
         },
-      },
-      action: {
-        erase: {
-          title: "Удалить жалобу",
-          content: "Действительно удалить жалобу? Это действие будет невозможно отменить.",
+        action: {
+          erase: {
+            title: "Удалить жалобу",
+            content: "Действительно удалить жалобу? Это действие будет невозможно отменить.",
+          },
         },
       },
-    },
-    connections: {
-      name: "Подключения",
-      fields: {
-        last_seen: "Дата",
-        ip: "IP адрес",
-        user_agent: "Юзер-агент",
-      },
-    },
-    devices: {
-      name: "Устройство |||| Устройства",
-      fields: {
-        device_id: "ID устройства",
-        display_name: "Название",
-        last_seen_ts: "Дата и время",
-        last_seen_ip: "IP адрес",
-      },
-      action: {
-        erase: {
-          title: "Удаление %{id}",
-          content: 'Действительно удалить устройство "%{name}"?',
-          success: "Устройство успешно удалено.",
-          failure: "Произошла ошибка.",
+      connections: {
+        name: "Подключения",
+        fields: {
+          last_seen: "Дата",
+          ip: "IP адрес",
+          user_agent: "Юзер-агент",
         },
       },
-    },
-    users_media: {
-      name: "Файлы",
-      fields: {
-        media_id: "ID файла",
-        media_length: "Размер файла (в байтах)",
-        media_type: "Тип",
-        upload_name: "Имя файла",
-        quarantined_by: "На карантине",
-        safe_from_quarantine: "Защитить от карантина",
-        created_ts: "Создано",
-        last_access_ts: "Последний доступ",
+      devices: {
+        name: "Устройство |||| Устройства",
+        fields: {
+          device_id: "ID устройства",
+          display_name: "Название",
+          last_seen_ts: "Дата и время",
+          last_seen_ip: "IP адрес",
+        },
+        action: {
+          erase: {
+            title: "Удаление %{id}",
+            content: 'Действительно удалить устройство "%{name}"?',
+            success: "Устройство успешно удалено.",
+            failure: "Произошла ошибка.",
+          },
+        },
       },
-      action: {
-        open: "Открыть файл в новом окне",
+      users_media: {
+        name: "Файлы",
+        fields: {
+          media_id: "ID файла",
+          media_length: "Размер файла (в байтах)",
+          media_type: "Тип",
+          upload_name: "Имя файла",
+          quarantined_by: "На карантине",
+          safe_from_quarantine: "Защитить от карантина",
+          created_ts: "Создано",
+          last_access_ts: "Последний доступ",
+        },
+        action: {
+          open: "Открыть файл в новом окне",
+        },
       },
-    },
-    protect_media: {
-      action: {
-        create: "Не защищён, установить защиту",
-        delete: "Защищён, снять защиту",
-        none: "На карантине",
-        send_success: "Статус защиты успешно изменён.",
-        send_failure: "Произошла ошибка.",
+      protect_media: {
+        action: {
+          create: "Не защищён, установить защиту",
+          delete: "Защищён, снять защиту",
+          none: "На карантине",
+          send_success: "Статус защиты успешно изменён.",
+          send_failure: "Произошла ошибка.",
+        },
       },
-    },
-    quarantine_media: {
-      action: {
-        name: "Карантин",
-        create: "Поместить на карантин",
-        delete: "На карантине, снять карантин",
-        none: "Защищено от карантина",
-        send_success: "Статус карантина успешно изменён.",
-        send_failure: "Произошла ошибка.",
+      quarantine_media: {
+        action: {
+          name: "Карантин",
+          create: "Поместить на карантин",
+          delete: "На карантине, снять карантин",
+          none: "Защищено от карантина",
+          send_success: "Статус карантина успешно изменён.",
+          send_failure: "Произошла ошибка.",
+        },
       },
-    },
-    pushers: {
-      name: "Пушер |||| Пушеры",
-      fields: {
-        app: "Приложение",
-        app_display_name: "Название приложения",
-        app_id: "ID приложения",
-        device_display_name: "Название устройства",
-        kind: "Вид",
-        lang: "Язык",
-        profile_tag: "Тег профиля",
-        pushkey: "Ключ",
-        data: { url: "URL" },
+      pushers: {
+        name: "Пушер |||| Пушеры",
+        fields: {
+          app: "Приложение",
+          app_display_name: "Название приложения",
+          app_id: "ID приложения",
+          device_display_name: "Название устройства",
+          kind: "Вид",
+          lang: "Язык",
+          profile_tag: "Тег профиля",
+          pushkey: "Ключ",
+          data: { url: "URL" },
+        },
       },
-    },
-    servernotices: {
-      name: "Серверные уведомления",
-      send: "Отправить серверные уведомления",
-      fields: {
-        body: "Сообщение",
+      servernotices: {
+        name: "Серверные уведомления",
+        send: "Отправить серверные уведомления",
+        fields: {
+          body: "Сообщение",
+        },
+        action: {
+          send: "Отправить",
+          send_success: "Серверное уведомление успешно отправлено.",
+          send_failure: "Произошла ошибка.",
+        },
+        helper: {
+          send: 'Отправить серверное уведомление выбранным пользователям. На сервере должна быть активна функция "Server Notices".',
+        },
       },
-      action: {
-        send: "Отправить",
-        send_success: "Серверное уведомление успешно отправлено.",
-        send_failure: "Произошла ошибка.",
+      user_media_statistics: {
+        name: "Файлы пользователей",
+        fields: {
+          media_count: "Количество файлов",
+          media_length: "Размер файлов",
+        },
       },
-      helper: {
-        send: 'Отправить серверное уведомление выбранным пользователям. На сервере должна быть активна функция "Server Notices".',
+      forward_extremities: {
+        name: "Оконечности",
+        fields: {
+          id: "ID события",
+          received_ts: "Дата и время",
+          depth: "Глубина",
+          state_group: "Группа состояния",
+        },
       },
-    },
-    user_media_statistics: {
-      name: "Файлы пользователей",
-      fields: {
-        media_count: "Количество файлов",
-        media_length: "Размер файлов",
+      room_state: {
+        name: "События состояния",
+        fields: {
+          type: "Тип",
+          content: "Содержимое",
+          origin_server_ts: "Дата отправки",
+          sender: "Отправитель",
+        },
       },
-    },
-    forward_extremities: {
-      name: "Оконечности",
-      fields: {
-        id: "ID события",
-        received_ts: "Дата и время",
-        depth: "Глубина",
-        state_group: "Группа состояния",
+      room_directory: {
+        name: "Каталог комнат",
+        fields: {
+          world_readable: "Гости могут просматривать без входа",
+          guest_can_join: "Гости могут войти",
+        },
+        action: {
+          title:
+            "Удалить комнату из каталога |||| Удалить %{smart_count} комнаты из каталога |||| Удалить %{smart_count} комнат из каталога",
+          content:
+            "Действительно удалить комнату из каталога? |||| Действительно удалить %{smart_count} комнаты из каталога? |||| Действительно удалить %{smart_count} комнат из каталога?",
+          erase: "Удалить из каталога комнат",
+          create: "Опубликовать в каталоге комнат",
+          send_success: "Комната успешно опубликована.",
+          send_failure: "Произошла ошибка.",
+        },
       },
-    },
-    room_state: {
-      name: "События состояния",
-      fields: {
-        type: "Тип",
-        content: "Содержимое",
-        origin_server_ts: "Дата отправки",
-        sender: "Отправитель",
+      destinations: {
+        name: "Федерация",
+        fields: {
+          destination: "Назначение",
+          failure_ts: "Дата и время ошибки",
+          retry_last_ts: "Дата и время последней попытки",
+          retry_interval: "Интервал между попытками",
+          last_successful_stream_ordering: "Последний успешный поток",
+          stream_ordering: "Поток",
+        },
+        action: { reconnect: "Переподключиться" },
       },
-    },
-    room_directory: {
-      name: "Каталог комнат",
-      fields: {
-        world_readable: "Гости могут просматривать без входа",
-        guest_can_join: "Гости могут войти",
+      registration_tokens: {
+        name: "Токены регистрации",
+        fields: {
+          token: "Токен",
+          valid: "Рабочий токен",
+          uses_allowed: "Количество использований",
+          pending: "Ожидает",
+          completed: "Завершено",
+          expiry_time: "Дата окончания",
+          length: "Длина",
+        },
+        helper: { length: "Длина токена, если токен не задан." },
       },
-      action: {
-        title:
-          "Удалить комнату из каталога |||| Удалить %{smart_count} комнаты из каталога |||| Удалить %{smart_count} комнат из каталога",
-        content:
-          "Действительно удалить комнату из каталога? |||| Действительно удалить %{smart_count} комнаты из каталога? |||| Действительно удалить %{smart_count} комнат из каталога?",
-        erase: "Удалить из каталога комнат",
-        create: "Опубликовать в каталоге комнат",
-        send_success: "Комната успешно опубликована.",
-        send_failure: "Произошла ошибка.",
-      },
-    },
-    destinations: {
-      name: "Федерация",
-      fields: {
-        destination: "Назначение",
-        failure_ts: "Дата и время ошибки",
-        retry_last_ts: "Дата и время последней попытки",
-        retry_interval: "Интервал между попытками",
-        last_successful_stream_ordering: "Последний успешный поток",
-        stream_ordering: "Поток",
-      },
-      action: { reconnect: "Переподключиться" },
-    },
-    registration_tokens: {
-      name: "Токены регистрации",
-      fields: {
-        token: "Токен",
-        valid: "Рабочий токен",
-        uses_allowed: "Количество использований",
-        pending: "Ожидает",
-        completed: "Завершено",
-        expiry_time: "Дата окончания",
-        length: "Длина",
-      },
-      helper: { length: "Длина токена, если токен не задан." },
-    },
-  },
+},
 };
 export default ru;

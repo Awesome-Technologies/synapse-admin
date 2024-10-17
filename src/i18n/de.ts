@@ -22,6 +22,14 @@ const de: SynapseTranslationMessages = {
       protocol_error: "Die URL muss mit 'http://' oder 'https://' beginnen",
       url_error: "Keine gültige Matrix Server URL",
       sso_sign_in: "Anmeldung mit SSO",
+      credentials: "Anmeldedaten",
+      access_token: "Zugriffstoken",
+      logout_acces_token_dialog: {
+        title: "Sie verwenden ein bestehendes Matrix-Zugriffstoken.",
+        content: "Möchten Sie diese Sitzung (die anderswo, z.B. in einem Matrix-Client, verwendet werden könnte) beenden oder sich nur vom Admin-Panel abmelden?",
+        confirm: "Sitzung beenden",
+        cancel: "Nur vom Admin-Panel abmelden",
+      },
     },
     users: {
       invalid_user_id: "Lokaler Anteil der Matrix Benutzer-ID ohne Homeserver.",

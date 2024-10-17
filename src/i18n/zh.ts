@@ -21,6 +21,14 @@ const zh: SynapseTranslationMessages = {
       protocol_error: "URL 需要以'http://'或'https://'作为起始",
       url_error: "不是一个有效的 Matrix 服务器地址",
       sso_sign_in: "使用 SSO 登录",
+      credentials: "凭证",
+      access_token: "访问令牌",
+      logout_acces_token_dialog: {
+        title: "您正在使用现有的 Matrix 访问令牌。",
+        content: "您想销毁此会话（可能在其他地方使用，例如在 Matrix 客户端中）还是仅从管理面板退出？",
+        confirm: "销毁会话",
+        cancel: "仅从管理面板退出",
+      },
     },
     users: {
       invalid_user_id: "必须要是一个有效的 Matrix 用户 ID ，例如 @user_id:homeserver",
