@@ -275,7 +275,7 @@ const LoginPage = () => {
                 variant="contained"
                 type="submit"
                 color="primary"
-                disabled={loading || !supportPassAuth}
+                disabled={loading || !supportPassAuth && loginMethod !== "accessToken"}
                 fullWidth
               >
                 {translate("ra.auth.sign_in")}
