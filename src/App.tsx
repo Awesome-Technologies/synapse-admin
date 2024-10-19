@@ -23,6 +23,7 @@ import users from "./resources/users";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Footer from "./components/Footer";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
@@ -81,6 +82,7 @@ const App = () => (
       <Resource name="room_state" />
       <Resource name="destination_rooms" />
     </Admin>
+    <Footer />
   </QueryClientProvider>
 );
 
