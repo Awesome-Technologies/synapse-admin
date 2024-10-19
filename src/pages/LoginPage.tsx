@@ -270,12 +270,12 @@ const LoginPage = () => {
               ))}
             </Select>
             <FormDataConsumer>{formDataProps => <UserData {...formDataProps} />}</FormDataConsumer>
-            <CardActions className="actions">
+            {loginMethod === "credentials" && <CardActions className="actions">
               <Button
                 variant="contained"
                 type="submit"
                 color="primary"
-                disabled={loading || !supportPassAuth && loginMethod !== "accessToken"}
+                disabled={loading || !supportPassAuth}
                 fullWidth
               >
                 {translate("ra.auth.sign_in")}
@@ -289,7 +289,18 @@ const LoginPage = () => {
               >
                 {translate("synapseadmin.auth.sso_sign_in")}
               </Button>
-            </CardActions>
+            </CardActions>}
+            {loginMethod === "accessToken" && <CardActions className="actions">
+              <Button
+                variant="contained"
+                type="submit"
+                color="primary"
+                disabled={loading}
+                fullWidth
+              >
+                {translate("ra.auth.sign_in")}
+              </Button>
+            </CardActions>}
           </Box>
         </Card>
       </LoginFormBox>
