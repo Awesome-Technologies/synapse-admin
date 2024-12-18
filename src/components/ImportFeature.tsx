@@ -121,7 +121,7 @@ const FilePicker = () => {
 
   const verifyCsv = ({ data, meta, errors }: ParseResult<ImportLine>, { setValues, setStats, setError }) => {
     /* First, verify the presence of required fields */
-    const missingFields = expectedFields.filter(eF => meta.fields?.find(mF => eF === mF));
+    const missingFields = expectedFields.filter(eF => !meta.fields?.includes(eF));
 
     if (missingFields.length > 0) {
       setError(translate("import_users.error.required_field", { field: missingFields[0] }));
