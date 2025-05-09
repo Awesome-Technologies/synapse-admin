@@ -39,19 +39,21 @@ import {
   BulkDeleteButton,
   DeleteButton,
   SaveButton,
+  maxLength,
   regex,
+  required,
   useTranslate,
   Pagination,
   TopToolbar,
   sanitizeListRestProps,
   NumberField,
 } from "react-admin";
+import { Link } from "react-router-dom";
 import SaveQrButton from "./SaveQrButton";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "./ServerNotices";
 import { DeviceRemoveButton } from "./devices";
 import { ProtectMediaButton, QuarantineMediaButton } from "./media";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 
 const redirect = () => {
   return {
@@ -144,7 +146,7 @@ const UserBulkActionButtons = props => (
       {...props}
       label="resources.users.action.erase"
       confirmTitle="resources.users.helper.erase"
-      undoable={false}
+      mutationMode="pessimistic"
     />
   </Fragment>
 );
@@ -184,6 +186,19 @@ export const UserList = props => {
           ]}
         />
         <BooleanField source="deactivated" />
+        <DateField
+          source="creation_ts"
+          label="resources.users.fields.creation_ts_ms"
+          showTime
+          options={{
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }}
+        />
       </Datagrid>
     </List>
   );
@@ -218,15 +233,19 @@ const UserCreateToolbar = props => (
 );
 
 // https://matrix.org/docs/spec/appendices#user-identifiers
-const validateUser = regex(
-  /^@[a-z0-9._=\-/]+:.*/,
-  "synapseadmin.users.invalid_user_id"
-);
+// here only local part of user_id
+// maxLength = 255 - "@" - ":" - localStorage.getItem("home_server").length
+// localStorage.getItem("home_server").length is not valid here
+const validateUser = [
+  required(),
+  maxLength(253),
+  regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id"),
+];
+
+const validateAddress = [required(), maxLength(255)];
 
 export function generateRandomUser() {
-  const homeserver = localStorage.getItem("home_server");
   const user_id =
-    "@" +
     Array(8)
       .fill("0123456789abcdefghijklmnopqrstuvwxyz")
       .map(
@@ -239,9 +258,7 @@ export function generateRandomUser() {
             )
           ]
       )
-      .join("") +
-    ":" +
-    homeserver;
+      .join("");
 
   const password = Array(20)
     .fill(
@@ -272,11 +289,13 @@ const UserEditToolbar = props => {
         label="synapseadmin.action.save_and_show"
         redirect={redirect}
         submitOnEnter={true}
+        disabled={props.pristine}
       />
       <SaveButton
         label="synapseadmin.action.save_only"
         redirect="list"
         submitOnEnter={false}
+        disabled={props.pristine}
         variant="text"
       />
       <DeleteButton
@@ -295,8 +314,12 @@ export const UserCreate = props => (
   <Create record={generateRandomUser()} {...props}>
     <SimpleForm toolbar={<UserCreateToolbar />}>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
-      <TextInput source="displayname" />
-      <PasswordInput source="password" autoComplete="new-password" />
+      <TextInput source="displayname" validate={maxLength(256)} />
+      <PasswordInput
+        source="password"
+        autoComplete="new-password"
+        validate={maxLength(512)}
+      />
       <BooleanInput source="admin" />
       <SelectInput
         source="user_type"
@@ -314,8 +337,19 @@ export const UserCreate = props => (
               { id: "email", name: "resources.users.email" },
               { id: "msisdn", name: "resources.users.msisdn" },
             ]}
+            validate={required()}
           />
-          <TextInput source="address" />
+          <TextInput source="address" validate={validateAddress} />
+        </SimpleFormIterator>
+      </ArrayInput>
+      <ArrayInput source="external_ids" label="synapseadmin.users.tabs.sso">
+        <SimpleFormIterator>
+          <TextInput source="auth_provider" validate={required()} />
+          <TextInput
+            source="external_id"
+            label="resources.users.fields.id"
+            validate={required()}
+          />
         </SimpleFormIterator>
       </ArrayInput>
     </SimpleForm>
@@ -405,16 +439,16 @@ export const UserEdit = props => {
           icon={<AssignmentIndIcon />}
           path="sso"
         >
-          <ArrayField source="external_ids" label={false}>
-            <Datagrid style={{ width: "100%" }}>
-              <TextField source="auth_provider" sortable={false} />
-              <TextField
+          <ArrayInput source="external_ids" label={false}>
+            <SimpleFormIterator>
+              <TextInput source="auth_provider" validate={required()} />
+              <TextInput
                 source="external_id"
                 label="resources.users.fields.id"
-                sortable={false}
+                validate={required()}
               />
-            </Datagrid>
-          </ArrayField>
+            </SimpleFormIterator>
+          </ArrayInput>
         </FormTab>
 
         <FormTab
