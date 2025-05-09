@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - master
+permissions:
+  contents: write
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -23,7 +25,7 @@ jobs:
           yarn build --base=/synapse-admin
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.6.3
+        uses: JamesIves/github-pages-deploy-action@v4.6.8
         with:
           branch: gh-pages
           folder: dist

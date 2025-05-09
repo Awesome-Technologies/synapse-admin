@@ -498,7 +498,7 @@ function getSearchOrder(order: "ASC" | "DESC") {
 const dataProvider: SynapseDataProvider = {
   getList: async (resource, params) => {
     console.log("getList " + resource);
-    const { user_id, name, guests, deactivated, search_term, destination, valid } = params.filter;
+    const { user_id, name, guests, deactivated, locked, search_term, destination, valid } = params.filter;
     const { page, perPage } = params.pagination as PaginationPayload;
     const { field, order } = params.sort as SortPayload;
     const from = (page - 1) * perPage;
@@ -511,6 +511,7 @@ const dataProvider: SynapseDataProvider = {
       destination: destination,
       guests: guests,
       deactivated: deactivated,
+      locked: locked,
       valid: valid,
       order_by: field,
       dir: getSearchOrder(order),
