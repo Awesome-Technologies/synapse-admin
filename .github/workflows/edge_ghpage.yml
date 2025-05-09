@@ -1,4 +1,7 @@
 name: Build and Deploy Edge version to GH Pages
+permissions:
+  contents: read
+  pages: write
 on:
   workflow_dispatch:
   push:
