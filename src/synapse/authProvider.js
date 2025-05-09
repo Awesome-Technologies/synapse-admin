@@ -2,20 +2,31 @@ import { fetchUtils } from "react-admin";
 
 const authProvider = {
   // called when the user attempts to log in
-  login: ({ base_url, username, password }) => {
+  login: ({ base_url, username, password, loginToken }) => {
     // force homeserver for protection in case the form is manipulated
     base_url = process.env.REACT_APP_SERVER || base_url;
 
     console.log("login ");
     const options = {
       method: "POST",
-      body: JSON.stringify({
-        type: "m.login.password",
-        user: username,
-        password: password,
-        device_id: localStorage.getItem("device_id"),
-        initial_device_display_name: "Synapse Admin",
-      }),
+      body: JSON.stringify(
+        Object.assign(
+          {
+            device_id: localStorage.getItem("device_id"),
+            initial_device_display_name: "Synapse Admin",
+          },
+          loginToken
+            ? {
+                type: "m.login.token",
+                token: loginToken,
+              }
+            : {
+                type: "m.login.password",
+                user: username,
+                password: password,
+              }
+        )
+      ),
     };
 
     // use the base_url from login instead of the well_known entry from the

@@ -67,6 +67,15 @@ import {
   RoomDirectorySaveButton,
 } from "./RoomDirectory";
 
+const date_format = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+};
+
 const useStyles = makeStyles(theme => ({
   helper_forward_extremities: {
     fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -621,14 +630,7 @@ export const RoomShow = props => {
               <DateField
                 source="origin_server_ts"
                 showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
+                options={date_format}
                 sortable={false}
               />
               <TextField source="content" sortable={false} />
@@ -661,14 +663,7 @@ export const RoomShow = props => {
               <DateField
                 source="received_ts"
                 showTime
-                options={{
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                }}
+                options={date_format}
                 sortable={false}
               />
               <NumberField source="depth" sortable={false} />

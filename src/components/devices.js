@@ -8,7 +8,7 @@ import {
 } from "react-admin";
 import ActionDelete from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
-import { fade } from "@material-ui/core/styles/colorManipulator";
+import { alpha } from "@material-ui/core/styles/colorManipulator";
 import classnames from "classnames";
 
 const useStyles = makeStyles(
@@ -16,7 +16,7 @@ const useStyles = makeStyles(
     deleteButton: {
       color: theme.palette.error.main,
       "&:hover": {
-        backgroundColor: fade(theme.palette.error.main, 0.12),
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
         // Reset on mouse devices
         "@media (hover: none)": {
           backgroundColor: "transparent",

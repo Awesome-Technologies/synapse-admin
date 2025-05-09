@@ -78,11 +78,48 @@ const LoginPage = ({ theme }) => {
   const login = useLogin();
   const notify = useNotify();
   const [loading, setLoading] = useState(false);
+  const [supportPassAuth, setSupportPassAuth] = useState(true);
   var locale = useLocale();
   const setLocale = useSetLocale();
   const translate = useTranslate();
   const base_url = localStorage.getItem("base_url");
   const cfg_base_url = process.env.REACT_APP_SERVER;
+  const [ssoBaseUrl, setSSOBaseUrl] = useState("");
+  const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
+
+  if (loginToken) {
+    const ssoToken = loginToken[1];
+    console.log("SSO token is", ssoToken);
+    // Prevent further requests
+    window.history.replaceState(
+      {},
+      "",
+      window.location.href.replace(loginToken[0], "#").split("#")[0]
+    );
+    const baseUrl = localStorage.getItem("sso_base_url");
+    localStorage.removeItem("sso_base_url");
+    if (baseUrl) {
+      const auth = {
+        base_url: baseUrl,
+        username: null,
+        password: null,
+        loginToken: ssoToken,
+      };
+      console.log("Base URL is:", baseUrl);
+      console.log("SSO Token is:", ssoToken);
+      console.log("Let's try token login...");
+      login(auth).catch(error => {
+        alert(
+          typeof error === "string"
+            ? error
+            : typeof error === "undefined" || !error.message
+            ? "ra.auth.sign_in_error"
+            : error.message
+        );
+        console.error(error);
+      });
+    }
+  }
 
   const renderInput = ({
     meta: { touched, error } = {},
@@ -137,6 +174,14 @@ const LoginPage = ({ theme }) => {
     });
   };
 
+  const handleSSO = () => {
+    localStorage.setItem("sso_base_url", ssoBaseUrl);
+    const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
+      window.location.href
+    )}`;
+    window.location.href = ssoFullUrl;
+  };
+
   const extractHomeServer = username => {
     const usernameRegex = /@[a-zA-Z0-9._=\-/]+:([a-zA-Z0-9\-.]+\.[a-zA-Z]+)/;
     if (!username) return null;
@@ -188,6 +233,31 @@ const LoginPage = ({ theme }) => {
           .catch(_ => {
             setServerVersion("");
           });
+
+        // Set SSO Url
+        const authMethodUrl = `${formData.base_url}/_matrix/client/r0/login`;
+        let supportPass = false,
+          supportSSO = false;
+        fetchUtils
+          .fetchJson(authMethodUrl, { method: "GET" })
+          .then(({ json }) => {
+            json.flows.forEach(f => {
+              if (f.type === "m.login.password") {
+                supportPass = true;
+              } else if (f.type === "m.login.sso") {
+                supportSSO = true;
+              }
+            });
+            setSupportPassAuth(supportPass);
+            if (supportSSO) {
+              setSSOBaseUrl(formData.base_url);
+            } else {
+              setSSOBaseUrl("");
+            }
+          })
+          .catch(_ => {
+            setSSOBaseUrl("");
+          });
       },
       [formData.base_url]
     );
@@ -200,7 +270,7 @@ const LoginPage = ({ theme }) => {
             name="username"
             component={renderInput}
             label={translate("ra.auth.username")}
-            disabled={loading}
+            disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             resettable
             fullWidth
@@ -212,7 +282,7 @@ const LoginPage = ({ theme }) => {
             component={renderInput}
             label={translate("ra.auth.password")}
             type="password"
-            disabled={loading}
+            disabled={loading || !supportPassAuth}
             resettable
             fullWidth
           />
@@ -273,12 +343,23 @@ const LoginPage = ({ theme }) => {
                   variant="contained"
                   type="submit"
                   color="primary"
-                  disabled={loading}
+                  disabled={loading || !supportPassAuth}
                   className={classes.button}
                   fullWidth
                 >
                   {loading && <CircularProgress size={25} thickness={2} />}
                   {translate("ra.auth.sign_in")}
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleSSO}
+                  disabled={loading || ssoBaseUrl === ""}
+                  className={classes.button}
+                  fullWidth
+                >
+                  {loading && <CircularProgress size={25} thickness={2} />}
+                  {translate("synapseadmin.auth.sso_sign_in")}
                 </Button>
               </CardActions>
             </Card>
