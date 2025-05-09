@@ -1,9 +1,10 @@
 # Builder
-FROM node:current as builder
+FROM node:lts as builder
 
 WORKDIR /src
 
 COPY . /src
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN yarn --network-timeout=100000 install
 RUN yarn build
 

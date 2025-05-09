@@ -17,8 +17,7 @@ const en = {
       download_pdf: "Download PDF",
     },
     users: {
-      invalid_user_id:
-        "Must be a fully qualified Matrix user-id, e.g. @user_id:homeserver",
+      invalid_user_id: "Localpart of a Matrix user-id without homeserver.",
       tabs: { sso: "SSO" },
     },
     rooms: {

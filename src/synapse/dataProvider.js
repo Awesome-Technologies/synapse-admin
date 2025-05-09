@@ -49,7 +49,9 @@ const resourceMap = {
     data: "users",
     total: json => json.total,
     create: data => ({
-      endpoint: `/_synapse/admin/v2/users/${data.id}`,
+      endpoint: `/_synapse/admin/v2/users/@${data.id}:${localStorage.getItem(
+        "home_server"
+      )}`,
       body: data,
       method: "PUT",
     }),

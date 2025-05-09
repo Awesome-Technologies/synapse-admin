@@ -689,7 +689,7 @@ const RoomBulkActionButtons = props => (
       {...props}
       confirmTitle="resources.rooms.action.erase.title"
       confirmContent="resources.rooms.action.erase.content"
-      undoable={false}
+      mutationMode="pessimistic"
     />
   </Fragment>
 );
