@@ -217,7 +217,6 @@ const LoginPage = () => {
             disabled={loading || !supportPassAuth}
             onBlur={handleUsernameChange}
             resettable
-            fullWidth
             validate={required()}
           />
         </Box>
@@ -229,7 +228,6 @@ const LoginPage = () => {
             autoComplete="current-password"
             disabled={loading || !supportPassAuth}
             resettable
-            fullWidth
             validate={required()}
           />
         </Box>
@@ -242,7 +240,6 @@ const LoginPage = () => {
             disabled={loading}
             readOnly={allowSingleBaseUrl}
             resettable={allowAnyBaseUrl}
-            fullWidth
             validate={[required(), validateBaseUrl]}
           >
             {allowMultipleBaseUrls &&

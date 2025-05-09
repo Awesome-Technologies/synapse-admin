@@ -4,6 +4,14 @@ import { SynapseTranslationMessages } from ".";
 
 const ru: SynapseTranslationMessages = {
   ...russianMessages,
+  ra: {
+    ...russianMessages.ra,
+    navigation: {
+      ...russianMessages.ra.navigation,
+      no_filtered_results: "Нет результатов",
+      clear_filters: "Все фильтры сбросить",
+    },
+  },
   synapseadmin: {
     auth: {
       base_url: "Адрес домашнего сервера",

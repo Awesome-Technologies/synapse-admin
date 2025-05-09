@@ -1,7 +1,14 @@
 import { stringify } from "query-string";
-
-import { DataProvider, DeleteParams, Identifier, Options, RaRecord, fetchUtils } from "react-admin";
-
+import {
+  DataProvider,
+  DeleteParams,
+  Identifier,
+  Options,
+  PaginationPayload,
+  RaRecord,
+  SortPayload,
+  fetchUtils
+} from "react-admin";
 import storage from "../storage";
 
 // Adds the access token to all requests
@@ -492,8 +499,8 @@ const dataProvider: SynapseDataProvider = {
   getList: async (resource, params) => {
     console.log("getList " + resource);
     const { user_id, name, guests, deactivated, locked, search_term, destination, valid } = params.filter;
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
+    const { page, perPage } = params.pagination as PaginationPayload;
+    const { field, order } = params.sort as SortPayload;
     const from = (page - 1) * perPage;
     const query = {
       from: from,
