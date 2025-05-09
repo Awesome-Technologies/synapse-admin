@@ -5,7 +5,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { AppContext } from "./AppContext";
 
-fetch("config.json")
+fetch(`${import.meta.env.BASE_URL}/config.json`)
   .then(res => res.json())
   .then(props =>
     createRoot(document.getElementById("root")).render(
