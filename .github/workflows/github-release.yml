@@ -23,7 +23,7 @@ jobs:
           version=`git describe --dirty --tags || echo unknown`
           cp -r dist synapse-admin-$version
           tar chvzf dist/synapse-admin-$version.tar.gz synapse-admin-$version
-      - uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191
+      - uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631
         with:
           files: dist/*.tar.gz
         env:
