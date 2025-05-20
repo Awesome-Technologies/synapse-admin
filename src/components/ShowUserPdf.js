@@ -110,8 +110,7 @@ function UserPdfPage({
           </tbody>
         </table>
         <div className={classes.note}>
-          Hier können Sie Ihre selbst gewählte Schlüsselsicherungs-Passphrase
-          notieren:
+          Hier können Sie Ihren Sicherheitsschlüssel notieren:
           <br />
           <br />
           <br />
