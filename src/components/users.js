@@ -204,23 +204,10 @@ export const UserList = props => {
   );
 };
 
-// redirect to the related Author show page
-const redirectToPdf = (basePath, id, data) => {
-  return {
-    pathname: "/showpdf",
-    state: {
-      id: data.id,
-      displayname: data.displayname,
-      password: data.password,
-    },
-  };
-};
-
 const UserCreateToolbar = props => (
   <Toolbar {...props}>
     <SaveQrButton
       label="synapseadmin.action.save_and_show"
-      redirect={redirectToPdf}
       submitOnEnter={true}
     />
     <SaveButton
@@ -287,7 +274,6 @@ const UserEditToolbar = props => {
     <Toolbar {...props}>
       <SaveQrButton
         label="synapseadmin.action.save_and_show"
-        redirect={redirect}
         submitOnEnter={true}
         disabled={props.pristine}
       />
