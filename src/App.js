@@ -6,14 +6,20 @@ import dataProvider from "./synapse/dataProvider";
 import { UserList, UserCreate, UserEdit } from "./components/users";
 import { RoomList, RoomCreate, RoomShow, RoomEdit } from "./components/rooms";
 import { ReportList, ReportShow } from "./components/EventReports";
-import ImportFeature from "./components/ImportFeature";
 import LoginPage from "./components/LoginPage";
 import UserIcon from "@material-ui/icons/Group";
+import ConfirmationNumberIcon from "@material-ui/icons/ConfirmationNumber";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import { UserMediaStatsList } from "./components/statistics";
 import RoomIcon from "@material-ui/icons/ViewList";
 import ReportIcon from "@material-ui/icons/Warning";
 import FolderSharedIcon from "@material-ui/icons/FolderShared";
+import { ImportFeature } from "./components/ImportFeature";
+import {
+  RegistrationTokenCreate,
+  RegistrationTokenEdit,
+  RegistrationTokenList,
+} from "./components/RegistrationTokens";
 import { RoomDirectoryList } from "./components/RoomDirectory";
 import { Route } from "react-router-dom";
 import germanMessages from "./i18n/de";
@@ -74,6 +80,13 @@ const App = () => (
       name="room_directory"
       list={RoomDirectoryList}
       icon={FolderSharedIcon}
+    />
+    <Resource
+      name="registration_tokens"
+      list={RegistrationTokenList}
+      create={RegistrationTokenCreate}
+      edit={RegistrationTokenEdit}
+      icon={ConfirmationNumberIcon}
     />
     <Resource name="connections" />
     <Resource name="devices" />

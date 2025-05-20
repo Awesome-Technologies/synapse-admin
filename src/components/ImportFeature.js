@@ -726,5 +726,4 @@ const FilePicker = props => {
   }
 };
 
-const ImportFeature = FilePicker;
-export default ImportFeature;
+export const ImportFeature = FilePicker;
