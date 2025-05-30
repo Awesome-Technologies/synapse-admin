@@ -80,11 +80,6 @@ const UserListActions = () => {
   );
 };
 
-UserListActions.defaultProps = {
-  selectedIds: [],
-  onUnselectItems: () => null,
-};
-
 const UserPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
 
 const userFilters = [

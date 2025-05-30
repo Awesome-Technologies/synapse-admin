@@ -2,7 +2,7 @@ import type { JestConfigWithTsJest } from "ts-jest";
 
 const config: JestConfigWithTsJest = {
   preset: "ts-jest",
-  testEnvironment: "jsdom",
+  testEnvironment: "jest-fixed-jsdom",
   collectCoverage: true,
   coveragePathIgnorePatterns: ["node_modules", "dist"],
   coverageDirectory: "<rootDir>/coverage/",
