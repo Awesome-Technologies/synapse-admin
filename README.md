@@ -1,3 +1,9 @@
+# My Fork
+
+Just use the following link:
+[GitHub Pages](https://levithas.github.io/synapse-admin/)
+
+
 [![GitHub license](https://img.shields.io/github/license/Awesome-Technologies/synapse-admin)](https://github.com/Awesome-Technologies/synapse-admin/blob/master/LICENSE)
 [![Build Status](https://api.travis-ci.com/Awesome-Technologies/synapse-admin.svg?branch=master)](https://app.travis-ci.com/github/Awesome-Technologies/synapse-admin)
 [![build-test](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/build-test.yml/badge.svg)](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/build-test.yml)
@@ -32,7 +38,7 @@ See also [Synapse administration endpoints](https://element-hq.github.io/synapse
 ### Use without install
 
 You can use the current version of Synapse Admin without own installation direct
-via [GitHub Pages](https://awesome-technologies.github.io/synapse-admin/).
+via [GitHub Pages](https://levithas.github.io/synapse-admin/).
 
 **Note:**
 If you want to use the deployment, you have to make sure that the admin endpoints (`/_synapse/admin`) are accessible for your browser.
