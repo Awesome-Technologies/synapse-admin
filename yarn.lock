@@ -1605,17 +1605,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.75.7":
-  version: 5.75.7
-  resolution: "@tanstack/query-core@npm:5.75.7"
-  checksum: 10c0/e1b8489ada09279826a9ed9c79907d5393cb6cd379edb5feb84d2925cf83bc9669a97f52f95229e4e7d59298c9ef88695e8b7107e7ba2461d6c2c6aac66a21a5
-  languageName: node
-  linkType: hard
-
 "@tanstack/query-core@npm:5.76.0":
   version: 5.76.0
   resolution: "@tanstack/query-core@npm:5.76.0"
   checksum: 10c0/970cc783838bf7e30acbad476c72e4bb3b302c15525152cfcf5ffef8b185537e780b608e3f77793cb355b49cc98a9de597d978d400df44dbd550cba78742d67c
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.81.5":
+  version: 5.81.5
+  resolution: "@tanstack/query-core@npm:5.81.5"
+  checksum: 10c0/8d3af841f0e2f3fba1dfd100a8bbc2d07e7b1d5b8570d3d0d8bba5127601c2788e5f7c84839f93f3b0cbe54f14866c1fef8e3f9e745f02d27afaaeea33b7b755
   languageName: node
   linkType: hard
 
@@ -1630,14 +1630,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.59.12":
-  version: 5.75.7
-  resolution: "@tanstack/react-query@npm:5.75.7"
+"@tanstack/react-query@npm:^5.81.5":
+  version: 5.81.5
+  resolution: "@tanstack/react-query@npm:5.81.5"
   dependencies:
-    "@tanstack/query-core": "npm:5.75.7"
+    "@tanstack/query-core": "npm:5.81.5"
   peerDependencies:
     react: ^18 || ^19
-  checksum: 10c0/67a81445236b237ff6cbf30b8814e8de3e95a619509cc6b46ab8c9f550bec19d7543030e7127a4ef808c3b516c4397a7da049b7bd13d33834dd74637f2aead24
+  checksum: 10c0/04803dd7d7d6ac73ba8c55bb25d76aa2f74d173d1574a113c35559bf6a8ac7d04a75db5e470e9a2e4132fee5e0ce1ab23bd8c27d17f70a461aca0e7ae740e76b
   languageName: node
   linkType: hard
 
@@ -8084,7 +8084,7 @@ __metadata:
     "@mui/material": "npm:^7.1.0"
     "@mui/system": "npm:^7.1.0"
     "@mui/utils": "npm:^7.1.0"
-    "@tanstack/react-query": "npm:^5.59.12"
+    "@tanstack/react-query": "npm:^5.81.5"
     "@testing-library/dom": "npm:^10.4.0"
     "@testing-library/jest-dom": "npm:^6.0.0"
     "@testing-library/react": "npm:^16.0.0"
