@@ -24,7 +24,7 @@
     "@types/node": "^20.14.12",
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18.3.3",
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^7.16.1",
     "@vitejs/plugin-react": "^4.0.0",
     "eslint": "^8.57.0",
