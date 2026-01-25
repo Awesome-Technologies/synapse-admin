@@ -6966,7 +6966,6 @@ __metadata:
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.53.1"
     vite: "npm:^7.3.1"
-    vite-plugin-version-mark: "npm:^0.2.2"
     vitest: "npm:^4.0.18"
     vitest-fetch-mock: "npm:^0.4.5"
   languageName: unknown
@@ -7415,17 +7414,6 @@ __metadata:
   version: 3.0.1
   resolution: "v8-compile-cache-lib@npm:3.0.1"
   checksum: 10c0/bdc36fb8095d3b41df197f5fb6f11e3a26adf4059df3213e3baa93810d8f0cc76f9a74aaefc18b73e91fe7e19154ed6f134eda6fded2e0f1c8d2272ed2d2d391
-  languageName: node
-  linkType: hard
-
-"vite-plugin-version-mark@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "vite-plugin-version-mark@npm:0.2.2"
-  peerDependencies:
-    "@nuxt/kit": ">3.3.0"
-    "@nuxt/schema": ">3.3.0"
-    vite: "*"
-  checksum: 10c0/6535745a01ecbb6fb1d8f16ee13996e8de8e4d751df65f281a57c9d6b4dae43da17052a13486165070770d1c723b9baa6b4a2f1c1b1a69a4753929e5a252a7e9
   languageName: node
   linkType: hard
 
