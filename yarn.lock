@@ -7142,7 +7142,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.6.1, react-router@npm:^6.28.1 || ^7.1.1, react-router@npm:^7.6.1":
+"react-router@npm:7.6.1, react-router@npm:^6.28.1 || ^7.1.1":
   version: 7.6.1
   resolution: "react-router@npm:7.6.1"
   dependencies:
@@ -7155,6 +7155,22 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10c0/9968dcccc6695671cb216a74a756d717f47d5b8613869be72764966c2dc252ce12aa91a5f74838776b78d65a2297d7d5455c26a3ed78a380897905383b30c7d8
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^7.12.0":
+  version: 7.12.0
+  resolution: "react-router@npm:7.12.0"
+  dependencies:
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 10c0/abde366f716cb3961a5a390c278375c0591bace5773e1b4420001f0a913b4dd53d490e7dea866acebcac2c0fa07378aa83702769d449449027406ed517a8ea00
   languageName: node
   linkType: hard
 
@@ -7953,7 +7969,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.52.1"
     react-is: "npm:^18.3.1"
-    react-router: "npm:^7.6.1"
+    react-router: "npm:^7.12.0"
     react-router-dom: "npm:^7.6.1"
     react-test-renderer: "npm:^18.3.1"
     ts-jest: "npm:^29.3.4"
