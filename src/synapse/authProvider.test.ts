@@ -29,7 +29,7 @@ describe("authProvider", () => {
       });
 
       expect(ret).toBe(undefined);
-      expect(fetch).toBeCalledWith("http://example.com/_matrix/client/r0/login", {
+      expect(fetch).toHaveBeenCalledWith("http://example.com/_matrix/client/r0/login", {
         body: JSON.stringify({
           device_id: null,
           initial_device_display_name: "Synapse Admin",
@@ -92,7 +92,7 @@ describe("authProvider", () => {
 
       await authProvider.logout(null);
 
-      expect(fetch).toBeCalledWith("example.com/_matrix/client/r0/logout", {
+      expect(fetch).toHaveBeenCalledWith("example.com/_matrix/client/r0/logout", {
         headers: new Headers({
           Accept: "application/json",
           Authorization: "Bearer foo",
