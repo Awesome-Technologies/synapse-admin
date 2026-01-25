@@ -1,9 +1,5 @@
-import fetchMock from "jest-fetch-mock";
-
 import authProvider from "./authProvider";
 import storage from "../storage";
-
-fetchMock.enableMocks();
 
 describe("authProvider", () => {
   beforeEach(() => {
