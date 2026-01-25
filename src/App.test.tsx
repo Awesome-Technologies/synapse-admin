@@ -4,6 +4,13 @@ fetchMock.enableMocks();
 
 import App from "./App";
 
+jest.mock("./synapse/authProvider", () => ({
+  __esModule: true,
+  default: {
+    logout: jest.fn().mockResolvedValue(undefined),
+  },
+}));
+
 describe("App", () => {
   it("renders", async () => {
     render(<App />);
