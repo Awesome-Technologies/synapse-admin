@@ -1,6 +1,6 @@
-import type { JestConfigWithTsJest } from "ts-jest";
+import type { Config } from "@jest/types";
 
-const config: JestConfigWithTsJest = {
+const config: Config.InitialOptions = {
   preset: "ts-jest",
   testEnvironment: "jest-fixed-jsdom",
   collectCoverage: true,
@@ -10,4 +10,5 @@ const config: JestConfigWithTsJest = {
   extensionsToTreatAsEsm: [".ts", ".tsx"],
   setupFilesAfterEnv: ["<rootDir>/src/jest.setup.ts"],
 };
+
 export default config;
