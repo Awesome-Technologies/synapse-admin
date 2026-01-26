@@ -1358,14 +1358,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.90.5":
-  version: 5.90.5
-  resolution: "@tanstack/query-core@npm:5.90.5"
-  checksum: 10c0/3b9460cc10d494357a30ddd3138f2a831611d14b5b8ce3587daa17a078d63945fcdf419864d9dc8e1249aa89b512003d2f134977c64ceccdbdfdd79f1f7e0a34
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:^5.83.0":
+"@tanstack/react-query@npm:^5.83.0, @tanstack/react-query@npm:^5.90.20":
   version: 5.90.20
   resolution: "@tanstack/react-query@npm:5.90.20"
   dependencies:
@@ -1373,17 +1366,6 @@ __metadata:
   peerDependencies:
     react: ^18 || ^19
   checksum: 10c0/a8da6455d02ec769afc9ad528ec7b576d0becedfb5349e32592b9991a3c71a162f7115c054116d0101b55a473c689c06f8b03a7f56a9904f4329f75370e5a3f4
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:^5.90.5":
-  version: 5.90.5
-  resolution: "@tanstack/react-query@npm:5.90.5"
-  dependencies:
-    "@tanstack/query-core": "npm:5.90.5"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10c0/b2450259e40afc2aec5e455414f204c511ec98ebbbd25963316ab72b25758722ee424ed51210bd6863f78f03ae414e18571879f9d70a022e11049f3f04ef5ce2
   languageName: node
   linkType: hard
 
@@ -6923,7 +6905,7 @@ __metadata:
     "@mui/utils": "npm:^7.1.0"
     "@nuxt/kit": "npm:^4.3.0"
     "@nuxt/schema": "npm:^4.3.0"
-    "@tanstack/react-query": "npm:^5.90.5"
+    "@tanstack/react-query": "npm:^5.90.20"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.2"
     "@testing-library/user-event": "npm:^14.6.1"
