@@ -2,7 +2,7 @@ import { merge } from "lodash";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 
 import { Admin, CustomRoutes, Resource, resolveBrowserLocale } from "react-admin";
-import { Route } from "react-router-dom";
+import { createBrowserRouter, Route, RouterProvider } from "react-router-dom";
 
 import { ImportFeature } from "./components/ImportFeature";
 import germanMessages from "./i18n/de";
@@ -48,8 +48,8 @@ const i18nProvider = polyglotI18nProvider(
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const Main = () => {
+  return <QueryClientProvider client={queryClient}>
     <Admin
       disableTelemetry
       requireAuth
@@ -80,6 +80,16 @@ const App = () => (
       <Resource name="destination_rooms" />
     </Admin>
   </QueryClientProvider>
-);
+};
+
+// Matrix doesn't like hash routing
+// Ref: https://spec.matrix.org/v1.17/client-server-api/#redirect-uri-validation
+const App = () => {
+  const router = createBrowserRouter([{
+    path: '*',
+    element: <Main />
+  }]);
+  return <RouterProvider router={router} />
+}
 
 export default App;
