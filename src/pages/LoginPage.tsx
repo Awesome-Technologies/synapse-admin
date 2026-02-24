@@ -20,11 +20,16 @@ import { useFormContext } from "react-hook-form";
 
 import { useAppContext } from "../AppContext";
 import {
+  authoriseClient,
+  getAuthMetadata,
+  getAuthSession,
   getServerVersion,
   getSupportedFeatures,
   getSupportedLoginFlows,
   getWellKnownUrl,
+  homeserverUrl,
   isValidBaseUrl,
+  registerClient,
   splitMxid,
 } from "../synapse/synapse";
 import storage from "../storage";
@@ -83,6 +88,8 @@ const FormBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+let allowInsecure = true;
+
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
@@ -98,7 +105,14 @@ const LoginPage = () => {
   const base_url = allowSingleBaseUrl ? restrictBaseUrl : storage.getItem("base_url");
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
+  const [refresh, setRefresh] = useState(false);
 
+  const search = new URLSearchParams(new URL(window.location.href).search);
+  const code = search.get('code');
+  const state = search.get('state');
+  const session = getAuthSession();
+
+  // Can probably be removed
   if (loginToken) {
     const ssoToken = loginToken[1];
     console.log("SSO token is", ssoToken);
@@ -108,6 +122,7 @@ const LoginPage = () => {
     storage.removeItem("sso_base_url");
     if (baseUrl) {
       const auth = {
+        type: 'loginToken',
         base_url: baseUrl,
         username: null,
         password: null,
@@ -129,7 +144,15 @@ const LoginPage = () => {
     }
   }
 
-  const validateBaseUrl = value => {
+  // TODO: Refine this for error handling
+  if(code && state && session)
+  {
+    if(session.state !== state)
+      throw new Error('Session state mismatch');
+    login({type: 'keyExchange', code, verifier: session.verifier});
+  }
+
+  const validateBaseUrl = (value: string) => {
     if (!value.match(/^(http|https):\/\//)) {
       return translate("synapseadmin.auth.protocol_error");
     } else if (!value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)) {
@@ -139,7 +162,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleSubmit = auth => {
+  const handleSubmit = (auth) => {
     setLoading(true);
     login(auth).catch(error => {
       setLoading(false);
@@ -154,12 +177,13 @@ const LoginPage = () => {
     });
   };
 
-  const handleSSO = () => {
-    storage.setItem("sso_base_url", ssoBaseUrl);
-    const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
-      window.location.href
-    )}`;
-    window.location.href = ssoFullUrl;
+  const handleSSO = async () => {
+    // storage.setItem("sso_base_url", ssoBaseUrl);
+    // const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
+    //   window.location.href
+    // )}`;
+    // window.location.href = ssoFullUrl;
+    await authoriseClient();
   };
 
   const UserData = ({ formData }) => {
@@ -184,6 +208,7 @@ const LoginPage = () => {
         form.setValue("base_url", restrictBaseUrl[0]);
       }
       if (!isValidBaseUrl(formData.base_url)) return;
+      homeserverUrl(formData.base_url);
 
       getServerVersion(formData.base_url)
         .then(serverVersion => setServerVersion(`${translate("synapseadmin.auth.server_version")} ${serverVersion}`))
@@ -204,7 +229,21 @@ const LoginPage = () => {
           setSSOBaseUrl(supportSSO ? formData.base_url : "");
         })
         .catch(() => setSSOBaseUrl(""));
-    }, [formData.base_url, form]);
+
+      getAuthMetadata(formData.base_url).then(async metadata => {
+        // By default MAS doesn't allow insecure or localhost to register a client
+        if(!allowInsecure && (location.protocol === 'http' || location.host.includes('localhost')))
+          return;
+        if(!metadata)
+          return;
+        await registerClient({
+          endpoint: metadata.registration_endpoint,
+          clientUri: location.origin,
+          redirectUri: location.href,
+        });
+      });
+      // Use refresh instead of the form_url to avoid pointless requests that lag the form
+    }, [refresh, form]);
 
     return (
       <>
@@ -241,6 +280,7 @@ const LoginPage = () => {
             readOnly={allowSingleBaseUrl}
             resettable={allowAnyBaseUrl}
             validate={[required(), validateBaseUrl]}
+            onBlur={() => setRefresh(val => !val)}
           >
             {allowMultipleBaseUrls &&
               restrictBaseUrl.map(url => (
