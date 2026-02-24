@@ -1594,12 +1594,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.9":
-  version: 19.2.9
-  resolution: "@types/react@npm:19.2.9"
+"@types/react@npm:^19.2.14":
+  version: 19.2.14
+  resolution: "@types/react@npm:19.2.14"
   dependencies:
     csstype: "npm:^3.2.2"
-  checksum: 10c0/91c6839edd10ebdab4cd686d2a744e6ae078ed5831a36d48284ae92df0463c89bda1084ffdd2e6445f0716236c2c6ae0828b82f70720727632331695f4581d2a
+  checksum: 10c0/7d25bf41b57719452d86d2ac0570b659210402707313a36ee612666bf11275a1c69824f8c3ee1fdca077ccfe15452f6da8f1224529b917050eb2d861e52b59b7
   languageName: node
   linkType: hard
 
@@ -6233,10 +6233,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.3":
-  version: 19.2.3
-  resolution: "react@npm:19.2.3"
-  checksum: 10c0/094220b3ba3a76c1b668f972ace1dd15509b157aead1b40391d1c8e657e720c201d9719537375eff08f5e0514748c0319063392a6f000e31303aafc4471f1436
+"react@npm:^19.2.4":
+  version: 19.2.4
+  resolution: "react@npm:19.2.4"
+  checksum: 10c0/cd2c9ff67a720799cc3b38a516009986f7fc4cb8d3e15716c6211cf098d1357ee3e348ab05ad0600042bbb0fd888530ba92e329198c92eafa0994f5213396596
   languageName: node
   linkType: hard
 
@@ -7003,7 +7003,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.7"
     "@types/node": "npm:^25.3.0"
     "@types/papaparse": "npm:^5.3.14"
-    "@types/react": "npm:^19.2.9"
+    "@types/react": "npm:^19.2.14"
     "@typescript-eslint/eslint-plugin": "npm:^8.53.1"
     "@typescript-eslint/parser": "npm:^8.56.0"
     "@vitejs/plugin-react": "npm:^5.1.2"
@@ -7027,7 +7027,7 @@ __metadata:
     ra-language-french: "npm:^5.14.0"
     ra-language-italian: "npm:^3.13.1"
     ra-language-russian: "npm:^5.4.5"
-    react: "npm:^19.2.3"
+    react: "npm:^19.2.4"
     react-admin: "npm:^5.14.0"
     react-dom: "npm:^19.2.3"
     react-hook-form: "npm:^7.65.0"
