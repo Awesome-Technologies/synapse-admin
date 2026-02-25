@@ -102,7 +102,7 @@ const LoginPage = () => {
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
   const translate = useTranslate();
-  const base_url = allowSingleBaseUrl ? restrictBaseUrl : storage.getItem("base_url");
+  const base_url = allowSingleBaseUrl ? restrictBaseUrl : homeserverUrl();
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
   const [refresh, setRefresh] = useState(false);
@@ -110,7 +110,7 @@ const LoginPage = () => {
   const search = new URLSearchParams(new URL(window.location.href).search);
   const code = search.get('code');
   const state = search.get('state');
-  const session = getAuthSession();
+  const authSession = getAuthSession();
 
   // Can probably be removed
   if (loginToken) {
@@ -145,11 +145,11 @@ const LoginPage = () => {
   }
 
   // TODO: Refine this for error handling
-  if(code && state && session)
+  if(code && state && authSession)
   {
-    if(session.state !== state)
+    if(authSession.state !== state)
       throw new Error('Session state mismatch');
-    login({type: 'keyExchange', code, verifier: session.verifier});
+    login({type: 'keyExchange', code, verifier: authSession.verifier});
   }
 
   const validateBaseUrl = (value: string) => {

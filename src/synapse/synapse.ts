@@ -14,7 +14,7 @@ export const isValidBaseUrl = baseUrl => /^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{
  * @param domain  the domain part of an MXID
  * @returns homeserver base URL
  */
-export const getWellKnownUrl = async domain => {
+export const getWellKnownUrl = async (domain: string) => {
   const wellKnownUrl = `https://${domain}/.well-known/matrix/client`;
   try {
     const response = await fetchUtils.fetchJson(wellKnownUrl, { method: "GET" });
@@ -217,7 +217,7 @@ export const authoriseClient = async () => {
   location.href = url.toString();
 }
 
-type TokenResult = {
+export type TokenResult = {
   access_token: string,
   refresh_token: string,
   expires_in: number,
@@ -253,10 +253,7 @@ export const exchangeToken = async (code: string, verifier: string): Promise<Tok
   return json;
 }
 
-export const refreshToken = async (): Promise<TokenResult> => {
-  const refresh = storage.getItem('refresh_token');
-  if(!refresh)
-    throw new Error('Missing refresh token');
+export const refreshToken = async (refresh: string): Promise<TokenResult> => {
   const auth = await getAuthMetadata();
   if(!auth)
     throw new Error('Missing auth metadata');
@@ -301,7 +298,8 @@ export const homeserverUrl = (url?: string) =>
 
   url = storage.getItem('homeserver_url') ?? '';
   if(!url)
-    throw new Error('Missing homeserver_url');
+    // throw new Error('Missing homeserver_url');
+    return null;
   return url;
 }
 
