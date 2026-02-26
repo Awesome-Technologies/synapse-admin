@@ -88,12 +88,10 @@ const FormBox = styled(Box)(({ theme }) => ({
   },
 }));
 
-let allowInsecure = true;
-
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
-  const { restrictBaseUrl } = useAppContext();
+  const { restrictBaseUrl, allowInsecure } = useAppContext();
   const allowSingleBaseUrl = typeof restrictBaseUrl === "string";
   const allowMultipleBaseUrls = Array.isArray(restrictBaseUrl);
   const allowAnyBaseUrl = !(allowSingleBaseUrl || allowMultipleBaseUrls);
@@ -178,11 +176,6 @@ const LoginPage = () => {
   };
 
   const handleSSO = async () => {
-    // storage.setItem("sso_base_url", ssoBaseUrl);
-    // const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
-    //   window.location.href
-    // )}`;
-    // window.location.href = ssoFullUrl;
     await authoriseClient();
   };
 
