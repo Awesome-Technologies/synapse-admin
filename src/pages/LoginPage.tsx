@@ -162,6 +162,7 @@ const LoginPage = () => {
 
   const handleSubmit = (auth) => {
     setLoading(true);
+    auth.type= 'loginToken';
     login(auth).catch(error => {
       setLoading(false);
       notify(
@@ -176,7 +177,9 @@ const LoginPage = () => {
   };
 
   const handleSSO = async () => {
-    await authoriseClient();
+    const success = await authoriseClient();
+    if(success === null)
+      notify('Something went wrong when attempting SSO: see console for more information', {type: 'error'});
   };
 
   const UserData = ({ formData }) => {
@@ -226,9 +229,9 @@ const LoginPage = () => {
       getAuthMetadata(formData.base_url).then(async metadata => {
         // By default MAS doesn't allow insecure or localhost to register a client
         if(!allowInsecure && (location.protocol === 'http' || location.host.includes('localhost')))
-          return;
+          return console.error('Cannot register a client on an insecure domain: you can bypass this by setting "allowInsecure": true in the config file.');
         if(!metadata)
-          return;
+          return console.log("Missing client metadata");
         await registerClient({
           endpoint: metadata.registration_endpoint,
           clientUri: location.origin,

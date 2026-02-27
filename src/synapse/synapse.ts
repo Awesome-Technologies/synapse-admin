@@ -191,11 +191,11 @@ export const getAuthSession = () => {
 export const authoriseClient = async () => {
   const metadata = await getAuthMetadata();
   if(!metadata)
-    return null;
+    return console.log('No auth metadata, cannot authorise client') ?? null;
 
   const registration = getClientRegistration();
   if(!registration)
-    return null;
+    return console.log('Missing client registration, cannot authorise client') ?? null;
 
   const session = await createAuthSession(registration.client_id);
 
@@ -214,7 +214,9 @@ export const authoriseClient = async () => {
   })
   const url = new URL(metadata.authorization_endpoint);
   url.search = query.toString();
-  location.href = url.toString();
+  const target = url.toString();
+  console.log(`Redirecting to ${target}`);
+  location.href = target
 }
 
 export type TokenResult = {
