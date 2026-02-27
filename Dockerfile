@@ -24,3 +24,6 @@ COPY --from=builder /src/dist /app
 
 RUN rm -rf /usr/share/nginx/html \
  && ln -s /app /usr/share/nginx/html
+
+# Bit of a hack to insert support for SPA sites without comitting a whole config file
+RUN sed -i '/^\s*index.*;/s/$/\n\ttry_files $uri \/index.html;/' /etc/nginx/conf.d/default.conf

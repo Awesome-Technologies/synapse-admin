@@ -20,11 +20,16 @@ import { useFormContext } from "react-hook-form";
 
 import { useAppContext } from "../AppContext";
 import {
+  authoriseClient,
+  getAuthMetadata,
+  getAuthSession,
   getServerVersion,
   getSupportedFeatures,
   getSupportedLoginFlows,
   getWellKnownUrl,
+  homeserverUrl,
   isValidBaseUrl,
+  registerClient,
   splitMxid,
 } from "../synapse/synapse";
 import storage from "../storage";
@@ -86,7 +91,7 @@ const FormBox = styled(Box)(({ theme }) => ({
 const LoginPage = () => {
   const login = useLogin();
   const notify = useNotify();
-  const { restrictBaseUrl } = useAppContext();
+  const { restrictBaseUrl, allowInsecure } = useAppContext();
   const allowSingleBaseUrl = typeof restrictBaseUrl === "string";
   const allowMultipleBaseUrls = Array.isArray(restrictBaseUrl);
   const allowAnyBaseUrl = !(allowSingleBaseUrl || allowMultipleBaseUrls);
@@ -95,10 +100,17 @@ const LoginPage = () => {
   const [locale, setLocale] = useLocaleState();
   const locales = useLocales();
   const translate = useTranslate();
-  const base_url = allowSingleBaseUrl ? restrictBaseUrl : storage.getItem("base_url");
+  const base_url = allowSingleBaseUrl ? restrictBaseUrl : homeserverUrl();
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
   const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
+  const [refresh, setRefresh] = useState(false);
 
+  const search = new URLSearchParams(new URL(window.location.href).search);
+  const code = search.get('code');
+  const state = search.get('state');
+  const authSession = getAuthSession();
+
+  // Can probably be removed
   if (loginToken) {
     const ssoToken = loginToken[1];
     console.log("SSO token is", ssoToken);
@@ -108,6 +120,7 @@ const LoginPage = () => {
     storage.removeItem("sso_base_url");
     if (baseUrl) {
       const auth = {
+        type: 'loginToken',
         base_url: baseUrl,
         username: null,
         password: null,
@@ -129,7 +142,15 @@ const LoginPage = () => {
     }
   }
 
-  const validateBaseUrl = value => {
+  // TODO: Refine this for error handling
+  if(code && state && authSession)
+  {
+    if(authSession.state !== state)
+      throw new Error('Session state mismatch');
+    login({type: 'keyExchange', code, verifier: authSession.verifier});
+  }
+
+  const validateBaseUrl = (value: string) => {
     if (!value.match(/^(http|https):\/\//)) {
       return translate("synapseadmin.auth.protocol_error");
     } else if (!value.match(/^(http|https):\/\/[a-zA-Z0-9\-.]+(:\d{1,5})?[^?&\s]*$/)) {
@@ -139,8 +160,9 @@ const LoginPage = () => {
     }
   };
 
-  const handleSubmit = auth => {
+  const handleSubmit = (auth) => {
     setLoading(true);
+    auth.type= 'loginToken';
     login(auth).catch(error => {
       setLoading(false);
       notify(
@@ -154,12 +176,10 @@ const LoginPage = () => {
     });
   };
 
-  const handleSSO = () => {
-    storage.setItem("sso_base_url", ssoBaseUrl);
-    const ssoFullUrl = `${ssoBaseUrl}/_matrix/client/r0/login/sso/redirect?redirectUrl=${encodeURIComponent(
-      window.location.href
-    )}`;
-    window.location.href = ssoFullUrl;
+  const handleSSO = async () => {
+    const success = await authoriseClient();
+    if(success === null)
+      notify('Something went wrong when attempting SSO: see console for more information', {type: 'error'});
   };
 
   const UserData = ({ formData }) => {
@@ -184,6 +204,7 @@ const LoginPage = () => {
         form.setValue("base_url", restrictBaseUrl[0]);
       }
       if (!isValidBaseUrl(formData.base_url)) return;
+      homeserverUrl(formData.base_url);
 
       getServerVersion(formData.base_url)
         .then(serverVersion => setServerVersion(`${translate("synapseadmin.auth.server_version")} ${serverVersion}`))
@@ -204,7 +225,21 @@ const LoginPage = () => {
           setSSOBaseUrl(supportSSO ? formData.base_url : "");
         })
         .catch(() => setSSOBaseUrl(""));
-    }, [formData.base_url, form]);
+
+      getAuthMetadata(formData.base_url).then(async metadata => {
+        // By default MAS doesn't allow insecure or localhost to register a client
+        if(!allowInsecure && (location.protocol === 'http' || location.host.includes('localhost')))
+          return console.error('Cannot register a client on an insecure domain: you can bypass this by setting "allowInsecure": true in the config file.');
+        if(!metadata)
+          return console.log("Missing client metadata");
+        await registerClient({
+          endpoint: metadata.registration_endpoint,
+          clientUri: location.origin,
+          redirectUri: location.href,
+        });
+      });
+      // Use refresh instead of the form_url to avoid pointless requests that lag the form
+    }, [refresh, form]);
 
     return (
       <>
@@ -241,6 +276,7 @@ const LoginPage = () => {
             readOnly={allowSingleBaseUrl}
             resettable={allowAnyBaseUrl}
             validate={[required(), validateBaseUrl]}
+            onBlur={() => setRefresh(val => !val)}
           >
             {allowMultipleBaseUrls &&
               restrictBaseUrl.map(url => (

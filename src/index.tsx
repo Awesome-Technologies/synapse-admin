@@ -11,10 +11,13 @@ const configJSON = "config.json";
 // load config.json from relative path if import.meta.env.BASE_URL is None or empty
 const configJSONUrl = baseUrl ? `${baseUrl.replace(/\/$/, "")}/${configJSON}` : configJSON;
 
+const root = document.getElementById("root");
+if(!root)
+  throw new Error('Failed to find document root');
 fetch(configJSONUrl)
   .then(res => res.json())
   .then(props =>
-    createRoot(document.getElementById("root")).render(
+    createRoot(root).render(
       <React.StrictMode>
         <AppContext.Provider value={props}>
           <App />
