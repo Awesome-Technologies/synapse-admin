@@ -514,6 +514,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/styled@npm:^11.14.1":
+  version: 11.14.1
+  resolution: "@emotion/styled@npm:11.14.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.18.3"
+    "@emotion/babel-plugin": "npm:^11.13.5"
+    "@emotion/is-prop-valid": "npm:^1.3.0"
+    "@emotion/serialize": "npm:^1.3.3"
+    "@emotion/use-insertion-effect-with-fallbacks": "npm:^1.2.0"
+    "@emotion/utils": "npm:^1.4.2"
+  peerDependencies:
+    "@emotion/react": ^11.0.0-rc.0
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/2bbf8451df49c967e41fbcf8111a7f6dafe6757f0cc113f2f6e287206c45ac1d54dc8a95a483b7c0cee8614b8a8d08155bded6453d6721de1f8cc8d5b9216963
+  languageName: node
+  linkType: hard
+
 "@emotion/unitless@npm:^0.10.0":
   version: 0.10.0
   resolution: "@emotion/unitless@npm:0.10.0"
@@ -7225,7 +7245,7 @@ __metadata:
   resolution: "synapse-admin@workspace:."
   dependencies:
     "@emotion/react": "npm:^11.14.0"
-    "@emotion/styled": "npm:^11.14.0"
+    "@emotion/styled": "npm:^11.14.1"
     "@eslint/js": "npm:^9.7.0"
     "@haleos/ra-language-german": "npm:^1.0.0"
     "@haxqer/ra-language-chinese": "npm:^4.16.2"
