@@ -13,7 +13,7 @@
   "packageManager": "yarn@4.4.1",
   "devDependencies": {
     "@eslint/js": "^9.7.0",
-    "@mui/system": "^7.1.0",
+    "@mui/system": "^7.3.8",
     "@mui/utils": "^7.1.0",
     "@nuxt/kit": "^4.3.1",
     "@nuxt/schema": "^4.3.1",
