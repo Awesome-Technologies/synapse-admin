@@ -1642,12 +1642,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/papaparse@npm:^5.3.14":
-  version: 5.3.14
-  resolution: "@types/papaparse@npm:5.3.14"
+"@types/papaparse@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "@types/papaparse@npm:5.5.2"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/feb4d215903b67442feaa9836a6a5771e78dc6a9da24781e399c6f891622fa82245cd783ab2613c5be43e4a2d6a94da52325538e4485af258166864576ecd0d8
+  checksum: 10c0/27b097b6f8f204b20ade1f2cbf4798eb38caa5fbfa3180fd0faa5e3f9aea371c1786ae180d56f3287556463eefe3100c953e316ea6ee99d7ae1d04111cfc9e50
   languageName: node
   linkType: hard
 
@@ -5655,10 +5655,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"papaparse@npm:^5.4.1":
-  version: 5.4.1
-  resolution: "papaparse@npm:5.4.1"
-  checksum: 10c0/201f37c4813453fed5bfb4c01816696b099d2db9ff1e8fb610acc4771fdde91d2a22b6094721edb0fedb21ca3c46f04263f68be4beb3e35b8c72278f0cedc7b7
+"papaparse@npm:^5.5.3":
+  version: 5.5.3
+  resolution: "papaparse@npm:5.5.3"
+  checksum: 10c0/623aae6a35703308fd5a39d616fb3837231ebc70697346355ea508154d3f24df75b6554b736afc1924192205518a5db14e75f5e1cf35d154326050a37cdd9447
   languageName: node
   linkType: hard
 
@@ -7079,7 +7079,7 @@ __metadata:
     "@testing-library/user-event": "npm:^14.6.1"
     "@types/lodash": "npm:^4.17.7"
     "@types/node": "npm:^25.3.3"
-    "@types/papaparse": "npm:^5.3.14"
+    "@types/papaparse": "npm:^5.5.2"
     "@types/react": "npm:^19.2.14"
     "@typescript-eslint/eslint-plugin": "npm:^8.56.1"
     "@typescript-eslint/parser": "npm:^8.56.1"
@@ -7094,7 +7094,7 @@ __metadata:
     happy-dom: "npm:^20.8.3"
     history: "npm:^5.3.0"
     lodash: "npm:^4.17.23"
-    papaparse: "npm:^5.4.1"
+    papaparse: "npm:^5.5.3"
     prettier: "npm:^3.8.1"
     query-string: "npm:^7.1.3"
     ra-core: "npm:^5.14.3"
