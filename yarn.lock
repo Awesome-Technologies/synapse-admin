@@ -1181,16 +1181,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/schema@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "@nuxt/schema@npm:4.3.0"
+"@nuxt/schema@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "@nuxt/schema@npm:4.3.1"
   dependencies:
     "@vue/shared": "npm:^3.5.27"
     defu: "npm:^6.1.4"
     pathe: "npm:^2.0.3"
     pkg-types: "npm:^2.3.0"
     std-env: "npm:^3.10.0"
-  checksum: 10c0/3560e203aa0f086ddc7a9f31640660df3b3e226fe32969b5728fcfbcc54b771f8bafc4f368aead6d4df311069230f24414261d5d1acda75cdc3d96d458ba2785
+  checksum: 10c0/63a372205877e49766bb4d08bf932642cdf9c5daa13404fec4c20f3625fb60daa7dbda2e6b4627301db3e2c20bb77d78c87da9ec22c1ddb04dcb4f813606f64a
   languageName: node
   linkType: hard
 
@@ -7090,7 +7090,7 @@ __metadata:
     "@mui/system": "npm:^7.1.0"
     "@mui/utils": "npm:^7.1.0"
     "@nuxt/kit": "npm:^4.3.0"
-    "@nuxt/schema": "npm:^4.3.0"
+    "@nuxt/schema": "npm:^4.3.1"
     "@tanstack/react-query": "npm:^5.90.20"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.2"
