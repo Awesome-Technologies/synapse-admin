@@ -6118,7 +6118,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^19.2.3":
+"react-dom@npm:^19.2.4":
   version: 19.2.4
   resolution: "react-dom@npm:19.2.4"
   dependencies:
@@ -6202,7 +6202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^19.2.3, react-is@npm:^19.2.4":
+"react-is@npm:^19.2.4":
   version: 19.2.4
   resolution: "react-is@npm:19.2.4"
   checksum: 10c0/477a7cfc900f24194606e315fa353856a3a13487ea8eca841678817cad4daef64339ea0d1e84e58459fc75dbe0d9ba00bb0cc626db3d07e0cf31edc64cb4fa37
@@ -6317,7 +6317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^19.2.3":
+"react@npm:^19.2.4":
   version: 19.2.4
   resolution: "react@npm:19.2.4"
   checksum: 10c0/cd2c9ff67a720799cc3b38a516009986f7fc4cb8d3e15716c6211cf098d1357ee3e348ab05ad0600042bbb0fd888530ba92e329198c92eafa0994f5213396596
@@ -7120,11 +7120,11 @@ __metadata:
     ra-language-french: "npm:^5.14.3"
     ra-language-italian: "npm:^3.13.1"
     ra-language-russian: "npm:^5.4.5"
-    react: "npm:^19.2.3"
+    react: "npm:^19.2.4"
     react-admin: "npm:^5.14.3"
-    react-dom: "npm:^19.2.3"
+    react-dom: "npm:^19.2.4"
     react-hook-form: "npm:^7.71.2"
-    react-is: "npm:^19.2.3"
+    react-is: "npm:^19.2.4"
     react-router: "npm:^7.13.1"
     react-router-dom: "npm:^7.13.1"
     react-test-renderer: "npm:^19.2.4"
