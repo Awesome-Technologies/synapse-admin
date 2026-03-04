@@ -74,6 +74,9 @@ describe("dataProvider", () => {
 
     expect(user.data.id).toEqual("user_id1");
     expect(user.data.displayname).toEqual("User");
+    expect(user.data.avatar_src).toBeDefined();
+    expect(user.data.avatar_src).not.toContain("access_token");
+    expect(user.data.avatar_src).toMatch(/\/_matrix\/media\/r0\/thumbnail\/localhost\/user1/);
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 });

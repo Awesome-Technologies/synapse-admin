@@ -256,6 +256,10 @@ const fa: SynapseTranslationMessages = {
         created_ts: "ایجاد شده",
         last_access_ts: "آخرین دسترسی",
       },
+      action: {
+        open: "باز کردن فایل رسانه در پنجره جدید",
+        open_error: "باز کردن رسانه ناموفق بود",
+      },
     },
     protect_media: {
       action: {

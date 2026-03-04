@@ -54,11 +54,29 @@ export const getSupportedLoginFlows = async baseUrl => {
   return response.json.flows;
 };
 
+/**
+ * Headers for authenticated requests (Bearer token). Use for media/download to avoid token in URL.
+ */
+export const getAuthHeaders = (): Record<string, string> => {
+  const token = storage.getItem("access_token");
+  if (token == null) return {};
+  return { Authorization: `Bearer ${token}` };
+};
+
+/**
+ * Build media download URL (no token in URL; use getAuthHeaders() when fetching).
+ */
 export const getMediaUrl = media_id => {
   const baseUrl = storage.getItem("base_url");
-  const token = storage.getItem("access_token");
-  const url = `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
-  return token != null ? `${url}&access_token=${encodeURIComponent(token)}` : url;
+  return `${baseUrl}/_matrix/media/v1/download/${media_id}?allow_redirect=true`;
+};
+
+/**
+ * Fetch a URL with optional Bearer auth. Use for media/avatars so token is not in query string.
+ */
+export const fetchWithAuth = async (url: string): Promise<Response> => {
+  const headers = getAuthHeaders();
+  return fetch(url, { headers });
 };
 
 /**

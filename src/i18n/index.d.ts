@@ -267,6 +267,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
       };
       action?: {
         open: string;
+        open_error: string;
       };
     };
     protect_media?: {

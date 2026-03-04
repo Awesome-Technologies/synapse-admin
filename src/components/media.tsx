@@ -29,11 +29,10 @@ import {
   useTranslate,
 } from "react-admin";
 import { useMutation } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 
 import { dateParser } from "./date";
 import { DeleteMediaParams, SynapseDataProvider } from "../synapse/dataProvider";
-import { getMediaUrl } from "../synapse/synapse";
+import { getMediaUrl, fetchWithAuth } from "../synapse/synapse";
 import storage from "../storage";
 
 const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
@@ -313,14 +312,33 @@ export const QuarantineMediaButton = (props: ButtonProps) => {
 
 export const ViewMediaButton = ({ media_id, label }) => {
   const translate = useTranslate();
+  const notify = useNotify();
+  const [loading, setLoading] = useState(false);
   const url = getMediaUrl(media_id);
+
+  const handleOpen = async () => {
+    setLoading(true);
+    try {
+      const res = await fetchWithAuth(url);
+      if (!res.ok) throw new Error(res.statusText);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, "_blank", "noopener");
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+    } catch (e) {
+      notify("resources.users_media.action.open_error", { type: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box style={{ whiteSpace: "pre" }}>
       <Tooltip title={translate("resources.users_media.action.open")}>
         <span>
           <Button
-            component={Link}
-            to={url}
+            onClick={handleOpen}
+            disabled={loading}
             target="_blank"
             rel="noopener"
             style={{ minWidth: 0, paddingLeft: 0, paddingRight: 0 }}

@@ -32,9 +32,7 @@ const mxcUrlToHttp = (mxcUrl: string) => {
   if (ret == null) return null;
   const serverName = ret[1];
   const mediaId = ret[2];
-  const url = `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
-  const token = storage.getItem("access_token");
-  return token != null ? `${url}&access_token=${encodeURIComponent(token)}` : url;
+  return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
 };
 
 interface Room {

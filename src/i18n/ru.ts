@@ -292,6 +292,7 @@ const ru: SynapseTranslationMessages = {
       },
       action: {
         open: "Открыть файл в новом окне",
+        open_error: "Не удалось открыть медиа",
       },
     },
     protect_media: {

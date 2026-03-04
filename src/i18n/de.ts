@@ -282,6 +282,7 @@ const de: SynapseTranslationMessages = {
       },
       action: {
         open: "Mediendatei in neuem Fenster öffnen",
+        open_error: "Medien konnten nicht geöffnet werden",
       },
     },
     protect_media: {

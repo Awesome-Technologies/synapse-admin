@@ -247,6 +247,10 @@ const zh: SynapseTranslationMessages = {
         created_ts: "创建",
         last_access_ts: "上一次访问",
       },
+      action: {
+        open: "在新窗口中打开媒体文件",
+        open_error: "无法打开媒体",
+      },
     },
     pushers: {
       name: "发布者",

@@ -258,6 +258,10 @@ const fr: SynapseTranslationMessages = {
         created_ts: "Date de création",
         last_access_ts: "Dernier accès",
       },
+      action: {
+        open: "Ouvrir le fichier média dans une nouvelle fenêtre",
+        open_error: "Échec de l'ouverture du média",
+      },
     },
     protect_media: {
       action: {

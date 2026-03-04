@@ -257,6 +257,10 @@ const it: SynapseTranslationMessages = {
         created_ts: "Creato",
         last_access_ts: "Ultimo accesso",
       },
+      action: {
+        open: "Apri file multimediale in nuova finestra",
+        open_error: "Impossibile aprire il file multimediale",
+      },
     },
     protect_media: {
       action: {
