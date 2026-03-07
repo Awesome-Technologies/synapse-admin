@@ -1,8 +1,7 @@
 import { merge } from "lodash";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 
-import { Admin, CustomRoutes, Resource, resolveBrowserLocale } from "react-admin";
-import { Route } from "react-router-dom";
+import { Admin, CustomRoutes, Resource, reactRouterProvider, resolveBrowserLocale } from "react-admin";
 
 import { ImportFeature } from "./components/ImportFeature";
 import germanMessages from "./i18n/de";
@@ -46,6 +45,7 @@ const i18nProvider = polyglotI18nProvider(
   ]
 );
 
+const Route = reactRouterProvider.Route;
 const queryClient = new QueryClient();
 
 const App = () => (

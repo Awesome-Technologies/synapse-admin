@@ -2,9 +2,6 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import englishMessages from "./i18n/en";
 
-// import { prettyDOM } from "@testing-library/dom";
-// import { writeFileSync } from "node:fs";
-
 // Keep auth decisions deterministic so each test can choose the logged-in state explicitly.
 const mockedAuthProvider = vi.hoisted(() => ({
   checkAuth: vi.fn(),
@@ -32,6 +29,9 @@ const mockedQueryClient = vi.hoisted(() => ({
   current: null as { clear: () => void } | null,
 }));
 
+let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+let consoleWarnSpy: ReturnType<typeof vi.spyOn>;
+
 vi.mock("@tanstack/react-query", async importOriginal => {
   const actual = await importOriginal<typeof import("@tanstack/react-query")>();
 
@@ -48,16 +48,6 @@ vi.mock("@tanstack/react-query", async importOriginal => {
   };
 });
 
-vi.mock("react-admin", async importOriginal => {
-  const actual = await importOriginal<typeof import("react-admin")>();
-
-  return {
-    ...actual,
-    // The custom import route is outside the assertions in this file and is noisy under test.
-    CustomRoutes: () => null,
-  };
-});
-
 vi.mock("./synapse/authProvider", () => ({
   __esModule: true,
   default: mockedAuthProvider,
@@ -71,6 +61,8 @@ vi.mock("./synapse/dataProvider", () => ({
 describe("App", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
     mockedAuthProvider.login.mockResolvedValue(undefined);
     mockedAuthProvider.logout.mockResolvedValue(undefined);
@@ -90,8 +82,14 @@ describe("App", () => {
   });
 
   afterEach(() => {
+    const consoleOutput = [...consoleErrorSpy.mock.calls, ...consoleWarnSpy.mock.calls].flat().join("\n");
+
     cleanup();
     mockedQueryClient.current?.clear();
+    vi.restoreAllMocks();
+
+    expect(consoleOutput).not.toContain("Error:");
+    expect(consoleOutput).not.toContain("Warn");
   });
 
   it("renders the app after successful login", async () => {
@@ -116,11 +114,9 @@ describe("App", () => {
     render(<App />);
 
     await screen.findByLabelText("Close menu");
-    expect(screen.queryByText(englishMessages.synapseadmin.auth.welcome)).toBeNull();
     await screen.findByText("Alice");
+    expect(screen.queryByText(englishMessages.synapseadmin.auth.welcome)).toBeNull();
     await waitFor(() => expect(mockedAuthProvider.checkAuth).toHaveBeenCalled());
-
-    //writeFileSync("./logged-in-screen.html", prettyDOM(document.body, 999999, { highlight: false }) ?? "");
   });
 
   it("renders login page when not authenticated", async () => {
@@ -132,7 +128,5 @@ describe("App", () => {
     screen.getByRole("button", { name: englishMessages.ra.auth.sign_in });
 
     await waitFor(() => expect(mockedAuthProvider.checkAuth).toHaveBeenCalled());
-
-    //writeFileSync("./login-screen.html", prettyDOM(document.body, 999999, { highlight: false }) ?? "");
   });
 });
