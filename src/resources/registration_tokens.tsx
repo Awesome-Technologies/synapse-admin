@@ -3,7 +3,7 @@ import {
   BooleanInput,
   Create,
   CreateProps,
-  Datagrid,
+  DataTable,
   DateField,
   DateTimeInput,
   Edit,
@@ -39,13 +39,15 @@ export const RegistrationTokenList = (props: ListProps) => (
     pagination={false}
     perPage={500}
   >
-    <Datagrid rowClick="edit">
-      <TextField source="token" sortable={false} />
-      <NumberField source="uses_allowed" sortable={false} />
-      <NumberField source="pending" sortable={false} />
-      <NumberField source="completed" sortable={false} />
-      <DateField source="expiry_time" showTime options={DATE_FORMAT} sortable={false} />
-    </Datagrid>
+    <DataTable rowClick="edit">
+      <DataTable.Col source="token" />
+      <DataTable.Col source="uses_allowed" field={NumberField} />
+      <DataTable.Col source="pending" field={NumberField} />
+      <DataTable.Col source="completed" field={NumberField} />
+      <DataTable.Col source="expiry_time">
+        <DateField source="expiry_time" showTime options={DATE_FORMAT} />
+      </DataTable.Col>
+    </DataTable>
   </List>
 );
 
@@ -67,7 +69,7 @@ export const RegistrationTokenCreate = (props: CreateProps) => (
         step={1}
       />
       <NumberInput source="uses_allowed" validate={validateUsesAllowed} step={1} />
-      <DateTimeInput source="expiry_time" parse={dateParser} />
+      <DateTimeInput source="expiry_time" parse={dateParser} format={dateFormatter} />
     </SimpleForm>
   </Create>
 );
@@ -84,12 +86,13 @@ export const RegistrationTokenEdit = (props: EditProps) => (
   </Edit>
 );
 
-const resource: ResourceProps = {
+const resource = {
   name: "registration_tokens",
   icon: RegistrationTokenIcon,
   list: RegistrationTokenList,
   edit: RegistrationTokenEdit,
   create: RegistrationTokenCreate,
-};
+  recordRepresentation: (record: { token: string }) => record.token,
+} satisfies ResourceProps;
 
 export default resource;
