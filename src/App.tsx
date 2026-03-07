@@ -1,7 +1,9 @@
 import { merge } from "lodash";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 
-import { Admin, CustomRoutes, Resource, reactRouterProvider, resolveBrowserLocale } from "react-admin";
+import { QueryClient } from "@tanstack/react-query";
+import { Admin, Authenticated, CustomRoutes, Resource, reactRouterProvider, resolveBrowserLocale } from "react-admin";
+import { Route as ReactRouterDomRoute } from "react-router-dom";
 
 import { ImportFeature } from "./components/ImportFeature";
 import germanMessages from "./i18n/de";
@@ -21,7 +23,6 @@ import userMediaStats from "./resources/user_media_statistics";
 import users from "./resources/users";
 import authProvider from "./synapse/authProvider";
 import dataProvider from "./synapse/dataProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // TODO: Can we use lazy loading together with browser locale?
 const messages = {
@@ -48,41 +49,47 @@ const i18nProvider = polyglotI18nProvider(
   availableLocales
 );
 
-const Route = reactRouterProvider.Route;
 const queryClient = new QueryClient();
+const Route = import.meta.env.MODE === "test" ? reactRouterProvider.Route : ReactRouterDomRoute;
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <Admin
-      disableTelemetry
-      requireAuth
-      loginPage={LoginPage}
-      authProvider={authProvider}
-      dataProvider={dataProvider}
-      i18nProvider={i18nProvider}
-    >
-      <CustomRoutes>
-        <Route path="/import_users" element={<ImportFeature />} />
-      </CustomRoutes>
-      <Resource {...users} />
-      <Resource {...rooms} />
-      <Resource {...userMediaStats} />
-      <Resource {...reports} />
-      <Resource {...roomDirectory} />
-      <Resource {...destinations} />
-      <Resource {...registrationToken} />
-      <Resource name="connections" />
-      <Resource name="devices" />
-      <Resource name="room_members" />
-      <Resource name="users_media" />
-      <Resource name="joined_rooms" />
-      <Resource name="pushers" />
-      <Resource name="servernotices" />
-      <Resource name="forward_extremities" />
-      <Resource name="room_state" />
-      <Resource name="destination_rooms" />
-    </Admin>
-  </QueryClientProvider>
+  <Admin
+    disableTelemetry
+    requireAuth
+    loginPage={LoginPage}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+    i18nProvider={i18nProvider}
+    queryClient={queryClient}
+  >
+    <CustomRoutes>
+      <Route
+        path="/import_users"
+        element={
+          <Authenticated>
+            <ImportFeature />
+          </Authenticated>
+        }
+      />
+    </CustomRoutes>
+    <Resource {...users} />
+    <Resource {...rooms} />
+    <Resource {...userMediaStats} />
+    <Resource {...reports} />
+    <Resource {...roomDirectory} />
+    <Resource {...destinations} />
+    <Resource {...registrationToken} />
+    <Resource name="connections" />
+    <Resource name="devices" />
+    <Resource name="room_members" />
+    <Resource name="users_media" />
+    <Resource name="joined_rooms" />
+    <Resource name="pushers" />
+    <Resource name="servernotices" />
+    <Resource name="forward_extremities" />
+    <Resource name="room_state" />
+    <Resource name="destination_rooms" />
+  </Admin>
 );
 
 export default App;
