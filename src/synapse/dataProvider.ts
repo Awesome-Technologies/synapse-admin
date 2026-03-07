@@ -3,37 +3,12 @@ import {
   DataProvider,
   DeleteParams,
   Identifier,
-  Options,
   PaginationPayload,
   RaRecord,
   SortPayload,
-  fetchUtils
 } from "react-admin";
-import storage from "../storage";
 
-// Adds the access token to all requests
-const jsonClient = (url: string, options: Options = {}) => {
-  const token = storage.getItem("access_token");
-  console.log("httpClient " + url);
-  if (token != null) {
-    options.user = {
-      authenticated: true,
-      token: `Bearer ${token}`,
-    };
-  }
-  return fetchUtils.fetchJson(url, options);
-};
-
-const mxcUrlToHttp = (mxcUrl: string) => {
-  const homeserver = storage.getItem("base_url");
-  const re = /^mxc:\/\/([^/]+)\/(\w+)/;
-  const ret = re.exec(mxcUrl);
-  console.log("mxcClient " + ret);
-  if (ret == null) return null;
-  const serverName = ret[1];
-  const mediaId = ret[2];
-  return `${homeserver}/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`;
-};
+import { buildUrl, fetchJsonFromAbsoluteUrl, requireStoredBaseUrl, requireStoredHomeServer } from "./synapse";
 
 interface Room {
   room_id: string;
@@ -210,38 +185,96 @@ interface DestinationRoom {
   stream_ordering: number;
 }
 
-export interface DeleteMediaParams {
-  before_ts: string;
-  size_gt: number;
-  keep_profiles: boolean;
+type JsonObject = Record<string, any>;
+type ResourceMapper = (record: any) => RaRecord;
+type TotalResolver = (json: JsonObject, from?: number, perPage?: number) => number;
+type CreateRequest = (data: any) => {
+  body?: JsonObject;
+  endpoint: string;
+  method: "POST" | "PUT";
+};
+type DeleteRequest = (params: DeleteParams) => {
+  body?: JsonObject;
+  endpoint: string;
+  method?: "DELETE" | "POST" | "PUT";
+};
+type ReferenceRequest = (id: Identifier) => {
+  endpoint: string;
+};
+
+interface ResourceConfigBase {
+  create?: CreateRequest;
+  data: string;
+  delete?: DeleteRequest;
+  map: ResourceMapper;
+  total?: TotalResolver;
 }
 
+interface CollectionResourceConfig extends ResourceConfigBase {
+  path: string;
+}
+
+interface ReferenceResourceConfig extends ResourceConfigBase {
+  reference: ReferenceRequest;
+}
+
+interface ActionResourceConfig extends ResourceConfigBase {
+  path?: never;
+  reference?: never;
+}
+
+type ResourceConfig = CollectionResourceConfig | ReferenceResourceConfig | ActionResourceConfig;
+type ResourceMap = Record<string, ResourceConfig>;
+
+/** Parameters accepted by the custom bulk media-deletion admin action. */
+export interface DeleteMediaParams {
+  before_ts: number | string;
+  keep_profiles: boolean;
+  size_gt: number;
+}
+
+/** Result payload returned by Synapse after a bulk media-deletion request. */
 export interface DeleteMediaResult {
   deleted_media: Identifier[];
   total: number;
 }
 
+/** Synapse-specific extension points layered on top of the standard react-admin data provider. */
 export interface SynapseDataProvider extends DataProvider {
+  createMany: (resource: string, params: { data: RaRecord; ids: Identifier[] }) => Promise<{ data: unknown[] }>;
   deleteMedia: (params: DeleteMediaParams) => Promise<DeleteMediaResult>;
 }
 
-const resourceMap = {
+/** Convert Synapse MXC URIs into thumbnail URLs that the admin UI can render directly. */
+const mxcUrlToHttp = (mxcUrl: string): string | null => {
+  const baseUrl = requireStoredBaseUrl();
+  const match = /^mxc:\/\/([^/]+)\/(\w+)/.exec(mxcUrl);
+
+  if (!match) {
+    return null;
+  }
+
+  const [, serverName, mediaId] = match;
+  return buildUrl(baseUrl, `/_matrix/media/r0/thumbnail/${serverName}/${mediaId}?width=24&height=24&method=scale`);
+};
+
+// Resource config groups keep the large provider split by domain while preserving one external API.
+const userResourceConfigs = {
   users: {
     path: "/_synapse/admin/v2/users",
-    map: (u: User) => ({
-      ...u,
-      id: u.name,
-      avatar_src: u.avatar_url ? mxcUrlToHttp(u.avatar_url) : undefined,
-      is_guest: !!u.is_guest,
-      admin: !!u.admin,
-      deactivated: !!u.deactivated,
-      // need timestamp in milliseconds
-      creation_ts_ms: u.creation_ts * 1000,
+    map: (user: User) => ({
+      ...user,
+      id: user.name,
+      avatar_src: user.avatar_url ? mxcUrlToHttp(user.avatar_url) : undefined,
+      is_guest: !!user.is_guest,
+      admin: !!user.admin,
+      deactivated: !!user.deactivated,
+      creation_ts_ms: user.creation_ts * 1000,
     }),
     data: "users",
     total: json => json.total,
     create: (data: RaRecord) => ({
-      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${storage.getItem("home_server")}`,
+      endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${requireStoredHomeServer()}`,
       body: data,
       method: "PUT",
     }),
@@ -251,34 +284,10 @@ const resourceMap = {
       method: "POST",
     }),
   },
-  rooms: {
-    path: "/_synapse/admin/v1/rooms",
-    map: (r: Room) => ({
-      ...r,
-      id: r.room_id,
-      alias: r.canonical_alias,
-      members: r.joined_members,
-      is_encrypted: !!r.encryption,
-      federatable: !!r.federatable,
-      public: !!r.public,
-    }),
-    data: "rooms",
-    total: json => json.total_rooms,
-    delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v2/rooms/${params.id}`,
-      body: { block: false },
-    }),
-  },
-  reports: {
-    path: "/_synapse/admin/v1/event_reports",
-    map: (er: EventReport) => ({ ...er }),
-    data: "event_reports",
-    total: json => json.total,
-  },
   devices: {
-    map: (d: Device) => ({
-      ...d,
-      id: d.device_id,
+    map: (device: Device) => ({
+      ...device,
+      id: device.device_id,
     }),
     data: "devices",
     total: json => json.total,
@@ -291,37 +300,16 @@ const resourceMap = {
   },
   connections: {
     path: "/_synapse/admin/v1/whois",
-    map: (c: Whois) => ({
-      ...c,
-      id: c.user_id,
+    map: (connection: Whois) => ({
+      ...connection,
+      id: connection.user_id,
     }),
     data: "connections",
   },
-  room_members: {
-    map: (m: string) => ({
-      id: m,
-    }),
-    reference: (id: Identifier) => ({
-      endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
-    }),
-    data: "members",
-    total: json => json.total,
-  },
-  room_state: {
-    map: (rs: RoomState) => ({
-      ...rs,
-      id: rs.event_id,
-    }),
-    reference: (id: Identifier) => ({
-      endpoint: `/_synapse/admin/v1/rooms/${id}/state`,
-    }),
-    data: "state",
-    total: json => json.state.length,
-  },
   pushers: {
-    map: (p: Pusher) => ({
-      ...p,
-      id: p.pushkey,
+    map: (pusher: Pusher) => ({
+      ...pusher,
+      id: pusher.pushkey,
     }),
     reference: (id: Identifier) => ({
       endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/pushers`,
@@ -330,8 +318,8 @@ const resourceMap = {
     total: json => json.total,
   },
   joined_rooms: {
-    map: (jr: string) => ({
-      id: jr,
+    map: (roomId: string) => ({
+      id: roomId,
     }),
     reference: (id: Identifier) => ({
       endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/joined_rooms`,
@@ -339,44 +327,8 @@ const resourceMap = {
     data: "joined_rooms",
     total: json => json.total,
   },
-  users_media: {
-    map: (um: UserMedia) => ({
-      ...um,
-      id: um.media_id,
-    }),
-    reference: (id: Identifier) => ({
-      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/media`,
-    }),
-    data: "media",
-    total: json => json.total,
-    delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/${storage.getItem("home_server")}/${params.id}`,
-    }),
-  },
-  protect_media: {
-    map: (pm: UserMedia) => ({ id: pm.media_id }),
-    create: (params: UserMedia) => ({
-      endpoint: `/_synapse/admin/v1/media/protect/${params.media_id}`,
-      method: "POST",
-    }),
-    delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/unprotect/${params.id}`,
-      method: "POST",
-    }),
-  },
-  quarantine_media: {
-    map: (qm: UserMedia) => ({ id: qm.media_id }),
-    create: (params: UserMedia) => ({
-      endpoint: `/_synapse/admin/v1/media/quarantine/${storage.getItem("home_server")}/${params.media_id}`,
-      method: "POST",
-    }),
-    delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/media/unquarantine/${storage.getItem("home_server")}/${params.id}`,
-      method: "POST",
-    }),
-  },
   servernotices: {
-    map: (n: { event_id: string }) => ({ id: n.event_id }),
+    map: (notice: { event_id: string }) => ({ id: notice.event_id }),
     create: (data: RaServerNotice) => ({
       endpoint: "/_synapse/admin/v1/send_server_notice",
       body: {
@@ -388,20 +340,79 @@ const resourceMap = {
       },
       method: "POST",
     }),
+    data: "event_id",
   },
-  user_media_statistics: {
-    path: "/_synapse/admin/v1/statistics/users/media",
-    map: (usms: UserMediaStatistic) => ({
-      ...usms,
-      id: usms.user_id,
+  registration_tokens: {
+    path: "/_synapse/admin/v1/registration_tokens",
+    map: (token: RegistrationToken) => ({
+      ...token,
+      id: token.token,
     }),
-    data: "users",
+    data: "registration_tokens",
+    total: json => json.registration_tokens.length,
+    create: (data: RaRecord) => ({
+      endpoint: "/_synapse/admin/v1/registration_tokens/new",
+      body: data,
+      method: "POST",
+    }),
+    delete: (params: DeleteParams) => ({
+      endpoint: `/_synapse/admin/v1/registration_tokens/${params.id}`,
+    }),
+  },
+} satisfies ResourceMap;
+
+const roomResourceConfigs = {
+  rooms: {
+    path: "/_synapse/admin/v1/rooms",
+    map: (room: Room) => ({
+      ...room,
+      id: room.room_id,
+      alias: room.canonical_alias,
+      members: room.joined_members,
+      local_members: room.joined_local_members,
+      avatar_src: room.avatar_url ? mxcUrlToHttp(room.avatar_url) : undefined,
+      is_encrypted: !!room.encryption,
+      federatable: !!room.federatable,
+      public: !!room.public,
+    }),
+    data: "rooms",
+    total: json => json.total_rooms,
+    delete: (params: DeleteParams) => ({
+      endpoint: `/_synapse/admin/v2/rooms/${params.id}`,
+      body: { block: false },
+    }),
+  },
+  reports: {
+    path: "/_synapse/admin/v1/event_reports",
+    map: (eventReport: EventReport) => ({ ...eventReport }),
+    data: "event_reports",
     total: json => json.total,
   },
+  room_members: {
+    map: (member: string) => ({
+      id: member,
+    }),
+    reference: (id: Identifier) => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
+    }),
+    data: "members",
+    total: json => json.total,
+  },
+  room_state: {
+    map: (roomState: RoomState) => ({
+      ...roomState,
+      id: roomState.event_id,
+    }),
+    reference: (id: Identifier) => ({
+      endpoint: `/_synapse/admin/v1/rooms/${id}/state`,
+    }),
+    data: "state",
+    total: json => json.state.length,
+  },
   forward_extremities: {
-    map: (fe: ForwardExtremity) => ({
-      ...fe,
-      id: fe.event_id,
+    map: (extremity: ForwardExtremity) => ({
+      ...extremity,
+      id: extremity.event_id,
     }),
     reference: (id: Identifier) => ({
       endpoint: `/_synapse/admin/v1/rooms/${id}/forward_extremities`,
@@ -414,17 +425,17 @@ const resourceMap = {
   },
   room_directory: {
     path: "/_matrix/client/r0/publicRooms",
-    map: (rd: Room) => ({
-      ...rd,
-      id: rd.room_id,
-      public: !!rd.public,
-      guest_access: !!rd.guest_access,
-      avatar_src: rd.avatar_url ? mxcUrlToHttp(rd.avatar_url) : undefined,
+    map: (room: Room) => ({
+      ...room,
+      id: room.room_id,
+      public: !!room.public,
+      guest_access: !!room.guest_access,
+      avatar_src: room.avatar_url ? mxcUrlToHttp(room.avatar_url) : undefined,
     }),
     data: "chunk",
     total: json => json.total_room_count_estimate,
-    create: (params: RaRecord) => ({
-      endpoint: `/_matrix/client/r0/directory/list/room/${params.id}`,
+    create: (data: RaRecord) => ({
+      endpoint: `/_matrix/client/r0/directory/list/room/${data.id}`,
       body: { visibility: "public" },
       method: "PUT",
     }),
@@ -434,23 +445,76 @@ const resourceMap = {
       method: "PUT",
     }),
   },
+} satisfies ResourceMap;
+
+const mediaResourceConfigs = {
+  users_media: {
+    map: (media: UserMedia) => ({
+      ...media,
+      id: media.media_id,
+    }),
+    reference: (id: Identifier) => ({
+      endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/media`,
+    }),
+    data: "media",
+    total: json => json.total,
+    delete: (params: DeleteParams) => ({
+      endpoint: `/_synapse/admin/v1/media/${requireStoredHomeServer()}/${params.id}`,
+    }),
+  },
+  protect_media: {
+    map: (media: UserMedia) => ({ id: media.media_id }),
+    create: (data: UserMedia) => ({
+      endpoint: `/_synapse/admin/v1/media/protect/${data.media_id}`,
+      method: "POST",
+    }),
+    delete: (params: DeleteParams) => ({
+      endpoint: `/_synapse/admin/v1/media/unprotect/${params.id}`,
+      method: "POST",
+    }),
+    data: "media_id",
+  },
+  quarantine_media: {
+    map: (media: UserMedia) => ({ id: media.media_id }),
+    create: (data: UserMedia) => ({
+      endpoint: `/_synapse/admin/v1/media/quarantine/${requireStoredHomeServer()}/${data.media_id}`,
+      method: "POST",
+    }),
+    delete: (params: DeleteParams) => ({
+      endpoint: `/_synapse/admin/v1/media/unquarantine/${requireStoredHomeServer()}/${params.id}`,
+      method: "POST",
+    }),
+    data: "media_id",
+  },
+  user_media_statistics: {
+    path: "/_synapse/admin/v1/statistics/users/media",
+    map: (statistic: UserMediaStatistic) => ({
+      ...statistic,
+      id: statistic.user_id,
+    }),
+    data: "users",
+    total: json => json.total,
+  },
+} satisfies ResourceMap;
+
+const federationResourceConfigs = {
   destinations: {
     path: "/_synapse/admin/v1/federation/destinations",
-    map: (dst: Destination) => ({
-      ...dst,
-      id: dst.destination,
+    map: (destination: Destination) => ({
+      ...destination,
+      id: destination.destination,
     }),
     data: "destinations",
     total: json => json.total,
-    delete: params => ({
+    delete: (params: DeleteParams) => ({
       endpoint: `/_synapse/admin/v1/federation/destinations/${params.id}/reset_connection`,
       method: "POST",
     }),
   },
   destination_rooms: {
-    map: (dstroom: DestinationRoom) => ({
-      ...dstroom,
-      id: dstroom.room_id,
+    map: (destinationRoom: DestinationRoom) => ({
+      ...destinationRoom,
+      id: destinationRoom.room_id,
     }),
     reference: (id: Identifier) => ({
       endpoint: `/_synapse/admin/v1/federation/destinations/${id}/rooms`,
@@ -458,26 +522,17 @@ const resourceMap = {
     data: "rooms",
     total: json => json.total,
   },
-  registration_tokens: {
-    path: "/_synapse/admin/v1/registration_tokens",
-    map: (rt: RegistrationToken) => ({
-      ...rt,
-      id: rt.token,
-    }),
-    data: "registration_tokens",
-    total: json => json.registration_tokens.length,
-    create: (params: RaRecord) => ({
-      endpoint: "/_synapse/admin/v1/registration_tokens/new",
-      body: params,
-      method: "POST",
-    }),
-    delete: (params: DeleteParams) => ({
-      endpoint: `/_synapse/admin/v1/registration_tokens/${params.id}`,
-    }),
-  },
-};
+} satisfies ResourceMap;
+
+const resourceMap = {
+  ...userResourceConfigs,
+  ...roomResourceConfigs,
+  ...mediaResourceConfigs,
+  ...federationResourceConfigs,
+} satisfies ResourceMap;
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
+/** Preserve explicit `null` only for `user_type`, which Synapse uses as a reset signal. */
 function filterNullValues(key: string, value: any) {
   // Filtering out null properties
   // to reset user_type from user, it must be null
@@ -487,256 +542,306 @@ function filterNullValues(key: string, value: any) {
   return value;
 }
 
-function getSearchOrder(order: "ASC" | "DESC") {
-  if (order === "DESC") {
-    return "b";
-  } else {
-    return "f";
-  }
-}
+const hasPath = (resource: ResourceConfig): resource is CollectionResourceConfig => "path" in resource;
 
-const dataProvider: SynapseDataProvider = {
+const hasReference = (resource: ResourceConfig): resource is ReferenceResourceConfig => "reference" in resource;
+
+const supportsCreate = (resource: ResourceConfig): resource is ResourceConfig & { create: CreateRequest } =>
+  typeof resource.create === "function";
+
+const supportsDelete = (resource: ResourceConfig): resource is ResourceConfig & { delete: DeleteRequest } =>
+  typeof resource.delete === "function";
+
+const isJsonArray = (value: unknown): value is unknown[] => Array.isArray(value);
+
+const getSearchOrder = (order: "ASC" | "DESC") => (order === "DESC" ? "b" : "f");
+
+/** Resolve a resource config once so provider methods can fail fast on unsupported resources. */
+const getResourceConfig = (resourceName: string): ResourceConfig => {
+  const config = resourceMap[resourceName];
+
+  if (!config) {
+    throw new Error(`Unknown resource: ${resourceName}`);
+  }
+
+  return config;
+};
+
+/** Narrow a resource to collection semantics like `getList`, `getOne`, or `update`. */
+const getCollectionResource = (resourceName: string): CollectionResourceConfig => {
+  const config = getResourceConfig(resourceName);
+
+  if (!hasPath(config)) {
+    throw new Error(`Resource ${resourceName} does not support collection requests`);
+  }
+
+  return config;
+};
+
+/** Narrow a resource to reference semantics used by nested react-admin lists. */
+const getReferenceResource = (resourceName: string): ReferenceResourceConfig => {
+  const config = getResourceConfig(resourceName);
+
+  if (!hasReference(config)) {
+    throw new Error(`Resource ${resourceName} does not support reference requests`);
+  }
+
+  return config;
+};
+
+/** Calculate `total` from explicit resource metadata or fall back to array length. */
+const getResourceTotal = (config: ResourceConfig, json: JsonObject, from?: number, perPage?: number): number => {
+  if (typeof config.total === "function") {
+    return config.total(json, from, perPage);
+  }
+
+  const data = json[config.data];
+  return isJsonArray(data) ? data.length : 0;
+};
+
+/** Map the array payload selected by a resource config into react-admin records. */
+const mapResourceData = (config: ResourceConfig, json: JsonObject): RaRecord[] => {
+  const data = json[config.data];
+  return isJsonArray(data) ? data.map(item => config.map(item)) : [];
+};
+
+/** Build a list endpoint URL including pagination, filtering, and sort query parameters. */
+const buildCollectionUrl = (resourceName: string, query?: Record<string, unknown>): string => {
+  const config = getCollectionResource(resourceName);
+  const endpointUrl = buildUrl(requireStoredBaseUrl(), config.path);
+
+  if (!query) {
+    return endpointUrl;
+  }
+
+  const search = stringify(query);
+  return search ? `${endpointUrl}?${search}` : endpointUrl;
+};
+
+/** Build a reference endpoint URL for nested resources like devices or room members. */
+const buildReferenceUrl = (resourceName: string, id: Identifier, query?: Record<string, unknown>): string => {
+  const config = getReferenceResource(resourceName);
+  const endpointUrl = buildUrl(requireStoredBaseUrl(), config.reference(id).endpoint);
+
+  if (!query) {
+    return endpointUrl;
+  }
+
+  const search = stringify(query);
+  return search ? `${endpointUrl}?${search}` : endpointUrl;
+};
+
+/** Fetch a single collection-backed record and normalize it through the resource mapper. */
+const fetchResourceRecord = async (resourceName: string, id: Identifier) => {
+  const config = getCollectionResource(resourceName);
+  const { json } = await fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), `${config.path}/${encodeURIComponent(id)}`));
+  return config.map(json);
+};
+
+/** Execute a resource-specific create request while keeping provider method bodies small. */
+const createResource = async (resourceName: string, data: Partial<RaRecord>) => {
+  const config = getResourceConfig(resourceName);
+
+  if (!supportsCreate(config)) {
+    throw new Error(`Create ${resourceName} is not allowed`);
+  }
+
+  const request = config.create(data);
+  const { json } = await fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), request.endpoint), {
+    method: request.method,
+    body: JSON.stringify(request.body, filterNullValues),
+  });
+
+  return { data: config.map(json) };
+};
+
+/** Execute either custom deletion logic or the default REST-style delete request. */
+const deleteResource = async (resourceName: string, params: DeleteParams) => {
+  const config = getResourceConfig(resourceName);
+
+  if (supportsDelete(config)) {
+    const request = config.delete(params);
+    const { json } = await fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), request.endpoint), {
+      method: request.method ?? "DELETE",
+      body: request.body ? JSON.stringify(request.body) : null,
+    });
+
+    return { data: json };
+  }
+
+  const collectionConfig = getCollectionResource(resourceName);
+  const { json } = await fetchJsonFromAbsoluteUrl(
+    buildUrl(requireStoredBaseUrl(), `${collectionConfig.path}/${params.id}`),
+    {
+      method: "DELETE",
+      body: JSON.stringify(params.previousData, filterNullValues),
+    }
+  );
+
+  return { data: json };
+};
+
+/** Custom provider method used by the media maintenance UI. */
+const deleteMedia = async ({
+  before_ts,
+  size_gt = 0,
+  keep_profiles = true,
+}: DeleteMediaParams): Promise<DeleteMediaResult> => {
+  const endpoint =
+    `/_synapse/admin/v1/media/${requireStoredHomeServer()}/delete` +
+    `?before_ts=${before_ts}&size_gt=${size_gt}&keep_profiles=${keep_profiles}`;
+
+  const { json } = await fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), endpoint), { method: "POST" });
+  return json as DeleteMediaResult;
+};
+
+/** Main react-admin data provider plus Synapse-specific helper methods. */
+const dataProvider = {
   getList: async (resource, params) => {
-    console.log("getList " + resource);
     const { user_id, name, guests, deactivated, locked, search_term, destination, valid } = params.filter;
     const { page, perPage } = params.pagination as PaginationPayload;
     const { field, order } = params.sort as SortPayload;
     const from = (page - 1) * perPage;
     const query = {
-      from: from,
+      from,
       limit: perPage,
-      user_id: user_id,
-      search_term: search_term,
-      name: name,
-      destination: destination,
-      guests: guests,
-      deactivated: deactivated,
-      locked: locked,
-      valid: valid,
+      user_id,
+      search_term,
+      name,
+      destination,
+      guests,
+      deactivated,
+      locked,
+      valid,
       order_by: field,
       dir: getSearchOrder(order),
     };
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
 
-    const res = resourceMap[resource];
+    const config = getCollectionResource(resource);
+    const { json } = await fetchJsonFromAbsoluteUrl(buildCollectionUrl(resource, query));
 
-    const endpoint_url = homeserver + res.path;
-    const url = `${endpoint_url}?${stringify(query)}`;
-
-    const { json } = await jsonClient(url);
     return {
-      data: json[res.data].map(res.map),
-      total: res.total(json, from, perPage),
+      data: mapResourceData(config, json),
+      total: getResourceTotal(config, json, from, perPage),
     };
   },
 
-  getOne: async (resource, params) => {
-    console.log("getOne " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
-
-    const res = resourceMap[resource];
-
-    const endpoint_url = homeserver + res.path;
-    const { json } = await jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`);
-    return { data: res.map(json) };
-  },
+  getOne: async (resource, params) => ({
+    data: await fetchResourceRecord(resource, params.id),
+  }),
 
   getMany: async (resource, params) => {
-    console.log("getMany " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homerserver not set");
+    const responses = await Promise.all(params.ids.map(id => fetchResourceRecord(resource, id)));
 
-    const res = resourceMap[resource];
-
-    const endpoint_url = homeserver + res.path;
-    const responses = await Promise.all(params.ids.map(id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`)));
     return {
-      data: responses.map(({ json }) => res.map(json)),
+      data: responses,
       total: responses.length,
     };
   },
 
   getManyReference: async (resource, params) => {
-    console.log("getManyReference " + resource);
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const from = (page - 1) * perPage;
     const query = {
-      from: from,
+      from,
       limit: perPage,
       order_by: field,
       dir: getSearchOrder(order),
     };
 
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
+    const config = getReferenceResource(resource);
+    const { json } = await fetchJsonFromAbsoluteUrl(buildReferenceUrl(resource, params.id, query));
 
-    const res = resourceMap[resource];
-
-    const ref = res.reference(params.id);
-    const endpoint_url = `${homeserver}${ref.endpoint}?${stringify(query)}`;
-
-    const { json } = await jsonClient(endpoint_url);
     return {
-      data: json[res.data].map(res.map),
-      total: res.total(json, from, perPage),
+      data: mapResourceData(config, json),
+      total: getResourceTotal(config, json, from, perPage),
     };
   },
 
   update: async (resource, params) => {
-    console.log("update " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
+    const config = getCollectionResource(resource);
+    const { json } = await fetchJsonFromAbsoluteUrl(
+      buildUrl(requireStoredBaseUrl(), `${config.path}/${encodeURIComponent(params.id)}`),
+      {
+        method: "PUT",
+        body: JSON.stringify(params.data, filterNullValues),
+      }
+    );
 
-    const res = resourceMap[resource];
-
-    const endpoint_url = homeserver + res.path;
-    const { json } = await jsonClient(`${endpoint_url}/${encodeURIComponent(params.id)}`, {
-      method: "PUT",
-      body: JSON.stringify(params.data, filterNullValues),
-    });
-    return { data: res.map(json) };
+    return { data: config.map(json) };
   },
 
   updateMany: async (resource, params) => {
-    console.log("updateMany " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
-
-    const res = resourceMap[resource];
-
-    const endpoint_url = homeserver + res.path;
+    const config = getCollectionResource(resource);
     const responses = await Promise.all(
-      params.ids.map(id => jsonClient(`${endpoint_url}/${encodeURIComponent(id)}`), {
-        method: "PUT",
-        body: JSON.stringify(params.data, filterNullValues),
-      })
+      params.ids.map(id =>
+        fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), `${config.path}/${encodeURIComponent(id)}`), {
+          method: "PUT",
+          body: JSON.stringify(params.data, filterNullValues),
+        })
+      )
     );
+
     return { data: responses.map(({ json }) => json) };
   },
 
-  create: async (resource, params) => {
-    console.log("create " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
+  create: async (resource, params) => createResource(resource, params.data),
 
-    const res = resourceMap[resource];
-    if (!("create" in res)) return Promise.reject();
+  createMany: async (resource: string, params: { data: RaRecord; ids: Identifier[] }) => {
+    const config = getResourceConfig(resource);
 
-    const create = res.create(params.data);
-    const endpoint_url = homeserver + create.endpoint;
-    const { json } = await jsonClient(endpoint_url, {
-      method: create.method,
-      body: JSON.stringify(create.body, filterNullValues),
-    });
-    return { data: res.map(json) };
-  },
-
-  createMany: async (resource: string, params: { ids: Identifier[]; data: RaRecord }) => {
-    console.log("createMany " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
-
-    const res = resourceMap[resource];
-    if (!("create" in res)) throw Error(`Create ${resource} is not allowed`);
+    if (!supportsCreate(config)) {
+      throw new Error(`Create ${resource} is not allowed`);
+    }
 
     const responses = await Promise.all(
       params.ids.map(id => {
-        params.data.id = id;
-        const cre = res.create(params.data);
-        const endpoint_url = homeserver + cre.endpoint;
-        return jsonClient(endpoint_url, {
-          method: cre.method,
-          body: JSON.stringify(cre.body, filterNullValues),
+        const request = config.create({ ...params.data, id });
+        return fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), request.endpoint), {
+          method: request.method,
+          body: JSON.stringify(request.body, filterNullValues),
         });
       })
     );
+
     return { data: responses.map(({ json }) => json) };
   },
 
-  delete: async (resource, params) => {
-    console.log("delete " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
-
-    const res = resourceMap[resource];
-
-    if ("delete" in res) {
-      const del = res.delete(params);
-      const endpoint_url = homeserver + del.endpoint;
-      const { json } = await jsonClient(endpoint_url, {
-        method: "method" in del ? del.method : "DELETE",
-        body: "body" in del ? JSON.stringify(del.body) : null,
-      });
-      return { data: json };
-    } else {
-      const endpoint_url = homeserver + res.path;
-      const { json } = await jsonClient(`${endpoint_url}/${params.id}`, {
-        method: "DELETE",
-        body: JSON.stringify(params.previousData, filterNullValues),
-      });
-      return { data: json };
-    }
-  },
+  delete: async (resource, params) => deleteResource(resource, params),
 
   deleteMany: async (resource, params) => {
-    console.log("deleteMany " + resource);
-    const homeserver = storage.getItem("base_url");
-    if (!homeserver || !(resource in resourceMap)) throw Error("Homeserver not set");
+    const config = getResourceConfig(resource);
 
-    const res = resourceMap[resource];
-
-    if ("delete" in res) {
+    if (supportsDelete(config)) {
       const responses = await Promise.all(
         params.ids.map(id => {
-          const del = res.delete({ ...params, id: id });
-          const endpoint_url = homeserver + del.endpoint;
-          return jsonClient(endpoint_url, {
-            method: "method" in del ? del.method : "DELETE",
-            body: "body" in del ? JSON.stringify(del.body) : null,
+          const request = config.delete({ ...params, id });
+          return fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), request.endpoint), {
+            method: request.method ?? "DELETE",
+            body: request.body ? JSON.stringify(request.body) : null,
           });
         })
       );
+
       return {
         data: responses.map(({ json }) => json),
       };
-    } else {
-      const endpoint_url = homeserver + res.path;
-      const responses = await Promise.all(
-        params.ids.map(id =>
-          jsonClient(`${endpoint_url}/${id}`, {
-            method: "DELETE",
-            // body: JSON.stringify(params.data, filterNullValues),  @FIXME
-          })
-        )
-      );
-      return { data: responses.map(({ json }) => json) };
     }
+
+    const collectionConfig = getCollectionResource(resource);
+    const responses = await Promise.all(
+      params.ids.map(id =>
+        fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), `${collectionConfig.path}/${id}`), {
+          method: "DELETE",
+        })
+      )
+    );
+
+    return { data: responses.map(({ json }) => json) };
   },
 
-  // Custom methods (https://marmelab.com/react-admin/DataProviders.html#adding-custom-methods)
-
-  /**
-   * Delete media by date or size
-   *
-   * @link https://matrix-org.github.io/synapse/latest/admin_api/media_admin_api.html#delete-local-media-by-date-or-size
-   *
-   * @param before_ts Unix timestamp in milliseconds. Files that were last used before this timestamp will be deleted. It is the timestamp of last access, not the timestamp when the file was created.
-   * @param size_gt   Size of the media in bytes. Files that are larger will be deleted.
-   * @param keep_profiles Switch to also delete files that are still used in image data (e.g user profile, room avatar). If false these files will be deleted.
-   * @returns
-   */
-  deleteMedia: async ({ before_ts, size_gt = 0, keep_profiles = true }) => {
-    const homeserver = storage.getItem("home_server"); // TODO only required for synapse < 1.78.0
-    const endpoint = `/_synapse/admin/v1/media/${homeserver}/delete?before_ts=${before_ts}&size_gt=${size_gt}&keep_profiles=${keep_profiles}`;
-
-    const base_url = storage.getItem("base_url");
-    const endpoint_url = base_url + endpoint;
-    const { json } = await jsonClient(endpoint_url, { method: "POST" });
-    return json as DeleteMediaResult;
-  },
-};
+  deleteMedia,
+} as SynapseDataProvider;
 
 export default dataProvider;
