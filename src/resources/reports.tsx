@@ -88,11 +88,13 @@ const ReportShowActions = () => {
   );
 };
 
+const ReceivedTsField = (props: any) => <DateField {...props} showTime options={DATE_FORMAT} />;
+
 export const ReportList = (props: ListProps) => (
   <List {...props} pagination={<ReportPagination />} sort={{ field: "received_ts", order: "DESC" }}>
     <DataTable rowClick="show" bulkActionButtons={false}>
       <DataTable.Col source="id" />
-      <DataTable.Col source="received_ts" field={DateField} fieldProps={{ showTime: true, options: DATE_FORMAT }} />
+      <DataTable.Col source="received_ts" field={ReceivedTsField} />
       <DataTable.Col source="user_id" />
       <DataTable.NumberCol source="score" />
       <DataTable.Col source="name" />

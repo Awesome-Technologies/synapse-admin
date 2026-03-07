@@ -91,6 +91,7 @@
     "coverage:badge": "node ./scripts/generate-coverage-badge.mjs",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx,.yml,.yaml .",
     "fix": "yarn lint --fix",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",

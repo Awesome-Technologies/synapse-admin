@@ -20,7 +20,9 @@ jobs:
           node-version: 24
       - name: Install dependencies
         run: yarn --immutable
-      - name: Run checks
+      - name: Run lint
         run: yarn lint
+      - name: Run typecheck
+        run: yarn typecheck
       - name: Run tests
         run: yarn test
