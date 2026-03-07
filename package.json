@@ -71,6 +71,10 @@
     "react-router": "^7.13.1",
     "react-router-dom": "^7.13.1"
   },
+  "resolutions": {
+    "react-router": "7.13.1",
+    "react-router-dom": "7.13.1"
+  },
   "scripts": {
     "start": "vite serve",
     "build": "vite build",
