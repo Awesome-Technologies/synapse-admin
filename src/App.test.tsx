@@ -61,6 +61,7 @@ vi.mock("./synapse/dataProvider", () => ({
 describe("App", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    window.location.hash = "";
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
@@ -128,5 +129,23 @@ describe("App", () => {
     screen.getByRole("button", { name: englishMessages.ra.auth.sign_in });
 
     await waitFor(() => expect(mockedAuthProvider.checkAuth).toHaveBeenCalled());
+  });
+
+  it("renders the import route for authenticated users", async () => {
+    window.location.hash = "#/import_users";
+    mockedAuthProvider.checkAuth.mockResolvedValue(undefined);
+
+    render(<App />);
+
+    await screen.findByText("import_users.title");
+  });
+
+  it("keeps the import route behind authentication", async () => {
+    window.location.hash = "#/import_users";
+
+    render(<App />);
+
+    await screen.findByText(englishMessages.synapseadmin.auth.welcome);
+    expect(screen.queryByText(englishMessages.import_users.title)).toBeNull();
   });
 });
