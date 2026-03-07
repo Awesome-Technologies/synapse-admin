@@ -1,6 +1,6 @@
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import {
-  Datagrid,
+  DataTable,
   ExportButton,
   List,
   ListProps,
@@ -10,6 +10,7 @@ import {
   SearchInput,
   TextField,
   TopToolbar,
+  useCreatePath,
   useListContext,
 } from "react-admin";
 
@@ -29,27 +30,35 @@ const UserMediaStatsPagination = () => <Pagination rowsPerPageOptions={[10, 25, 
 
 const userMediaStatsFilters = [<SearchInput source="search_term" alwaysOn />];
 
-export const UserMediaStatsList = (props: ListProps) => (
-  <List
-    {...props}
-    actions={<ListActions />}
-    filters={userMediaStatsFilters}
-    pagination={<UserMediaStatsPagination />}
-    sort={{ field: "media_length", order: "DESC" }}
-  >
-    <Datagrid rowClick={id => "/users/" + id + "/media"} bulkActionButtons={false}>
-      <TextField source="user_id" label="resources.users.fields.id" />
-      <TextField source="displayname" label="resources.users.fields.displayname" />
-      <NumberField source="media_count" />
-      <NumberField source="media_length" />
-    </Datagrid>
-  </List>
-);
+export const UserMediaStatsList = (props: ListProps) => {
+  const createPath = useCreatePath();
 
-const resource: ResourceProps = {
+  return (
+    <List
+      {...props}
+      actions={<ListActions />}
+      filters={userMediaStatsFilters}
+      pagination={<UserMediaStatsPagination />}
+      sort={{ field: "media_length", order: "DESC" }}
+    >
+      <DataTable
+        rowClick={id => `${createPath({ resource: "users", id, type: "edit" })}/media`}
+        bulkActionButtons={false}
+      >
+        <DataTable.Col source="user_id" label="resources.users.fields.id" />
+        <DataTable.Col source="displayname" label="resources.users.fields.displayname" />
+        <DataTable.Col source="media_count" field={NumberField} />
+        <DataTable.Col source="media_length" field={NumberField} />
+      </DataTable>
+    </List>
+  );
+};
+
+const resource = {
   name: "user_media_statistics",
   icon: EqualizerIcon,
   list: UserMediaStatsList,
-};
+  recordRepresentation: (record: { displayname?: string; user_id: string }) => record.displayname || record.user_id,
+} satisfies ResourceProps;
 
 export default resource;
