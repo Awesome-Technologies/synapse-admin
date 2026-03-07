@@ -9,49 +9,49 @@ import PersonPinIcon from "@mui/icons-material/PersonPin";
 import SettingsInputComponentIcon from "@mui/icons-material/SettingsInputComponent";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import {
-  ArrayInput,
   ArrayField,
-  Button,
-  Datagrid,
-  DateField,
-  Create,
-  CreateProps,
-  Edit,
-  EditProps,
-  List,
-  ListProps,
-  SimpleForm,
-  SimpleFormIterator,
-  TabbedForm,
-  FormTab,
+  ArrayInput,
   BooleanField,
   BooleanInput,
+  BulkDeleteButton,
+  Button,
+  Create,
+  CreateButton,
+  CreateProps,
+  DataTable,
+  DateField,
+  DeleteButton,
+  Edit,
+  EditProps,
+  ExportButton,
+  FormTab,
+  List,
+  ListProps,
+  NumberField,
+  Pagination,
   PasswordInput,
-  TextField,
-  TextInput,
   ReferenceField,
   ReferenceManyField,
   ResourceProps,
   SearchInput,
   SelectInput,
-  BulkDeleteButton,
-  DeleteButton,
+  SimpleForm,
+  SimpleFormIterator,
+  TabbedForm,
+  TextField,
+  TextInput,
+  TopToolbar,
   maxLength,
   regex,
   required,
+  useCreatePath,
+  useListContext,
   useRecordContext,
   useTranslate,
-  Pagination,
-  CreateButton,
-  ExportButton,
-  TopToolbar,
-  NumberField,
-  useListContext,
-  Identifier,
 } from "react-admin";
 
 import AvatarField from "../components/AvatarField";
-import { ServerNoticeButton, ServerNoticeBulkButton } from "../components/ServerNotices";
+import { ServerNoticeBulkButton, ServerNoticeButton } from "../components/ServerNotices";
 import { DATE_FORMAT } from "../components/date";
 import { DeviceRemoveButton } from "../components/devices";
 import { MediaIDField, ProtectMediaButton, QuarantineMediaButton } from "../components/media";
@@ -67,11 +67,12 @@ const choices_type = [
 ];
 
 const UserListActions = () => {
-  const { isLoading, total } = useListContext();
+  const { isPending, total } = useListContext();
+
   return (
     <TopToolbar>
       <CreateButton />
-      <ExportButton disabled={isLoading || total === 0} maxResults={10000} />
+      <ExportButton disabled={isPending || total === 0} maxResults={10000} />
       <Button to="/import_users" label="CSV Import">
         <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
       </Button>
@@ -108,29 +109,25 @@ export const UserList = (props: ListProps) => (
     actions={<UserListActions />}
     pagination={<UserPagination />}
   >
-    <Datagrid
-      rowClick={(id: Identifier, resource: string) => `/${resource}/${id}`}
-      bulkActionButtons={<UserBulkActionButtons />}
-    >
-      <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} sortBy="avatar_url" />
-      <TextField source="id" sortBy="name" />
-      <TextField source="displayname" />
-      <BooleanField source="is_guest" />
-      <BooleanField source="admin" />
-      <BooleanField source="deactivated" />
-      <BooleanField source="locked" />
-      <BooleanField source="erased" sortable={false} />
-      <DateField source="creation_ts" label="resources.users.fields.creation_ts_ms" showTime options={DATE_FORMAT} />
-    </Datagrid>
+    <DataTable bulkActionButtons={<UserBulkActionButtons />} rowClick="edit">
+      <DataTable.Col source="avatar_src" label="resources.users.fields.avatar">
+        <AvatarField source="avatar_src" sx={{ height: "40px", width: "40px" }} />
+      </DataTable.Col>
+      <DataTable.Col source="id" />
+      <DataTable.Col source="displayname" />
+      <DataTable.Col source="is_guest" field={BooleanField} />
+      <DataTable.Col source="admin" field={BooleanField} />
+      <DataTable.Col source="deactivated" field={BooleanField} />
+      <DataTable.Col source="locked" field={BooleanField} />
+      <DataTable.Col source="erased" field={BooleanField} />
+      <DataTable.Col source="creation_ts" label="resources.users.fields.creation_ts_ms">
+        <DateField source="creation_ts" showTime options={DATE_FORMAT} />
+      </DataTable.Col>
+    </DataTable>
   </List>
 );
 
-// https://matrix.org/docs/spec/appendices#user-identifiers
-// here only local part of user_id
-// maxLength = 255 - "@" - ":" - storage.getItem("home_server").length
-// storage.getItem("home_server").length is not valid here
 const validateUser = [required(), maxLength(253), regex(/^[a-z0-9._=\-/]+$/, "synapseadmin.users.invalid_user_id")];
-
 const validateAddress = [required(), maxLength(255)];
 
 const UserEditActions = () => {
@@ -152,12 +149,7 @@ const UserEditActions = () => {
 };
 
 export const UserCreate = (props: CreateProps) => (
-  <Create
-    {...props}
-    redirect={(resource: string | undefined, id: Identifier | undefined) => {
-      return `${resource}/${id}`;
-    }}
-  >
+  <Create {...props} redirect="edit">
     <SimpleForm>
       <TextInput source="id" autoComplete="off" validate={validateUser} />
       <TextInput source="displayname" validate={maxLength(256)} />
@@ -183,6 +175,7 @@ export const UserCreate = (props: CreateProps) => (
 const UserTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
+
   return (
     <span>
       {translate("resources.users.name", {
@@ -195,6 +188,8 @@ const UserTitle = () => {
 
 export const UserEdit = (props: EditProps) => {
   const translate = useTranslate();
+  const createPath = useCreatePath();
+
   return (
     <Edit {...props} title={<UserTitle />} actions={<UserEditActions />}>
       <TabbedForm>
@@ -232,24 +227,30 @@ export const UserEdit = (props: EditProps) => {
 
         <FormTab label={translate("resources.devices.name", { smart_count: 2 })} icon={<DevicesIcon />} path="devices">
           <ReferenceManyField reference="devices" target="user_id" label={false}>
-            <Datagrid style={{ width: "100%" }}>
-              <TextField source="device_id" sortable={false} />
-              <TextField source="display_name" sortable={false} />
-              <TextField source="last_seen_ip" sortable={false} />
-              <DateField source="last_seen_ts" showTime options={DATE_FORMAT} sortable={false} />
-              <DeviceRemoveButton />
-            </Datagrid>
+            <DataTable>
+              <DataTable.Col source="device_id" />
+              <DataTable.Col source="display_name" />
+              <DataTable.Col source="last_seen_ip" />
+              <DataTable.Col source="last_seen_ts">
+                <DateField source="last_seen_ts" showTime options={DATE_FORMAT} />
+              </DataTable.Col>
+              <DataTable.Col>
+                <DeviceRemoveButton />
+              </DataTable.Col>
+            </DataTable>
           </ReferenceManyField>
         </FormTab>
 
         <FormTab label="resources.connections.name" icon={<SettingsInputComponentIcon />} path="connections">
           <ReferenceField reference="connections" source="id" label={false} link={false}>
             <ArrayField source="devices[].sessions[0].connections" label="resources.connections.name">
-              <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
-                <TextField source="ip" sortable={false} />
-                <DateField source="last_seen" showTime options={DATE_FORMAT} sortable={false} />
-                <TextField source="user_agent" sortable={false} style={{ width: "100%" }} />
-              </Datagrid>
+              <DataTable bulkActionButtons={false}>
+                <DataTable.Col source="ip" />
+                <DataTable.Col source="last_seen">
+                  <DateField source="last_seen" showTime options={DATE_FORMAT} />
+                </DataTable.Col>
+                <DataTable.Col source="user_agent" />
+              </DataTable>
             </ArrayField>
           </ReferenceField>
         </FormTab>
@@ -267,35 +268,44 @@ export const UserEdit = (props: EditProps) => {
             perPage={50}
             sort={{ field: "created_ts", order: "DESC" }}
           >
-            <Datagrid style={{ width: "100%" }}>
-              <MediaIDField source="media_id" />
-              <DateField source="created_ts" showTime options={DATE_FORMAT} />
-              <DateField source="last_access_ts" showTime options={DATE_FORMAT} />
-              <NumberField source="media_length" />
-              <TextField source="media_type" />
-              <TextField source="upload_name" />
-              <TextField source="quarantined_by" />
-              <QuarantineMediaButton label="resources.quarantine_media.action.name" />
-              <ProtectMediaButton label="resources.users_media.fields.safe_from_quarantine" />
-              <DeleteButton mutationMode="pessimistic" redirect={false} />
-            </Datagrid>
+            <DataTable>
+              <DataTable.Col source="media_id" field={MediaIDField} />
+              <DataTable.Col source="created_ts">
+                <DateField source="created_ts" showTime options={DATE_FORMAT} />
+              </DataTable.Col>
+              <DataTable.Col source="last_access_ts">
+                <DateField source="last_access_ts" showTime options={DATE_FORMAT} />
+              </DataTable.Col>
+              <DataTable.Col source="media_length" field={NumberField} />
+              <DataTable.Col source="media_type" />
+              <DataTable.Col source="upload_name" />
+              <DataTable.Col source="quarantined_by" />
+              <DataTable.Col label="resources.quarantine_media.action.name">
+                <QuarantineMediaButton label="resources.quarantine_media.action.name" />
+              </DataTable.Col>
+              <DataTable.Col label="resources.users_media.fields.safe_from_quarantine">
+                <ProtectMediaButton label="resources.users_media.fields.safe_from_quarantine" />
+              </DataTable.Col>
+              <DataTable.Col>
+                <DeleteButton mutationMode="pessimistic" redirect={false} />
+              </DataTable.Col>
+            </DataTable>
           </ReferenceManyField>
         </FormTab>
 
         <FormTab label={translate("resources.rooms.name", { smart_count: 2 })} icon={<ViewListIcon />} path="rooms">
           <ReferenceManyField reference="joined_rooms" target="user_id" label={false}>
-            <Datagrid style={{ width: "100%" }} rowClick={id => "/rooms/" + id + "/show"} bulkActionButtons={false}>
-              <TextField source="id" sortable={false} label="resources.rooms.fields.room_id" />
-              <ReferenceField
-                label="resources.rooms.fields.name"
-                source="id"
-                reference="rooms"
-                sortable={false}
-                link=""
-              >
-                <TextField source="name" sortable={false} />
-              </ReferenceField>
-            </Datagrid>
+            <DataTable
+              rowClick={id => createPath({ resource: "rooms", id, type: "show" })}
+              bulkActionButtons={false}
+            >
+              <DataTable.Col source="id" label="resources.rooms.fields.room_id" />
+              <DataTable.Col label="resources.rooms.fields.name">
+                <ReferenceField source="id" reference="rooms" link={false}>
+                  <TextField source="name" />
+                </ReferenceField>
+              </DataTable.Col>
+            </DataTable>
           </ReferenceManyField>
         </FormTab>
 
@@ -305,16 +315,16 @@ export const UserEdit = (props: EditProps) => {
           path="pushers"
         >
           <ReferenceManyField reference="pushers" target="user_id" label={false}>
-            <Datagrid style={{ width: "100%" }} bulkActionButtons={false}>
-              <TextField source="kind" sortable={false} />
-              <TextField source="app_display_name" sortable={false} />
-              <TextField source="app_id" sortable={false} />
-              <TextField source="data.url" sortable={false} />
-              <TextField source="device_display_name" sortable={false} />
-              <TextField source="lang" sortable={false} />
-              <TextField source="profile_tag" sortable={false} />
-              <TextField source="pushkey" sortable={false} />
-            </Datagrid>
+            <DataTable bulkActionButtons={false}>
+              <DataTable.Col source="kind" />
+              <DataTable.Col source="app_display_name" />
+              <DataTable.Col source="app_id" />
+              <DataTable.Col source="data.url" />
+              <DataTable.Col source="device_display_name" />
+              <DataTable.Col source="lang" />
+              <DataTable.Col source="profile_tag" />
+              <DataTable.Col source="pushkey" />
+            </DataTable>
           </ReferenceManyField>
         </FormTab>
       </TabbedForm>
@@ -322,12 +332,13 @@ export const UserEdit = (props: EditProps) => {
   );
 };
 
-const resource: ResourceProps = {
+const resource = {
   name: "users",
   icon: UserIcon,
   list: UserList,
   edit: UserEdit,
   create: UserCreate,
-};
+  recordRepresentation: (record: { displayname?: string; id: string }) => record.displayname || record.id,
+} satisfies ResourceProps;
 
 export default resource;
