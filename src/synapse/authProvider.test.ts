@@ -128,7 +128,39 @@ describe("authProvider", () => {
 
   describe("getPermissions", () => {
     it("should do nothing", async () => {
+      if (!authProvider.getPermissions) {
+        throw new Error("getPermissions must be defined");
+      }
+
       await expect(authProvider.getPermissions(null)).resolves.toBeUndefined();
+    });
+  });
+
+  describe("getIdentity", () => {
+    it("should reject when not logged in", async () => {
+      await expect(authProvider.getIdentity!()).rejects.toBeUndefined();
+    });
+
+    it("should return the stored identity for logged-in users", async () => {
+      storage.setItem("access_token", "foobar");
+      storage.setItem("user_id", "@user:example.com");
+
+      await expect(authProvider.getIdentity!()).resolves.toEqual({
+        id: "@user:example.com",
+        fullName: "user",
+      });
+    });
+  });
+
+  describe("canAccess", () => {
+    it("should deny access when logged out", async () => {
+      await expect(authProvider.canAccess!({ action: "list", resource: "users" })).resolves.toBe(false);
+    });
+
+    it("should allow access when logged in", async () => {
+      storage.setItem("access_token", "foobar");
+
+      await expect(authProvider.canAccess!({ action: "list", resource: "users" })).resolves.toBe(true);
     });
   });
 });

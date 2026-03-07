@@ -97,37 +97,39 @@ const LoginPage = () => {
   const translate = useTranslate();
   const base_url = allowSingleBaseUrl ? restrictBaseUrl : storage.getItem("base_url");
   const [ssoBaseUrl, setSSOBaseUrl] = useState("");
-  const loginToken = /\?loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
 
-  if (loginToken) {
+  useEffect(() => {
+    const loginToken = /[?&]loginToken=([a-zA-Z0-9_-]+)/.exec(window.location.href);
+
+    if (!loginToken) {
+      return;
+    }
+
     const ssoToken = loginToken[1];
-    console.log("SSO token is", ssoToken);
-    // Prevent further requests
     window.history.replaceState({}, "", window.location.href.replace(loginToken[0], "#").split("#")[0]);
+
     const baseUrl = storage.getItem("sso_base_url");
     storage.removeItem("sso_base_url");
-    if (baseUrl) {
-      const auth = {
-        base_url: baseUrl,
-        username: null,
-        password: null,
-        loginToken: ssoToken,
-      };
-      console.log("Base URL is:", baseUrl);
-      console.log("SSO Token is:", ssoToken);
-      console.log("Let's try token login...");
-      login(auth).catch(error => {
-        alert(
-          typeof error === "string"
-            ? error
-            : typeof error === "undefined" || !error.message
-              ? "ra.auth.sign_in_error"
-              : error.message
-        );
-        console.error(error);
-      });
+
+    if (!baseUrl) {
+      return;
     }
-  }
+
+    login({
+      base_url: baseUrl,
+      username: null,
+      password: null,
+      loginToken: ssoToken,
+    }).catch(error => {
+      alert(
+        typeof error === "string"
+          ? error
+          : typeof error === "undefined" || !error.message
+            ? "ra.auth.sign_in_error"
+            : error.message
+      );
+    });
+  }, [login]);
 
   const validateBaseUrl = value => {
     if (!value.match(/^(http|https):\/\//)) {

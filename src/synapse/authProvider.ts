@@ -1,21 +1,41 @@
-import { AuthProvider, Options, fetchUtils } from "react-admin";
+import { AuthProvider, Options } from "react-admin";
 
 import storage from "../storage";
+import { buildUrl, clearStoredAuth, fetchJson, fetchJsonWithAuth, normalizeBaseUrl, splitMxid } from "./synapse";
 
+/** Credentials accepted by the react-admin login form and SSO callback flow. */
+interface LoginParams {
+  base_url: string;
+  loginToken?: string | null;
+  password?: string | null;
+  username?: string | null;
+}
+
+/** Use token presence as the single source of truth for auth state inside the admin shell. */
+const hasAccessToken = (): boolean => typeof storage.getItem("access_token") === "string";
+
+/** Build the lightweight identity object react-admin expects from locally cached login data. */
+const getStoredIdentity = () => {
+  if (!hasAccessToken()) return null;
+
+  const userId = storage.getItem("user_id");
+  if (!userId) return null;
+
+  return {
+    id: userId,
+    fullName: splitMxid(userId)?.name ?? userId,
+  };
+};
+
+/** React-admin auth provider backed by Synapse password login and token-based SSO callbacks. */
 const authProvider: AuthProvider = {
-  // called when the user attempts to log in
+  /** Exchange credentials for an access token and persist the resulting session locally. */
   login: async ({
     base_url,
     username,
     password,
     loginToken,
-  }: {
-    base_url: string;
-    username: string;
-    password: string;
-    loginToken: string;
-  }) => {
-    console.log("login ");
+  }: LoginParams) => {
     const options: Options = {
       method: "POST",
       body: JSON.stringify(
@@ -45,54 +65,44 @@ const authProvider: AuthProvider = {
     // use the base_url from login instead of the well_known entry from the
     // server, since the admin might want to access the admin API via some
     // private address
-    base_url = base_url.replace(/\/+$/g, "");
-    storage.setItem("base_url", base_url);
+    const normalizedBaseUrl = normalizeBaseUrl(base_url);
+    storage.setItem("base_url", normalizedBaseUrl);
 
-    const decoded_base_url = window.decodeURIComponent(base_url);
-    const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
-
-    const { json } = await fetchUtils.fetchJson(login_api_url, options);
+    const { json } = await fetchJson(buildUrl(normalizedBaseUrl, "/_matrix/client/r0/login"), options);
     storage.setItem("home_server", json.home_server);
     storage.setItem("user_id", json.user_id);
     storage.setItem("access_token", json.access_token);
     storage.setItem("device_id", json.device_id);
   },
-  // called when the user clicks on the logout button
+  /** Revoke the server session when possible and always clear local auth state afterwards. */
   logout: async () => {
-    console.log("logout");
-
-    const logout_api_url = storage.getItem("base_url") + "/_matrix/client/r0/logout";
     const access_token = storage.getItem("access_token");
+    const baseUrl = storage.getItem("base_url");
 
-    const options: Options = {
-      method: "POST",
-      user: {
-        authenticated: true,
-        token: `Bearer ${access_token}`,
-      },
-    };
+    if (typeof access_token === "string" && baseUrl) {
+      try {
+        await fetchJsonWithAuth(buildUrl(baseUrl, "/_matrix/client/r0/logout"), { method: "POST" });
+      } finally {
+        clearStoredAuth();
+      }
+      return;
+    }
 
-    if (typeof access_token === "string") {
-      await fetchUtils.fetchJson(logout_api_url, options);
-      storage.removeItem("access_token");
-    }
+    clearStoredAuth();
   },
-  // called when the API returns an error
-  checkError: ({ status }: { status: number }) => {
-    console.log("checkError " + status);
-    if (status === 401 || status === 403) {
-      return Promise.reject();
-    }
-    return Promise.resolve();
-  },
-  // called when the user navigates to a new location, to check for authentication
-  checkAuth: () => {
-    const access_token = storage.getItem("access_token");
-    console.log("checkAuth " + access_token);
-    return typeof access_token === "string" ? Promise.resolve() : Promise.reject();
-  },
-  // called when the user navigates to a new location, to check for permissions / roles
+  /** Treat 401/403 responses as an expired or invalid session. */
+  checkError: ({ status }: { status: number }) => ((status === 401 || status === 403) ? Promise.reject() : Promise.resolve()),
+  /** Guard protected routes by checking whether a session token is cached locally. */
+  checkAuth: async () => (hasAccessToken() ? Promise.resolve() : Promise.reject()),
+  /** Synapse Admin currently does not model separate permission payloads. */
   getPermissions: () => Promise.resolve(),
+  /** Expose the cached user ID so react-admin can render identity-aware UI. */
+  getIdentity: () => {
+    const identity = getStoredIdentity();
+    return identity ? Promise.resolve(identity) : Promise.reject();
+  },
+  /** Keep access checks aligned with the current all-or-nothing authenticated admin model. */
+  canAccess: async () => hasAccessToken(),
 };
 
 export default authProvider;
