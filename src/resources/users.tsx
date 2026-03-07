@@ -49,7 +49,6 @@ import {
   useListContext,
   Identifier,
 } from "react-admin";
-import { Link } from "react-router-dom";
 
 import AvatarField from "../components/AvatarField";
 import { ServerNoticeButton, ServerNoticeBulkButton } from "../components/ServerNotices";
@@ -73,7 +72,7 @@ const UserListActions = () => {
     <TopToolbar>
       <CreateButton />
       <ExportButton disabled={isLoading || total === 0} maxResults={10000} />
-      <Button component={Link} to="/import_users" label="CSV Import">
+      <Button to="/import_users" label="CSV Import">
         <GetAppIcon sx={{ transform: "rotate(180deg)", fontSize: "20px" }} />
       </Button>
     </TopToolbar>
