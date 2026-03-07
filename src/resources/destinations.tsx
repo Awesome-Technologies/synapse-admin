@@ -1,15 +1,16 @@
-import { get } from "lodash";
-import { MouseEvent } from "react";
-
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DestinationsIcon from "@mui/icons-material/CloudQueue";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import { lighten, useTheme } from "@mui/material";
 import { blue } from "@mui/material/colors";
+import { get } from "lodash";
+import { MouseEvent } from "react";
 import {
   Button,
-  Datagrid,
+  DataTable,
   DateField,
+  DateFieldProps,
   List,
   ListProps,
   Pagination,
@@ -24,32 +25,28 @@ import {
   TabbedShowLayout,
   TextField,
   TopToolbar,
-  useRecordContext,
+  useCreatePath,
   useDelete,
   useNotify,
+  useRecordContext,
   useRefresh,
   useTranslate,
-  DateFieldProps,
 } from "react-admin";
 
 import { DATE_FORMAT } from "../components/date";
-import { lighten, useTheme } from '@mui/material';
 
 const DestinationPagination = () => <Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} />;
-
 const destinationFilters = [<SearchInput source="destination" alwaysOn />];
 
 export const DestinationReconnectButton = () => {
   const record = useRecordContext();
   const refresh = useRefresh();
   const notify = useNotify();
-  const [handleReconnect, { isLoading }] = useDelete();
+  const [handleReconnect, { isPending }] = useDelete();
 
-  // Reconnect is not required if no error has occurred. (`failure_ts`)
   if (!record || !record.failure_ts) return null;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    // Prevents redirection to the detail page when clicking in the list
     e.stopPropagation();
 
     handleReconnect(
@@ -57,9 +54,7 @@ export const DestinationReconnectButton = () => {
       { id: record.id },
       {
         onSuccess: () => {
-          notify("ra.notification.updated", {
-            messageArgs: { smart_count: 1 },
-          });
+          notify("ra.notification.updated", { messageArgs: { smart_count: 1 } });
           refresh();
         },
         onError: () => {
@@ -70,7 +65,7 @@ export const DestinationReconnectButton = () => {
   };
 
   return (
-    <Button label="resources.destinations.action.reconnect" onClick={handleClick} disabled={isLoading}>
+    <Button label="resources.destinations.action.reconnect" onClick={handleClick} disabled={isPending}>
       <AutorenewIcon />
     </Button>
   );
@@ -85,32 +80,41 @@ const DestinationShowActions = () => (
 const DestinationTitle = () => {
   const record = useRecordContext();
   const translate = useTranslate();
+
   return (
     <span>
-      {translate("resources.destinations.name", 1)} {record?.destination}
+      {translate("resources.destinations.name", { smart_count: 1 })} {record?.destination}
     </span>
   );
 };
 
 const RetryDateField = (props: DateFieldProps) => {
   const record = useRecordContext(props);
+
   if (props.source && get(record, props.source) === 0) {
     return <DateField {...props} record={{ ...record, [props.source]: null }} />;
   }
+
   return <DateField {...props} />;
 };
 
 export const DestinationList = (props: ListProps) => {
-  const { palette: { error, mode }, } = useTheme();
+  const {
+    palette: { error, mode },
+  } = useTheme();
+
   const destinationRowSx = (record: RaRecord) => ({
     backgroundColor: record.retry_last_ts > 0 ? lighten(error[mode], 0.5) : undefined,
-    "& > td": mode === 'dark' ? {
-      color: record.retry_last_ts > 0 ? "black" : "white",
-      "& > button": {
-        color: blue[700],
-      },
-   } : undefined,
+    "& > td": mode === "dark"
+      ? {
+          color: record.retry_last_ts > 0 ? "black" : "white",
+          "& > button": {
+            color: blue[700],
+          },
+        }
+      : undefined,
   });
+
   return (
     <List
       {...props}
@@ -118,20 +122,28 @@ export const DestinationList = (props: ListProps) => {
       pagination={<DestinationPagination />}
       sort={{ field: "destination", order: "ASC" }}
     >
-      <Datagrid rowSx={destinationRowSx} rowClick={id => `${id}/show/rooms`} bulkActionButtons={false}>
-        <TextField source="destination" />
-        <DateField source="failure_ts" showTime options={DATE_FORMAT} />
-        <RetryDateField source="retry_last_ts" showTime options={DATE_FORMAT} />
-        <TextField source="retry_interval" />
-        <TextField source="last_successful_stream_ordering" />
-        <DestinationReconnectButton />
-      </Datagrid>
+      <DataTable rowSx={destinationRowSx} rowClick="show" bulkActionButtons={false}>
+        <DataTable.Col source="destination" />
+        <DataTable.Col source="failure_ts">
+          <DateField source="failure_ts" showTime options={DATE_FORMAT} />
+        </DataTable.Col>
+        <DataTable.Col source="retry_last_ts">
+          <RetryDateField source="retry_last_ts" showTime options={DATE_FORMAT} />
+        </DataTable.Col>
+        <DataTable.Col source="retry_interval" />
+        <DataTable.Col source="last_successful_stream_ordering" />
+        <DataTable.Col label="resources.destinations.action.reconnect">
+          <DestinationReconnectButton />
+        </DataTable.Col>
+      </DataTable>
     </List>
   );
 };
 
 export const DestinationShow = (props: ShowProps) => {
   const translate = useTranslate();
+  const createPath = useCreatePath();
+
   return (
     <Show actions={<DestinationShowActions />} title={<DestinationTitle />} {...props}>
       <TabbedShowLayout>
@@ -151,19 +163,15 @@ export const DestinationShow = (props: ShowProps) => {
             pagination={<DestinationPagination />}
             perPage={50}
           >
-            <Datagrid style={{ width: "100%" }} rowClick={id => `/rooms/${id}/show`}>
-              <TextField source="room_id" label="resources.rooms.fields.room_id" />
-              <TextField source="stream_ordering" sortable={false} />
-              <ReferenceField
-                label="resources.rooms.fields.name"
-                source="id"
-                reference="rooms"
-                sortable={false}
-                link=""
-              >
-                <TextField source="name" sortable={false} />
-              </ReferenceField>
-            </Datagrid>
+            <DataTable rowClick={id => createPath({ resource: "rooms", id, type: "show" })}>
+              <DataTable.Col source="room_id" label="resources.rooms.fields.room_id" />
+              <DataTable.Col source="stream_ordering" />
+              <DataTable.Col label="resources.rooms.fields.name">
+                <ReferenceField source="id" reference="rooms" link={false}>
+                  <TextField source="name" />
+                </ReferenceField>
+              </DataTable.Col>
+            </DataTable>
           </ReferenceManyField>
         </Tab>
       </TabbedShowLayout>
@@ -171,11 +179,12 @@ export const DestinationShow = (props: ShowProps) => {
   );
 };
 
-const resource: ResourceProps = {
+const resource = {
   name: "destinations",
   icon: DestinationsIcon,
   list: DestinationList,
   show: DestinationShow,
-};
+  recordRepresentation: (record: { destination: string }) => record.destination,
+} satisfies ResourceProps;
 
 export default resource;
