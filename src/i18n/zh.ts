@@ -1,13 +1,13 @@
-import chineseMessages from "@haxqer/ra-language-chinese";
+import baseChineseMessages from "./baseChineseMessages";
 
 import { SynapseTranslationMessages } from ".";
 
 const zh: SynapseTranslationMessages = {
-  ...chineseMessages,
+  ...baseChineseMessages,
   ra: {
-    ...chineseMessages.ra,
+    ...baseChineseMessages.ra,
     navigation: {
-      ...chineseMessages.ra.navigation,
+      ...baseChineseMessages.ra.navigation,
       no_filtered_results: "没有结果",
       clear_filters: "清除所有过滤器",
     },

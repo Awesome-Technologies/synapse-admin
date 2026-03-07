@@ -1,13 +1,13 @@
-import { formalGermanMessages } from "@haleos/ra-language-german";
+import baseGermanMessages from "./baseGermanMessages";
 
 import { SynapseTranslationMessages } from ".";
 
 const de: SynapseTranslationMessages = {
-  ...formalGermanMessages,
+  ...baseGermanMessages,
   ra: {
-    ...formalGermanMessages.ra,
+    ...baseGermanMessages.ra,
     navigation: {
-      ...formalGermanMessages.ra.navigation,
+      ...baseGermanMessages.ra.navigation,
       no_filtered_results: "Keine Ergebnisse",
       clear_filters: "Alle Filter entfernen",
     },
