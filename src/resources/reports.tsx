@@ -92,12 +92,10 @@ export const ReportList = (props: ListProps) => (
   <List {...props} pagination={<ReportPagination />} sort={{ field: "received_ts", order: "DESC" }}>
     <DataTable rowClick="show" bulkActionButtons={false}>
       <DataTable.Col source="id" />
-      <DataTable.Col source="received_ts">
-        <DateField source="received_ts" showTime options={DATE_FORMAT} />
-      </DataTable.Col>
+      <DataTable.Col source="received_ts" field={DateField} fieldProps={{ showTime: true, options: DATE_FORMAT }} />
       <DataTable.Col source="user_id" />
+      <DataTable.NumberCol source="score" />
       <DataTable.Col source="name" />
-      <DataTable.Col source="score" />
     </DataTable>
   </List>
 );
