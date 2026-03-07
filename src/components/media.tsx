@@ -15,6 +15,7 @@ import {
   Button,
   ButtonProps,
   DateTimeInput,
+  DateTimeInputProps,
   NumberInput,
   SaveButton,
   SimpleForm,
@@ -31,10 +32,15 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
-import { dateParser } from "./date";
+import { dateFormatter, dateParser } from "./date";
 import { DeleteMediaParams, SynapseDataProvider } from "../synapse/dataProvider";
 import { getMediaUrl } from "../synapse/synapse";
 import storage from "../storage";
+
+const localDateTimeInputProps: Pick<DateTimeInputProps, "format" | "parse"> = {
+  format: dateFormatter,
+  parse: dateParser,
+};
 
 const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
   const translate = useTranslate();
@@ -58,7 +64,7 @@ const DeleteMediaDialog = ({ open, onClose, onSubmit }) => {
             source="before_ts"
             label="delete_media.fields.before_ts"
             defaultValue={0}
-            parse={dateParser}
+            {...localDateTimeInputProps}
           />
           <NumberInput
             source="size_gt"

@@ -7,9 +7,13 @@ export const DATE_FORMAT: Intl.DateTimeFormatOptions = {
   second: "2-digit",
 };
 
-export const dateParser = (v: string | number | Date): number => {
+export const dateParser = (v: string | number | Date | null | undefined): number | null => {
+  if (v === "" || v === null || v === undefined) {
+    return null;
+  }
+
   const d = new Date(v);
-  return d.getTime();
+  return Number.isNaN(d.getTime()) ? null : d.getTime();
 };
 
 export const dateFormatter = (v: string | number | Date | undefined | null): string => {
