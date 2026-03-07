@@ -2,7 +2,7 @@ import PageviewIcon from "@mui/icons-material/Pageview";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import ReportIcon from "@mui/icons-material/Warning";
 import {
-  Datagrid,
+  DataTable,
   DateField,
   DeleteButton,
   List,
@@ -90,21 +90,24 @@ const ReportShowActions = () => {
 
 export const ReportList = (props: ListProps) => (
   <List {...props} pagination={<ReportPagination />} sort={{ field: "received_ts", order: "DESC" }}>
-    <Datagrid rowClick="show" bulkActionButtons={false}>
-      <TextField source="id" sortable={false} />
-      <DateField source="received_ts" showTime options={DATE_FORMAT} sortable={true} />
-      <TextField sortable={false} source="user_id" />
-      <TextField sortable={false} source="name" />
-      <TextField sortable={false} source="score" />
-    </Datagrid>
+    <DataTable rowClick="show" bulkActionButtons={false}>
+      <DataTable.Col source="id" />
+      <DataTable.Col source="received_ts">
+        <DateField source="received_ts" showTime options={DATE_FORMAT} />
+      </DataTable.Col>
+      <DataTable.Col source="user_id" />
+      <DataTable.Col source="name" />
+      <DataTable.Col source="score" />
+    </DataTable>
   </List>
 );
 
-const resource: ResourceProps = {
+const resource = {
   name: "reports",
   icon: ReportIcon,
   list: ReportList,
   show: ReportShow,
-};
+  recordRepresentation: (record: { id: string; room_id?: string }) => record.room_id || record.id,
+} satisfies ResourceProps;
 
 export default resource;
