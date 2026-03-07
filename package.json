@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/Awesome-Technologies/synapse-admin"
   },
-  "packageManager": "yarn@4.4.1",
+  "packageManager": "yarn@4.13.0",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@mui/system": "^7.1.0",
