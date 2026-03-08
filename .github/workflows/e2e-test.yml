@@ -1,0 +1,47 @@
+name: e2e-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["master"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: yarn --immutable
+
+      - name: Install Playwright browser
+        run: yarn playwright install --with-deps chromium
+
+      - name: Run Synapse end-to-end test
+        run: yarn test:e2e:ci
+
+      - name: Collect docker logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.e2e.yml --project-name synapse-admin-e2e logs --no-color > e2e-compose.log
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-synapse-artifacts
+          path: |
+            e2e-compose.log
+            playwright-report
+            test-results
