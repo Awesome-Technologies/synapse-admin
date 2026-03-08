@@ -1,6 +1,7 @@
 [![GitHub license](https://img.shields.io/github/license/Awesome-Technologies/synapse-admin)](https://github.com/Awesome-Technologies/synapse-admin/blob/master/LICENSE)
 [![Build Status](https://api.travis-ci.com/Awesome-Technologies/synapse-admin.svg?branch=master)](https://app.travis-ci.com/github/Awesome-Technologies/synapse-admin)
 [![build-test](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/build-test.yml/badge.svg)](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/build-test.yml)
+[![Coverage](https://awesome-technologies.github.io/synapse-admin/badges/coverage.svg)](https://awesome-technologies.github.io/synapse-admin/coverage/)
 [![gh-pages](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/edge_ghpage.yml/badge.svg)](https://awesome-technologies.github.io/synapse-admin/)
 [![docker-release](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/docker-release.yml/badge.svg)](https://hub.docker.com/r/awesometechnologies/synapse-admin)
 [![github-release](https://github.com/Awesome-Technologies/synapse-admin/actions/workflows/github-release.yml/badge.svg)](https://github.com/Awesome-Technologies/synapse-admin/releases)

@@ -88,9 +88,11 @@
   "scripts": {
     "start": "vite serve",
     "build": "vite build",
+    "coverage:badge": "node ./scripts/generate-coverage-badge.mjs",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx,.yml,.yaml .",
     "fix": "yarn lint --fix",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
     "test:e2e": "playwright test",
     "test:e2e:ci": "./scripts/e2e/run.sh"

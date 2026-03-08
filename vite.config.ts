@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => ({
     coverage: {
       include: ["src/**/*.{ts,tsx}"],
       exclude: ["src/**/*.test.{ts,tsx}", "src/vitest.setup.ts"],
+      reporter: ["text", "html", "json-summary"],
     },
   },
   ssr: {
