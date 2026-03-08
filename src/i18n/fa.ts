@@ -36,7 +36,7 @@ const fa: SynapseTranslationMessages = {
       invalid_value: "خطا در خط %{row}. '%{field}' فیلد ممکن است فقط 'درست' یا 'نادرست' باشد",
       unreasonably_big: "از بارگذاری فایل هایی با حجم غیر منطقی خودداری کنید %{size} مگابایت",
       already_in_progress: "یک بارگذاری از قبل در حال انجام است",
-      id_exits: "شناسه %{id} موجود است",
+      id_exists: "شناسه %{id} موجود است",
     },
     title: "کاربران را از طریق فایل CSV وارد کنید",
     goToPdf: "رفتن به PDF",

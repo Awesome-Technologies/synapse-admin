@@ -37,7 +37,7 @@ const fr: SynapseTranslationMessages = {
         "Valeur non valide à la ligne %{row}. Le champ « %{field} » ne peut être que « true » ou « false »",
       unreasonably_big: "Refus de charger un fichier trop volumineux de %{size} mégaoctets",
       already_in_progress: "Un import est déjà en cours",
-      id_exits: "L'identifiant %{id} déjà présent",
+      id_exists: "L'identifiant %{id} déjà présent",
     },
     title: "Importer des utilisateurs à partir d'un fichier CSV",
     goToPdf: "Voir le PDF",

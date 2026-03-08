@@ -47,7 +47,7 @@ const de: SynapseTranslationMessages = {
         "Ungültiger Wert in Zeile %{row}. Feld '%{field}' darf nur die Werte 'true' oder 'false' enthalten",
       unreasonably_big: "Datei ist zu groß für den Import (%{size} Megabytes)",
       already_in_progress: "Es läuft bereits ein Import",
-      id_exits: "ID %{id} existiert bereits",
+      id_exists: "ID %{id} existiert bereits",
     },
     title: "Benutzer aus CSV importieren",
     goToPdf: "Gehe zum PDF",

@@ -36,7 +36,7 @@ const it: SynapseTranslationMessages = {
       invalid_value: "Valore non valido alla riga %{row}. '%{field}' Il campo può essere solo 'true' o 'false'",
       unreasonably_big: "Impossibile caricare un file così grosso (%{size} megabyte)",
       already_in_progress: "Un import è attualmente già in caricamento",
-      id_exits: "L'ID %{id} è già presente",
+      id_exists: "L'ID %{id} è già presente",
     },
     title: "Importa utenti tramite file CSV",
     goToPdf: "Vai al PDF",

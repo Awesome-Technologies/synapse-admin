@@ -44,7 +44,7 @@ const zh: SynapseTranslationMessages = {
       invalid_value: "第 %{row} 行出现无效值。 '%{field}' 只可以是 'true' 或 'false'。",
       unreasonably_big: "拒绝加载过大的文件： %{size} MB",
       already_in_progress: "一个导入进程已经在运行中",
-      id_exits: "ID %{id} 已经存在",
+      id_exists: "ID %{id} 已经存在",
     },
     title: "通过 CSV 导入用户",
     goToPdf: "转到 PDF",

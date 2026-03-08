@@ -35,7 +35,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
       invalid_value: string;
       unreasonably_big: string;
       already_in_progress: string;
-      id_exits: string;
+      id_exists: string;
     };
     title: string;
     goToPdf: string;

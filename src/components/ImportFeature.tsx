@@ -305,7 +305,7 @@ const FilePicker = () => {
                 skippedRecords.push(recordData);
               } else if (conflictMode === "stop") {
                 throw new Error(
-                  translate("import_users.error.id_exits", {
+                  translate("import_users.error.id_exists", {
                     id: recordData.id,
                   })
                 );

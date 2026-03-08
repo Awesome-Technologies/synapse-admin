@@ -38,7 +38,7 @@ const en: SynapseTranslationMessages = {
       invalid_value: "Invalid value on line %{row}. '%{field}' field may only be 'true' or 'false'",
       unreasonably_big: "Refused to load unreasonably big file of %{size} megabytes",
       already_in_progress: "An import run is already in progress",
-      id_exits: "ID %{id} already present",
+      id_exists: "ID %{id} already present",
     },
     title: "Import users via CSV",
     goToPdf: "Go to PDF",

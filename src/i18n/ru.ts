@@ -46,7 +46,7 @@ const ru: SynapseTranslationMessages = {
       invalid_value: "Неверное значение в строке %{row}. Поле '%{field}' может быть либо 'true', либо 'false'",
       unreasonably_big: "Отказано в загрузке слишком большого файла размером %{size} мегабайт",
       already_in_progress: "Импорт уже в процессе",
-      id_exits: "ID %{id} уже существует",
+      id_exists: "ID %{id} уже существует",
     },
     title: "Импорт пользователей из CSV",
     goToPdf: "Перейти к PDF",
