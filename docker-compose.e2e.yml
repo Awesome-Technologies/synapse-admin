@@ -1,7 +1,6 @@
 services:
   synapse:
     image: matrixdotorg/synapse:v1.141.0
-    user: ${SYNAPSE_E2E_UID:-1000}:${SYNAPSE_E2E_GID:-1000}
     environment:
       SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
       SYNAPSE_REPORT_STATS: "no"

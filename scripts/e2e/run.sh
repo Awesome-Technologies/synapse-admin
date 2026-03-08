@@ -5,8 +5,6 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 export SYNAPSE_E2E_DATA_DIR="${SYNAPSE_E2E_DATA_DIR:-/tmp/synapse-admin-e2e}"
 export SYNAPSE_E2E_BASE_URL="${SYNAPSE_E2E_BASE_URL:-http://127.0.0.1:8080}"
-export SYNAPSE_E2E_UID="${SYNAPSE_E2E_UID:-$(id -u)}"
-export SYNAPSE_E2E_GID="${SYNAPSE_E2E_GID:-$(id -g)}"
 export E2E_BASE_URL="${E2E_BASE_URL:-${SYNAPSE_E2E_BASE_URL}}"
 
 cleanup() {
@@ -14,10 +12,16 @@ cleanup() {
     return
   fi
 
+  if [[ "${E2E_RUN_STATUS:-0}" != "0" ]]; then
+    return
+  fi
+
   docker compose -f "${ROOT_DIR}/docker-compose.e2e.yml" --project-name synapse-admin-e2e down -v --remove-orphans
 }
 
 trap cleanup EXIT
+
+E2E_RUN_STATUS=1
 
 rm -rf "${SYNAPSE_E2E_DATA_DIR}"
 
@@ -30,3 +34,5 @@ node "${ROOT_DIR}/scripts/e2e/wait-for-url.mjs" "${SYNAPSE_E2E_BASE_URL}/_matrix
 node "${ROOT_DIR}/scripts/e2e/register-admin.mjs"
 
 yarn playwright test
+
+E2E_RUN_STATUS=0
