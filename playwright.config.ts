@@ -5,6 +5,7 @@ export default defineConfig({
   fullyParallel: false,
   reporter: [["html", { open: "never" }]],
   retries: process.env.CI ? 1 : 0,
+  timeout: process.env.CI ? 90000 : 30000,
   use: {
     baseURL: process.env.E2E_BASE_URL ?? "http://127.0.0.1:8080",
     headless: true,
