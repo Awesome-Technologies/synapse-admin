@@ -1,12 +1,13 @@
 services:
   synapse:
     image: matrixdotorg/synapse:v1.141.0
+    user: ${SYNAPSE_E2E_UID:-1000}:${SYNAPSE_E2E_GID:-1000}
     environment:
       SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
       SYNAPSE_REPORT_STATS: "no"
       SYNAPSE_SERVER_NAME: localhost
     volumes:
-      - ${SYNAPSE_E2E_DATA_DIR:?set by the e2e scripts}:/data
+      - ${SYNAPSE_E2E_DATA_DIR:-/tmp/synapse-admin-e2e}:/data
     healthcheck:
       test:
         [

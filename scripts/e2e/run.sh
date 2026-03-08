@@ -5,6 +5,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 export SYNAPSE_E2E_DATA_DIR="${SYNAPSE_E2E_DATA_DIR:-/tmp/synapse-admin-e2e}"
 export SYNAPSE_E2E_BASE_URL="${SYNAPSE_E2E_BASE_URL:-http://127.0.0.1:8080}"
+export SYNAPSE_E2E_UID="${SYNAPSE_E2E_UID:-$(id -u)}"
+export SYNAPSE_E2E_GID="${SYNAPSE_E2E_GID:-$(id -g)}"
 export E2E_BASE_URL="${E2E_BASE_URL:-${SYNAPSE_E2E_BASE_URL}}"
 
 cleanup() {

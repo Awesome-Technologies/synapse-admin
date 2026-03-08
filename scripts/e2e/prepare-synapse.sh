@@ -4,6 +4,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 export SYNAPSE_E2E_DATA_DIR="${SYNAPSE_E2E_DATA_DIR:-/tmp/synapse-admin-e2e}"
+export SYNAPSE_E2E_UID="${SYNAPSE_E2E_UID:-$(id -u)}"
+export SYNAPSE_E2E_GID="${SYNAPSE_E2E_GID:-$(id -g)}"
 
 mkdir -p "${SYNAPSE_E2E_DATA_DIR}"
 
