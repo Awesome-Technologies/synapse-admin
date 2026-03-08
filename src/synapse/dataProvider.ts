@@ -246,7 +246,7 @@ export interface SynapseDataProvider extends DataProvider {
 }
 
 /** Convert Synapse MXC URIs into thumbnail URLs that the admin UI can render directly. */
-const mxcUrlToHttp = (mxcUrl: string): string | null => {
+export const mxcUrlToHttp = (mxcUrl: string): string | null => {
   const baseUrl = requireStoredBaseUrl();
   const match = /^mxc:\/\/([^/]+)\/(\w+)/.exec(mxcUrl);
 
@@ -533,7 +533,7 @@ const resourceMap = {
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 /** Preserve explicit `null` only for `user_type`, which Synapse uses as a reset signal. */
-function filterNullValues(key: string, value: any) {
+export function filterNullValues(key: string, value: any) {
   // Filtering out null properties
   // to reset user_type from user, it must be null
   if (value === null && key !== "user_type") {
@@ -542,22 +542,22 @@ function filterNullValues(key: string, value: any) {
   return value;
 }
 
-const hasPath = (resource: ResourceConfig): resource is CollectionResourceConfig => "path" in resource;
+export const hasPath = (resource: ResourceConfig): resource is CollectionResourceConfig => "path" in resource;
 
-const hasReference = (resource: ResourceConfig): resource is ReferenceResourceConfig => "reference" in resource;
+export const hasReference = (resource: ResourceConfig): resource is ReferenceResourceConfig => "reference" in resource;
 
-const supportsCreate = (resource: ResourceConfig): resource is ResourceConfig & { create: CreateRequest } =>
+export const supportsCreate = (resource: ResourceConfig): resource is ResourceConfig & { create: CreateRequest } =>
   typeof resource.create === "function";
 
-const supportsDelete = (resource: ResourceConfig): resource is ResourceConfig & { delete: DeleteRequest } =>
+export const supportsDelete = (resource: ResourceConfig): resource is ResourceConfig & { delete: DeleteRequest } =>
   typeof resource.delete === "function";
 
-const isJsonArray = (value: unknown): value is unknown[] => Array.isArray(value);
+export const isJsonArray = (value: unknown): value is unknown[] => Array.isArray(value);
 
-const getSearchOrder = (order: "ASC" | "DESC") => (order === "DESC" ? "b" : "f");
+export const getSearchOrder = (order: "ASC" | "DESC") => (order === "DESC" ? "b" : "f");
 
 /** Resolve a resource config once so provider methods can fail fast on unsupported resources. */
-const getResourceConfig = (resourceName: string): ResourceConfig => {
+export const getResourceConfig = (resourceName: string): ResourceConfig => {
   const config = resourceMap[resourceName];
 
   if (!config) {
@@ -568,7 +568,7 @@ const getResourceConfig = (resourceName: string): ResourceConfig => {
 };
 
 /** Narrow a resource to collection semantics like `getList`, `getOne`, or `update`. */
-const getCollectionResource = (resourceName: string): CollectionResourceConfig => {
+export const getCollectionResource = (resourceName: string): CollectionResourceConfig => {
   const config = getResourceConfig(resourceName);
 
   if (!hasPath(config)) {
@@ -579,7 +579,7 @@ const getCollectionResource = (resourceName: string): CollectionResourceConfig =
 };
 
 /** Narrow a resource to reference semantics used by nested react-admin lists. */
-const getReferenceResource = (resourceName: string): ReferenceResourceConfig => {
+export const getReferenceResource = (resourceName: string): ReferenceResourceConfig => {
   const config = getResourceConfig(resourceName);
 
   if (!hasReference(config)) {
@@ -590,7 +590,7 @@ const getReferenceResource = (resourceName: string): ReferenceResourceConfig => 
 };
 
 /** Calculate `total` from explicit resource metadata or fall back to array length. */
-const getResourceTotal = (config: ResourceConfig, json: JsonObject, from?: number, perPage?: number): number => {
+export const getResourceTotal = (config: ResourceConfig, json: JsonObject, from?: number, perPage?: number): number => {
   if (typeof config.total === "function") {
     return config.total(json, from, perPage);
   }
@@ -600,13 +600,13 @@ const getResourceTotal = (config: ResourceConfig, json: JsonObject, from?: numbe
 };
 
 /** Map the array payload selected by a resource config into react-admin records. */
-const mapResourceData = (config: ResourceConfig, json: JsonObject): RaRecord[] => {
+export const mapResourceData = (config: ResourceConfig, json: JsonObject): RaRecord[] => {
   const data = json[config.data];
   return isJsonArray(data) ? data.map(item => config.map(item)) : [];
 };
 
 /** Build a list endpoint URL including pagination, filtering, and sort query parameters. */
-const buildCollectionUrl = (resourceName: string, query?: Record<string, unknown>): string => {
+export const buildCollectionUrl = (resourceName: string, query?: Record<string, unknown>): string => {
   const config = getCollectionResource(resourceName);
   const endpointUrl = buildUrl(requireStoredBaseUrl(), config.path);
 
@@ -619,7 +619,7 @@ const buildCollectionUrl = (resourceName: string, query?: Record<string, unknown
 };
 
 /** Build a reference endpoint URL for nested resources like devices or room members. */
-const buildReferenceUrl = (resourceName: string, id: Identifier, query?: Record<string, unknown>): string => {
+export const buildReferenceUrl = (resourceName: string, id: Identifier, query?: Record<string, unknown>): string => {
   const config = getReferenceResource(resourceName);
   const endpointUrl = buildUrl(requireStoredBaseUrl(), config.reference(id).endpoint);
 
@@ -632,14 +632,14 @@ const buildReferenceUrl = (resourceName: string, id: Identifier, query?: Record<
 };
 
 /** Fetch a single collection-backed record and normalize it through the resource mapper. */
-const fetchResourceRecord = async (resourceName: string, id: Identifier) => {
+export const fetchResourceRecord = async (resourceName: string, id: Identifier) => {
   const config = getCollectionResource(resourceName);
   const { json } = await fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), `${config.path}/${encodeURIComponent(id)}`));
   return config.map(json);
 };
 
 /** Execute a resource-specific create request while keeping provider method bodies small. */
-const createResource = async (resourceName: string, data: Partial<RaRecord>) => {
+export const createResource = async (resourceName: string, data: Partial<RaRecord>) => {
   const config = getResourceConfig(resourceName);
 
   if (!supportsCreate(config)) {
@@ -656,7 +656,7 @@ const createResource = async (resourceName: string, data: Partial<RaRecord>) => 
 };
 
 /** Execute either custom deletion logic or the default REST-style delete request. */
-const deleteResource = async (resourceName: string, params: DeleteParams) => {
+export const deleteResource = async (resourceName: string, params: DeleteParams) => {
   const config = getResourceConfig(resourceName);
 
   if (supportsDelete(config)) {
@@ -682,7 +682,7 @@ const deleteResource = async (resourceName: string, params: DeleteParams) => {
 };
 
 /** Custom provider method used by the media maintenance UI. */
-const deleteMedia = async ({
+export const deleteMedia = async ({
   before_ts,
   size_gt = 0,
   keep_profiles = true,
