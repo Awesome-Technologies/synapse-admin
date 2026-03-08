@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => ({
     environment: 'happy-dom',
     setupFiles: "./src/vitest.setup.ts",
     exclude: ["e2e/**"],
+    coverage: {
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/**/*.test.{ts,tsx}", "src/vitest.setup.ts"],
+    },
   },
   ssr: {
     noExternal: ['react-dropzone', 'react-admin', 'ra-ui-materialui'],
