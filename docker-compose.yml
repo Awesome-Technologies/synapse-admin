@@ -2,9 +2,11 @@ services:
   synapse-admin:
     container_name: synapse-admin
     hostname: synapse-admin
-    image: awesometechnologies/synapse-admin:latest
-    # build:
-    #   context: .
+    # Use a prebuilt image:
+    #image: awesometechnologies/synapse-admin:latest
+    # or build from source:
+    build:
+      context: .
 
     # to use the docker-compose as standalone without a local repo clone,
     # replace the context definition with this:
@@ -16,10 +18,33 @@ services:
     #    to define a maximum ram for node. otherwise the build will fail.
     #    - NODE_OPTIONS="--max_old_space_size=1024"
     #    - BASE_PATH="/synapse-admin"
+    depends_on:
+      synapse:
+        condition: service_healthy
     ports:
       - "8080:80"
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/config.json >/dev/null 2>&1 || exit 1"]
+      interval: 5s
+      timeout: 5s
+
+  synapse:
+    image: matrixdotorg/synapse:v1.141.0
+    environment:
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+      SYNAPSE_REPORT_STATS: "no"
+      SYNAPSE_SERVER_NAME: localhost
+    ports:
+      - "8008:8008"
+    volumes:
+      - ${SYNAPSE_DATA_DIR:-/tmp/synapse}:/data
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8008/_matrix/client/versions', timeout=5)\"",
+        ]
       interval: 5s
       timeout: 5s
