@@ -8,6 +8,6 @@ test("logs into Synapse and loads the users list", async ({ page }) => {
   await page.locator('input[name="password"]').fill("supersecret");
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
 
+  await expect(page.getByRole("heading", { name: "Users" })).toBeVisible();
   await expect(page.getByText("@admin:localhost")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Users" })).toBeVisible();
 });
