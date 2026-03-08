@@ -120,7 +120,7 @@ const zh: SynapseTranslationMessages = {
       msisdn: "电话",
       threepid: "邮箱 / 电话",
       fields: {
-        avatar: "邮箱",
+        avatar: "头像",
         id: "用户 ID",
         name: "用户名",
         is_guest: "访客",
