@@ -1,5 +1,5 @@
 import { parse as parseCsv, unparse as unparseCsv, ParseResult } from "papaparse";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, ReactElement, useState } from "react";
 
 import {
   Button,
@@ -543,7 +543,7 @@ const FilePicker = () => {
       </CardActions>
     );
 
-  const allCards: JSX.Element[] = [];
+  const allCards: ReactElement[] = [];
   if (uploadCard) allCards.push(uploadCard);
   if (errorCards) allCards.push(errorCards);
   if (conflictCards) allCards.push(conflictCards);
