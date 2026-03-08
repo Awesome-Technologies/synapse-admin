@@ -61,6 +61,193 @@ interface ImportResult {
   wasDryRun: boolean;
 }
 
+type VerifyCsvHandlers = {
+  setError: (message: string | string[]) => void;
+  setStats: (stats: ChangeStats & Record<string, unknown>) => void;
+  setValues: (values: ImportLine[]) => void;
+};
+
+type DoImportHandlers = {
+  setError: (message: string) => void;
+  setProgress: (progress: Progress) => void;
+  translate: (key: string, options?: Record<string, unknown>) => string;
+};
+
+export const verifyImportCsv = (
+  { data, meta, errors }: ParseResult<ImportLine>,
+  { setValues, setStats, setError, translate }: VerifyCsvHandlers & Pick<DoImportHandlers, "translate">
+) => {
+  /* First, verify the presence of required fields */
+  const missingFields = expectedFields.filter(eF => !meta.fields?.includes(eF));
+
+  if (missingFields.length > 0) {
+    setError(translate("import_users.error.required_field", { field: missingFields[0] }));
+    return false;
+  }
+
+  const stats = {
+    user_types: { default: 0 },
+    is_guest: 0,
+    admin: 0,
+    deactivated: 0,
+    password: 0,
+    avatar_url: 0,
+    id: 0,
+    total: data.length,
+  };
+
+  const errorMessages = errors.map(e => e.message);
+  data.forEach((line, idx) => {
+    if (line.user_type === undefined || line.user_type === "") {
+      stats.user_types.default++;
+    } else {
+      stats.user_types[line.user_type] += 1;
+    }
+
+    if (meta.fields?.includes("name")) {
+      delete line.name;
+    }
+    if (meta.fields?.includes("user_type")) {
+      delete line.user_type;
+    }
+    if (meta.fields?.includes("is_admin")) {
+      delete line.is_admin;
+    }
+
+    ["is_guest", "admin", "deactivated"].forEach(f => {
+      if (line[f] === "true") {
+        stats[f]++;
+        line[f] = true;
+      } else {
+        if (line[f] !== "false" && line[f] !== "") {
+          errorMessages.push(
+            translate("import_users.error.invalid_value", {
+              field: f,
+              row: idx,
+            })
+          );
+        }
+        line[f] = false;
+      }
+    });
+
+    if (line.password !== undefined && line.password !== "") {
+      stats.password++;
+    }
+
+    if (line.avatar_url !== undefined && line.avatar_url !== "") {
+      stats.avatar_url++;
+    }
+
+    if (line.id !== undefined && line.id !== "") {
+      stats.id++;
+    }
+  });
+
+  if (errorMessages.length > 0) {
+    setError(errorMessages);
+  }
+  setStats(stats);
+  setValues(data);
+
+  return true;
+};
+
+export const doUserImport = async (
+  dataProvider: DataProvider,
+  data: ImportLine[],
+  conflictMode: string,
+  passwordMode: boolean,
+  useridMode: string,
+  dryRun: boolean,
+  { setProgress, setError, translate }: DoImportHandlers
+): Promise<ImportResult> => {
+  const skippedRecords: ImportLine[] = [];
+  const erroredRecords: ImportLine[] = [];
+  const succeededRecords: ImportLine[] = [];
+  const changeStats: ChangeStats = {
+    total: 0,
+    id: 0,
+    is_guest: 0,
+    admin: 0,
+    password: 0,
+  };
+  let entriesDone = 0;
+  const entriesCount = data.length;
+  try {
+    setProgress({ done: entriesDone, limit: entriesCount });
+    for (const entry of data) {
+      const userRecord = { ...entry };
+      if (useridMode === "ignore" || userRecord.id === undefined) {
+        userRecord.id = generateRandomMxId();
+      }
+      if (passwordMode === false || entry.password === undefined) {
+        userRecord.password = generateRandomPassword();
+      }
+
+      let retries = 0;
+      const submitRecord = (recordData: ImportLine): Promise<void> => {
+        return dataProvider.getOne("users", { id: recordData.id }).then(
+          async () => {
+            if (LOGGING) console.log("already existed");
+
+            if (useridMode === "update" || conflictMode === "skip") {
+              skippedRecords.push(recordData);
+            } else if (conflictMode === "stop") {
+              throw new Error(
+                translate("import_users.error.id_exists", {
+                  id: recordData.id,
+                })
+              );
+            } else {
+              const newRecordData = Object.assign({}, recordData, {
+                id: generateRandomMxId(),
+              });
+              retries++;
+              if (retries > 512) {
+                console.warn("retry loop got stuck? pathological situation?");
+                skippedRecords.push(recordData);
+              } else {
+                await submitRecord(newRecordData);
+              }
+            }
+          },
+          async () => {
+            if (LOGGING) console.log("OK to create record " + recordData.id + " (" + recordData.displayname + ").");
+
+            if (!dryRun) {
+              await dataProvider.create("users", { data: recordData });
+            }
+            succeededRecords.push(recordData);
+          }
+        );
+      };
+
+      await submitRecord(userRecord);
+      entriesDone++;
+      setProgress({ done: entriesDone, limit: data.length });
+    }
+
+    setProgress(null);
+  } catch (e) {
+    setError(
+      translate("import_users.error.at_entry", {
+        entry: entriesDone + 1,
+        message: e instanceof Error ? e.message : String(e),
+      })
+    );
+    setProgress(null);
+  }
+  return {
+    skippedRecords,
+    erroredRecords,
+    succeededRecords,
+    totalRecordCount: entriesCount,
+    changeStats,
+    wasDryRun: dryRun,
+  };
+};
+
 const FilePicker = () => {
   const [values, setValues] = useState<ImportLine[]>([]);
   const [error, setError] = useState<string | string[] | null>(null);
@@ -110,7 +297,7 @@ const FilePicker = () => {
           }
           /* Papaparse is very lenient, we may be able to salvage
            * the data in the file. */
-          verifyCsv(result, { setValues, setStats, setError });
+          verifyImportCsv(result, { setValues, setStats, setError, translate });
         },
       });
     } catch {
@@ -119,108 +306,20 @@ const FilePicker = () => {
     }
   };
 
-  const verifyCsv = ({ data, meta, errors }: ParseResult<ImportLine>, { setValues, setStats, setError }) => {
-    /* First, verify the presence of required fields */
-    const missingFields = expectedFields.filter(eF => !meta.fields?.includes(eF));
-
-    if (missingFields.length > 0) {
-      setError(translate("import_users.error.required_field", { field: missingFields[0] }));
-      return false;
-    }
-
-    // XXX after deciding on how "name" and friends should be handled below,
-    //     this place will want changes, too.
-
-    /* Collect some stats to prevent sneaky csv files from adding admin
-       users or something.
-     */
-    const stats = {
-      user_types: { default: 0 },
-      is_guest: 0,
-      admin: 0,
-      deactivated: 0,
-      password: 0,
-      avatar_url: 0,
-      id: 0,
-
-      total: data.length,
-    };
-
-    const errorMessages = errors.map(e => e.message);
-    data.forEach((line, idx) => {
-      if (line.user_type === undefined || line.user_type === "") {
-        stats.user_types.default++;
-      } else {
-        stats.user_types[line.user_type] += 1;
-      }
-      /* XXX correct the csv export that react-admin offers for the users
-       * resource so it gives sensible field names and doesn't duplicate
-       * id as "name"?
-       */
-      if (meta.fields?.includes("name")) {
-        delete line.name;
-      }
-      if (meta.fields?.includes("user_type")) {
-        delete line.user_type;
-      }
-      if (meta.fields?.includes("is_admin")) {
-        delete line.is_admin;
-      }
-
-      ["is_guest", "admin", "deactivated"].forEach(f => {
-        if (line[f] === "true") {
-          stats[f]++;
-          line[f] = true; // we need true booleans instead of strings
-        } else {
-          if (line[f] !== "false" && line[f] !== "") {
-            errorMessages.push(
-              translate("import_users.error.invalid_value", {
-                field: f,
-                row: idx,
-              })
-            );
-          }
-          line[f] = false; // default values to false
-        }
-      });
-
-      if (line.password !== undefined && line.password !== "") {
-        stats.password++;
-      }
-
-      if (line.avatar_url !== undefined && line.avatar_url !== "") {
-        stats.avatar_url++;
-      }
-
-      if (line.id !== undefined && line.id !== "") {
-        stats.id++;
-      }
-    });
-
-    if (errorMessages.length > 0) {
-      setError(errorMessages);
-    }
-    setStats(stats);
-    setValues(data);
-
-    return true;
-  };
-
   const runImport = async () => {
     if (progress !== null) {
       notify("import_users.errors.already_in_progress");
       return;
     }
 
-    const results = await doImport(
+    const results = await doUserImport(
       dataProvider,
       values,
       conflictMode,
       passwordMode,
       useridMode,
       dryRun,
-      setProgress,
-      setError
+      { setProgress, setError, translate }
     );
     setImportResults(results);
     // offer CSV download of skipped or errored records
@@ -233,130 +332,6 @@ const FilePicker = () => {
 
   // XXX every single one of the requests will restart the activity indicator
   //     which doesn't look very good.
-
-  const doImport = async (
-    dataProvider: DataProvider,
-    data: ImportLine[],
-    conflictMode: string,
-    passwordMode: boolean,
-    useridMode: string,
-    dryRun: boolean,
-    setProgress: (progress: Progress) => void,
-    setError: (message: string) => void
-  ): Promise<ImportResult> => {
-    const skippedRecords: ImportLine[] = [];
-    const erroredRecords: ImportLine[] = [];
-    const succeededRecords: ImportLine[] = [];
-    const changeStats: ChangeStats = {
-      total: 0,
-      id: 0,
-      is_guest: 0,
-      admin: 0,
-      password: 0,
-    };
-    let entriesDone = 0;
-    const entriesCount = data.length;
-    try {
-      setProgress({ done: entriesDone, limit: entriesCount });
-      for (const entry of data) {
-        const userRecord = { ...entry };
-        // No need to do a bunch of cryptographic random number getting if
-        // we are using neither a generated password nor a generated user id.
-        if (useridMode === "ignore" || userRecord.id === undefined) {
-          userRecord.id = generateRandomMxId();
-        }
-        if (passwordMode === false || entry.password === undefined) {
-          userRecord.password = generateRandomPassword();
-        }
-        /* TODO record update stats (especially admin no -> yes, deactivated x -> !x, ... */
-
-        /* For these modes we will consider the ID that's in the record.
-         * If the mode is "stop", we will not continue adding more records, and
-         * we will offer information on what was already added and what was
-         * skipped.
-         *
-         * If the mode is "skip", we record the record for later, but don't
-         * send it to the server.
-         *
-         * If the mode is "update", we change fields that are reasonable to
-         * update.
-         *  - If the "password mode" is "true" (i.e. "use passwords from csv"):
-         *    - if the record has a password
-         *      - send the password along with the record
-         *    - if the record has no password
-         *      - generate a new password
-         *  - If the "password mode" is "false"
-         *    - never generate a new password to update existing users with
-         */
-
-        /* We just act as if there are no IDs in the CSV, so every user will be
-         * created anew.
-         * We do a simple retry loop so that an accidental hit on an existing ID
-         * doesn't trip us up.
-         */
-        if (LOGGING) console.log("will check for existence of record " + JSON.stringify(userRecord));
-        let retries = 0;
-        const submitRecord = (recordData: ImportLine) => {
-          return dataProvider.getOne("users", { id: recordData.id }).then(
-            async () => {
-              if (LOGGING) console.log("already existed");
-
-              if (useridMode === "update" || conflictMode === "skip") {
-                skippedRecords.push(recordData);
-              } else if (conflictMode === "stop") {
-                throw new Error(
-                  translate("import_users.error.id_exists", {
-                    id: recordData.id,
-                  })
-                );
-              } else {
-                const newRecordData = Object.assign({}, recordData, {
-                  id: generateRandomMxId(),
-                });
-                retries++;
-                if (retries > 512) {
-                  console.warn("retry loop got stuck? pathological situation?");
-                  skippedRecords.push(recordData);
-                } else {
-                  await submitRecord(newRecordData);
-                }
-              }
-            },
-            async () => {
-              if (LOGGING) console.log("OK to create record " + recordData.id + " (" + recordData.displayname + ").");
-
-              if (!dryRun) {
-                await dataProvider.create("users", { data: recordData });
-              }
-              succeededRecords.push(recordData);
-            }
-          );
-        };
-
-        await submitRecord(userRecord);
-        entriesDone++;
-        setProgress({ done: entriesDone, limit: data.length });
-      }
-
-      setProgress(null);
-    } catch (e) {
-      setError(
-        translate("import_users.error.at_entry", {
-          entry: entriesDone + 1,
-          message: e instanceof Error ? e.message : String(e),
-        })
-      );
-      setProgress(null);
-    }
-    return {
-      skippedRecords,
-      erroredRecords,
-      succeededRecords,
-      totalRecordCount: entriesCount,
-      changeStats,
-      wasDryRun: dryRun,
-    };
-  };
 
   const downloadSkippedRecords = () => {
     const element = document.createElement("a");
