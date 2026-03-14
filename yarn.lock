@@ -6306,6 +6306,7 @@ __metadata:
     react-is: "npm:^19.2.4"
     react-router: "npm:^7.13.1"
     react-router-dom: "npm:^7.13.1"
+    ts-pnp: "npm:^1.2.0"
     typescript: "npm:^5.9.3"
     vite: "npm:^7.3.1"
     vitest: "npm:^4.0.18"
@@ -6386,6 +6387,16 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10c0/ed185861aef4e7124366a3f6561113557a57504267d4d452a51e0ba516a9b6e713b56b4aeaab9fa13de9db9ab755c65c8c13a777dba9133c214632cb7b65c083
+  languageName: node
+  linkType: hard
+
+"ts-pnp@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "ts-pnp@npm:1.2.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/ff32b4f810f9d99f676d70fe2c0e327cb6c812214bd4fc7135870b039f9e85a85b2c20f8fe030d9bd36e9598a12faa391f10aecb95df624b92f1af6bd47dc397
   languageName: node
   linkType: hard
 
