@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import App from "./App";
 import englishMessages from "./i18n/en";
 
@@ -58,7 +58,7 @@ vi.mock("./synapse/dataProvider", () => ({
   default: mockedDataProvider,
 }));
 
-describe("App", () => {
+describe.sequential("App", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     window.location.hash = "";
@@ -122,11 +122,15 @@ describe("App", () => {
 
   it("renders login page when not authenticated", async () => {
     render(<App />);
-    await screen.findByText(englishMessages.synapseadmin.auth.welcome);
-    screen.getByRole("textbox", { name: englishMessages.ra.auth.username });
-    screen.getByText(englishMessages.ra.auth.password);
-    screen.getByRole("textbox", { name: englishMessages.synapseadmin.auth.base_url });
-    screen.getByRole("button", { name: englishMessages.ra.auth.sign_in });
+    const progressBar = screen.queryByRole('progressbar');
+    if (progressBar) {
+      await waitForElementToBeRemoved(progressBar);
+    }
+    expect(await screen.findByText(englishMessages.synapseadmin.auth.welcome, undefined, { timeout: 5000 })).toBeTruthy();
+    expect(screen.getByRole("textbox", { name: englishMessages.ra.auth.username })).toBeTruthy();
+    expect(screen.getByText(englishMessages.ra.auth.password)).toBeTruthy();
+    expect(screen.getByRole("textbox", { name: englishMessages.synapseadmin.auth.base_url })).toBeTruthy();
+    expect(screen.getByRole("button", { name: englishMessages.ra.auth.sign_in })).toBeTruthy();
 
     await waitFor(() => expect(mockedAuthProvider.checkAuth).toHaveBeenCalled());
   });
@@ -137,7 +141,7 @@ describe("App", () => {
 
     render(<App />);
 
-    await screen.findByText("import_users.title");
+    expect(await screen.findByText("import_users.title")).toBeTruthy();
   });
 
   it("keeps the import route behind authentication", async () => {
@@ -145,7 +149,11 @@ describe("App", () => {
 
     render(<App />);
 
-    await screen.findByText(englishMessages.synapseadmin.auth.welcome);
+    const progressBar = screen.queryByRole('progressbar');
+    if (progressBar) {
+      await waitForElementToBeRemoved(progressBar);
+    }
+    expect(await screen.findByText(englishMessages.synapseadmin.auth.welcome, undefined, { timeout: 5000 })).toBeTruthy();
     expect(screen.queryByText(englishMessages.import_users.title)).toBeNull();
   });
 });
