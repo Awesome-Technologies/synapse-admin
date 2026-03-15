@@ -4,14 +4,6 @@ import { SynapseTranslationMessages } from ".";
 
 const zh: SynapseTranslationMessages = {
   ...baseChineseMessages,
-  ra: {
-    ...baseChineseMessages.ra,
-    navigation: {
-      ...baseChineseMessages.ra.navigation,
-      no_filtered_results: "没有结果",
-      clear_filters: "清除所有过滤器",
-    },
-  },
   synapseadmin: {
     auth: {
       base_url: "服务器 URL",

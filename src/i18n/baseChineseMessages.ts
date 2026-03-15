@@ -41,6 +41,9 @@ const baseChineseMessages: Required<TranslationMessages> = {
       unselect: "反选",
       update: "更新",
       update_application: "重载应用",
+      reset: "重置",
+      search_columns: "搜索列",
+      select_all_button: "全选",
     },
     auth: {
       auth_check_error: "请登录以继续",
@@ -50,6 +53,7 @@ const baseChineseMessages: Required<TranslationMessages> = {
       sign_in: "登录",
       sign_in_error: "验证失败, 请重试",
       logout: "登出",
+      email: "邮箱",
     },
     boolean: {
       true: "是",
@@ -119,6 +123,10 @@ const baseChineseMessages: Required<TranslationMessages> = {
       bulk_update_title: "更新 %{name} |||| 更新 %{smart_count} %{name}",
       clear_array_input: "您确定要清除整个列表吗?",
       details: "详情",
+      access_denied: "您没有访问此页面的必要权限",
+      authentication_error: "身份验证服务器返回错误，无法验证您的登录凭据。",
+      select_all_limit_reached: "数量过多，无法全选。仅选择了前 %{max} 个。",
+      placeholder_data_warning: "网络问题：数据更新失败。",
     },
     navigation: {
       no_results: "结果为空",
@@ -137,6 +145,8 @@ const baseChineseMessages: Required<TranslationMessages> = {
       first: "第一页",
       last: "最后一页",
       previous: "向前",
+      no_filtered_results: "没有结果",
+      clear_filters: "清除所有过滤器",
     },
     notification: {
       updated: "条目已更新 |||| %{smart_count} 项条目已更新",
@@ -151,6 +161,7 @@ const baseChineseMessages: Required<TranslationMessages> = {
       logged_out: "会话失效, 请重连.",
       not_authorized: "你没有权限访问此资源.",
       application_update_available: "新版本可用.",
+      offline: "无法连接，数据无法加载。",
     },
     page: {
       create: "新建 %{name}",
@@ -163,6 +174,8 @@ const baseChineseMessages: Required<TranslationMessages> = {
       loading: "加载中",
       not_found: "未发现",
       show: "%{name} #%{id}",
+      access_denied: "您没有访问此页面的必要权限",
+      authentication_error: "身份验证服务器返回错误，无法验证您的登录凭据。",
     },
     saved_queries: {
       label: "保存查询",
