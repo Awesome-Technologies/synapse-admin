@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -203,8 +203,8 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -250,9 +250,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,7 +281,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -311,11 +311,11 @@ import {
 import { DATE_FORMAT } from "../components/date";
 import { MXCField } from "../components/media";
 &nbsp;
-const ReportPagination = <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >&lt;</span>Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} /&gt;;</span>
+const ReportPagination = () =&gt; &lt;Pagination rowsPerPageOptions={[10, 25, 50, 100, 500, 1000]} /&gt;;
 &nbsp;
-export const ReportShow = <span class="fstat-no" title="function not covered" >(p</span>rops: ShowProps) =&gt; {
-  const <span class="cstat-no" title="statement not covered" >translate = useTranslate();</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
+export const ReportShow = (props: ShowProps) =&gt; {
+  const translate = useTranslate();
+  return (
     &lt;Show {...props} actions={&lt;ReportShowActions /&gt;}&gt;
       &lt;TabbedShowLayout&gt;
         &lt;Tab
@@ -360,10 +360,10 @@ export const ReportShow = <span class="fstat-no" title="function not covered" >(
   );
 };
 &nbsp;
-const ReportShowActions = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-  const <span class="cstat-no" title="statement not covered" >record = useRecordContext();</span>
+const ReportShowActions = () =&gt; {
+  const record = useRecordContext();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;TopToolbar&gt;
       &lt;DeleteButton
         record={record}
@@ -392,7 +392,7 @@ const resource = {
   icon: ReportIcon,
   list: ReportList,
   show: ReportShow,
-  recordRepresentation: <span class="fstat-no" title="function not covered" >(r</span>ecord: { id: string; room_id?: string }) =&gt; <span class="cstat-no" title="statement not covered" >record.room_id || record.id,</span>
+  recordRepresentation: (record: { id: string; room_id?: string }) =&gt; record.room_id || record.id,
 } satisfies ResourceProps;
 &nbsp;
 export default resource;
@@ -403,7 +403,7 @@ export default resource;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-15T22:35:34.674Z
+                at 2026-03-15T22:36:04.246Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
