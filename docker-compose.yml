@@ -19,3 +19,7 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/config.json >/dev/null 2>&1 || exit 1"]
+      interval: 5s
+      timeout: 5s
