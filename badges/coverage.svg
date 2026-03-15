@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="114" height="20" role="img" aria-label="coverage: 67.77%">
-<title>coverage: 67.77%</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="114" height="20" role="img" aria-label="coverage: 78.51%">
+<title>coverage: 78.51%</title>
 <linearGradient id="smooth" x2="0" y2="100%">
   <stop offset="0" stop-color="#fff" stop-opacity=".7"/>
   <stop offset=".1" stop-color="#aaa" stop-opacity=".1"/>
@@ -11,13 +11,13 @@
 </clipPath>
 <g clip-path="url(#round)">
   <rect width="62" height="20" fill="#555"/>
-  <rect x="62" width="52" height="20" fill="#dfb317"/>
+  <rect x="62" width="52" height="20" fill="#97CA00"/>
   <rect width="114" height="20" fill="url(#smooth)"/>
 </g>
 <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
   <text x="31" y="15" fill="#010101" fill-opacity=".3">coverage</text>
   <text x="31" y="14">coverage</text>
-  <text x="88" y="15" fill="#010101" fill-opacity=".3">67.77%</text>
-  <text x="88" y="14">67.77%</text>
+  <text x="88" y="15" fill="#010101" fill-opacity=".3">78.51%</text>
+  <text x="88" y="14">78.51%</text>
 </g>
 </svg>
