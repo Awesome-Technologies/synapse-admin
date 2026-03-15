@@ -8,7 +8,6 @@ import {
   Pagination,
   ResourceProps,
   SearchInput,
-  TextField,
   TopToolbar,
   useCreatePath,
   useListContext,
@@ -16,7 +15,7 @@ import {
 
 import { DeleteMediaButton } from "../components/media";
 
-const ListActions = () => {
+export const ListActions = () => {
   const { isLoading, total } = useListContext();
   return (
     <TopToolbar>
