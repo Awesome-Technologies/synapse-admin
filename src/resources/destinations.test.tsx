@@ -41,14 +41,22 @@ const {
   useThemeMock: vi.fn(),
 }));
 
-vi.mock("@mui/material", () => ({
-  lighten: vi.fn((_color: string, _amount: number) => "lightened"),
-  useTheme: () => useThemeMock(),
-}));
+vi.mock("@mui/material", async importOriginal => {
+  const actual = await importOriginal<typeof import("@mui/material")>();
+  return {
+    ...actual,
+    lighten: vi.fn((_color: string, _amount: number) => "lightened"),
+    useTheme: () => useThemeMock(),
+  };
+});
 
-vi.mock("@mui/material/colors", () => ({
-  blue: { 700: "#00f" },
-}));
+vi.mock("@mui/material/colors", async importOriginal => {
+  const actual = await importOriginal<typeof import("@mui/material/colors")>();
+  return {
+    ...actual,
+    blue: { 700: "#00f" },
+  };
+});
 
 vi.mock("react-admin", async importOriginal => {
   const actual = await importOriginal<typeof import("react-admin")>();

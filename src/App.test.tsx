@@ -141,7 +141,7 @@ describe.sequential("App", () => {
 
     render(<App />);
 
-    expect(await screen.findByText("import_users.title")).toBeTruthy();
+    expect(await screen.findByText(englishMessages.import_users.title)).toBeTruthy();
   });
 
   it("keeps the import route behind authentication", async () => {

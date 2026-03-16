@@ -49,9 +49,13 @@ vi.mock("./room_directory", () => ({
   RoomDirectoryUnpublishButton: roomDirectoryUnpublishButtonMock,
 }));
 
-vi.mock("@mui/material/styles", () => ({
-  useTheme: () => useThemeMock(),
-}));
+vi.mock("@mui/material/styles", async importOriginal => {
+  const actual = await importOriginal<typeof import("@mui/material/styles")>();
+  return {
+    ...actual,
+    useTheme: () => useThemeMock(),
+  };
+});
 
 vi.mock("@mui/material/Box", () => ({
   default: ({ children }: any) => <div>{children}</div>,
