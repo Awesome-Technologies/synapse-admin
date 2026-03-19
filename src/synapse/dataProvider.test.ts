@@ -376,37 +376,37 @@ describe("dataProvider", () => {
   it("deletes various resources using their custom configurations", async () => {
     fetchMock.mockResponse(JSON.stringify({}));
 
-    await dataProvider.delete("rooms", { id: "room1", previousData: {} });
+    await dataProvider.delete("rooms", { id: "room1", previousData: { id: "room1" } });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost/_synapse/admin/v2/rooms/room1",
       expect.objectContaining({ method: "DELETE", body: '{"block":false}' })
     );
 
-    await dataProvider.delete("users_media", { id: "media1", previousData: {} });
+    await dataProvider.delete("users_media", { id: "media1", previousData: { id: "media1" } });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost/_synapse/admin/v1/media/matrix.example.com/media1",
       expect.objectContaining({ method: "DELETE" })
     );
 
-    await dataProvider.delete("protect_media", { id: "media1", previousData: {} });
+    await dataProvider.delete("protect_media", { id: "media1", previousData: { id: "media1" } });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost/_synapse/admin/v1/media/unprotect/media1",
       expect.objectContaining({ method: "POST" })
     );
 
-    await dataProvider.delete("quarantine_media", { id: "media1", previousData: {} });
+    await dataProvider.delete("quarantine_media", { id: "media1", previousData: { id: "media1" } });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost/_synapse/admin/v1/media/unquarantine/matrix.example.com/media1",
       expect.objectContaining({ method: "POST" })
     );
 
-    await dataProvider.delete("forward_extremities", { id: "room1", previousData: {} });
+    await dataProvider.delete("forward_extremities", { id: "room1", previousData: { id: "room1" } });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost/_synapse/admin/v1/rooms/room1/forward_extremities",
       expect.objectContaining({ method: "DELETE" })
     );
 
-    await dataProvider.delete("destinations", { id: "dest1", previousData: {} });
+    await dataProvider.delete("destinations", { id: "dest1", previousData: { id: "dest1" } });
     expect(fetchMock).toHaveBeenCalledWith(
       "http://localhost/_synapse/admin/v1/federation/destinations/dest1/reset_connection",
       expect.objectContaining({ method: "POST" })
@@ -415,11 +415,11 @@ describe("dataProvider", () => {
 
   it("deletes single resources using custom methods and fallback body logic", async () => {
     fetchMock.mockResponseOnce(JSON.stringify({}));
-    await deleteResource("devices", { id: "D1", previousData: { user_id: "@u:example.com" } });
+    await deleteResource("devices", { id: "D1", previousData: { id: "D1", user_id: "@u:example.com" } });
     expect(fetchMock.mock.calls[0]?.[1]?.body).toBeNull();
 
     fetchMock.mockResponseOnce(JSON.stringify({ id: "deleted" }));
-    await deleteResource("users", { id: "@user:matrix.example.com", previousData: {} });
+    await deleteResource("users", { id: "@user:matrix.example.com", previousData: { id: "@user:matrix.example.com" } });
     expect(fetchMock.mock.calls[1]?.[1]?.method).toBe("POST");
     expect(fetchMock.mock.calls[1]?.[1]?.body).toBe('{"erase":true}');
   });
