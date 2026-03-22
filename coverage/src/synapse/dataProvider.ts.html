@@ -2032,7 +2032,7 @@ const userResourceConfigs = {
     }),
     data: "users",
     total: json =&gt; json.total,
-    create: <span class="fstat-no" title="function not covered" >(d</span>ata: RaRecord) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    create: (d</span>ata: RaRecord) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v2/users/@${encodeURIComponent(data.id)}:${requireStoredHomeServer()}`,
       body: data,
       method: "PUT",
@@ -2070,21 +2070,21 @@ const userResourceConfigs = {
       ...pusher,
       id: pusher.pushkey,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/pushers`,
     }),
     data: "pushers",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
   },
   joined_rooms: {
     map: (roomId: string) =&gt; ({
       id: roomId,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/joined_rooms`,
     }),
     data: "joined_rooms",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
   },
   servernotices: {
     map: (notice: { event_id: string }) =&gt; ({ id: notice.event_id }),
@@ -2145,24 +2145,24 @@ const roomResourceConfigs = {
     path: "/_synapse/admin/v1/event_reports",
     map: (eventReport: EventReport) =&gt; ({ ...eventReport }),
     data: "event_reports",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
   },
   room_members: {
     map: (member: string) =&gt; ({
       id: member,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/rooms/${id}/members`,
     }),
     data: "members",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
   },
   room_state: {
     map: (roomState: RoomState) =&gt; ({
       ...roomState,
       id: roomState.event_id,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/rooms/${id}/state`,
     }),
     data: "state",
@@ -2173,11 +2173,11 @@ const roomResourceConfigs = {
       ...extremity,
       id: extremity.event_id,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/rooms/${id}/forward_extremities`,
     }),
     data: "results",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.count,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.count,</span>
     delete: (params: DeleteParams) =&gt; ({
       endpoint: `/_synapse/admin/v1/rooms/${params.id}/forward_extremities`,
     }),
@@ -2189,7 +2189,7 @@ const roomResourceConfigs = {
       id: room.room_id,
       public: !!room.public,
       guest_access: !!room.guest_access,
-      avatar_src: room.avatar_url ? <span class="branch-0 cbranch-no" title="branch not covered" >mxcUrlToHttp(room.avatar_url) : u</span>ndefined,
+      avatar_src: room.avatar_url ? <span class="branch-0 cbranch-no" title="branch not covered" >mxcUrlToHttp(room.avatar_url) </span>: undefined,
     }),
     data: "chunk",
     total: json =&gt; json.total_room_count_estimate,
@@ -2212,11 +2212,11 @@ const mediaResourceConfigs = {
       ...media,
       id: media.media_id,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/users/${encodeURIComponent(id)}/media`,
     }),
     data: "media",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
     delete: (params: DeleteParams) =&gt; ({
       endpoint: `/_synapse/admin/v1/media/${requireStoredHomeServer()}/${params.id}`,
     }),
@@ -2252,7 +2252,7 @@ const mediaResourceConfigs = {
       id: statistic.user_id,
     }),
     data: "users",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
   },
 } satisfies ResourceMap;
 &nbsp;
@@ -2275,11 +2275,11 @@ const federationResourceConfigs = {
       ...destinationRoom,
       id: destinationRoom.room_id,
     }),
-    reference: <span class="fstat-no" title="function not covered" >(i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+<span class="fstat-no" title="function not covered" >    reference: (i</span>d: Identifier) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
       endpoint: `/_synapse/admin/v1/federation/destinations/${id}/rooms`,
     }),
     data: "rooms",
-    total: <span class="fstat-no" title="function not covered" >json =&gt; <span class="cstat-no" title="statement not covered" >j</span>son.total,</span>
+<span class="fstat-no" title="function not covered" >    total: j</span>son =&gt; <span class="cstat-no" title="statement not covered" >json.total,</span>
   },
 } satisfies ResourceMap;
 &nbsp;
@@ -2611,7 +2611,7 @@ export default dataProvider;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-19T21:48:10.463Z
+                at 2026-03-22T16:30:46.537Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
