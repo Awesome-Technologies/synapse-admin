@@ -3431,9 +3431,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"happy-dom@npm:^20.8.3":
-  version: 20.8.3
-  resolution: "happy-dom@npm:20.8.3"
+"happy-dom@npm:^20.8.6":
+  version: 20.8.6
+  resolution: "happy-dom@npm:20.8.6"
   dependencies:
     "@types/node": "npm:>=20.0.0"
     "@types/whatwg-mimetype": "npm:^3.0.2"
@@ -3441,7 +3441,7 @@ __metadata:
     entities: "npm:^7.0.1"
     whatwg-mimetype: "npm:^3.0.0"
     ws: "npm:^8.18.3"
-  checksum: 10c0/79a2b6d32e2f778b015511c9d2de7f7859954cbd27a30720736e60552a88e0345ffc8b2c5e77140c5f2f7fef95c563aea7ab0b2edba5d8c7edd5676b43ecef55
+  checksum: 10c0/f525fcf89bce9a95f05ea880d14c03335e23d2ee49add4cdb2a7e81f76c24e3bfa72373c55d919b7e13a666a1de1b9e49d19956e1772862318a60fa0a723ed99
   languageName: node
   linkType: hard
 
@@ -6161,7 +6161,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.5.5"
     eslint-plugin-unused-imports: "npm:^4.4.1"
     eslint-plugin-yaml: "npm:^1.1.3"
-    happy-dom: "npm:^20.8.3"
+    happy-dom: "npm:^20.8.6"
     lodash: "npm:^4.17.23"
     papaparse: "npm:^5.5.3"
     prettier: "npm:^3.8.1"
