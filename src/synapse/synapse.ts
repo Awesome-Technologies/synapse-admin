@@ -169,6 +169,7 @@ export const fetchJsonWithoutAuth = (baseUrl: string, endpoint: string, options:
 /** Clear credentials that should not survive logout or failed auth recovery. */
 export const clearStoredAuth = (): void => {
   storage.removeItem("access_token");
+  storage.removeItem("device_id");
 };
 
 /**

@@ -35,7 +35,7 @@ describe("authProvider", () => {
           identifier: {
             type: "m.id.user",
             user: "@user:example.com",
-          }
+          },
         }),
         headers: new Headers({
           Accept: "application/json",
@@ -80,10 +80,107 @@ describe("authProvider", () => {
     expect(storage.getItem("device_id")).toEqual("some_device");
   });
 
+  describe("login with stale device_id", () => {
+    it("should retry login without device_id when the first attempt fails", async () => {
+      // A stale device_id is present from a previous session that was
+      // externally revoked (e.g. via Element "Remove Device").
+      storage.setItem("device_id", "REVOKED_DEVICE");
+
+      // First call with the stale device_id fails.
+      fetchMock.mockRejectOnce(new Error("M_UNKNOWN_DEVICE"));
+
+      // Second call without device_id succeeds.
+      fetchMock.mockResponseOnce(
+        JSON.stringify({
+          home_server: "example.com",
+          user_id: "@user:example.com",
+          access_token: "fresh_token",
+          device_id: "NEW_DEVICE",
+        })
+      );
+
+      await authProvider.login({
+        base_url: "http://example.com",
+        username: "@user:example.com",
+        password: "secret",
+      });
+
+      // The first call should include the stale device_id.
+      expect(fetch).toHaveBeenCalledTimes(2);
+      const firstBody = JSON.parse(fetchMock.mock.calls[0][1]!.body as string);
+      expect(firstBody.device_id).toBe("REVOKED_DEVICE");
+
+      // The retry should use null device_id.
+      const secondBody = JSON.parse(fetchMock.mock.calls[1][1]!.body as string);
+      expect(secondBody.device_id).toBeNull();
+
+      // Storage should reflect the fresh session.
+      expect(storage.getItem("access_token")).toBe("fresh_token");
+      expect(storage.getItem("device_id")).toBe("NEW_DEVICE");
+    });
+
+    it("should clear stale device_id from storage after retry", async () => {
+      storage.setItem("device_id", "STALE_DEVICE");
+
+      fetchMock.mockRejectOnce(new Error("M_UNKNOWN_DEVICE"));
+      fetchMock.mockResponseOnce(
+        JSON.stringify({
+          home_server: "example.com",
+          user_id: "@user:example.com",
+          access_token: "new_token",
+          device_id: "FRESH_DEVICE",
+        })
+      );
+
+      await authProvider.login({
+        base_url: "http://example.com",
+        username: "@user:example.com",
+        password: "secret",
+      });
+
+      // The stale device_id should have been removed before the retry and
+      // replaced by the new one from the server response.
+      expect(storage.getItem("device_id")).toBe("FRESH_DEVICE");
+    });
+
+    it("should propagate the error when login fails without a stored device_id", async () => {
+      // No stored device_id — there is nothing to retry with.
+      fetchMock.mockRejectOnce(new Error("M_FORBIDDEN"));
+
+      await expect(
+        authProvider.login({
+          base_url: "http://example.com",
+          username: "@user:example.com",
+          password: "wrong",
+        })
+      ).rejects.toThrow("M_FORBIDDEN");
+
+      expect(fetch).toHaveBeenCalledTimes(1);
+    });
+
+    it("should propagate the error when both login attempts fail", async () => {
+      storage.setItem("device_id", "STALE");
+
+      fetchMock.mockRejectOnce(new Error("first failure"));
+      fetchMock.mockRejectOnce(new Error("second failure"));
+
+      await expect(
+        authProvider.login({
+          base_url: "http://example.com",
+          username: "@user:example.com",
+          password: "wrong",
+        })
+      ).rejects.toThrow("second failure");
+
+      expect(fetch).toHaveBeenCalledTimes(2);
+    });
+  });
+
   describe("logout", () => {
-    it("should remove the access_token from storage", async () => {
+    it("should remove the access_token and device_id from storage", async () => {
       storage.setItem("base_url", "example.com");
       storage.setItem("access_token", "foo");
+      storage.setItem("device_id", "some_device");
       fetchMock.mockResponse(JSON.stringify({}));
 
       await authProvider.logout(null);
@@ -97,6 +194,7 @@ describe("authProvider", () => {
         user: { authenticated: true, token: "Bearer foo" },
       });
       expect(storage.getItem("access_token")).toBeNull();
+      expect(storage.getItem("device_id")).toBeNull();
     });
   });
 

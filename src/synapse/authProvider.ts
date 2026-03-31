@@ -27,48 +27,75 @@ const getStoredIdentity = () => {
   };
 };
 
+/** Build the login request body for a given device_id and credential set. */
+const buildLoginBody = (
+  deviceId: string | null,
+  loginToken: string | null | undefined,
+  username: string | null | undefined,
+  password: string | null | undefined
+): string =>
+  JSON.stringify(
+    Object.assign(
+      {
+        device_id: deviceId,
+        initial_device_display_name: "Synapse Admin",
+      },
+      loginToken
+        ? {
+            type: "m.login.token",
+            token: loginToken,
+          }
+        : {
+            type: "m.login.password",
+            user: username,
+            password: password,
+            identifier: {
+              type: "m.id.user",
+              user: username,
+            },
+          }
+    )
+  );
+
 /** React-admin auth provider backed by Synapse password login and token-based SSO callbacks. */
 const authProvider: AuthProvider = {
   /** Exchange credentials for an access token and persist the resulting session locally. */
-  login: async ({
-    base_url,
-    username,
-    password,
-    loginToken,
-  }: LoginParams) => {
-    const options: Options = {
-      method: "POST",
-      body: JSON.stringify(
-        Object.assign(
-          {
-            device_id: storage.getItem("device_id"),
-            initial_device_display_name: "Synapse Admin",
-          },
-          loginToken
-            ? {
-                type: "m.login.token",
-                token: loginToken,
-              }
-            : {
-                type: "m.login.password",
-                user: username,
-                password: password,
-                identifier: {
-                  type: "m.id.user",
-                  user: username,
-                },
-              }
-        )
-      ),
-    };
-
+  login: async ({ base_url, username, password, loginToken }: LoginParams) => {
     // use the base_url from login instead of the well_known entry from the
     // server, since the admin might want to access the admin API via some
     // private address
     const normalizedBaseUrl = normalizeBaseUrl(base_url);
     storage.setItem("base_url", normalizedBaseUrl);
 
-    const { json } = await fetchJson(buildUrl(normalizedBaseUrl, "/_matrix/client/r0/login"), options);
+    const loginUrl = buildUrl(normalizedBaseUrl, "/_matrix/client/r0/login");
+    const storedDeviceId = storage.getItem("device_id");
+
+    let json: Record<string, string>;
+
+    // When a stored device_id exists, the server may reject the login if the
+    // device was externally revoked (e.g. via Element "Remove Device").  In
+    // that case, retry without the stale device_id so the server assigns a
+    // fresh one.  See https://github.com/Awesome-Technologies/synapse-admin/issues/757
+    if (storedDeviceId) {
+      try {
+        ({ json } = await fetchJson(loginUrl, {
+          method: "POST",
+          body: buildLoginBody(storedDeviceId, loginToken, username, password),
+        }));
+      } catch {
+        storage.removeItem("device_id");
+        ({ json } = await fetchJson(loginUrl, {
+          method: "POST",
+          body: buildLoginBody(null, loginToken, username, password),
+        }));
+      }
+    } else {
+      ({ json } = await fetchJson(loginUrl, {
+        method: "POST",
+        body: buildLoginBody(null, loginToken, username, password),
+      }));
+    }
+
     storage.setItem("home_server", json.home_server);
     storage.setItem("user_id", json.user_id);
     storage.setItem("access_token", json.access_token);
@@ -91,7 +118,8 @@ const authProvider: AuthProvider = {
     clearStoredAuth();
   },
   /** Treat 401/403 responses as an expired or invalid session. */
-  checkError: ({ status }: { status: number }) => ((status === 401 || status === 403) ? Promise.reject() : Promise.resolve()),
+  checkError: ({ status }: { status: number }) =>
+    status === 401 || status === 403 ? Promise.reject() : Promise.resolve(),
   /** Guard protected routes by checking whether a session token is cached locally. */
   checkAuth: async () => (hasAccessToken() ? Promise.resolve() : Promise.reject()),
   /** Synapse Admin currently does not model separate permission payloads. */
