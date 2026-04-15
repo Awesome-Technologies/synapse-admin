@@ -1,12 +1,5 @@
 import { stringify } from "query-string";
-import {
-  DataProvider,
-  DeleteParams,
-  Identifier,
-  PaginationPayload,
-  RaRecord,
-  SortPayload,
-} from "react-admin";
+import { DataProvider, DeleteParams, Identifier, PaginationPayload, RaRecord, SortPayload } from "react-admin";
 
 import { buildUrl, fetchJsonFromAbsoluteUrl, requireStoredBaseUrl, requireStoredHomeServer } from "./synapse";
 
@@ -269,6 +262,7 @@ const userResourceConfigs = {
       is_guest: !!user.is_guest,
       admin: !!user.admin,
       deactivated: !!user.deactivated,
+      shadow_banned: !!user.shadow_banned,
       creation_ts_ms: user.creation_ts * 1000,
     }),
     data: "users",
@@ -634,7 +628,9 @@ export const buildReferenceUrl = (resourceName: string, id: Identifier, query?: 
 /** Fetch a single collection-backed record and normalize it through the resource mapper. */
 export const fetchResourceRecord = async (resourceName: string, id: Identifier) => {
   const config = getCollectionResource(resourceName);
-  const { json } = await fetchJsonFromAbsoluteUrl(buildUrl(requireStoredBaseUrl(), `${config.path}/${encodeURIComponent(id)}`));
+  const { json } = await fetchJsonFromAbsoluteUrl(
+    buildUrl(requireStoredBaseUrl(), `${config.path}/${encodeURIComponent(id)}`)
+  );
   return config.map(json);
 };
 

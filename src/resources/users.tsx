@@ -87,6 +87,7 @@ const userFilters = [
   <BooleanInput source="guests" alwaysOn />,
   <BooleanInput label="resources.users.fields.show_deactivated" source="deactivated" alwaysOn />,
   <BooleanInput label="resources.users.fields.show_locked" source="locked" alwaysOn />,
+  <BooleanInput label="resources.users.fields.show_shadow_banned" source="shadow_banned" alwaysOn />,
 ];
 
 const UserBulkActionButtons = () => (
@@ -104,7 +105,7 @@ export const UserList = (props: ListProps) => (
   <List
     {...props}
     filters={userFilters}
-    filterDefaultValues={{ guests: true, deactivated: false, locked: false }}
+    filterDefaultValues={{ guests: true, deactivated: false, locked: false, shadow_banned: false }}
     sort={{ field: "name", order: "ASC" }}
     actions={<UserListActions />}
     pagination={<UserPagination />}
@@ -119,6 +120,7 @@ export const UserList = (props: ListProps) => (
       <DataTable.Col source="admin" field={BooleanField} />
       <DataTable.Col source="deactivated" field={BooleanField} />
       <DataTable.Col source="locked" field={BooleanField} />
+      <DataTable.Col source="shadow_banned" field={BooleanField} />
       <DataTable.Col source="erased" field={BooleanField} />
       <DataTable.Col source="creation_ts" label="resources.users.fields.creation_ts_ms">
         <DateField source="creation_ts" showTime options={DATE_FORMAT} />
@@ -201,6 +203,7 @@ export const UserEdit = (props: EditProps) => {
           <SelectInput source="user_type" choices={choices_type} translateChoice={false} resettable />
           <BooleanInput source="admin" />
           <BooleanInput source="locked" />
+          <BooleanInput source="shadow_banned" helperText="resources.users.helper.shadow_ban" />
           <BooleanInput source="deactivated" helperText="resources.users.helper.deactivate" />
           <BooleanInput source="erased" disabled />
           <DateField source="creation_ts_ms" showTime options={DATE_FORMAT} />
@@ -295,10 +298,7 @@ export const UserEdit = (props: EditProps) => {
 
         <FormTab label={translate("resources.rooms.name", { smart_count: 2 })} icon={<ViewListIcon />} path="rooms">
           <ReferenceManyField reference="joined_rooms" target="user_id" label={false}>
-            <DataTable
-              rowClick={id => createPath({ resource: "rooms", id, type: "show" })}
-              bulkActionButtons={false}
-            >
+            <DataTable rowClick={id => createPath({ resource: "rooms", id, type: "show" })} bulkActionButtons={false}>
               <DataTable.Col source="id" label="resources.rooms.fields.room_id" />
               <DataTable.Col label="resources.rooms.fields.name">
                 <ReferenceField source="id" reference="rooms" link={false}>

@@ -117,10 +117,12 @@ interface SynapseTranslationMessages extends TranslationMessages {
         admin: string;
         locked?: string; // TODO: fa, zh
         deactivated: string;
+        shadow_banned?: string; // TODO: (none, all languages have translations)
         erased?: string; // TODO: fa, fr, it, zh
         guests: string;
         show_deactivated: string;
         show_locked?: string; // TODO: de, fa, fr, it, zh
+        show_shadow_banned?: string; // TODO: (none, all languages have translations)
         user_id: string;
         displayname: string;
         password: string;
@@ -138,6 +140,7 @@ interface SynapseTranslationMessages extends TranslationMessages {
         password?: string;
         deactivate: string;
         erase: string;
+        shadow_ban?: string;
       };
       action: {
         erase: string;

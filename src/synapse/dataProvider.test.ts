@@ -55,7 +55,9 @@ describe("dataProvider", () => {
     expect(collectionUrl).toContain("guests=true");
 
     expect(buildCollectionUrl("users", {})).toBe("http://localhost/_synapse/admin/v2/users");
-    expect(buildReferenceUrl("devices", "@alice:example.com", {})).toBe("http://localhost/_synapse/admin/v2/users/%40alice%3Aexample.com/devices");
+    expect(buildReferenceUrl("devices", "@alice:example.com", {})).toBe(
+      "http://localhost/_synapse/admin/v2/users/%40alice%3Aexample.com/devices"
+    );
 
     expect(referenceUrl).toContain("http://localhost/_synapse/admin/v2/users/%40alice%3Aexample.com/devices?");
     expect(referenceUrl).toContain("from=5");
@@ -89,28 +91,132 @@ describe("dataProvider", () => {
 
   it("fetches and maps different collection resources properly", () => {
     const usersConfig = getResourceConfig("users");
-    expect(mapResourceData(usersConfig, {
-      users: [{ name: "u1", is_guest: 1, admin: 1, deactivated: 1, creation_ts: 100, threepids: [], external_ids: [], erased: false, shadow_banned: 0, locked: false }]
-    })).toEqual([expect.objectContaining({ id: "u1", is_guest: true, admin: true, deactivated: true, creation_ts_ms: 100000, avatar_src: undefined })]);
+    expect(
+      mapResourceData(usersConfig, {
+        users: [
+          {
+            name: "u1",
+            is_guest: 1,
+            admin: 1,
+            deactivated: 1,
+            creation_ts: 100,
+            threepids: [],
+            external_ids: [],
+            erased: false,
+            shadow_banned: 0,
+            locked: false,
+          },
+        ],
+      })
+    ).toEqual([
+      expect.objectContaining({
+        id: "u1",
+        is_guest: true,
+        admin: true,
+        deactivated: true,
+        shadow_banned: false,
+        creation_ts_ms: 100000,
+        avatar_src: undefined,
+      }),
+    ]);
+
+    expect(
+      mapResourceData(usersConfig, {
+        users: [
+          {
+            name: "u2",
+            is_guest: 0,
+            admin: 0,
+            deactivated: 0,
+            creation_ts: 200,
+            threepids: [],
+            external_ids: [],
+            erased: false,
+            shadow_banned: 1,
+            locked: false,
+          },
+        ],
+      })
+    ).toEqual([expect.objectContaining({ id: "u2", shadow_banned: true })]);
 
     const roomConfig = getResourceConfig("rooms");
-    expect(mapResourceData(roomConfig, {
-      rooms: [{ room_id: "room1", avatar_url: "mxc://server/media", encryption: "yes", federatable: true, public: true, joined_members: 1, joined_local_members: 1, version: 1, creator: "a", join_rules: "public", history_visibility: "shared", state_events: 1 }]
-    })).toEqual([expect.objectContaining({
-      id: "room1", avatar_src: "http://localhost/_matrix/media/r0/thumbnail/server/media?width=24&height=24&method=scale", is_encrypted: true, federatable: true, public: true
-    })]);
+    expect(
+      mapResourceData(roomConfig, {
+        rooms: [
+          {
+            room_id: "room1",
+            avatar_url: "mxc://server/media",
+            encryption: "yes",
+            federatable: true,
+            public: true,
+            joined_members: 1,
+            joined_local_members: 1,
+            version: 1,
+            creator: "a",
+            join_rules: "public",
+            history_visibility: "shared",
+            state_events: 1,
+          },
+        ],
+      })
+    ).toEqual([
+      expect.objectContaining({
+        id: "room1",
+        avatar_src: "http://localhost/_matrix/media/r0/thumbnail/server/media?width=24&height=24&method=scale",
+        is_encrypted: true,
+        federatable: true,
+        public: true,
+      }),
+    ]);
     expect(getResourceTotal(roomConfig, { total_rooms: 10 })).toBe(10);
 
     const roomDirConfig = getResourceConfig("room_directory");
-    expect(mapResourceData(roomDirConfig, {
-      chunk: [{ room_id: "room1", public: true, guest_access: true, joined_members: 1, joined_local_members: 1, version: 1, creator: "a", join_rules: "public", history_visibility: "shared", state_events: 1 }]
-    })).toEqual([expect.objectContaining({
-      id: "room1", public: true, guest_access: true, avatar_src: undefined
-    })]);
+    expect(
+      mapResourceData(roomDirConfig, {
+        chunk: [
+          {
+            room_id: "room1",
+            public: true,
+            guest_access: true,
+            joined_members: 1,
+            joined_local_members: 1,
+            version: 1,
+            creator: "a",
+            join_rules: "public",
+            history_visibility: "shared",
+            state_events: 1,
+          },
+        ],
+      })
+    ).toEqual([
+      expect.objectContaining({
+        id: "room1",
+        public: true,
+        guest_access: true,
+        avatar_src: undefined,
+      }),
+    ]);
     expect(getResourceTotal(roomDirConfig, { total_room_count_estimate: 20 })).toBe(20);
 
     const pushersConfig = getResourceConfig("pushers");
-    expect(mapResourceData(pushersConfig, { pushers: [{ pushkey: "pk1", app_display_name: "", app_id: "", data: { format: "" }, url: "", format: "", device_display_name: "", profile_tag: "", kind: "", lang: "" }] })).toEqual([expect.objectContaining({ id: "pk1" })]);
+    expect(
+      mapResourceData(pushersConfig, {
+        pushers: [
+          {
+            pushkey: "pk1",
+            app_display_name: "",
+            app_id: "",
+            data: { format: "" },
+            url: "",
+            format: "",
+            device_display_name: "",
+            profile_tag: "",
+            kind: "",
+            lang: "",
+          },
+        ],
+      })
+    ).toEqual([expect.objectContaining({ id: "pk1" })]);
 
     const jrConfig = getResourceConfig("joined_rooms");
     expect(mapResourceData(jrConfig, { joined_rooms: ["room1"] })).toEqual([{ id: "room1" }]);
@@ -119,29 +225,68 @@ describe("dataProvider", () => {
     expect(mapResourceData(rmConfig, { members: ["member1"] })).toEqual([{ id: "member1" }]);
 
     const rsConfig = getResourceConfig("room_state");
-    expect(mapResourceData(rsConfig, { state: [{ event_id: "ev1", age: 0, content: {}, origin_server_ts: 0, room_id: "", sender: "", state_key: "", type: "", user_id: "", unsigned: {} }] })).toEqual([expect.objectContaining({ id: "ev1" })]);
+    expect(
+      mapResourceData(rsConfig, {
+        state: [
+          {
+            event_id: "ev1",
+            age: 0,
+            content: {},
+            origin_server_ts: 0,
+            room_id: "",
+            sender: "",
+            state_key: "",
+            type: "",
+            user_id: "",
+            unsigned: {},
+          },
+        ],
+      })
+    ).toEqual([expect.objectContaining({ id: "ev1" })]);
     expect(getResourceTotal(rsConfig, { state: [{}, {}] })).toBe(2);
 
     const feConfig = getResourceConfig("forward_extremities");
-    expect(mapResourceData(feConfig, { results: [{ event_id: "ev1", state_group: 0, depth: 0, received_ts: 0 }] })).toEqual([expect.objectContaining({ id: "ev1" })]);
+    expect(
+      mapResourceData(feConfig, { results: [{ event_id: "ev1", state_group: 0, depth: 0, received_ts: 0 }] })
+    ).toEqual([expect.objectContaining({ id: "ev1" })]);
 
     const umConfig = getResourceConfig("users_media");
-    expect(mapResourceData(umConfig, { media: [{ media_id: "m1", created_ts: 0, media_length: 0, media_type: "", safe_from_quarantine: false }] })).toEqual([expect.objectContaining({ id: "m1" })]);
+    expect(
+      mapResourceData(umConfig, {
+        media: [{ media_id: "m1", created_ts: 0, media_length: 0, media_type: "", safe_from_quarantine: false }],
+      })
+    ).toEqual([expect.objectContaining({ id: "m1" })]);
 
     const umsConfig = getResourceConfig("user_media_statistics");
-    expect(mapResourceData(umsConfig, { users: [{ user_id: "u1", displayname: "", media_count: 0, media_length: 0 }] })).toEqual([expect.objectContaining({ id: "u1" })]);
+    expect(
+      mapResourceData(umsConfig, { users: [{ user_id: "u1", displayname: "", media_count: 0, media_length: 0 }] })
+    ).toEqual([expect.objectContaining({ id: "u1" })]);
 
     const destConfig = getResourceConfig("destinations");
-    expect(mapResourceData(destConfig, { destinations: [{ destination: "d1", retry_last_ts: 0, retry_interval: 0, failure_ts: 0 }] })).toEqual([expect.objectContaining({ id: "d1" })]);
+    expect(
+      mapResourceData(destConfig, {
+        destinations: [{ destination: "d1", retry_last_ts: 0, retry_interval: 0, failure_ts: 0 }],
+      })
+    ).toEqual([expect.objectContaining({ id: "d1" })]);
 
     const drConfig = getResourceConfig("destination_rooms");
-    expect(mapResourceData(drConfig, { rooms: [{ room_id: "r1", stream_ordering: 0 }] })).toEqual([expect.objectContaining({ id: "r1" })]);
+    expect(mapResourceData(drConfig, { rooms: [{ room_id: "r1", stream_ordering: 0 }] })).toEqual([
+      expect.objectContaining({ id: "r1" }),
+    ]);
 
     const connConfig = getResourceConfig("connections");
-    expect(mapResourceData(connConfig, { connections: [{ user_id: "u1", devices: {} }] })).toEqual([expect.objectContaining({ id: "u1" })]);
+    expect(mapResourceData(connConfig, { connections: [{ user_id: "u1", devices: {} }] })).toEqual([
+      expect.objectContaining({ id: "u1" }),
+    ]);
 
     const reportsConfig = getResourceConfig("reports");
-    expect(mapResourceData(reportsConfig, { event_reports: [{ id: 1, room_id: "r1", name: "n", event_id: "e1", user_id: "u1", sender: "s1", received_ts: 123 }] })).toEqual([{ id: 1, room_id: "r1", name: "n", event_id: "e1", user_id: "u1", sender: "s1", received_ts: 123 }]);
+    expect(
+      mapResourceData(reportsConfig, {
+        event_reports: [
+          { id: 1, room_id: "r1", name: "n", event_id: "e1", user_id: "u1", sender: "s1", received_ts: 123 },
+        ],
+      })
+    ).toEqual([{ id: 1, room_id: "r1", name: "n", event_id: "e1", user_id: "u1", sender: "s1", received_ts: 123 }]);
   });
 
   it("fetches list and one record for users", async () => {
@@ -204,10 +349,20 @@ describe("dataProvider", () => {
     await dataProvider.getList("destinations", {
       pagination: { page: 2, perPage: 15 },
       sort: { field: "destination", order: "DESC" },
-      filter: { destination: "example.com", valid: true, search_term: "ex", locked: false, deactivated: false, guests: false, name: "foo" },
+      filter: {
+        destination: "example.com",
+        valid: true,
+        search_term: "ex",
+        locked: false,
+        deactivated: false,
+        guests: false,
+        name: "foo",
+      },
     });
 
-    expect(fetchMock.mock.calls[0]?.[0]).toContain("deactivated=false&destination=example.com&dir=b&from=15&guests=false&limit=15&locked=false&name=foo&order_by=destination&search_term=ex&valid=true");
+    expect(fetchMock.mock.calls[0]?.[0]).toContain(
+      "deactivated=false&destination=example.com&dir=b&from=15&guests=false&limit=15&locked=false&name=foo&order_by=destination&search_term=ex&valid=true"
+    );
   });
 
   it("passes comprehensive queries to getManyReference", async () => {
@@ -226,13 +381,37 @@ describe("dataProvider", () => {
 
   it("supports getMany and getManyReference", async () => {
     fetchMock
-      .mockResponseOnce(JSON.stringify({ name: "user_id1", threepids: [], external_ids: [], admin: 0, deactivated: 0, is_guest: 0, erased: false, shadow_banned: 0, creation_ts: 1, locked: false }))
-      .mockResponseOnce(JSON.stringify({ name: "user_id2", threepids: [], external_ids: [], admin: 0, deactivated: 0, is_guest: 0, erased: false, shadow_banned: 0, creation_ts: 1, locked: false }))
       .mockResponseOnce(
         JSON.stringify({
-          devices: [
-            { device_id: "A", display_name: "Phone", user_id: "@alice:example.com" },
-          ],
+          name: "user_id1",
+          threepids: [],
+          external_ids: [],
+          admin: 0,
+          deactivated: 0,
+          is_guest: 0,
+          erased: false,
+          shadow_banned: 0,
+          creation_ts: 1,
+          locked: false,
+        })
+      )
+      .mockResponseOnce(
+        JSON.stringify({
+          name: "user_id2",
+          threepids: [],
+          external_ids: [],
+          admin: 0,
+          deactivated: 0,
+          is_guest: 0,
+          erased: false,
+          shadow_banned: 0,
+          creation_ts: 1,
+          locked: false,
+        })
+      )
+      .mockResponseOnce(
+        JSON.stringify({
+          devices: [{ device_id: "A", display_name: "Phone", user_id: "@alice:example.com" }],
           total: 1,
         })
       );
@@ -294,9 +473,9 @@ describe("dataProvider", () => {
       .mockResponseOnce(JSON.stringify({ event_id: "evt2" }))
       .mockResponseOnce(JSON.stringify({ event_id: "evt3" }));
 
-    await expect(
-      createResource("servernotices", { id: "@alice:example.com", body: "Hello" })
-    ).resolves.toEqual({ data: { id: "evt1" } });
+    await expect(createResource("servernotices", { id: "@alice:example.com", body: "Hello" })).resolves.toEqual({
+      data: { id: "evt1" },
+    });
 
     await expect(
       dataProvider.create("registration_tokens", {
@@ -325,7 +504,8 @@ describe("dataProvider", () => {
   it("rejects createMany for unsupported resources", async () => {
     await expect(
       dataProvider.createMany("reports", {
-        ids: ["1"], data: { id: "1" }
+        ids: ["1"],
+        data: { id: "1" },
       })
     ).rejects.toThrow("Create reports is not allowed");
   });
@@ -431,17 +611,15 @@ describe("dataProvider", () => {
       .mockResponseOnce(JSON.stringify({ id: "3" }));
 
     await expect(dataProvider.delete("reports", { id: "1", previousData: { id: "1" } })).resolves.toEqual({
-      data: { id: "1" }
+      data: { id: "1" },
     });
     await expect(dataProvider.deleteMany("reports", { ids: ["2", "3"] } as never)).resolves.toEqual({
-      data: [{ id: "2" }, { id: "3" }]
+      data: [{ id: "2" }, { id: "3" }],
     });
   });
 
   it("deletes multiple resources via custom delete definition with body", async () => {
-    fetchMock
-      .mockResponseOnce(JSON.stringify({ id: "user1" }))
-      .mockResponseOnce(JSON.stringify({ id: "user2" }));
+    fetchMock.mockResponseOnce(JSON.stringify({ id: "user1" })).mockResponseOnce(JSON.stringify({ id: "user2" }));
 
     await expect(
       dataProvider.deleteMany("users", {
