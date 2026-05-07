@@ -4,6 +4,13 @@ import { SynapseTranslationMessages } from ".";
 
 const en: SynapseTranslationMessages = {
   ...englishMessages,
+  ra: {
+    ...englishMessages.ra,
+    sort: {
+      ...englishMessages.ra.sort,
+      sort_by: "Sort by %{field} %{order}",
+    },
+  },
   synapseadmin: {
     auth: {
       base_url: "Homeserver URL",
