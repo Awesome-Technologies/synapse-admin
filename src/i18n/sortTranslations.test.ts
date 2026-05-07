@@ -32,7 +32,9 @@ function buildProvider(locale: string) {
 }
 
 describe("sort tooltip translations", () => {
-  describe.each(Object.entries(locales))("%s (%s)", (locale, { name }) => {
+  describe.each(
+    Object.entries(locales).map(([locale, { name }]) => [locale, name] as const),
+  )("%s (%s)", (locale, name) => {
     test("ra.sort.sort_by does not contain %{field_lower_first}", () => {
       const provider = buildProvider(locale);
       // Retrieve the raw translation string by providing only the fallback
