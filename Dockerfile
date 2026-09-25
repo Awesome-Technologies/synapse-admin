@@ -18,9 +18,12 @@ COPY . /src
 RUN yarn build --base=$BASE_PATH
 
 # App
-FROM nginx:stable-alpine
+FROM nginxinc/nginx-unprivileged:stable-alpine
 
 COPY --from=builder /src/dist /app
 
+# Delete useless files. We need to temporarily escalate to root user for this task
+USER 0
 RUN rm -rf /usr/share/nginx/html \
  && ln -s /app /usr/share/nginx/html
+USER 101
