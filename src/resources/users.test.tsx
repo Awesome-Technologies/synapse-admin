@@ -18,7 +18,9 @@ const {
   dataTableColMock: vi.fn((props: any) => <span data-testid="data-table-col">{props.source ?? props.label}</span>),
   deleteButtonMock: vi.fn((props: any) => <div data-testid="delete-button">{props.label}</div>),
   exportButtonMock: vi.fn(({ disabled, maxResults }: any) => (
-    <button type="button">{String(disabled)}:{String(maxResults ?? "")}</button>
+    <button type="button">
+      {String(disabled)}:{String(maxResults ?? "")}
+    </button>
   )),
   selectInputMock: vi.fn(({ source }: any) => <span>{source}</span>),
   serverNoticeBulkButtonMock: vi.fn(() => <span>server-notice-bulk</span>),
@@ -97,9 +99,10 @@ vi.mock("react-admin", async importOriginal => {
     ),
     ExportButton: exportButtonMock,
     FormTab: ({ children }: any) => <div>{children}</div>,
-    List: ({ children, actions }: any) => (
+    List: ({ children, actions, filters }: any) => (
       <div>
         {actions}
+        {filters}
         {children}
       </div>
     ),
@@ -146,6 +149,20 @@ describe("users resource", () => {
     expect(screen.getAllByTestId("data-table")[0].getAttribute("data-row-click")).toBe("edit");
   });
 
+  it("renders the shadow_banned column in the user list", () => {
+    render(<UserList />);
+
+    expect(screen.getAllByTestId("data-table-col").some(node => node.textContent === "shadow_banned")).toBe(true);
+  });
+
+  it("renders the shadow_banned filter in the user list", () => {
+    render(<UserList />);
+
+    // The BooleanInput mock renders source ?? label, so the filter renders "shadow_banned".
+    // There should be two occurrences: one from the filter and one from the DataTable column.
+    expect(screen.getAllByText("shadow_banned")).toHaveLength(2);
+  });
+
   it("disables export when the list is empty or pending", () => {
     useListContextMock.mockReturnValue({ isPending: true, total: 0 });
 
@@ -180,6 +197,12 @@ describe("users resource", () => {
         .getAllByTestId("data-table")
         .some(node => node.getAttribute("data-row-click") === "/rooms/@alice:example.com/show")
     ).toBe(true);
+  });
+
+  it("renders the shadow_banned toggle in the edit form", () => {
+    render(<UserEdit />);
+
+    expect(screen.getByText("shadow_banned")).toBeTruthy();
   });
 
   it("hides the server notice action for deactivated users", () => {

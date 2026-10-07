@@ -122,8 +122,10 @@ const fr: SynapseTranslationMessages = {
         admin: "Administrateur du serveur",
         locked: "Verrouillé",
         deactivated: "Désactivé",
+        shadow_banned: "Shadow ban",
         guests: "Afficher les visiteurs",
         show_deactivated: "Afficher les utilisateurs désactivés",
+        show_shadow_banned: "Afficher les utilisateurs shadow ban",
         user_id: "Rechercher un utilisateur",
         displayname: "Nom d'affichage",
         password: "Mot de passe",
@@ -139,6 +141,7 @@ const fr: SynapseTranslationMessages = {
       helper: {
         deactivate: "Vous devrez fournir un mot de passe pour réactiver le compte.",
         erase: "Marquer l'utilisateur comme effacé conformément au RGPD",
+        shadow_ban: "L'utilisateur peut envoyer des messages mais ils ne seront pas distribués.",
       },
       action: {
         erase: "Effacer les données de l'utilisateur",

@@ -119,8 +119,10 @@ const it: SynapseTranslationMessages = {
         admin: "Amministratore",
         locked: "Bloccato",
         deactivated: "Disattivato",
+        shadow_banned: "Shadow ban",
         guests: "Mostra gli ospiti",
         show_deactivated: "Mostra gli utenti disattivati",
+        show_shadow_banned: "Mostra gli utenti in shadow ban",
         user_id: "Cerca utente",
         displayname: "Nickname",
         password: "Password",
@@ -138,6 +140,7 @@ const it: SynapseTranslationMessages = {
         password: "Cambiando la password l'utente verrà disconnesso da tutte le sessioni attive.",
         deactivate: "Devi fornire una password per riattivare l'account.",
         erase: "Constrassegna l'utente come cancellato dal GDPR",
+        shadow_ban: "L'utente può inviare messaggi ma non saranno consegnati a nessuno.",
       },
       action: {
         erase: "Cancella i dati dell'utente",

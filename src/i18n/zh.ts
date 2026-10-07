@@ -118,8 +118,10 @@ const zh: SynapseTranslationMessages = {
         is_guest: "访客",
         admin: "服务器管理员",
         deactivated: "被禁用",
+        shadow_banned: "影子封禁",
         guests: "显示访客",
         show_deactivated: "显示被禁用的账户",
+        show_shadow_banned: "显示被影子封禁的用户",
         user_id: "搜索用户",
         displayname: "显示名字",
         password: "密码",
@@ -134,6 +136,7 @@ const zh: SynapseTranslationMessages = {
       helper: {
         deactivate: "您必须提供一串密码来激活账户。",
         erase: "将用户标记为根据 GDPR 的要求抹除了",
+        shadow_ban: "用户可以发送消息，但消息不会被投递给任何人。",
       },
       action: {
         erase: "抹除用户信息",

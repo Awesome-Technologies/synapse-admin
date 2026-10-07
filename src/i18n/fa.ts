@@ -118,8 +118,10 @@ const fa: SynapseTranslationMessages = {
         is_guest: "مهمان",
         admin: "مدیر سرور",
         deactivated: "غیرفعال",
+        shadow_banned: "مسدود سایه‌ای",
         guests: "نمایش مهمانان",
         show_deactivated: "نمایش کاربران غیرفعال شده",
+        show_shadow_banned: "نمایش کاربران مسدود سایه‌ای",
         user_id: "جستجوی کاربر",
         displayname: "نام نمایشی",
         password: "رمز عبور",
@@ -137,6 +139,7 @@ const fa: SynapseTranslationMessages = {
         password: "با تغییر رمز عبور کاربر از تمام دستگاه ها خارج می شود.",
         deactivate: "برای فعالسازی مجدد حساب باید رمز عبور وارد کنید.",
         erase: "کاربر را به عنوان GDPR پاک شده علامت گذاری کنید",
+        shadow_ban: "کاربر می‌تواند پیام ارسال کند اما پیام‌ها به کسی تحویل داده نمی‌شوند.",
       },
       action: {
         erase: "پاک کردن اطلاعات کاربر",
